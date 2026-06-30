@@ -5,7 +5,6 @@ const assets = [
   { name: 'Crypto', note: 'Spot · Perps', live: true },
   { name: 'Forex', note: 'Majors · Minors', live: true },
   { name: 'Commodities', note: 'Gold · Oil · Gas', live: false },
-  { name: 'Options', note: 'Equity · Index', live: false },
 ];
 ---
 
@@ -83,7 +82,7 @@ const assets = [
     transition: border-color 0.25s ease, transform 0.25s ease;
   }
   .asset:hover { border-color: rgba(18,201,125,0.35); transform: translateY(-3px); }
-  .asset.soon { opacity: 0.6; }
+  .asset.soon { opacity: 0.6; grid-column: 1 / -1; }
   .a-name { display: block; font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; color: var(--c-text); }
   .a-note { color: var(--c-text-dim); font-size: 0.78rem; }
   .a-status { font-family: var(--font-display); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--c-text-dim); }

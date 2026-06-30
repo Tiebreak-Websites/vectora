@@ -1,152 +1,57 @@
 ---
-const stats = [
-  { value: '$2.4B+', label: 'Aggregate volume' },
-  { value: '4,000+', label: 'Active clients' },
-  { value: '<1ms', label: 'Execution latency' },
-];
 ---
 
 <section class="hero" aria-labelledby="hero-title">
-  <div class="container hero-grid">
-    <div class="hero-copy">
-      <p class="eyebrow reveal"><span class="dot"></span> Live portfolio bots</p>
+  <div class="container hero-inner">
+    <p class="eyebrow reveal"><span class="dot"></span> Live portfolio bots</p>
 
-      <h1 id="hero-title" class="reveal" style="--reveal-delay:80ms">
-        The future of <span class="text-accent">high-velocity</span> trading is here.
-      </h1>
+    <h1 id="hero-title" class="reveal" style="--reveal-delay:80ms">
+      The future of <span class="text-accent">high-velocity</span> trading is here.
+    </h1>
 
-      <p class="lede reveal" style="--reveal-delay:160ms">
-        Leverage quantum-inspired neural networks for ultra-low latency execution
-        and adaptive risk management — built for institutional liquidity and
-        unyielding performance.
-      </p>
+    <p class="lede reveal" style="--reveal-delay:160ms">
+      Leverage quantum-inspired neural networks for ultra-low latency execution
+      and adaptive risk management — built for institutional liquidity and
+      unyielding performance.
+    </p>
 
-      <div class="hero-cta reveal" style="--reveal-delay:240ms">
-        <a href="/packages" class="btn btn-primary btn-lg">View packages <span class="arrow" aria-hidden="true">→</span></a>
-        <a href="/#support" class="btn btn-ghost btn-lg">Get a call from our team</a>
-      </div>
-
-      <ul class="hero-stats reveal" style="--reveal-delay:320ms">
-        {stats.map((s) => (
-          <li><span class="num">{s.value}</span><span class="lbl">{s.label}</span></li>
-        ))}
-      </ul>
-    </div>
-
-    <div class="hero-visual reveal" style="--reveal-delay:200ms" aria-hidden="true">
-      <div class="dash card">
-        <div class="dash-top">
-          <div>
-            <span class="dash-eyebrow"><span class="pulse"></span> Live portfolio</span>
-            <span class="dash-value">+24.8%</span>
-            <span class="dash-sub">Net return · 30 days</span>
-          </div>
-          <span class="dash-pill">This week ▾</span>
-        </div>
-
-        <svg class="chart" viewBox="0 0 360 160" preserveAspectRatio="none">
-          <defs>
-            <linearGradient id="hfill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#12C97D" stop-opacity="0.32" />
-              <stop offset="1" stop-color="#12C97D" stop-opacity="0" />
-            </linearGradient>
-          </defs>
-          <path class="area" d="M0,128 C30,120 50,104 78,110 C108,116 122,82 152,86 C182,90 196,60 226,54 C256,48 280,64 300,40 C320,22 338,30 360,18 L360,160 L0,160 Z" fill="url(#hfill)" />
-          <path class="line" d="M0,128 C30,120 50,104 78,110 C108,116 122,82 152,86 C182,90 196,60 226,54 C256,48 280,64 300,40 C320,22 338,30 360,18" fill="none" stroke="#12C97D" stroke-width="2.5" stroke-linecap="round" />
-        </svg>
-
-        <ul class="positions">
-          <li><span class="p-name"><span class="p-dot up"></span> BTC-PERP</span><span class="p-pnl up">+3.2%</span></li>
-          <li><span class="p-name"><span class="p-dot up"></span> ES Futures</span><span class="p-pnl up">+1.8%</span></li>
-          <li><span class="p-name"><span class="p-dot dn"></span> EUR/USD</span><span class="p-pnl dn">−0.4%</span></li>
-        </ul>
-      </div>
-
-      <div class="float-card f1">
-        <span class="fc-tag buy">FILLED</span>
-        <div><b>Buy · 4,512.25</b><small>Latency 0.7ms</small></div>
-      </div>
-      <div class="float-card f2">
-        <span class="fc-ico" aria-hidden="true">◎</span>
-        <div><b>91.4% win rate</b><small>Last 30 days</small></div>
-      </div>
-
-      <span class="streak" aria-hidden="true"></span>
+    <div class="hero-cta reveal" style="--reveal-delay:240ms">
+      <a href="/packages" class="btn btn-primary btn-lg">View packages <span class="arrow" aria-hidden="true">→</span></a>
+      <a href="/support" class="btn btn-ghost btn-lg">Get a call from our team</a>
     </div>
   </div>
 </section>
 
 <style>
-  .hero { padding-block: clamp(3rem, 7vw, 5.5rem) clamp(3.5rem, 8vw, 6rem); }
-  .hero-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
-  h1 { font-size: clamp(2.5rem, 6vw, 4.1rem); font-weight: 800; }
-  .lede { color: var(--c-text-muted); font-size: 1.15rem; max-width: 40ch; margin-top: 1.4rem; }
-  .hero-cta { display: flex; flex-wrap: wrap; gap: 0.85rem; margin-top: 2rem; }
-
-  .hero-stats { display: flex; gap: clamp(1.2rem, 4vw, 2.6rem); margin-top: 2.75rem; flex-wrap: wrap; }
-  .hero-stats .num { display: block; font-family: var(--font-display); font-size: 1.7rem; font-weight: 700; color: var(--c-text); }
-  .hero-stats .lbl { color: var(--c-text-dim); font-size: 0.85rem; }
-
-  /* ---- Dashboard visual ---- */
-  .hero-visual { position: relative; }
-  .dash { padding: 1.35rem 1.4rem 1.1rem; }
-  .dash-top { display: flex; justify-content: space-between; align-items: flex-start; }
-  .dash-eyebrow { display: inline-flex; align-items: center; gap: 0.45rem; font-family: var(--font-display); font-size: 0.8rem; color: var(--c-text-muted); }
-  .pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--c-accent-bright); animation: pulse 1.8s ease-out infinite; }
-  @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(18,201,125,0.5);} 100% { box-shadow: 0 0 0 11px rgba(18,201,125,0);} }
-  .dash-value { display: block; font-family: var(--font-display); font-weight: 800; font-size: 2rem; color: var(--c-text); margin-top: 0.35rem; }
-  .dash-sub { color: var(--c-text-dim); font-size: 0.78rem; }
-  .dash-pill { font-size: 0.75rem; color: var(--c-text-muted); border: 1px solid var(--c-border-strong); border-radius: var(--radius-pill); padding: 0.35rem 0.7rem; white-space: nowrap; }
-
-  .chart { width: 100%; height: 150px; margin: 0.5rem 0 0.75rem; }
-  .line { stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: draw 2.4s ease forwards 0.3s; }
-  @keyframes draw { to { stroke-dashoffset: 0; } }
-  .area { opacity: 0; animation: fadein 1.2s ease forwards 1.4s; }
-  @keyframes fadein { to { opacity: 1; } }
-
-  .positions { border-top: 1px solid var(--c-border); padding-top: 0.85rem; display: grid; gap: 0.55rem; }
-  .positions li { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; }
-  .p-name { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--c-text-soft); font-weight: 500; }
-  .p-dot { width: 7px; height: 7px; border-radius: 50%; }
-  .p-dot.up { background: var(--c-accent-bright); }
-  .p-dot.dn { background: #ef6a85; }
-  .p-pnl { font-family: var(--font-display); font-weight: 600; }
-  .p-pnl.up { color: var(--c-accent-bright); }
-  .p-pnl.dn { color: #ef6a85; }
-
-  .float-card {
-    position: absolute;
-    display: flex; align-items: center; gap: 0.6rem;
-    background: rgba(36, 48, 56, 0.85);
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--c-border-strong);
-    border-radius: 14px;
-    padding: 0.6rem 0.85rem;
-    box-shadow: var(--shadow);
-    font-size: 0.8rem;
-    animation: bob 5s ease-in-out infinite;
+  .hero {
+    padding-block: clamp(4rem, 12vw, 8.5rem);
+    text-align: center;
+    position: relative;
   }
-  .float-card b { font-size: 0.85rem; color: var(--c-text); }
-  .float-card small { display: block; color: var(--c-text-dim); }
-  .fc-tag { font-family: var(--font-display); font-size: 0.62rem; font-weight: 700; padding: 0.25rem 0.45rem; border-radius: 7px; }
-  .fc-tag.buy { color: #062A1B; background: var(--c-accent-bright); }
-  .fc-ico { color: var(--c-accent-bright); font-size: 1.1rem; }
-  .f1 { top: 9%; right: -5%; animation-delay: 0.2s; }
-  .f2 { bottom: 7%; left: -7%; animation-delay: 1.4s; }
-  @keyframes bob { 0%,100% { transform: translateY(0);} 50% { transform: translateY(-9px);} }
-
-  .streak {
-    position: absolute; inset: auto -20% -30% -20%;
-    height: 200px; z-index: -1;
-    background: radial-gradient(50% 60% at 50% 50%, rgba(9,161,101,0.35), transparent 70%);
-    filter: blur(20px);
+  .hero-inner {
+    max-width: 880px;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
-
-  @media (max-width: 900px) {
-    .hero-grid { grid-template-columns: 1fr; }
-    .hero-visual { order: -1; max-width: 470px; margin-inline: auto; width: 100%; }
-    .float-card.f1 { right: 0; }
-    .float-card.f2 { left: 0; }
+  h1 {
+    font-size: clamp(2.6rem, 7vw, 5rem);
+    font-weight: 800;
+    margin-top: 1.5rem;
+    max-width: 16ch;
   }
-  @media (max-width: 460px) { .float-card { display: none; } }
+  .lede {
+    color: var(--c-text-muted);
+    font-size: 1.2rem;
+    max-width: 62ch;
+    margin-top: 1.5rem;
+  }
+  .hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    justify-content: center;
+    margin-top: 2.2rem;
+  }
 </style>
