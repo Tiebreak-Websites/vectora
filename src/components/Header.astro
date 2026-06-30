@@ -1,0 +1,146 @@
+---
+import Logo from './Logo.astro';
+
+const links = [
+  { href: '#packages', label: 'Our Packages' },
+  { href: '#bots', label: 'Our Bots' },
+  { href: '#strategy', label: 'Strategy' },
+  { href: '#results', label: 'Results' },
+  { href: '#support', label: 'Support' },
+];
+---
+
+<header class="site-header" id="site-header">
+  <div class="container bar">
+    <a href="#home" class="brand" aria-label="Vectora home">
+      <Logo height={30} />
+    </a>
+
+    <nav class="nav-desktop" aria-label="Primary">
+      {links.map((l) => <a href={l.href}>{l.label}</a>)}
+    </nav>
+
+    <div class="actions">
+      <a href="#support" class="login">Log in</a>
+      <a href="#support" class="btn btn-primary nav-cta">Sign up</a>
+      <button class="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <nav class="nav-mobile" id="mobile-nav" aria-label="Mobile">
+    {links.map((l) => <a href={l.href} class="m-link">{l.label}</a>)}
+    <a href="#support" class="btn btn-primary m-cta">Sign up</a>
+  </nav>
+</header>
+
+<span id="home"></span>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    height: var(--header-h);
+    display: flex;
+    align-items: center;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    background: rgba(22, 28, 33, 0.6);
+    border-bottom: 1px solid transparent;
+    transition: background 0.3s ease, border-color 0.3s ease;
+  }
+  .site-header.scrolled {
+    background: rgba(22, 28, 33, 0.85);
+    border-bottom-color: var(--c-border);
+  }
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; width: 100%; }
+  .brand { display: inline-flex; }
+
+  .nav-desktop { display: flex; gap: 0.25rem; align-items: center; }
+  .nav-desktop a {
+    color: var(--c-text-muted);
+    font-family: var(--font-display);
+    font-size: 0.92rem;
+    font-weight: 500;
+    padding: 0.5rem 0.85rem;
+    border-radius: var(--radius-pill);
+    transition: color 0.2s ease, background 0.2s ease;
+  }
+  .nav-desktop a:hover { color: var(--c-text); background: rgba(255, 255, 255, 0.05); }
+
+  .actions { display: flex; align-items: center; gap: 0.9rem; }
+  .login {
+    font-family: var(--font-display);
+    font-size: 0.92rem; font-weight: 500;
+    color: var(--c-text-soft);
+    transition: color 0.2s ease;
+  }
+  .login:hover { color: var(--c-text); }
+
+  .menu-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    width: 44px; height: 44px;
+    align-items: center; justify-content: center;
+    background: var(--glass-bg);
+    border: 1px solid var(--c-border-strong);
+    border-radius: 12px;
+    cursor: pointer;
+  }
+  .menu-toggle span { width: 20px; height: 2px; background: var(--c-text); border-radius: 2px; transition: transform 0.25s ease, opacity 0.25s ease; }
+  .menu-toggle[aria-expanded='true'] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .menu-toggle[aria-expanded='true'] span:nth-child(2) { opacity: 0; }
+  .menu-toggle[aria-expanded='true'] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .nav-mobile {
+    position: fixed;
+    top: var(--header-h); left: 0; right: 0;
+    display: flex; flex-direction: column; gap: 0.25rem;
+    padding: 1rem var(--gutter) 1.5rem;
+    background: rgba(20, 26, 31, 0.97);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--c-border);
+    transform: translateY(-12px);
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    z-index: 99;
+  }
+  .nav-mobile.open { opacity: 1; transform: none; pointer-events: auto; }
+  .m-link {
+    padding: 0.85rem 0.5rem;
+    color: var(--c-text);
+    font-family: var(--font-display); font-weight: 500;
+    border-bottom: 1px solid var(--c-border);
+  }
+  .m-cta { margin-top: 1rem; justify-content: center; }
+
+  @media (max-width: 900px) {
+    .nav-desktop { display: none; }
+    .nav-cta, .login { display: none; }
+    .menu-toggle { display: flex; }
+  }
+</style>
+
+<script>
+  const header = document.getElementById('site-header');
+  const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+  const mobileNav = document.getElementById('mobile-nav');
+
+  const onScroll = () => header?.classList.toggle('scrolled', window.scrollY > 8);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  const closeMenu = () => {
+    toggle?.setAttribute('aria-expanded', 'false');
+    mobileNav?.classList.remove('open');
+  };
+  toggle?.addEventListener('click', () => {
+    const open = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!open));
+    mobileNav?.classList.toggle('open', !open);
+  });
+  mobileNav?.querySelectorAll('a').forEach((a) => a.addEventListener('click', closeMenu));
+</script>

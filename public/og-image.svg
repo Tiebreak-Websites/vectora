@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#222C33"/>
+      <stop offset="1" stop-color="#161C21"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.82" cy="0.25" r="0.7">
+      <stop stop-color="#09A165" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#09A165" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <!-- logo icon -->
+  <g transform="translate(84 74) scale(0.17)">
+    <path d="M115.644 0.587C125 -0.327 145.234 0.226 155.199 0.229L231.91 0.273L308.988 0.19C327.763 0.165 349.583 -0.953 367.745 2.536C419.255 12.535 459.746 56.43 466.152 108.411C468.121 124.39 467.322 142.78 467.257 159.007L467.138 231.562L467.266 311.782C467.292 329.474 468.124 354.02 465.06 370.685C461.31 390.106 452.985 408.343 440.775 423.907C418.258 452.593 389.421 466.207 353.901 470.599C304.095 471.909 250.701 470.148 200.571 470.788C177.492 471.081 117.801 472.066 98.615 468.262C79.786 464.719 62.132 456.555 47.24 444.502C21.253 424.137 4.612 394.12 1.108 361.294C-0.329 347.344 0.152 329.663 0.185 315.419L0.249 245.155L0.142 164.443C0.12 145.049 -0.89 118.868 2.815 100.403C6.81 79.914 15.859 60.747 29.142 44.642C51.247 17.904 81.42 3.677 115.644 0.587Z" fill="#09A165"/>
+    <path d="M312.108 269.89C300.514 294.604 284.385 318.962 272.568 343.539C261.943 365.633 242.655 384.174 216.719 370.517C211.74 367.918 207.47 364.134 204.278 359.512C199.562 352.595 189.87 333.436 185.355 325.145L147.881 256.464L101.642 170.974C95.6 159.757 79.49 131.237 76.402 120.357C80.745 114.389 136.161 115.708 142.847 117.549C148.536 119.111 153.652 122.286 157.577 126.691C162.902 132.61 178.653 160.074 183.31 167.886L233.445 251.968C262.18 298.199 306.838 267.144 312.108 269.89Z" fill="white"/>
+    <path d="M233.444 251.968C256.503 211.085 282.984 169.194 308.194 129.474C311.302 124.577 318.318 119.097 323.974 118.065C333.652 115.708 383.084 115.278 389.532 118.66C390.828 119.22 391.328 119.72 391.007 120.703C390.135 125.621 318.231 262.166 312.107 269.89C306.838 267.144 262.18 298.199 233.444 251.968Z" fill="#D7ECE1"/>
+  </g>
+  <text x="178" y="128" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="52" font-weight="700" fill="#FFFFFF">Vectora</text>
+
+  <!-- headline -->
+  <text x="84" y="318" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="76" font-weight="800" fill="#FFFFFF" letter-spacing="-2">The future of</text>
+  <text x="84" y="406" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="76" font-weight="800" letter-spacing="-2"><tspan fill="#11C57C">high-velocity</tspan><tspan fill="#FFFFFF"> trading.</tspan></text>
+
+  <text x="86" y="476" font-family="Arial, sans-serif" font-size="30" fill="#A7B4BC">Institutional-grade AI trading bots. Built for speed, precision and trust.</text>
+
+  <!-- chart accent -->
+  <path d="M84 566 C 230 548, 340 580, 500 524 C 660 468, 800 502, 1116 432" fill="none" stroke="#11C57C" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="1116" cy="432" r="9" fill="#11C57C"/>
+</svg>

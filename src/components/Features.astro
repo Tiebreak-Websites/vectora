@@ -1,0 +1,78 @@
+---
+const features = [
+  {
+    n: '01',
+    title: '24/7 Autonomous Execution',
+    body: 'Trading never sleeps. Our AI monitors global markets across all time zones without fatigue.',
+    icon: 'clock',
+  },
+  {
+    n: '02',
+    title: 'Emotionless Decision Making',
+    body: 'Eliminate human bias and greed. Every trade is executed based on pure mathematical probability.',
+    icon: 'brain',
+  },
+  {
+    n: '03',
+    title: 'Sub-Millisecond Processing',
+    body: 'Analyze millions of data points per second to identify patterns invisible to the human eye.',
+    icon: 'bolt',
+  },
+  {
+    n: '04',
+    title: 'Adaptive Risk Management',
+    body: 'Real-time drawdown protection that adjusts to market volatility instantly.',
+    icon: 'shield',
+  },
+];
+
+const icons: Record<string, string> = {
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/>',
+  brain: '<path d="M9 4a3 3 0 0 0-3 3 3 3 0 0 0-1 5 3 3 0 0 0 1 5 3 3 0 0 0 6 0V5a3 3 0 0 0-3-1z"/><path d="M15 4a3 3 0 0 1 3 3 3 3 0 0 1 1 5 3 3 0 0 1-1 5 3 3 0 0 1-6 0"/>',
+  bolt: '<path d="M13 3L5 13h6l-1 8 8-10h-6l1-8z"/>',
+  shield: '<path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/>',
+};
+---
+
+<section class="section ai" id="ai">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">The power of AI trading</span>
+      <h2>Unlocking <span class="text-accent">institutional-grade</span> intelligence</h2>
+      <p>Four engines working in concert — so your capital is always watched, always disciplined, always fast.</p>
+    </div>
+
+    <div class="grid">
+      {features.map((f, i) => (
+        <article class="card feature reveal" style={`--reveal-delay:${i * 70}ms`}>
+          <div class="f-top">
+            <span class="ficon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" set:html={icons[f.icon]} />
+            </span>
+            <span class="fnum">{f.n}</span>
+          </div>
+          <h3>{f.title}</h3>
+          <p>{f.body}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+  .feature { display: flex; flex-direction: column; }
+  .f-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.1rem; }
+  .ficon {
+    display: inline-flex; width: 46px; height: 46px;
+    align-items: center; justify-content: center; border-radius: 12px;
+    color: var(--c-accent-bright); background: var(--c-accent-soft); border: 1px solid var(--glass-border);
+  }
+  .ficon svg { width: 23px; height: 23px; }
+  .fnum { font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; color: var(--c-text-dim); }
+  .feature h3 { font-size: 1.12rem; margin-bottom: 0.5rem; }
+  .feature p { color: var(--c-text-muted); font-size: 0.93rem; }
+
+  @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px) { .grid { grid-template-columns: 1fr; } }
+</style>

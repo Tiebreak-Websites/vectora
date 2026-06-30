@@ -1,0 +1,92 @@
+---
+const bots = [
+  {
+    name: 'Momentum Engine',
+    tag: 'Trend-following',
+    desc: 'Rides strong directional moves with adaptive trailing stops across equities, futures and major crypto pairs.',
+    stats: [
+      { k: 'Win rate', v: '58%' },
+      { k: 'Profit factor', v: '1.9' },
+      { k: 'Markets', v: '40+' },
+    ],
+    featured: false,
+  },
+  {
+    name: 'Arbitrage Core',
+    tag: 'Non-correlated',
+    desc: 'Captures pricing inefficiencies across venues with market-neutral, non-correlated algorithmic arbitrage.',
+    stats: [
+      { k: 'Monthly target', v: '3–4%' },
+      { k: 'Profit factor', v: '2.3' },
+      { k: 'Exposure', v: 'Neutral' },
+    ],
+    featured: true,
+  },
+  {
+    name: 'Neural Alpha',
+    tag: 'AI / quant',
+    desc: 'Quantum-inspired neural networks scan 4.2M data points per second to act on patterns invisible to humans.',
+    stats: [
+      { k: 'Win rate', v: '91.4%' },
+      { k: 'Latency', v: '<1ms' },
+      { k: 'Signals/s', v: '4.2M' },
+    ],
+    featured: false,
+  },
+];
+---
+
+<section class="section bots" id="bots">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Our Bots</span>
+      <h2>A bot for <span class="text-accent">every market regime</span></h2>
+      <p>Markets trend, they range, they snap back. Run one bot or combine them into an all-weather portfolio that adapts as conditions change.</p>
+    </div>
+
+    <div class="bot-grid">
+      {bots.map((b, i) => (
+        <article class={`card bot reveal ${b.featured ? 'featured' : ''}`} style={`--reveal-delay:${i * 90}ms`}>
+          {b.featured && <span class="badge">Most popular</span>}
+          <span class="bot-tag">{b.tag}</span>
+          <h3>{b.name}</h3>
+          <p class="bot-desc">{b.desc}</p>
+          <ul class="bot-stats">
+            {b.stats.map((s) => (
+              <li><span class="v">{s.v}</span><span class="k">{s.k}</span></li>
+            ))}
+          </ul>
+          <a href="#support" class="bot-link">Deploy {b.name} <span class="arrow" aria-hidden="true">→</span></a>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .bot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+  .bot { position: relative; display: flex; flex-direction: column; overflow: hidden; }
+  .bot::before { content: ''; position: absolute; inset: 0 0 auto 0; height: 3px; background: var(--grad-accent); opacity: 0.85; }
+  .bot.featured { border-color: rgba(18, 201, 125, 0.4); box-shadow: var(--glow-accent); }
+  .badge {
+    position: absolute; top: 1rem; right: 1rem;
+    font-family: var(--font-display); font-size: 0.66rem; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 0.3rem 0.6rem; border-radius: var(--radius-pill);
+    color: #062A1B; background: var(--grad-accent);
+  }
+  .bot-tag { font-family: var(--font-display); font-size: 0.76rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--c-accent-bright); }
+  .bot h3 { font-size: 1.5rem; margin-top: 0.35rem; }
+  .bot-desc { color: var(--c-text-muted); font-size: 0.95rem; margin-top: 0.7rem; }
+  .bot-stats {
+    padding: 1.1rem 0; margin: 1.1rem 0;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem;
+    border-top: 1px solid var(--c-border); border-bottom: 1px solid var(--c-border);
+  }
+  .bot-stats .v { display: block; font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; color: var(--c-text); }
+  .bot-stats .k { color: var(--c-text-dim); font-size: 0.72rem; }
+  .bot-link { margin-top: auto; font-family: var(--font-display); font-weight: 600; color: var(--c-text); display: inline-flex; gap: 0.4rem; align-items: center; transition: color 0.2s ease; }
+  .bot-link:hover { color: var(--c-accent-bright); }
+
+  @media (max-width: 900px) { .bot-grid { grid-template-columns: 1fr; max-width: 460px; margin-inline: auto; } }
+</style>

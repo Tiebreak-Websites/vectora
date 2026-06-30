@@ -1,0 +1,24 @@
+---
+// Vectora brand lockup (white wordmark + green mark).
+// Source asset: /public/vectora-logo-white.svg
+const { height = 30 } = Astro.props;
+---
+
+<img
+  src="/vectora-logo-white.svg"
+  alt="Vectora"
+  class="logo"
+  height={height}
+  width={Math.round((height * 1782) / 472)}
+  style={`--h:${height}px`}
+  decoding="async"
+/>
+
+<style>
+  .logo {
+    height: var(--h);
+    width: auto;
+    display: block;
+    user-select: none;
+  }
+</style>

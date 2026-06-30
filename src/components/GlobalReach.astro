@@ -1,0 +1,95 @@
+---
+const assets = [
+  { name: 'Stocks', note: 'NYSE · NASDAQ · LSE', live: true },
+  { name: 'Indices', note: 'S&P · NDX · DAX', live: true },
+  { name: 'Crypto', note: 'Spot · Perps', live: true },
+  { name: 'Forex', note: 'Majors · Minors', live: true },
+  { name: 'Commodities', note: 'Gold · Oil · Gas', live: false },
+  { name: 'Options', note: 'Equity · Index', live: false },
+];
+---
+
+<section class="section reach">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Global reach</span>
+      <h2>Multi-asset compatibility across <span class="text-accent">all major exchanges</span></h2>
+      <p>One engine, every market. Vectora connects to the venues you already use and trades the assets that fit your strategy.</p>
+    </div>
+
+    <div class="reach-grid">
+      <div class="map card reveal" aria-hidden="true">
+        <div class="dots"></div>
+        <svg class="arcs" viewBox="0 0 520 300" preserveAspectRatio="none">
+          <path d="M70,180 C160,80 300,90 380,150" fill="none" stroke="var(--c-accent-line)" stroke-width="1.5" stroke-dasharray="4 6" />
+          <path d="M120,210 C220,150 360,200 450,120" fill="none" stroke="var(--c-accent-line)" stroke-width="1.5" stroke-dasharray="4 6" />
+        </svg>
+        <span class="node n1"></span>
+        <span class="node n2"></span>
+        <span class="node n3"></span>
+        <span class="node n4"></span>
+        <span class="node n5"></span>
+        <span class="map-label">Live nodes · 14 regions</span>
+      </div>
+
+      <ul class="assets reveal" style="--reveal-delay:120ms">
+        {assets.map((a) => (
+          <li class={`asset ${a.live ? '' : 'soon'}`}>
+            <div class="a-main">
+              <span class="a-name">{a.name}</span>
+              <span class="a-note">{a.note}</span>
+            </div>
+            <span class={`a-status ${a.live ? 'live' : ''}`}>{a.live ? 'Live' : 'Coming soon'}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .reach-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 1.5rem; align-items: stretch; }
+
+  .map { position: relative; overflow: hidden; min-height: 320px; padding: 0; }
+  .map .dots {
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.18) 1.2px, transparent 1.4px);
+    background-size: 20px 20px;
+    -webkit-mask-image: radial-gradient(120% 90% at 50% 45%, #000 35%, transparent 78%);
+    mask-image: radial-gradient(120% 90% at 50% 45%, #000 35%, transparent 78%);
+    opacity: 0.8;
+  }
+  .arcs { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .node {
+    position: absolute; width: 11px; height: 11px; border-radius: 50%;
+    background: var(--c-accent-bright);
+    box-shadow: 0 0 0 4px rgba(18,201,125,0.18), 0 0 18px rgba(18,201,125,0.8);
+    animation: ping 2.6s ease-out infinite;
+  }
+  .n1 { top: 58%; left: 13%; animation-delay: 0s; }
+  .n2 { top: 30%; left: 30%; animation-delay: 0.5s; }
+  .n3 { top: 48%; left: 50%; animation-delay: 1s; }
+  .n4 { top: 26%; left: 70%; animation-delay: 1.5s; }
+  .n5 { top: 66%; left: 84%; animation-delay: 2s; }
+  @keyframes ping { 0% { box-shadow: 0 0 0 0 rgba(18,201,125,0.5), 0 0 18px rgba(18,201,125,0.8); } 70%,100% { box-shadow: 0 0 0 16px rgba(18,201,125,0), 0 0 18px rgba(18,201,125,0.4); } }
+  .map-label { position: absolute; left: 1rem; bottom: 0.9rem; font-family: var(--font-display); font-size: 0.75rem; color: var(--c-text-muted); }
+
+  .assets { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; align-content: start; }
+  .asset {
+    display: flex; flex-direction: column; justify-content: space-between; gap: 0.75rem;
+    padding: 1.1rem 1.15rem; min-height: 104px;
+    background: var(--grad-panel); border: 1px solid var(--glass-border);
+    border-radius: var(--radius); backdrop-filter: blur(var(--glass-blur));
+    transition: border-color 0.25s ease, transform 0.25s ease;
+  }
+  .asset:hover { border-color: rgba(18,201,125,0.35); transform: translateY(-3px); }
+  .asset.soon { opacity: 0.6; }
+  .a-name { display: block; font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; color: var(--c-text); }
+  .a-note { color: var(--c-text-dim); font-size: 0.78rem; }
+  .a-status { font-family: var(--font-display); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--c-text-dim); }
+  .a-status.live { color: var(--c-accent-bright); display: inline-flex; align-items: center; gap: 0.35rem; }
+  .a-status.live::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--c-accent-bright); }
+
+  @media (max-width: 900px) { .reach-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 420px) { .assets { grid-template-columns: 1fr; } }
+</style>
