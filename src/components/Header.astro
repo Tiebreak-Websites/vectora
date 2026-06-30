@@ -22,8 +22,8 @@ const links = [
     </nav>
 
     <div class="actions">
-      <a href="/support" class="login">Log in</a>
-      <a href="/support" class="btn btn-primary nav-cta">Sign up</a>
+      <a href="/login" class="login">Log in</a>
+      <a href="/signup" class="btn btn-primary nav-cta">Sign up</a>
       <button class="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
         <span></span><span></span><span></span>
       </button>
@@ -32,7 +32,8 @@ const links = [
 
   <nav class="nav-mobile" id="mobile-nav" aria-label="Mobile">
     {links.map((l) => <a href={l.href} class="m-link">{l.label}</a>)}
-    <a href="/support" class="btn btn-primary m-cta">Sign up</a>
+    <a href="/login" class="m-link">Log in</a>
+    <a href="/signup" class="btn btn-primary m-cta">Sign up</a>
   </nav>
 </header>
 

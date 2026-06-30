@@ -1,0 +1,198 @@
+---
+import Logo from './Logo.astro';
+
+const { mode = 'login' } = Astro.props;
+const isLogin = mode === 'login';
+---
+
+<section class="auth">
+  <div class="auth-card reveal">
+    <a href="/" class="auth-logo" aria-label="Vectora home"><Logo height={30} /></a>
+
+    <div class="tabs" role="tablist" aria-label="Authentication">
+      <a href="/login" class={`tab ${isLogin ? 'active' : ''}`} role="tab" aria-selected={isLogin}>Log in</a>
+      <a href="/signup" class={`tab ${!isLogin ? 'active' : ''}`} role="tab" aria-selected={!isLogin}>Sign up</a>
+    </div>
+
+    <h1>{isLogin ? 'Welcome back' : 'Create your account'}</h1>
+    <p class="sub">{isLogin ? 'Log in to your Vectora dashboard.' : 'Start your 14-day trial — no card required.'}</p>
+
+    <form id="auth-form" class="auth-form" novalidate data-mode={mode}>
+      {!isLogin && (
+        <div class="field">
+          <label for="name">Full name</label>
+          <input id="name" name="name" type="text" autocomplete="name" placeholder="Alex Trader" required />
+          <span class="err" data-for="name"></span>
+        </div>
+      )}
+
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required />
+        <span class="err" data-for="email"></span>
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete={isLogin ? 'current-password' : 'new-password'} placeholder="••••••••" required />
+        <span class="err" data-for="password"></span>
+      </div>
+
+      {isLogin ? (
+        <div class="row-between">
+          <label class="check"><input type="checkbox" name="remember" /> Remember me</label>
+          <a href="#" class="link-sm">Forgot password?</a>
+        </div>
+      ) : (
+        <label class="check terms"><input type="checkbox" name="terms" /> <span>I agree to the Terms &amp; Risk Disclosure</span></label>
+      )}
+
+      <button type="submit" class="btn btn-primary btn-lg auth-submit">{isLogin ? 'Log in' : 'Create account'}</button>
+      <p class="form-status" id="auth-status" role="status" aria-live="polite"></p>
+    </form>
+
+    <p class="switch">
+      {isLogin
+        ? <span>New to Vectora? <a href="/signup">Create an account</a></span>
+        : <span>Already have an account? <a href="/login">Log in</a></span>}
+    </p>
+  </div>
+</section>
+
+<style>
+  .auth {
+    min-height: calc(100vh - var(--header-h));
+    display: grid;
+    place-items: center;
+    padding: clamp(2rem, 6vw, 4rem) var(--gutter);
+  }
+  .auth-card {
+    width: 100%;
+    max-width: 430px;
+    background: var(--grad-panel);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: clamp(1.6rem, 4vw, 2.4rem);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    box-shadow: var(--shadow);
+  }
+  .auth-logo { display: inline-flex; margin-bottom: 1.5rem; }
+
+  .tabs {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4px;
+    padding: 4px; margin-bottom: 1.6rem;
+    background: rgba(0, 0, 0, 0.28);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-pill);
+  }
+  .tab {
+    text-align: center; padding: 0.6rem;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-display); font-weight: 600; font-size: 0.9rem;
+    color: var(--c-text-muted);
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .tab:hover { color: var(--c-text); }
+  .tab.active { background: var(--grad-accent); color: #062A1B; }
+
+  h1 { font-size: 1.7rem; }
+  .sub { color: var(--c-text-muted); margin: 0.45rem 0 1.6rem; font-size: 0.95rem; }
+
+  .auth-form { display: grid; gap: 1rem; }
+  .field { display: grid; gap: 0.4rem; }
+  label { font-family: var(--font-display); font-size: 0.85rem; font-weight: 500; color: var(--c-text); }
+  input[type='email'], input[type='text'], input[type='password'] {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--c-border-strong);
+    border-radius: var(--radius-sm);
+    padding: 0.8rem 0.9rem;
+    color: var(--c-text);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  input::placeholder { color: var(--c-text-dim); }
+  input:focus { outline: none; border-color: var(--c-accent-bright); box-shadow: 0 0 0 3px rgba(18, 201, 125, 0.15); }
+  .field.invalid input { border-color: #ef6a85; }
+  .err { color: #f0889d; font-size: 0.78rem; min-height: 1em; }
+
+  .row-between { display: flex; justify-content: space-between; align-items: center; }
+  .check { display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-sans); font-weight: 400; font-size: 0.85rem; color: var(--c-text-muted); cursor: pointer; }
+  .check input { accent-color: var(--c-accent); width: 16px; height: 16px; flex: none; }
+  .link-sm { font-size: 0.85rem; color: var(--c-accent-bright); }
+  .link-sm:hover { text-decoration: underline; }
+
+  .auth-submit { width: 100%; margin-top: 0.3rem; }
+  .form-status { font-size: 0.88rem; text-align: center; min-height: 1.2em; }
+  .form-status.info { color: var(--c-text-soft); }
+  .form-status.bad { color: #f0889d; }
+
+  .switch { text-align: center; margin-top: 1.4rem; color: var(--c-text-muted); font-size: 0.9rem; }
+  .switch a { color: var(--c-accent-bright); font-weight: 600; }
+  .switch a:hover { text-decoration: underline; }
+</style>
+
+<script>
+  const form = document.getElementById('auth-form');
+  const statusEl = document.getElementById('auth-status');
+
+  if (form && statusEl) {
+    const mode = form.dataset.mode;
+
+    const setError = (name, msg) => {
+      const field = form.querySelector(`[name="${name}"]`)?.closest('.field');
+      const err = form.querySelector(`.err[data-for="${name}"]`);
+      if (field) field.classList.toggle('invalid', Boolean(msg));
+      if (err) err.textContent = msg;
+    };
+
+    const validate = () => {
+      let ok = true;
+      const data = new FormData(form);
+
+      if (mode === 'signup') {
+        const name = (data.get('name') || '').toString().trim();
+        setError('name', name ? '' : 'Please enter your name.');
+        if (!name) ok = false;
+      }
+
+      const email = (data.get('email') || '').toString().trim();
+      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      setError('email', emailOk ? '' : 'Enter a valid email.');
+      if (!emailOk) ok = false;
+
+      const pw = (data.get('password') || '').toString();
+      const pwOk = mode === 'login' ? pw.length > 0 : pw.length >= 8;
+      setError('password', pwOk ? '' : (mode === 'login' ? 'Enter your password.' : 'Use at least 8 characters.'));
+      if (!pwOk) ok = false;
+
+      if (mode === 'signup') {
+        const terms = form.querySelector('[name="terms"]');
+        if (terms && !terms.checked) {
+          ok = false;
+          statusEl.textContent = 'Please accept the Terms to continue.';
+          statusEl.className = 'form-status bad';
+        }
+      }
+      return ok;
+    };
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      statusEl.textContent = '';
+      statusEl.className = 'form-status';
+      if (!validate()) return;
+      statusEl.textContent = mode === 'login'
+        ? "Preview build — sign-in isn't connected to a backend yet."
+        : "Thanks! Accounts aren't open yet in this preview — we'll be in touch.";
+      statusEl.classList.add('info');
+    });
+
+    form.querySelectorAll('input').forEach((el) => {
+      el.addEventListener('input', () => {
+        const field = el.closest('.field');
+        if (field && field.classList.contains('invalid')) setError(el.name, '');
+      });
+    });
+  }
+</script>
