@@ -1,5 +1,6 @@
 name: Deploy to Cloudflare Pages
 
+# Auto-deploy: push to `live` → build → deploy to Cloudflare Pages (project `vectora`).
 # Pushing to the `live` branch builds the site and deploys it to Cloudflare
 # Pages. The deployment is gated behind HTTP Basic Auth (see functions/_middleware.js).
 on:
