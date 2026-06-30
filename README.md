@@ -49,6 +49,8 @@ functions/_middleware.js  Cloudflare Pages Basic Auth gate
 
 ## Deployment (Cloudflare Pages)
 
+**Live site:** https://vectora-7tw.pages.dev (gated behind Basic Auth)
+
 Pushing to **`live`** triggers [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml),
 which builds the site and deploys it to Cloudflare Pages (project `vectora`).
 
