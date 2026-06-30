@@ -1,35 +1,35 @@
 ---
 const bots = [
   {
-    name: 'Momentum Engine',
-    tag: 'Trend-following',
-    desc: 'Rides strong directional moves with adaptive trailing stops across equities, futures and major crypto pairs.',
+    name: 'MIRA',
+    tag: 'Gold · XAU',
+    desc: 'High-frequency scalping engine for gold markets, with a zero-drawdown beta record across volatile cycles.',
     stats: [
-      { k: 'Win rate', v: '58%' },
-      { k: 'Profit factor', v: '1.9' },
-      { k: 'Markets', v: '40+' },
+      { k: 'Target ROI', v: '3–5%' },
+      { k: 'Strategy', v: 'H-F Scalp' },
+      { k: 'Drawdown', v: '0.00%' },
     ],
     featured: false,
   },
   {
-    name: 'Arbitrage Core',
-    tag: 'Non-correlated',
-    desc: 'Captures pricing inefficiencies across venues with market-neutral, non-correlated algorithmic arbitrage.',
+    name: 'AXON',
+    tag: 'Bitcoin · BTC',
+    desc: 'Cryptographic analysis and liquidity-gap scoring across 40+ signals for relentless crypto execution.',
     stats: [
-      { k: 'Monthly target', v: '3–4%' },
-      { k: 'Profit factor', v: '2.3' },
-      { k: 'Exposure', v: 'Neutral' },
+      { k: 'Target ROI', v: '5–8%' },
+      { k: 'Strategy', v: 'H-F Scalp' },
+      { k: 'Drawdown', v: '0.00%' },
     ],
     featured: true,
   },
   {
-    name: 'Neural Alpha',
-    tag: 'AI / quant',
-    desc: 'Quantum-inspired neural networks scan 4.2M data points per second to act on patterns invisible to humans.',
+    name: 'KAIRO',
+    tag: 'Forex · USD/JPY',
+    desc: 'High-frequency scalping and mean reversion within currency corridors, mapping liquidity in real time.',
     stats: [
-      { k: 'Win rate', v: '91.4%' },
-      { k: 'Latency', v: '<1ms' },
-      { k: 'Signals/s', v: '4.2M' },
+      { k: 'Target ROI', v: '4–6%' },
+      { k: 'Strategy', v: 'H-F Scalp' },
+      { k: 'Drawdown', v: '0.00%' },
     ],
     featured: false,
   },
@@ -56,7 +56,7 @@ const bots = [
               <li><span class="v">{s.v}</span><span class="k">{s.k}</span></li>
             ))}
           </ul>
-          <a href="#support" class="bot-link">Deploy {b.name} <span class="arrow" aria-hidden="true">→</span></a>
+          <a href="/bots" class="bot-link">View {b.name} <span class="arrow" aria-hidden="true">→</span></a>
         </article>
       ))}
     </div>

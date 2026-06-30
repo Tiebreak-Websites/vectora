@@ -1,0 +1,222 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const heroStats = [
+  { k: 'Aggregate volume', v: '$1.2B+' },
+  { k: 'Execution speed', v: '<14ms' },
+  { k: 'Yearly ROI', v: '44%–70%' },
+  { k: 'Security grade', v: 'SOC-2 Type II' },
+];
+
+const bots = [
+  {
+    name: 'MIRA',
+    code: 'AU.SCALPER_01',
+    asset: 'Gold (XAU)',
+    roi: '3–5% monthly',
+    strategy: 'H-F Scalping',
+    drawdown: '0.00%',
+    feed: 'Live market feed',
+    hue: 'var(--c-accent-bright)',
+  },
+  {
+    name: 'AXON',
+    code: 'BTC.SCALPER_01',
+    asset: 'Bitcoin (BTC)',
+    roi: '5–8% monthly',
+    strategy: 'H-F Scalping',
+    drawdown: '0.00%',
+    feed: 'Cryptographic analysis',
+    hue: '#3FD9C0',
+  },
+  {
+    name: 'KAIRO',
+    code: 'FX.SCALPER_01',
+    asset: 'USD/JPY',
+    roi: '4–6% monthly',
+    strategy: 'H-F Scalping',
+    drawdown: '0.00%',
+    feed: 'Liquidity mapping',
+    hue: '#5BC8E6',
+  },
+];
+
+const reliabilityStats = [
+  { k: 'Avg. win rate', v: '94.2%' },
+  { k: 'Sharpe ratio', v: '4.8' },
+  { k: 'API latency', v: '2ms' },
+  { k: 'Recovery factor', v: 'MAX' },
+];
+---
+
+<Layout title="Vectora — Our Bots" description="Vectora-Bots: institutional-grade high-frequency scalping engines with a zero-drawdown beta record across gold, crypto and forex.">
+  <section class="section page-hero">
+    <div class="container">
+      <div class="pills reveal">
+        <span class="pill"><span class="dot"></span> Beta testing completed</span>
+        <span class="pill"><span class="dot"></span> Zero drawdown track record</span>
+      </div>
+      <h1 class="reveal" style="--reveal-delay:80ms">Vectora<span class="text-accent">-Bots</span></h1>
+      <p class="lede reveal" style="--reveal-delay:140ms">
+        Harness the precision of high-frequency scalping. Our flagship neural
+        architectures are designed for institutional liquidity environments,
+        maintaining a zero-drawdown record across intensive one-year beta cycles.
+      </p>
+
+      <ul class="hero-stats reveal" style="--reveal-delay:220ms">
+        {heroStats.map((s) => (
+          <li><span class="num">{s.v}</span><span class="k">{s.k}</span></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section bots-grid-sec">
+    <div class="container">
+      <div class="bot-grid">
+        {bots.map((b, i) => (
+          <article class="card bot reveal" style={`--hue:${b.hue}; --reveal-delay:${i * 90}ms`}>
+            <div class="bot-top">
+              <h3>{b.name}</h3>
+              <span class="status"><span class="s-dot"></span> Status: Ready</span>
+            </div>
+            <span class="code">{b.code}</span>
+
+            <dl class="specs">
+              <div><dt>Asset class</dt><dd>{b.asset}</dd></div>
+              <div><dt>Target ROI</dt><dd class="accent">{b.roi}</dd></div>
+              <div><dt>Strategy</dt><dd>{b.strategy}</dd></div>
+              <div><dt>Drawdown</dt><dd class="accent">{b.drawdown}</dd></div>
+            </dl>
+
+            <div class="feed">
+              <span class="feed-label">{b.feed}</span>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section reliability">
+    <div class="container rel-grid">
+      <div class="rel-copy reveal">
+        <span class="eyebrow">Institutional grade reliability</span>
+        <h2>Capital preservation, <span class="text-accent">above all else</span></h2>
+        <p>
+          Every algorithm in the Vectora suite undergoes a mandatory 12-month
+          synthetic and live-market beta phase. We prioritise capital preservation
+          above all else, utilising multi-signature cold storage and
+          enterprise-grade encryption.
+        </p>
+        <div class="certs">
+          <div class="cert">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/></svg>
+            <div><b>ISO 27001</b><small>Security certified</small></div>
+          </div>
+          <div class="cert">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+            <div><b>Quantum-safe</b><small>Next-gen encryption</small></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rel-stats reveal" style="--reveal-delay:120ms">
+        {reliabilityStats.map((s) => (
+          <div class="rel-tile"><span class="rt-k">{s.k}</span><span class="rt-v">{s.v}</span></div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section cta-sec">
+    <div class="container cta reveal">
+      <h2>Deploy a bot in <span class="text-accent">minutes</span></h2>
+      <p>Connect your exchange, choose an engine, set your guardrails. Our team can walk you through it.</p>
+      <div class="cta-actions">
+        <a href="/packages" class="btn btn-primary btn-lg">View packages <span class="arrow" aria-hidden="true">→</span></a>
+        <a href="/#support" class="btn btn-ghost btn-lg">Talk to our team</a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page-hero { padding-block: clamp(2.5rem, 6vw, 4rem) clamp(1rem, 3vw, 2rem); }
+  .pills { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.5rem; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: var(--font-display); font-size: 0.78rem; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase; color: var(--c-text-soft);
+    padding: 0.45rem 0.9rem; border: 1px solid var(--glass-border);
+    border-radius: var(--radius-pill); background: var(--glass-bg);
+  }
+  .pill .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--c-accent-bright); box-shadow: 0 0 0 3px rgba(18,201,125,0.18); }
+  .page-hero h1 { font-size: clamp(2.6rem, 7vw, 4.5rem); font-weight: 800; }
+  .lede { color: var(--c-text-muted); font-size: 1.1rem; max-width: 60ch; margin-top: 1.2rem; }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;
+    margin-top: 2.5rem; padding-top: 2rem; border-top: 1px solid var(--c-border);
+  }
+  .hero-stats .num { display: block; font-family: var(--font-display); font-weight: 800; font-size: clamp(1.4rem, 3vw, 2rem); color: var(--c-accent-bright); }
+  .hero-stats .k { color: var(--c-text-dim); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; }
+
+  .bots-grid-sec { padding-top: clamp(1rem, 3vw, 2rem); }
+  .bot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+  .bot { display: flex; flex-direction: column; overflow: hidden; }
+  .bot-top { display: flex; align-items: center; justify-content: space-between; }
+  .bot-top h3 { font-size: 1.7rem; font-family: var(--font-display); }
+  .status { display: inline-flex; align-items: center; gap: 0.4rem; font-family: var(--font-display); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--c-accent-bright); }
+  .s-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--c-accent-bright); animation: bpulse 1.8s infinite; }
+  @keyframes bpulse { 0%{box-shadow:0 0 0 0 rgba(18,201,125,.5)} 100%{box-shadow:0 0 0 8px rgba(18,201,125,0)} }
+  .code {
+    align-self: flex-start; margin-top: 0.6rem;
+    font-family: ui-monospace, 'Cascadia Code', Consolas, monospace; font-size: 0.75rem;
+    color: var(--c-text-muted); padding: 0.3rem 0.6rem;
+    border: 1px solid var(--c-border-strong); border-radius: 7px; background: rgba(0,0,0,0.25);
+  }
+  .specs { margin: 1.3rem 0; display: grid; gap: 0; }
+  .specs > div { display: flex; justify-content: space-between; align-items: center; padding: 0.7rem 0; border-bottom: 1px solid var(--c-border); }
+  .specs dt { color: var(--c-text-muted); font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.06em; }
+  .specs dd { font-family: var(--font-display); font-weight: 600; font-size: 0.92rem; color: var(--c-text); }
+  .specs dd.accent { color: var(--c-accent-bright); }
+  .feed {
+    margin-top: auto; height: 130px; border-radius: var(--radius); position: relative; overflow: hidden;
+    border: 1px solid var(--glass-border);
+    background:
+      radial-gradient(120% 140% at 0% 0%, color-mix(in srgb, var(--hue) 40%, transparent), transparent 55%),
+      repeating-linear-gradient(115deg, rgba(255,255,255,0.04) 0 2px, transparent 2px 9px),
+      var(--c-bg-deep);
+  }
+  .feed::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.55)); }
+  .feed-label { position: absolute; left: 0.9rem; bottom: 0.8rem; z-index: 1; font-family: ui-monospace, monospace; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--c-text-soft); }
+
+  .reliability { }
+  .rel-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+  .rel-copy h2 { font-size: clamp(1.8rem, 3.5vw, 2.5rem); margin-top: 1rem; }
+  .rel-copy > p { color: var(--c-text-muted); margin-top: 1rem; }
+  .certs { display: flex; gap: 1.5rem; margin-top: 1.5rem; flex-wrap: wrap; }
+  .cert { display: flex; align-items: center; gap: 0.7rem; }
+  .cert svg { width: 26px; height: 26px; color: var(--c-accent-bright); }
+  .cert b { display: block; font-family: var(--font-display); font-size: 0.92rem; }
+  .cert small { color: var(--c-text-dim); font-size: 0.8rem; }
+
+  .rel-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .rel-tile { padding: 1.5rem; background: var(--grad-panel); border: 1px solid var(--glass-border); border-radius: var(--radius); backdrop-filter: blur(var(--glass-blur)); }
+  .rt-k { display: block; font-family: var(--font-display); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--c-accent-bright); }
+  .rt-v { display: block; font-family: var(--font-display); font-weight: 800; font-size: 2rem; color: var(--c-text); margin-top: 0.4rem; }
+
+  .cta-sec { }
+  .cta { text-align: center; max-width: 640px; margin-inline: auto; padding: clamp(2rem, 5vw, 3.5rem); background: var(--grad-soft); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); }
+  .cta h2 { font-size: clamp(1.8rem, 3.5vw, 2.5rem); }
+  .cta p { color: var(--c-text-muted); margin-top: 0.8rem; }
+  .cta-actions { display: flex; gap: 0.85rem; justify-content: center; flex-wrap: wrap; margin-top: 1.8rem; }
+
+  @media (max-width: 900px) {
+    .bot-grid { grid-template-columns: 1fr; max-width: 460px; margin-inline: auto; }
+    .rel-grid { grid-template-columns: 1fr; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 1.5rem 1rem; }
+  }
+  @media (max-width: 420px) { .rel-stats { grid-template-columns: 1fr; } }
+</style>
