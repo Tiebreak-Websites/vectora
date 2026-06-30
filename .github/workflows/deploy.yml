@@ -1,11 +1,16 @@
 name: Deploy to Cloudflare Pages
 
-# Auto-deploy: push to `live` → build → deploy to Cloudflare Pages (project `vectora`).
-# The deployment is gated behind HTTP Basic Auth (see functions/_middleware.js).
+# Deploys to Cloudflare Pages (project `vectora`), gated behind HTTP Basic Auth
+# (see functions/_middleware.js).
+#
+# Currently MANUAL only (run from the Actions tab → "Run workflow").
+# To re-enable auto-deploy on push to `live`, uncomment the `push` trigger below
+# AND set the CLOUDFLARE_API_TOKEN secret to a token WITHOUT IP-address filtering
+# — the current token is IP-restricted and is rejected from GitHub runners (error 9109).
 on:
-  push:
-    branches: [live]
   workflow_dispatch:
+  # push:
+  #   branches: [live]
 
 jobs:
   deploy:
