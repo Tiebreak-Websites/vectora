@@ -12,19 +12,19 @@ const bots = [
     name: 'Mira', asset: 'Gold',
     strategy: 'Gold-focused market monitoring and setup context.',
     roi: '3–5%',
-    spark: 'M2 26 L9 25.2 L15 25.8 L22 24.4 L28 24.9 L35 23.6 L43 24.2 L50 22.8 L57 23.3 L64 22.1 L71 22.6 L79 21.4 L86 21.9 L93 20.7 L100 21.1 L107 19.9 L114 20.4 L121 19 L128 18.4',
+    spark: 'M2 31 L9 29.5 L16 30.5 L23 28 L30 26.5 L37 28.5 L44 30 L51 29 L58 26 L65 27 L72 24.5 L79 25.5 L86 22.5 L93 23.5 L100 21 L107 22.5 L114 18 L121 19.5 L128 15.5',
   },
   {
     name: 'Axon', asset: 'BTC',
     strategy: 'Bitcoin volatility and momentum context across selected broker conditions.',
     roi: '5–7%',
-    spark: 'M2 31 L8 28.5 L13 29.6 L19 25 L24 27.2 L30 22.5 L35 24.8 L41 19.5 L46 22.6 L52 21.8 L58 15.5 L63 18.9 L69 17.6 L75 11.8 L81 15.2 L88 13.9 L94 8.6 L100 11.9 L106 10.4 L113 6.8 L120 8.3 L128 4.2',
+    spark: 'M2 32 L8 28 L13 30 L19 23 L25 26 L30 18.5 L36 22 L42 27 L48 25 L53 26.5 L59 17 L64 20.5 L70 12 L76 15.5 L82 8 L88 13 L94 11 L100 5.5 L106 9 L113 7 L120 10.5 L128 3',
   },
   {
     name: 'Kairo', asset: 'USD/JPY',
     strategy: 'USD/JPY timing, movement pressure, and risk-context monitoring.',
     roi: '4–6%',
-    spark: 'M2 27 L8 25 L14 26.4 L20 23.4 L26 25.6 L33 22.2 L39 24 L45 21 L51 23.2 L58 19.6 L64 21.8 L70 18.4 L76 20.6 L83 17 L89 19.2 L95 15.8 L101 17.8 L108 14.4 L114 16.4 L121 12.6 L128 10.5',
+    spark: 'M2 29 L8 26 L14 30.5 L20 31.5 L26 27.5 L32 29.5 L38 24 L44 26.5 L50 21.5 L56 25 L62 23.5 L68 18.5 L74 21.5 L80 20 L86 15.5 L92 18.5 L98 17 L104 13 L110 15.5 L116 14 L122 10.5 L128 8',
   },
 ];
 ---
@@ -125,7 +125,7 @@ const bots = [
   .online { display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 0.35rem; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--green-bright); }
   .o-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green-bright); animation: opulse 1.8s infinite; }
   @keyframes opulse { 0% { box-shadow: 0 0 0 0 rgba(23, 212, 139, 0.5); } 100% { box-shadow: 0 0 0 6px rgba(23, 212, 139, 0); } }
-  .spark { width: min(150px, 100%); height: 28px; margin-top: 0.8rem; opacity: 0.85; }
+  .spark { width: min(150px, 100%); height: 40px; margin-top: 0.8rem; opacity: 0.85; }
 
   .r-label { font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green-bright); }
   .r-strategy p { color: var(--text-3); font-size: 0.92rem; margin-top: 0.35rem; max-width: 36ch; }
