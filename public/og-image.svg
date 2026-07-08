@@ -1,5 +1,25 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
-  <rect width="1200" height="630" fill="#FAFAF7"/>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0D1411"/>
+      <stop offset="1" stop-color="#0A0F0D"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.82" cy="0.2" r="0.75">
+      <stop stop-color="#09A165" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#09A165" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="txt" x1="80" y1="380" x2="700" y2="380" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#17D48B"/>
+    </linearGradient>
+    <linearGradient id="fill" x1="0" y1="400" x2="0" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#09A165" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#09A165" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
 
   <!-- logo icon -->
   <g transform="translate(84 74) scale(0.17)">
@@ -7,25 +27,26 @@
     <path d="M312.108 269.89C300.514 294.604 284.385 318.962 272.568 343.539C261.943 365.633 242.655 384.174 216.719 370.517C211.74 367.918 207.47 364.134 204.278 359.512C199.562 352.595 189.87 333.436 185.355 325.145L147.881 256.464L101.642 170.974C95.6 159.757 79.49 131.237 76.402 120.357C80.745 114.389 136.161 115.708 142.847 117.549C148.536 119.111 153.652 122.286 157.577 126.691C162.902 132.61 178.653 160.074 183.31 167.886L233.445 251.968C262.18 298.199 306.838 267.144 312.108 269.89Z" fill="white"/>
     <path d="M233.444 251.968C256.503 211.085 282.984 169.194 308.194 129.474C311.302 124.577 318.318 119.097 323.974 118.065C333.652 115.708 383.084 115.278 389.532 118.66C390.828 119.22 391.328 119.72 391.007 120.703C390.135 125.621 318.231 262.166 312.107 269.89C306.838 267.144 262.18 298.199 233.444 251.968Z" fill="#D7ECE1"/>
   </g>
-  <text x="178" y="128" font-family="'Space Grotesk', Arial, sans-serif" font-size="50" font-weight="700" fill="#16211C">Vectora</text>
+  <text x="178" y="128" font-family="'Space Grotesk', Arial, sans-serif" font-size="50" font-weight="700" fill="#FFFFFF">Vectora</text>
 
   <!-- headline -->
-  <text x="84" y="316" font-family="'Space Grotesk', Arial, sans-serif" font-size="80" font-weight="600" fill="#16211C" letter-spacing="-2">Trading discipline,</text>
-  <text x="84" y="404" font-family="'Space Grotesk', Arial, sans-serif" font-size="80" font-weight="600" fill="#077249" letter-spacing="-2">automated.</text>
+  <text x="84" y="312" font-family="'Space Grotesk', Arial, sans-serif" font-size="80" font-weight="600" fill="#FFFFFF" letter-spacing="-2">Trading discipline,</text>
+  <text x="84" y="400" font-family="'Space Grotesk', Arial, sans-serif" font-size="80" font-weight="600" fill="url(#txt)" letter-spacing="-2">automated.</text>
 
-  <text x="86" y="470" font-family="Arial, sans-serif" font-size="28" fill="#67746D">Three specialist AI trading bots — gold, Bitcoin and USD/JPY.</text>
+  <text x="86" y="466" font-family="Arial, sans-serif" font-size="28" fill="#87938C">Three specialist AI trading bots — gold, Bitcoin and USD/JPY.</text>
 
   <!-- metric chips -->
-  <g font-family="'IBM Plex Mono', 'Courier New', monospace" font-size="22" fill="#16211C">
-    <rect x="84" y="516" width="252" height="58" rx="8" fill="#FFFFFF" stroke="#E5E8E2"/>
-    <text x="108" y="552">4–5% avg / mo</text>
-    <rect x="356" y="516" width="216" height="58" rx="8" fill="#FFFFFF" stroke="#E5E8E2"/>
-    <text x="380" y="552">92% win rate</text>
-    <rect x="592" y="516" width="252" height="58" rx="8" fill="#FFFFFF" stroke="#E5E8E2"/>
-    <text x="616" y="552">1–2% drawdown</text>
+  <g font-family="'IBM Plex Mono', 'Courier New', monospace" font-size="22" fill="#F2F5F3">
+    <rect x="84" y="512" width="252" height="58" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)"/>
+    <text x="108" y="548">4–5% avg / mo</text>
+    <rect x="356" y="512" width="216" height="58" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)"/>
+    <text x="380" y="548">92% win rate</text>
+    <rect x="592" y="512" width="252" height="58" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)"/>
+    <text x="616" y="548">1–2% drawdown</text>
   </g>
 
   <!-- chart accent -->
-  <path d="M880 560 C 950 540, 1000 560, 1050 510 C 1090 470, 1120 480, 1150 440" fill="none" stroke="#09A165" stroke-width="5" stroke-linecap="round"/>
-  <circle cx="1150" cy="440" r="8" fill="#09A165"/>
+  <path d="M860 585 C 930 560, 980 585, 1035 520 C 1080 468, 1110 480, 1150 420 L1150 630 L860 630 Z" fill="url(#fill)"/>
+  <path d="M860 585 C 930 560, 980 585, 1035 520 C 1080 468, 1110 480, 1150 420" fill="none" stroke="#17D48B" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="1150" cy="420" r="8" fill="#17D48B"/>
 </svg>

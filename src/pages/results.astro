@@ -6,10 +6,10 @@ import TrialCta from '../components/TrialCta.astro';
 const overall = [
   { v: '25–32%', k: 'Yearly ROI' },
   { v: '4–5%', k: 'Avg. monthly ROI' },
-  { v: '92%', k: 'Win rate, all bots' },
+  { v: '92%', k: 'Win rate, all bots', count: 92, suffix: '%' },
   { v: '1–2%', k: 'Drawdown, all bots' },
-  { v: '548', k: 'Days live + backtested' },
-  { v: '4,200+', k: 'Clients' },
+  { v: '548', k: 'Days live + backtested', count: 548 },
+  { v: '4,200+', k: 'Clients', count: 4200, suffix: '+' },
 ];
 
 const bots = [
@@ -34,9 +34,8 @@ const bots = [
 <Layout title="Vectora — Results" description="Vectora performance: 25–32% yearly ROI, 4–5% average monthly ROI, 92% win rate and 1–2% drawdown across 548 days of live trading and backtesting.">
   <section class="section page-hero">
     <div class="container">
-      <span class="eyebrow reveal">Results</span>
-      <h1 class="reveal" style="--reveal-delay:80ms">The numbers,<br />plainly stated.</h1>
-      <p class="lede reveal" style="--reveal-delay:140ms">
+      <h1 class="reveal">The numbers,<br /><span class="grad-text">plainly stated.</span></h1>
+      <p class="lede reveal" style="--reveal-delay:120ms">
         Every figure on this page comes from live trading plus 1.5 years of
         backtesting. They are static, reviewed quarterly — not live tickers,
         not projections.
@@ -48,8 +47,10 @@ const bots = [
     <div class="container">
       <ul class="overall-grid reveal">
         {overall.map((m) => (
-          <li class="ov card">
-            <span class="ov-v figure">{m.v}</span>
+          <li class="ov card spot">
+            {m.count
+              ? <span class="ov-v figure" data-count={m.count} data-suffix={m.suffix ?? ''}>{m.v}</span>
+              : <span class="ov-v figure">{m.v}</span>}
             <span class="ov-k figure-label">{m.k}</span>
           </li>
         ))}
@@ -60,13 +61,12 @@ const bots = [
   <section class="section perbot-sec">
     <div class="container">
       <div class="section-head reveal">
-        <span class="eyebrow">Per bot</span>
-        <h2>Target monthly returns</h2>
+        <h2>Target monthly returns, <span class="grad-text">per bot</span></h2>
       </div>
 
       <div class="bot-rows">
         {bots.map((b, i) => (
-          <article class="row card reveal" style={`--reveal-delay:${i * 80}ms`}>
+          <article class="row card spot reveal" style={`--reveal-delay:${i * 80}ms`}>
             <div class="r-id">
               <h3>{b.name}</h3>
               <span class="r-market">{b.market}</span>
@@ -89,9 +89,8 @@ const bots = [
   </section>
 
   <section class="section clients-sec">
-    <div class="container clients card reveal">
+    <div class="container clients card grad-border spot reveal">
       <div class="c-copy">
-        <span class="eyebrow">Adoption</span>
         <h2><span class="big" data-count="4200" data-suffix="+">4,200+</span> clients</h2>
         <p>
           From first-time algo users to experienced traders, more than 4,200
@@ -113,13 +112,13 @@ const bots = [
 
 <style>
   .page-hero { padding-block: clamp(2.5rem, 6vw, 4rem) clamp(1rem, 3vw, 2rem); }
-  .page-hero h1 { font-size: clamp(2.4rem, 6vw, 4rem); margin-top: 1.2rem; }
-  .lede { color: var(--ink-3); font-size: 1.08rem; max-width: 54ch; margin-top: 1.2rem; }
+  .page-hero h1 { font-size: clamp(2.4rem, 6vw, 4rem); }
+  .lede { color: var(--text-3); font-size: 1.08rem; max-width: 54ch; margin-top: 1.3rem; }
 
   .overall-sec { padding-top: clamp(1rem, 3vw, 2rem); }
   .overall-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
   .ov { padding: 1.5rem; }
-  .ov-v { display: block; font-size: clamp(1.7rem, 3.5vw, 2.3rem); color: var(--green-deep); }
+  .ov-v { display: block; font-size: clamp(1.7rem, 3.5vw, 2.3rem); color: var(--green-bright); }
   .ov-k { display: block; margin-top: 0.4rem; }
 
   .bot-rows { display: grid; gap: 1rem; }
@@ -128,19 +127,36 @@ const bots = [
     gap: clamp(1.25rem, 3vw, 2.25rem); align-items: center;
   }
   .r-id h3 { font-size: 1.4rem; }
-  .r-market { font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-4); }
-  .r-arch { color: var(--ink-3); font-size: 0.93rem; max-width: 44ch; }
-  .rv { display: block; font-size: 1.7rem; color: var(--green-deep); }
+  .r-market { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-4); }
+  .r-arch { color: var(--text-3); font-size: 0.93rem; max-width: 44ch; }
+  .rv { display: block; font-size: 1.7rem; color: var(--green-bright); }
   .rk { display: block; margin-top: 0.2rem; }
   .r-link { white-space: nowrap; }
 
-  .clients { display: grid; grid-template-columns: 1.5fr 1fr; gap: clamp(1.5rem, 5vw, 3.5rem); align-items: center; padding: clamp(2rem, 5vw, 3.25rem); }
-  .c-copy h2 { font-size: clamp(2rem, 4.5vw, 3rem); margin-top: 1rem; }
-  .c-copy .big { color: var(--green-deep); font-variant-numeric: tabular-nums; }
-  .c-copy p { color: var(--ink-3); margin: 1rem 0 1.6rem; max-width: 48ch; }
+  .clients {
+    display: grid; grid-template-columns: 1.5fr 1fr;
+    gap: clamp(1.5rem, 5vw, 3.5rem); align-items: center;
+    padding: clamp(2rem, 5vw, 3.25rem);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 0 70px -28px var(--green-glow);
+  }
+  .c-copy h2 { font-size: clamp(2rem, 4.5vw, 3rem); }
+  .c-copy .big {
+    background: var(--grad-text);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-variant-numeric: tabular-nums;
+  }
+  .c-copy p { color: var(--text-3); margin: 1rem 0 1.6rem; max-width: 48ch; }
   .c-facts { display: grid; gap: 1rem; }
-  .c-facts li { padding: 1rem 1.25rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--paper); display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
-  .cf-v { font-size: 1.3rem; }
+  .c-facts li {
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--line); border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.025);
+    display: flex; align-items: baseline; justify-content: space-between; gap: 1rem;
+  }
+  .cf-v { font-size: 1.3rem; color: var(--green-bright); }
 
   @media (max-width: 980px) {
     .row { grid-template-columns: 1fr 1fr; }

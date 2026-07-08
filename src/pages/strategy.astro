@@ -37,9 +37,8 @@ const icons: Record<string, string> = {
 <Layout title="Vectora — Strategy" description="How Vectora executes: rules-based, risk-first and fully transparent, on three markets only. Connect, configure, activate.">
   <section class="section page-hero">
     <div class="container">
-      <span class="eyebrow reveal">Strategy</span>
-      <h1 class="reveal" style="--reveal-delay:80ms">Execution you can see.</h1>
-      <p class="lede reveal" style="--reveal-delay:140ms">
+      <h1 class="reveal">Execution you can <span class="grad-text">see.</span></h1>
+      <p class="lede reveal" style="--reveal-delay:120ms">
         No black boxes. Vectora turns a disciplined trading process into a
         workflow you can set up in an afternoon — with risk control enforced
         at every step, on three markets we know deeply.
@@ -52,14 +51,13 @@ const icons: Record<string, string> = {
   <section class="section principles">
     <div class="container">
       <div class="section-head reveal">
-        <span class="eyebrow">Principles</span>
-        <h2>Built on discipline</h2>
+        <h2>Built on <span class="grad-text">discipline</span></h2>
         <p>The edge in trading is rarely the idea — it's executing it flawlessly, every time. That's what the engine is for.</p>
       </div>
 
       <div class="pr-grid">
         {principles.map((p, i) => (
-          <article class="card hoverable pr reveal" style={`--reveal-delay:${i * 70}ms`}>
+          <article class="card hoverable spot pr reveal" style={`--reveal-delay:${i * 70}ms`}>
             <span class="pr-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" set:html={icons[p.icon]} />
             </span>
@@ -76,20 +74,20 @@ const icons: Record<string, string> = {
 
 <style>
   .page-hero { padding-block: clamp(2.5rem, 6vw, 4rem) clamp(1.5rem, 4vw, 3rem); }
-  .page-hero h1 { font-size: clamp(2.6rem, 6vw, 4.2rem); margin-top: 1.2rem; }
-  .lede { color: var(--ink-3); font-size: 1.1rem; max-width: 58ch; margin-top: 1.2rem; }
+  .page-hero h1 { font-size: clamp(2.6rem, 6vw, 4.2rem); }
+  .lede { color: var(--text-3); font-size: 1.1rem; max-width: 58ch; margin-top: 1.3rem; }
 
   .pr-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
   .pr { display: flex; flex-direction: column; }
   .pr-icon {
     display: inline-flex; width: 44px; height: 44px;
     align-items: center; justify-content: center; border-radius: var(--radius-sm);
-    margin-bottom: 1.1rem; color: var(--green-deep);
-    background: var(--green-tint); border: 1px solid var(--line);
+    margin-bottom: 1.1rem; color: var(--green-bright);
+    background: var(--green-tint); border: 1px solid rgba(23, 212, 139, 0.22);
   }
   .pr-icon svg { width: 22px; height: 22px; }
   .pr h3 { font-size: 1.12rem; margin-bottom: 0.5rem; }
-  .pr p { color: var(--ink-3); font-size: 0.93rem; }
+  .pr p { color: var(--text-3); font-size: 0.93rem; }
 
   @media (max-width: 900px) { .pr-grid { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 520px) { .pr-grid { grid-template-columns: 1fr; } }

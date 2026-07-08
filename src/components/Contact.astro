@@ -8,8 +8,7 @@ const FORM_ENDPOINT = '';
 <section class="section contact" id="support">
   <div class="container contact-grid">
     <div class="contact-intro reveal">
-      <span class="eyebrow">Support</span>
-      <h2>Get a call from our team</h2>
+      <h2>Get a call <span class="grad-text">from our team</span></h2>
       <p>Start your 7-day trial or talk to us about which bot fits you. Tell us how you trade and we'll point you in the right direction.</p>
 
       <ul class="contact-points">
@@ -21,7 +20,7 @@ const FORM_ENDPOINT = '';
       <p class="contact-mail">Prefer email? <a href="mailto:hello@vectora.io">hello@vectora.io</a></p>
     </div>
 
-    <form class="contact-form card reveal" id="contact-form" novalidate data-endpoint={FORM_ENDPOINT}>
+    <form class="contact-form card spot reveal" id="contact-form" novalidate data-endpoint={FORM_ENDPOINT}>
       <div class="field">
         <label for="name">Name</label>
         <input id="name" name="name" type="text" autocomplete="name" required placeholder="Alex Trader" />
@@ -54,43 +53,45 @@ const FORM_ENDPOINT = '';
 
 <style>
   .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 6vw, 4.5rem); align-items: start; }
-  .contact-intro h2 { font-size: clamp(2rem, 4vw, 2.9rem); margin-top: 1rem; }
-  .contact-intro > p { color: var(--ink-3); margin-top: 1.1rem; font-size: 1.05rem; }
+  .contact-intro h2 { font-size: clamp(2rem, 4vw, 2.9rem); }
+  .contact-intro > p { color: var(--text-3); margin-top: 1.1rem; font-size: 1.05rem; }
   .contact-points { margin: 1.5rem 0; display: grid; gap: 0.6rem; }
-  .contact-points li { display: flex; gap: 0.6rem; color: var(--ink-2); }
-  .contact-points span { color: var(--green); font-weight: 700; }
-  .contact-mail { color: var(--ink-3); }
-  .contact-mail a { color: var(--green-deep); border-bottom: 1px solid transparent; }
+  .contact-points li { display: flex; gap: 0.6rem; color: var(--text-2); }
+  .contact-points span { color: var(--green-bright); font-weight: 700; }
+  .contact-mail { color: var(--text-3); }
+  .contact-mail a { color: var(--green-bright); border-bottom: 1px solid transparent; }
   .contact-mail a:hover { border-bottom-color: currentColor; }
 
   .contact-form { display: grid; gap: 1.1rem; padding: clamp(1.5rem, 3vw, 2.2rem); }
   .field { display: grid; gap: 0.4rem; }
-  label { font-family: var(--font-display); font-size: 0.88rem; font-weight: 500; color: var(--ink); }
+  label { font-family: var(--font-display); font-size: 0.88rem; font-weight: 500; color: var(--text); }
   input, select, textarea {
-    width: 100%; background: var(--paper);
+    width: 100%; background: rgba(0, 0, 0, 0.3);
     border: 1px solid var(--line-strong); border-radius: var(--radius-sm);
-    padding: 0.8rem 0.9rem; color: var(--ink);
+    padding: 0.8rem 0.9rem; color: var(--text);
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
-  input::placeholder, textarea::placeholder { color: var(--ink-4); }
-  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--green); box-shadow: 0 0 0 3px rgba(9, 161, 101, 0.15); }
+  input::placeholder, textarea::placeholder { color: var(--text-4); }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--green-bright); box-shadow: 0 0 0 3px rgba(23, 212, 139, 0.15); }
   textarea { resize: vertical; }
   select { appearance: none; cursor: pointer; }
-  .field.invalid input, .field.invalid textarea { border-color: #C2453B; }
-  .err { color: #B2372D; font-size: 0.8rem; min-height: 1em; }
+  .field.invalid input, .field.invalid textarea { border-color: #E4685F; }
+  .err { color: #F08D84; font-size: 0.8rem; min-height: 1em; }
   .form-submit { width: 100%; margin-top: 0.25rem; }
   .form-status { font-size: 0.9rem; text-align: center; min-height: 1.2em; }
-  .form-status.ok { color: var(--green-deep); }
-  .form-status.bad { color: #B2372D; }
+  .form-status.ok { color: var(--green-bright); }
+  .form-status.bad { color: #F08D84; }
 
   @media (max-width: 900px) { .contact-grid { grid-template-columns: 1fr; } }
 </style>
 
 <script>
-  const form = document.getElementById('contact-form') as HTMLFormElement | null;
-  const statusEl = document.getElementById('form-status');
+  const initContactForm = () => {
+    const form = document.getElementById('contact-form') as HTMLFormElement | null;
+    const statusEl = document.getElementById('form-status');
+    if (!form || !statusEl || form.dataset.init) return;
+    form.dataset.init = 'true';
 
-  if (form && statusEl) {
     const setError = (name: string, msg: string) => {
       const field = form.querySelector(`[name="${name}"]`)?.closest('.field');
       const err = form.querySelector(`.err[data-for="${name}"]`);
@@ -150,5 +151,7 @@ const FORM_ENDPOINT = '';
         if (field?.classList.contains('invalid')) setError(name, '');
       });
     });
-  }
+  };
+
+  document.addEventListener('astro:page-load', initContactForm);
 </script>

@@ -51,14 +51,14 @@ const isActive = (href: string) =>
     height: var(--header-h);
     display: flex;
     align-items: center;
-    background: rgba(250, 250, 247, 0.85);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: rgba(10, 15, 13, 0.72);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid transparent;
     transition: border-color 0.3s ease, background 0.3s ease;
   }
   .site-header.scrolled {
-    background: rgba(250, 250, 247, 0.95);
+    background: rgba(10, 15, 13, 0.9);
     border-bottom-color: var(--line);
   }
   .bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; width: 100%; }
@@ -66,7 +66,8 @@ const isActive = (href: string) =>
 
   .nav-desktop { display: flex; gap: 0.15rem; align-items: center; }
   .nav-desktop a {
-    color: var(--ink-3);
+    position: relative;
+    color: var(--text-3);
     font-family: var(--font-display);
     font-size: 0.92rem;
     font-weight: 500;
@@ -74,17 +75,25 @@ const isActive = (href: string) =>
     border-radius: var(--radius-sm);
     transition: color 0.2s ease, background 0.2s ease;
   }
-  .nav-desktop a:hover { color: var(--ink); background: rgba(22, 33, 28, 0.05); }
-  .nav-desktop a.active { color: var(--ink); }
+  .nav-desktop a:hover { color: var(--text); background: rgba(255, 255, 255, 0.05); }
+  .nav-desktop a.active { color: var(--text); }
+  .nav-desktop a.active::after {
+    content: '';
+    position: absolute;
+    left: 0.8rem; right: 0.8rem; bottom: 0.1rem;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--grad-green);
+  }
 
   .actions { display: flex; align-items: center; gap: 0.9rem; }
   .login {
     font-family: var(--font-display);
     font-size: 0.92rem; font-weight: 500;
-    color: var(--ink-2);
+    color: var(--text-2);
     transition: color 0.2s ease;
   }
-  .login:hover { color: var(--ink); }
+  .login:hover { color: var(--text); }
 
   .menu-toggle {
     display: none;
@@ -92,12 +101,12 @@ const isActive = (href: string) =>
     gap: 5px;
     width: 44px; height: 44px;
     align-items: center; justify-content: center;
-    background: var(--surface);
+    background: rgba(255, 255, 255, 0.04);
     border: 1px solid var(--line-strong);
     border-radius: var(--radius-sm);
     cursor: pointer;
   }
-  .menu-toggle span { width: 20px; height: 2px; background: var(--ink); border-radius: 2px; transition: transform 0.25s ease, opacity 0.25s ease; }
+  .menu-toggle span { width: 20px; height: 2px; background: var(--text); border-radius: 2px; transition: transform 0.25s ease, opacity 0.25s ease; }
   .menu-toggle[aria-expanded='true'] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
   .menu-toggle[aria-expanded='true'] span:nth-child(2) { opacity: 0; }
   .menu-toggle[aria-expanded='true'] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
@@ -107,7 +116,8 @@ const isActive = (href: string) =>
     top: var(--header-h); left: 0; right: 0;
     display: flex; flex-direction: column; gap: 0.25rem;
     padding: 1rem var(--gutter) 1.5rem;
-    background: var(--paper);
+    background: rgba(10, 15, 13, 0.97);
+    backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--line);
     transform: translateY(-12px);
     opacity: 0; pointer-events: none;
@@ -117,7 +127,7 @@ const isActive = (href: string) =>
   .nav-mobile.open { opacity: 1; transform: none; pointer-events: auto; }
   .m-link {
     padding: 0.85rem 0.5rem;
-    color: var(--ink);
+    color: var(--text);
     font-family: var(--font-display); font-weight: 500;
     border-bottom: 1px solid var(--line);
   }
@@ -131,22 +141,27 @@ const isActive = (href: string) =>
 </style>
 
 <script>
-  const header = document.getElementById('site-header');
-  const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
-  const mobileNav = document.getElementById('mobile-nav');
-
-  const onScroll = () => header?.classList.toggle('scrolled', window.scrollY > 8);
-  onScroll();
+  // Header is re-rendered on client-side navigation — re-wire per page-load.
+  const onScroll = () => {
+    document.getElementById('site-header')?.classList.toggle('scrolled', window.scrollY > 8);
+  };
   window.addEventListener('scroll', onScroll, { passive: true });
 
-  const closeMenu = () => {
-    toggle?.setAttribute('aria-expanded', 'false');
-    mobileNav?.classList.remove('open');
-  };
-  toggle?.addEventListener('click', () => {
-    const open = toggle.getAttribute('aria-expanded') === 'true';
-    toggle.setAttribute('aria-expanded', String(!open));
-    mobileNav?.classList.toggle('open', !open);
+  document.addEventListener('astro:page-load', () => {
+    onScroll();
+    const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+    const mobileNav = document.getElementById('mobile-nav');
+    if (!toggle || !mobileNav) return;
+
+    const closeMenu = () => {
+      toggle.setAttribute('aria-expanded', 'false');
+      mobileNav.classList.remove('open');
+    };
+    toggle.addEventListener('click', () => {
+      const open = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!open));
+      mobileNav.classList.toggle('open', !open);
+    });
+    mobileNav.querySelectorAll('a').forEach((a) => a.addEventListener('click', closeMenu));
   });
-  mobileNav?.querySelectorAll('a').forEach((a) => a.addEventListener('click', closeMenu));
 </script>

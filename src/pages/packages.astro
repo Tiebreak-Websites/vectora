@@ -53,9 +53,8 @@ const compare = [
 <Layout title="Vectora — Our Packages" description="One package, one bot. Foundation with Mira (gold, $3,000), Advanced with Axon (Bitcoin, $4,000) and Professional with Kairo (USD/JPY, $5,000). 7-day trial, no maintenance fees.">
   <section class="section page-hero">
     <div class="container">
-      <span class="eyebrow reveal">Our packages</span>
-      <h1 class="reveal" style="--reveal-delay:80ms">One package,<br />one bot.</h1>
-      <p class="lede reveal" style="--reveal-delay:140ms">
+      <h1 class="reveal">One package,<br /><span class="grad-text">one bot.</span></h1>
+      <p class="lede reveal" style="--reveal-delay:120ms">
         Every package is a one-time setup that includes exactly one bot, matched
         to its market. No maintenance fees, no hidden costs — and a 7-day trial
         before you commit.
@@ -67,7 +66,7 @@ const compare = [
     <div class="container">
       <div class="tier-grid">
         {tiers.map((t, i) => (
-          <article class={`tier card reveal ${t.featured ? 'featured' : ''}`} style={`--reveal-delay:${i * 90}ms`}>
+          <article class={`tier card spot reveal ${t.featured ? 'featured grad-border' : ''}`} style={`--reveal-delay:${i * 90}ms`}>
             {t.featured && <span class="rec">Most popular</span>}
             <h3>{t.name}</h3>
             <p class="blurb">{t.blurb}</p>
@@ -96,8 +95,7 @@ const compare = [
   <section class="section compare-sec">
     <div class="container">
       <div class="section-head reveal">
-        <span class="eyebrow">Side by side</span>
-        <h2>Compare the packages</h2>
+        <h2>Compare the <span class="grad-text">packages</span></h2>
       </div>
 
       <div class="table-wrap card reveal">
@@ -128,32 +126,33 @@ const compare = [
 
 <style>
   .page-hero { padding-block: clamp(2.5rem, 6vw, 4rem) clamp(1rem, 3vw, 2rem); }
-  .page-hero h1 { font-size: clamp(2.4rem, 6vw, 4rem); margin-top: 1.2rem; }
-  .lede { color: var(--ink-3); font-size: 1.1rem; max-width: 56ch; margin-top: 1.2rem; }
+  .page-hero h1 { font-size: clamp(2.4rem, 6vw, 4rem); }
+  .lede { color: var(--text-3); font-size: 1.1rem; max-width: 56ch; margin-top: 1.3rem; }
 
   .tiers-sec { padding-top: clamp(1rem, 3vw, 2rem); }
   .tier-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; align-items: stretch; }
   .tier { position: relative; display: flex; flex-direction: column; padding: 2rem 1.75rem; }
-  .tier.featured { border-color: var(--green); box-shadow: 0 0 0 1px var(--green), var(--shadow-lift); }
+  .tier.featured { box-shadow: 0 0 60px -22px var(--green-glow); }
   .rec {
     position: absolute; top: -12px; left: 1.75rem;
     font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500;
-    letter-spacing: 0.1em; text-transform: uppercase; color: #fff;
-    background: var(--green); padding: 0.32rem 0.65rem; border-radius: 4px;
+    letter-spacing: 0.1em; text-transform: uppercase; color: #04281A;
+    background: var(--grad-green); padding: 0.32rem 0.65rem; border-radius: 4px;
+    box-shadow: 0 6px 18px -6px var(--green-glow);
   }
   .tier h3 { font-size: 1.45rem; }
-  .blurb { color: var(--ink-3); font-size: 0.92rem; margin-top: 0.5rem; min-height: 3.6em; }
+  .blurb { color: var(--text-3); font-size: 0.92rem; margin-top: 0.5rem; min-height: 3.6em; }
   .price { display: flex; align-items: baseline; gap: 0.55rem; margin: 1.1rem 0 1.3rem; }
-  .amt { font-size: 2.5rem; }
-  .per { font-family: var(--font-mono); color: var(--ink-4); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; }
+  .amt { font-size: 2.5rem; color: var(--green-bright); }
+  .per { font-family: var(--font-mono); color: var(--text-4); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; }
   .t-rows { display: grid; border-top: 1px solid var(--line); }
   .t-rows > div { display: flex; justify-content: space-between; gap: 1rem; padding: 0.7rem 0; border-bottom: 1px solid var(--line); }
-  .t-rows dt { color: var(--ink-3); font-size: 0.85rem; }
-  .t-rows dd { font-family: var(--font-display); font-weight: 600; font-size: 0.9rem; color: var(--ink); text-align: right; }
-  .t-rows dd.accent { color: var(--green-deep); }
+  .t-rows dt { color: var(--text-3); font-size: 0.85rem; }
+  .t-rows dd { font-family: var(--font-display); font-weight: 600; font-size: 0.9rem; color: var(--text); text-align: right; }
+  .t-rows dd.accent { color: var(--green-bright); }
   .perks { display: grid; gap: 0.6rem; margin: 1.2rem 0 1.4rem; }
-  .perks li { display: flex; gap: 0.55rem; align-items: flex-start; color: var(--ink-2); font-size: 0.92rem; }
-  .perks svg { width: 17px; height: 17px; color: var(--green); flex: none; margin-top: 2px; }
+  .perks li { display: flex; gap: 0.55rem; align-items: flex-start; color: var(--text-2); font-size: 0.92rem; }
+  .perks svg { width: 17px; height: 17px; color: var(--green-bright); flex: none; margin-top: 2px; }
   .t-cta { width: 100%; margin-top: auto; }
   .fees-note { margin-top: 1.25rem; }
 
@@ -162,13 +161,15 @@ const compare = [
   .compare th, .compare td { text-align: left; padding: 0.95rem 1.25rem; border-bottom: 1px solid var(--line); }
   .compare thead th {
     font-family: var(--font-mono); font-weight: 500; font-size: 0.72rem;
-    letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-4);
-    background: var(--paper-2);
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-4);
+    background: rgba(0, 0, 0, 0.25);
   }
+  .compare tbody tr { transition: background 0.2s ease; }
+  .compare tbody tr:hover { background: rgba(255, 255, 255, 0.025); }
   .compare tbody tr:last-child td { border-bottom: 0; }
-  .compare td { font-size: 0.94rem; color: var(--ink-2); }
-  .compare td.feat { font-family: var(--font-display); font-weight: 600; color: var(--ink); }
-  .compare td.hl { color: var(--green-deep); font-weight: 500; }
+  .compare td { font-size: 0.94rem; color: var(--text-2); }
+  .compare td.feat { font-family: var(--font-display); font-weight: 600; color: var(--text); }
+  .compare td.hl { color: var(--green-bright); font-weight: 500; }
 
   @media (max-width: 900px) {
     .tier-grid { grid-template-columns: 1fr; max-width: 420px; margin-inline: auto; }

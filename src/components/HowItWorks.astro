@@ -16,21 +16,12 @@ const steps = [
     body: 'The bot trades for you around the clock. Follow every entry, exit and the logic behind it, live.',
   },
 ];
-
-const log = [
-  { t: '09:31:02', s: 'BUY', a: 'XAU/USD', d: 'filled @ 2,412.30', cls: 'buy' },
-  { t: '09:31:02', s: 'RISK', a: 'stop set', d: '−0.4% · 1.2R target', cls: 'risk' },
-  { t: '10:14:48', s: 'SELL', a: 'BTC/USD', d: '+1.1R locked', cls: 'sell' },
-  { t: '11:02:17', s: 'BUY', a: 'USD/JPY', d: 'filled @ 157.42', cls: 'buy' },
-  { t: '11:46:30', s: 'SCAN', a: 'all markets', d: 'no setup · holding', cls: 'scan' },
-];
 ---
 
 <section class="section how" id="how-it-works">
   <div class="container how-grid">
     <div class="how-intro reveal">
-      <span class="eyebrow">How it works</span>
-      <h2>Live in three steps</h2>
+      <h2>Live in <span class="grad-text">three steps</span></h2>
       <p>From sign-up to live execution — no spreadsheets, no scripts, no staring at candles. The engine handles the rest, around the clock.</p>
 
       <ol class="steps">
@@ -45,28 +36,19 @@ const log = [
 
     <div class="term card reveal" style="--reveal-delay:150ms" aria-hidden="true">
       <div class="term-top">
+        <span class="dots"><i></i><i></i><i></i></span>
         <span class="term-title">vectora · live engine</span>
         <span class="term-live"><span class="lp"></span> 24/7</span>
       </div>
-      <div class="term-body">
-        {log.map((l, i) => (
-          <div class="logline" style={`--i:${i}`}>
-            <span class="lt">{l.t}</span>
-            <span class={`ls ${l.cls}`}>{l.s}</span>
-            <span class="la">{l.a}</span>
-            <span class="ld">{l.d}</span>
-          </div>
-        ))}
-        <div class="logline cursor"><span class="lt">11:46:31</span><span class="caret"></span></div>
-      </div>
+      <div class="term-body" id="term-body"></div>
     </div>
   </div>
 </section>
 
 <style>
-  .how { background: var(--paper-2); border-block: 1px solid var(--line); }
+  .how { background: var(--bg-2); border-block: 1px solid var(--line); }
   .how-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 6vw, 4.5rem); align-items: center; }
-  .how-intro > p { color: var(--ink-3); margin-top: 1rem; font-size: 1.02rem; max-width: 46ch; }
+  .how-intro > p { color: var(--text-3); margin-top: 1.1rem; font-size: 1.02rem; max-width: 46ch; }
 
   .steps { margin-top: 2rem; display: grid; gap: 1.1rem; }
   .step { display: flex; gap: 1.05rem; align-items: flex-start; }
@@ -74,36 +56,106 @@ const log = [
     flex: none; width: 40px; height: 40px;
     display: grid; place-items: center; border-radius: var(--radius-sm);
     font-family: var(--font-mono); font-weight: 500; font-size: 0.85rem;
-    color: var(--green-ink); background: var(--green-tint);
-    border: 1px solid var(--line);
+    color: var(--green-bright); background: var(--green-tint);
+    border: 1px solid rgba(23, 212, 139, 0.22);
   }
   .step h3 { font-size: 1.12rem; }
-  .step p { color: var(--ink-3); font-size: 0.94rem; margin-top: 0.25rem; max-width: 48ch; }
+  .step p { color: var(--text-3); font-size: 0.94rem; margin-top: 0.25rem; max-width: 48ch; }
 
-  /* Order-log visual */
-  .term { padding: 0; overflow: hidden; }
+  /* Terminal — continuously running order log */
+  .term { padding: 0; overflow: hidden; background: rgba(8, 12, 10, 0.9); }
   .term-top {
-    display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;
-    padding: 0.8rem 1.1rem; border-bottom: 1px solid var(--line); background: var(--paper);
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 0.8rem 1.1rem; border-bottom: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.025);
   }
-  .term-title { font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-3); }
-  .term-live { display: inline-flex; align-items: center; gap: 0.4rem; font-family: var(--font-mono); font-size: 0.72rem; color: var(--green-deep); }
-  .lp { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: pulse2 1.6s infinite; }
-  @keyframes pulse2 { 0%{box-shadow:0 0 0 0 rgba(9,161,101,.35)} 100%{box-shadow:0 0 0 9px rgba(9,161,101,0)} }
+  .dots { display: inline-flex; gap: 6px; }
+  .dots i { width: 10px; height: 10px; border-radius: 50%; background: var(--line-strong); }
+  .dots i:first-child { background: #E4685F; }
+  .dots i:nth-child(2) { background: #E0B450; }
+  .dots i:last-child { background: var(--green-bright); }
+  .term-title { font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-3); }
+  .term-live { margin-left: auto; display: inline-flex; align-items: center; gap: 0.4rem; font-family: var(--font-mono); font-size: 0.72rem; color: var(--green-bright); }
+  .lp { width: 7px; height: 7px; border-radius: 50%; background: var(--green-bright); animation: tpulse 1.6s infinite; }
+  @keyframes tpulse { 0% { box-shadow: 0 0 0 0 rgba(23, 212, 139, 0.5); } 100% { box-shadow: 0 0 0 9px rgba(23, 212, 139, 0); } }
 
-  .term-body { padding: 1.1rem 1.2rem 1.3rem; font-family: var(--font-mono); font-size: 0.8rem; display: grid; gap: 0.6rem; min-height: 220px; }
-  .logline { display: flex; gap: 0.7rem; align-items: center; opacity: 0; transform: translateX(-6px); animation: logIn 0.5s ease forwards; animation-delay: calc(var(--i) * 0.5s + 0.3s); white-space: nowrap; }
-  @keyframes logIn { to { opacity: 1; transform: none; } }
-  .lt { color: var(--ink-4); }
-  .ls { font-weight: 500; padding: 0.1rem 0.45rem; border-radius: 4px; font-size: 0.7rem; }
-  .ls.buy { color: #fff; background: var(--green); }
-  .ls.sell { color: #fff; background: var(--ink); }
-  .ls.risk { color: var(--green-ink); background: var(--green-tint); }
-  .ls.scan { color: var(--ink-3); background: var(--paper-2); border: 1px solid var(--line); }
-  .la { color: var(--ink); font-weight: 500; }
-  .ld { color: var(--ink-3); overflow: hidden; text-overflow: ellipsis; }
-  .caret { display: inline-block; width: 8px; height: 15px; background: var(--green); animation: blink 1s steps(2) infinite; }
-  @keyframes blink { 50% { opacity: 0; } }
+  .term-body {
+    padding: 1.1rem 1.2rem 1.3rem;
+    font-family: var(--font-mono); font-size: 0.8rem;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    gap: 0.6rem;
+    height: 252px;
+    overflow: hidden;
+  }
+  .term-body :global(.logline) {
+    display: flex; gap: 0.7rem; align-items: center; white-space: nowrap;
+    animation: login 0.45s ease;
+  }
+  @keyframes login { from { opacity: 0; transform: translateY(8px); } }
+  .term-body :global(.lt) { color: var(--text-4); }
+  .term-body :global(.ls) { font-weight: 500; padding: 0.1rem 0.45rem; border-radius: 4px; font-size: 0.7rem; }
+  .term-body :global(.ls.buy) { color: #04281A; background: var(--green-bright); }
+  .term-body :global(.ls.sell) { color: #fff; background: rgba(228, 104, 95, 0.85); }
+  .term-body :global(.ls.risk) { color: var(--green-bright); background: var(--green-tint); }
+  .term-body :global(.ls.scan) { color: var(--text-3); background: rgba(255, 255, 255, 0.07); }
+  .term-body :global(.la) { color: var(--text); font-weight: 500; }
+  .term-body :global(.ld) { color: var(--text-3); overflow: hidden; text-overflow: ellipsis; }
 
   @media (max-width: 900px) { .how-grid { grid-template-columns: 1fr; } }
 </style>
+
+<script>
+  // Continuously cycling order log — decorative (aria-hidden), deterministic
+  // pool of the three real markets. Pauses on reduced-motion.
+  const POOL = [
+    { s: 'BUY', a: 'XAU/USD', d: 'filled @ 2,412.30', cls: 'buy' },
+    { s: 'RISK', a: 'stop set', d: '−0.4% · 1.2R target', cls: 'risk' },
+    { s: 'SCAN', a: 'BTC/USD', d: 'liquidity shift detected', cls: 'scan' },
+    { s: 'BUY', a: 'USD/JPY', d: 'filled @ 157.42', cls: 'buy' },
+    { s: 'SELL', a: 'XAU/USD', d: '+1.1R locked', cls: 'sell' },
+    { s: 'SCAN', a: 'all markets', d: 'no setup · holding', cls: 'scan' },
+    { s: 'BUY', a: 'BTC/USD', d: 'momentum entry confirmed', cls: 'buy' },
+    { s: 'RISK', a: 'drawdown cap', d: 'within 1–2% · ok', cls: 'risk' },
+    { s: 'SELL', a: 'USD/JPY', d: '+0.8R locked', cls: 'sell' },
+    { s: 'SCAN', a: 'XAU/USD', d: 'trend intact · tracking', cls: 'scan' },
+  ];
+
+  const pad = (n: number) => String(n).padStart(2, '0');
+
+  const initTerminal = () => {
+    const body = document.getElementById('term-body');
+    if (!body || body.dataset.init) return;
+    body.dataset.init = 'true';
+
+    let idx = 0;
+    let mins = 9 * 60 + 31;
+    let secs = 2;
+
+    const addLine = () => {
+      const item = POOL[idx % POOL.length];
+      idx++;
+      secs += 7 + (idx % 41);
+      if (secs >= 60) { mins += Math.floor(secs / 60); secs = secs % 60; }
+      if (mins >= 24 * 60) mins = 0;
+
+      const line = document.createElement('div');
+      line.className = 'logline';
+      line.innerHTML =
+        `<span class="lt">${pad(Math.floor(mins / 60))}:${pad(mins % 60)}:${pad(secs)}</span>` +
+        `<span class="ls ${item.cls}">${item.s}</span>` +
+        `<span class="la">${item.a}</span>` +
+        `<span class="ld">${item.d}</span>`;
+      body.appendChild(line);
+      while (body.children.length > 8) body.removeChild(body.children[0]);
+    };
+
+    // Seed a few lines immediately so the panel never looks empty.
+    for (let i = 0; i < 5; i++) addLine();
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const timer = setInterval(addLine, 2200);
+    document.addEventListener('astro:before-swap', () => clearInterval(timer), { once: true });
+  };
+
+  document.addEventListener('astro:page-load', initTerminal);
+</script>
