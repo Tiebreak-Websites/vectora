@@ -15,7 +15,7 @@ const options = [
   {
     title: 'Request a call',
     body: 'Tell us how you trade and we’ll point you to the right bot and package.',
-    cta: 'Fill the form below',
+    cta: 'Fill the form',
     href: '#contact-form',
     icon: '<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.13.96.36 1.9.7 2.8a2 2 0 0 1-.45 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.45c.9.34 1.84.57 2.8.7A2 2 0 0 1 22 16.9z"/>',
   },
@@ -39,93 +39,101 @@ const options = [
   </div>
 </section>
 
-<section class="section options-sec">
+<section class="section support-sec" id="support">
   <div class="container">
-    <div class="opt-grid">
-      {options.map((o, i) => (
-        <a href={o.href} class="opt card hoverable spot reveal" style={`--reveal-delay:${i * 90}ms`}>
-          <span class="opt-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={o.icon} />
-          </span>
-          <h3>{o.title}</h3>
-          <p>{o.body}</p>
-          <span class="opt-cta">{o.cta} <span class="arrow" aria-hidden="true">→</span></span>
-        </a>
-      ))}
-    </div>
-  </div>
-</section>
+    <div class="support-grid">
+      <aside class="opt-col">
+        {options.map((o, i) => (
+          <a href={o.href} class="opt card hoverable spot reveal" style={`--reveal-delay:${i * 90}ms`}>
+            <span class="opt-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={o.icon} />
+            </span>
+            <span class="opt-main">
+              <h3>{o.title}</h3>
+              <p>{o.body}</p>
+              <span class="opt-cta">{o.cta} <span class="arrow" aria-hidden="true">→</span></span>
+            </span>
+          </a>
+        ))}
+      </aside>
 
-<section class="section form-sec" id="support">
-  <div class="container">
-    <div class="section-head reveal">
-      <h2>Request <span class="grad-text">a call</span></h2>
-      <p>Leave your details and one of our team will call you back within one business day.</p>
-    </div>
-
-    <form class="contact-form card grad-border spot reveal" id="contact-form" novalidate data-endpoint={FORM_ENDPOINT}>
-      <div class="row-2">
-        <div class="field">
-          <label for="name">Name</label>
-          <input id="name" name="name" type="text" autocomplete="name" required placeholder="Alex Trader" />
-          <span class="err" data-for="name"></span>
+      <form class="contact-form card grad-border spot reveal" id="contact-form" novalidate data-endpoint={FORM_ENDPOINT} style="--reveal-delay:140ms">
+        <h2>Request <span class="grad-text">a call</span></h2>
+        <p class="form-sub">Leave your details and one of our team will call you back within one business day.</p>
+        <div class="row-2">
+          <div class="field">
+            <label for="name">Name</label>
+            <input id="name" name="name" type="text" autocomplete="name" required placeholder="Alex Trader" />
+            <span class="err" data-for="name"></span>
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" autocomplete="email" required placeholder="you@example.com" />
+            <span class="err" data-for="email"></span>
+          </div>
         </div>
         <div class="field">
-          <label for="email">Email</label>
-          <input id="email" name="email" type="email" autocomplete="email" required placeholder="you@example.com" />
-          <span class="err" data-for="email"></span>
+          <label for="experience">Experience</label>
+          <select id="experience" name="experience">
+            <option value="">Select one…</option>
+            <option>New to trading</option>
+            <option>Trading 1–3 years</option>
+            <option>Experienced / 3+ years</option>
+          </select>
         </div>
-      </div>
-      <div class="field">
-        <label for="experience">Experience</label>
-        <select id="experience" name="experience">
-          <option value="">Select one…</option>
-          <option>New to trading</option>
-          <option>Trading 1–3 years</option>
-          <option>Experienced / 3+ years</option>
-        </select>
-      </div>
-      <div class="field">
-        <label for="message">Which market interests you?</label>
-        <textarea id="message" name="message" rows="4" required placeholder="e.g. I'd like to start with the gold bot on the Foundation package…"></textarea>
-        <span class="err" data-for="message"></span>
-      </div>
-      <button type="submit" class="btn btn-primary btn-lg form-submit">Request a call <span class="arrow" aria-hidden="true">→</span></button>
-      <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
-      <p class="form-fine">7-day trial · No credit card needed to start · Cancel anytime</p>
-    </form>
+        <div class="field">
+          <label for="message">Which market interests you?</label>
+          <textarea id="message" name="message" rows="4" required placeholder="e.g. I'd like to start with the gold bot on the Foundation package…"></textarea>
+          <span class="err" data-for="message"></span>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg form-submit">Request a call <span class="arrow" aria-hidden="true">→</span></button>
+        <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+        <p class="form-fine">7-day trial · No credit card needed to start · Cancel anytime</p>
+      </form>
+    </div>
   </div>
 </section>
 
 <style>
-  .options-sec { padding-block: clamp(1rem, 3vw, 2rem) clamp(2rem, 5vw, 3.5rem); }
-  .opt-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
-  .opt { display: flex; flex-direction: column; align-items: flex-start; }
+  .support-sec { padding-top: clamp(1rem, 3vw, 2rem); }
+  .support-grid {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: clamp(1.5rem, 4vw, 2.5rem);
+    align-items: start;
+  }
+
+  /* Vertical option tiles */
+  .opt-col { display: grid; gap: 1.1rem; }
+  .opt { display: flex; align-items: flex-start; gap: 1.1rem; padding: 1.5rem; }
   .opt-icon {
+    flex: none;
     display: inline-flex; width: 46px; height: 46px;
     align-items: center; justify-content: center; border-radius: var(--radius-sm);
     color: var(--green-bright);
     background: var(--green-tint); border: 1px solid rgba(23, 212, 139, 0.22);
   }
   .opt-icon svg { width: 22px; height: 22px; }
-  .opt h3 { font-size: 1.2rem; margin-top: 1.1rem; }
-  .opt p { color: var(--text-3); font-size: 0.94rem; margin-top: 0.5rem; flex: 1; }
+  .opt-main { display: flex; flex-direction: column; }
+  .opt h3 { font-size: 1.12rem; }
+  .opt p { color: var(--text-3); font-size: 0.92rem; margin-top: 0.4rem; }
   .opt-cta {
-    margin-top: 1.25rem;
-    font-family: var(--font-display); font-weight: 600; font-size: 0.92rem;
+    margin-top: 0.8rem;
+    font-family: var(--font-display); font-weight: 600; font-size: 0.9rem;
     color: var(--green-bright);
   }
   .opt-cta .arrow { display: inline-block; transition: transform 0.2s ease; }
   .opt:hover .opt-cta .arrow { transform: translateX(3px); }
 
-  .form-sec { padding-top: 0; }
+  /* Form */
   .contact-form {
     display: grid; gap: 1.1rem;
-    max-width: 680px; margin-inline: auto;
     padding: clamp(1.75rem, 4vw, 2.5rem);
     border-radius: var(--radius-lg);
     box-shadow: 0 0 70px -30px var(--green-glow);
   }
+  .contact-form h2 { font-size: clamp(1.6rem, 3vw, 2.1rem); }
+  .form-sub { color: var(--text-3); font-size: 0.95rem; margin-top: -0.4rem; }
   .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
   .field { display: grid; gap: 0.4rem; }
   label { font-family: var(--font-display); font-size: 0.88rem; font-weight: 500; color: var(--text); }
@@ -147,7 +155,10 @@ const options = [
   .form-status.bad { color: #F08D84; }
   .form-fine { text-align: center; font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.06em; color: var(--text-4); }
 
-  @media (max-width: 860px) { .opt-grid { grid-template-columns: 1fr; max-width: 460px; margin-inline: auto; } }
+  @media (max-width: 900px) {
+    .support-grid { grid-template-columns: 1fr; }
+    .opt-col { max-width: 560px; }
+  }
   @media (max-width: 560px) { .row-2 { grid-template-columns: 1fr; } }
 </style>
 

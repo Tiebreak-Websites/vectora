@@ -1,6 +1,7 @@
 ---
 // Official copy. Home uses the defaults; the Strategy page passes its own
-// body and steps via props.
+// body and steps via props. Rendered as a fast left-to-right flow:
+// numbered nodes joined by animated connectors, terminal below.
 const {
   body = 'From sign-up to guided bot setup in three clear steps. No hype, no black box, and no need to watch every tick alone.',
   steps = [
@@ -21,6 +22,13 @@ const {
     },
   ],
 } = Astro.props;
+
+// Generic process icons by position: start → set up → go live.
+const stepIcons = [
+  '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
+  '<path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3"/><path d="M1 14h6M9 8h6M17 16h6"/>',
+  '<path d="M13 3L5 13h6l-1 8 8-10h-6l1-8z"/>',
+];
 ---
 
 <section class="section how" id="how-it-works">
@@ -30,17 +38,24 @@ const {
       <p>{body}</p>
     </div>
 
-    <div class="how-grid">
-      <ol class="steps reveal">
-        {steps.map((s) => (
-          <li class="step">
-            <span class="step-n">{s.n}</span>
-            <div><h3>{s.title}</h3><p>{s.body}</p></div>
-          </li>
-        ))}
-      </ol>
+    <ol class="flow">
+      {steps.map((s, i) => (
+        <li class="fstep reveal" style={`--reveal-delay:${i * 140}ms`}>
+          <div class="f-row">
+            <span class="f-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={stepIcons[i]} />
+            </span>
+            <span class="f-num">{s.n}</span>
+            {i < steps.length - 1 && <span class="f-line" aria-hidden="true"></span>}
+          </div>
+          <h3>{s.title}</h3>
+          <p>{s.body}</p>
+        </li>
+      ))}
+    </ol>
 
-      <div class="term card reveal" style="--reveal-delay:150ms" aria-hidden="true">
+    <div class="term-wrap reveal" style="--reveal-delay:300ms">
+      <div class="term card" aria-hidden="true">
         <div class="term-top">
           <span class="dots"><i></i><i></i><i></i></span>
           <span class="term-title">vectora · guardian engine</span>
@@ -54,21 +69,51 @@ const {
 
 <style>
   .how { background: var(--bg-2); border-block: 1px solid var(--line); }
-  .how-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 6vw, 4.5rem); align-items: center; }
 
-  .steps { display: grid; gap: 1.35rem; }
-  .step { display: flex; gap: 1.05rem; align-items: flex-start; }
-  .step-n {
-    flex: none; width: 40px; height: 40px;
-    display: grid; place-items: center; border-radius: var(--radius-sm);
-    font-family: var(--font-mono); font-weight: 500; font-size: 0.85rem;
-    color: var(--green-bright); background: var(--green-tint);
-    border: 1px solid rgba(23, 212, 139, 0.22);
+  /* Flow — three nodes joined by animated connectors */
+  .flow {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
   }
-  .step h3 { font-size: 1.12rem; }
-  .step p { color: var(--text-3); font-size: 0.94rem; margin-top: 0.25rem; max-width: 48ch; }
+  .f-row { display: flex; align-items: center; gap: 0.8rem; }
+  .f-icon {
+    flex: none;
+    display: inline-flex; width: 48px; height: 48px;
+    align-items: center; justify-content: center;
+    border-radius: var(--radius-sm);
+    color: var(--green-bright);
+    background: var(--green-tint);
+    border: 1px solid rgba(23, 212, 139, 0.25);
+    box-shadow: 0 0 24px -10px var(--green-glow);
+  }
+  .f-icon svg { width: 23px; height: 23px; }
+  .f-num { font-family: var(--font-mono); font-size: 0.8rem; color: var(--green-bright); }
+  .f-line {
+    flex: 1;
+    height: 2px;
+    margin-right: 0.5rem;
+    background: repeating-linear-gradient(90deg, var(--green-line) 0 8px, transparent 8px 16px);
+    background-size: 16px 2px;
+    animation: flowdash 1s linear infinite;
+    position: relative;
+  }
+  .f-line::after {
+    content: '';
+    position: absolute;
+    right: -2px; top: 50%;
+    width: 8px; height: 8px;
+    border-top: 2px solid var(--green-line);
+    border-right: 2px solid var(--green-line);
+    transform: translateY(-50%) rotate(45deg);
+  }
+  @keyframes flowdash { to { background-position: 16px 0; } }
 
-  /* Terminal — continuously running guardian-engine log */
+  .fstep h3 { font-size: 1.3rem; margin-top: 1.1rem; }
+  .fstep p { color: var(--text-3); font-size: 0.94rem; margin-top: 0.45rem; max-width: 40ch; }
+
+  /* Terminal below the flow */
+  .term-wrap { max-width: 820px; margin: clamp(2.5rem, 6vw, 4rem) auto 0; }
   .term { padding: 0; overflow: hidden; background: rgba(8, 13, 11, 0.9); }
   .term-top {
     display: flex; align-items: center; gap: 0.75rem;
@@ -90,7 +135,7 @@ const {
     font-family: var(--font-mono); font-size: 0.8rem;
     display: flex; flex-direction: column; justify-content: flex-end;
     gap: 0.6rem;
-    height: 252px;
+    height: 228px;
     overflow: hidden;
   }
   .term-body :global(.logline) {
@@ -106,7 +151,14 @@ const {
   .term-body :global(.ls.scan) { color: var(--text-3); background: rgba(255, 255, 255, 0.07); }
   .term-body :global(.ld) { color: var(--text-2); overflow: hidden; text-overflow: ellipsis; }
 
-  @media (max-width: 900px) { .how-grid { grid-template-columns: 1fr; } }
+  @media (prefers-reduced-motion: reduce) {
+    .f-line { animation: none; }
+  }
+  @media (max-width: 820px) {
+    .flow { grid-template-columns: 1fr; gap: 1.75rem; }
+    .f-line { display: none; }
+    .fstep h3 { margin-top: 0.8rem; }
+  }
 </style>
 
 <script>
@@ -138,7 +190,7 @@ const {
         `<span class="ls ${item.cls}">${item.s}</span>` +
         `<span class="ld">${item.d}</span>`;
       body.appendChild(line);
-      while (body.children.length > 7) body.removeChild(body.children[0]);
+      while (body.children.length > 6) body.removeChild(body.children[0]);
     };
 
     // Seed the full official sequence immediately.
