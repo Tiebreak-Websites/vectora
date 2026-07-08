@@ -3,7 +3,11 @@ import Layout from '../layouts/Layout.astro';
 import ClosingCta from '../components/ClosingCta.astro';
 
 // Official copy — bots page.
-const badges = ['7-day trial', 'Risk-first design', 'Private client use'];
+const badges = [
+  { label: '7-day trial', icon: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/>' },
+  { label: 'Risk-first design', icon: '<path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/><path d="M9.5 12l1.8 1.8L15 10"/>' },
+  { label: 'Private client use', icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M21 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>' },
+];
 
 const heroStats = [
   { v: '25–32%', k: 'Yearly ROI range' },
@@ -75,7 +79,12 @@ const relStats = [
       </p>
 
       <div class="badges reveal" style="--reveal-delay:200ms">
-        {badges.map((b) => <span class="badge">{b}</span>)}
+        {badges.map((b) => (
+          <span class="badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={b.icon} />
+            {b.label}
+          </span>
+        ))}
       </div>
 
       <ul class="hero-stats reveal" style="--reveal-delay:260ms">
@@ -151,13 +160,23 @@ const relStats = [
 </Layout>
 
 <style>
-  .badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.7rem; margin-top: 1.75rem; }
+  /* Feature strip — inline items with hairline separators, no chip boxes */
+  .badges {
+    display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
+    margin-top: 1.9rem;
+  }
   .badge {
-    font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500;
-    letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--green-bright); background: var(--green-tint);
-    border: 1px solid rgba(23, 212, 139, 0.25);
-    padding: 0.4rem 0.8rem; border-radius: 4px;
+    display: inline-flex; align-items: center; gap: 0.55rem;
+    font-family: var(--font-display); font-size: 0.94rem; font-weight: 500;
+    color: var(--text-2);
+    padding-inline: 1.4rem;
+  }
+  .badge svg { width: 17px; height: 17px; color: var(--green-bright); flex: none; }
+  .badge + .badge { border-left: 1px solid var(--line-strong); }
+
+  @media (max-width: 620px) {
+    .badges { flex-direction: column; gap: 0.8rem; }
+    .badge + .badge { border-left: 0; }
   }
 
   .hero-stats {

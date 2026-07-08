@@ -63,7 +63,7 @@ const compare = [
   <section class="section page-hero">
     <div class="container">
       <h1 class="reveal">Choose your <span class="grad-text">Guardian Bot package.</span></h1>
-      <p class="lede reveal" style="--reveal-delay:140ms">
+      <p class="lede wide reveal" style="--reveal-delay:140ms">
         Select one bot package based on your preferred instrument and monthly
         ROI profile. Packages are coming soon and will be activated through
         our supported broker setup.
@@ -139,6 +139,9 @@ const compare = [
 </Layout>
 
 <style>
+  /* Wide enough that the lede breaks into exactly two sentences / two rows */
+  .lede.wide { max-width: 88ch; }
+
   .tiers-sec { padding-top: clamp(1rem, 3vw, 2rem); }
   .tier-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; align-items: stretch; }
   .tier { position: relative; display: flex; flex-direction: column; padding: 2rem 1.75rem; }
