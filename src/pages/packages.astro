@@ -67,10 +67,15 @@ const compare = [
       <div class="tier-grid">
         {tiers.map((t, i) => (
           <article class={`tier card spot reveal ${t.featured ? 'featured grad-border' : ''}`} style={`--reveal-delay:${i * 90}ms`}>
-            {t.featured && <span class="rec">Most popular</span>}
-            <h3>{t.name}</h3>
+            <div class="tier-head">
+              <h3>{t.name}</h3>
+              {t.featured && <span class="rec">Most popular</span>}
+            </div>
             <p class="blurb">{t.blurb}</p>
-            <div class="price"><span class="amt figure">{t.price}</span><span class="per">one-time setup</span></div>
+            <div class="price">
+              <span class="amt figure">{t.price}</span>
+              <span class="per">One-time setup · no monthly fees</span>
+            </div>
 
             <dl class="t-rows">
               <div><dt>Included bot</dt><dd>{t.bot}</dd></div>
@@ -129,18 +134,20 @@ const compare = [
   .tier-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; align-items: stretch; }
   .tier { position: relative; display: flex; flex-direction: column; padding: 2rem 1.75rem; }
   .tier.featured { box-shadow: 0 0 60px -22px var(--green-glow); }
+  .tier-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
   .rec {
-    position: absolute; top: -12px; left: 1.75rem;
-    font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500;
+    flex: none;
+    font-family: var(--font-mono); font-size: 0.64rem; font-weight: 500;
     letter-spacing: 0.1em; text-transform: uppercase; color: #04281A;
-    background: var(--grad-green); padding: 0.32rem 0.65rem; border-radius: 4px;
+    background: var(--grad-green); padding: 0.32rem 0.6rem; border-radius: 4px;
     box-shadow: 0 6px 18px -6px var(--green-glow);
+    white-space: nowrap;
   }
   .tier h3 { font-size: 1.45rem; }
   .blurb { color: var(--text-3); font-size: 0.92rem; margin-top: 0.5rem; min-height: 3.6em; }
-  .price { display: flex; align-items: baseline; gap: 0.55rem; margin: 1.1rem 0 1.3rem; }
-  .amt { font-size: 2.5rem; color: var(--green-bright); }
-  .per { font-family: var(--font-mono); color: var(--text-4); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; }
+  .price { display: flex; flex-direction: column; gap: 0.3rem; margin: 1.1rem 0 1.3rem; }
+  .amt { font-size: 2.6rem; line-height: 1; color: var(--green-bright); }
+  .per { font-family: var(--font-mono); color: var(--text-4); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; }
   .t-rows { display: grid; border-top: 1px solid var(--line); }
   .t-rows > div { display: flex; justify-content: space-between; gap: 1rem; padding: 0.7rem 0; border-bottom: 1px solid var(--line); }
   .t-rows dt { color: var(--text-3); font-size: 0.85rem; }
