@@ -1,4 +1,20 @@
 ---
+// Bot facts from the official copy: instruments, Monthly Average ROI, Live status.
+const bots = [
+  {
+    name: 'MIRA', instrument: 'Gold (XAU)', roi: '3–5%',
+    spark: 'M2 30 L16 26 L30 28 L44 22 L58 24 L72 18 L86 20 L100 14 L114 16 L128 10',
+  },
+  {
+    name: 'AXON', instrument: 'Bitcoin (BTC)', roi: '5–7%',
+    spark: 'M2 32 L16 24 L30 27 L44 16 L58 21 L72 12 L86 17 L100 8 L114 12 L128 4',
+  },
+  {
+    name: 'KAIRO', instrument: 'USD/JPY', roi: '4–6%',
+    spark: 'M2 28 L16 24 L30 26 L44 20 L58 23 L72 17 L86 19 L100 13 L114 15 L128 8',
+  },
+];
+
 const ticker = [
   { a: 'MIRA', b: 'GOLD (XAU)', c: '3–5% / mo' },
   { a: 'AXON', b: 'BITCOIN (BTC)', c: '5–7% / mo' },
@@ -31,6 +47,39 @@ const ticker = [
       <a href="/packages" class="btn btn-primary btn-lg">View packages <span class="arrow" aria-hidden="true">→</span></a>
       <a href="/support" class="btn btn-outline btn-lg">Get a call from our team</a>
     </div>
+  </div>
+
+  <div class="container">
+    <div class="hero-bots" aria-label="The three Vectora bots">
+      {bots.map((b, i) => (
+        <a href="/bots" class="hb card hoverable spot reveal" style={`--reveal-delay:${320 + i * 90}ms`}>
+          <div class="hb-top">
+            <span class="hb-name">{b.name}</span>
+            <span class="hb-live"><span class="lp"></span> Live</span>
+          </div>
+          <span class="hb-market">{b.instrument}</span>
+          <svg class="spark" viewBox="0 0 130 36" aria-hidden="true" preserveAspectRatio="none">
+            <path d={b.spark} fill="none" stroke="url(#herospark)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <div class="hb-foot">
+            <div>
+              <span class="hb-roi">{b.roi}</span>
+              <span class="hb-roi-k figure-label">Monthly Average ROI</span>
+            </div>
+            <span class="hb-arrow" aria-hidden="true">→</span>
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <svg width="0" height="0" aria-hidden="true">
+      <defs>
+        <linearGradient id="herospark" x1="0" y1="1" x2="1" y2="0">
+          <stop offset="0" stop-color="#09A165" />
+          <stop offset="1" stop-color="#17D48B" />
+        </linearGradient>
+      </defs>
+    </svg>
   </div>
 </section>
 
@@ -81,6 +130,46 @@ const ticker = [
     margin-top: 1.4rem;
   }
   .hero-cta { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.85rem; margin-top: 2.3rem; }
+
+  /* Bots — three interactive mini-cards under the CTAs */
+  .hero-bots {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.1rem;
+    margin-top: clamp(2.75rem, 6vw, 4.25rem);
+  }
+  .hb {
+    display: flex; flex-direction: column;
+    padding: 1.35rem 1.45rem 1.25rem;
+    background: rgba(18, 26, 22, 0.85);
+    backdrop-filter: blur(8px);
+    text-align: left;
+  }
+  .hb-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  .hb-name { font-family: var(--font-display); font-weight: 600; font-size: 1.25rem; color: var(--text); }
+  .hb-live {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--green-bright);
+  }
+  .lp { width: 7px; height: 7px; border-radius: 50%; background: var(--green-bright); animation: lpulse 1.8s infinite; }
+  @keyframes lpulse { 0% { box-shadow: 0 0 0 0 rgba(23, 212, 139, 0.5); } 100% { box-shadow: 0 0 0 8px rgba(23, 212, 139, 0); } }
+  .hb-market { font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-3); margin-top: 0.25rem; letter-spacing: 0.04em; }
+  .hb .spark { width: 100%; height: 34px; margin-top: 1rem; opacity: 0.9; }
+  .hb-foot {
+    display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem;
+    margin-top: 1rem; padding-top: 0.9rem;
+    border-top: 1px solid var(--line);
+  }
+  .hb-roi { display: block; font-family: var(--font-display); font-weight: 600; font-size: 1.45rem; letter-spacing: -0.02em; color: var(--green-bright); font-variant-numeric: tabular-nums; }
+  .hb-roi-k { display: block; margin-top: 0.15rem; }
+  .hb-arrow { color: var(--text-4); font-size: 1.1rem; transition: transform 0.2s ease, color 0.2s ease; }
+  .hb:hover .hb-arrow { transform: translateX(3px); color: var(--green-bright); }
+
+  @media (max-width: 860px) {
+    .hero-bots { grid-template-columns: 1fr; max-width: 420px; margin-inline: auto; margin-top: 2.5rem; }
+  }
 
   /* Ticker */
   .marquee { border-block: 1px solid var(--line); background: var(--bg-2); }

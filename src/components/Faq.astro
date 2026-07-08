@@ -1,0 +1,103 @@
+---
+// FAQ — answers assembled from the official Guardian Bots site copy.
+const faqs = [
+  {
+    q: 'What exactly does Vectora do?',
+    a: 'Vectora watches selected market conditions, checks risk around each setup, and helps you see the trade more clearly before you commit. The bot supports the process — the client remains responsible for the account and final decisions.',
+  },
+  {
+    q: 'Which instruments do the bots cover?',
+    a: 'Vectora currently supports concrete bot packages for Gold, Bitcoin, and USD/JPY through our supported broker setup — MIRA for Gold, AXON for BTC, and KAIRO for USD/JPY. More supported instruments are coming soon.',
+  },
+  {
+    q: 'How do I get started?',
+    a: 'From sign-up to guided bot setup in three clear steps: open or join through one of our supported brokers, set your package, preferred bot, and risk preferences with support from our team, and activate. You stay responsible for the final action.',
+  },
+  {
+    q: 'Is there a trial?',
+    a: 'Yes — every package includes a 7-day trial.',
+  },
+  {
+    q: 'How much does a package cost?',
+    a: 'Foundation Package · MIRA (Gold Bot) is $3,000 / setup, Advance Package · AXON (BTC Bot) is $4,000 / setup, and Elite Pro · KAIRO (USD/JPY Bot) is $5,000 / setup. Packages are coming soon and will be activated through our supported broker setup.',
+  },
+  {
+    q: 'Are the ROI figures guaranteed?',
+    a: 'No. ROI figures are historical, backtested, or tracked performance ranges and are not guaranteed. Trading involves risk and can result in loss of capital. Clients remain responsible for their account decisions.',
+  },
+];
+---
+
+<section class="section faq" id="faq">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">FAQ</p>
+      <h2>Frequently asked <span class="grad-text">questions</span></h2>
+    </div>
+
+    <div class="faq-list">
+      {faqs.map((f, i) => (
+        <details class="faq-item reveal" style={`--reveal-delay:${i * 60}ms`}>
+          <summary>
+            <span class="fq">{f.q}</span>
+            <span class="ficon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+            </span>
+          </summary>
+          <div class="fa-wrap"><p class="fa">{f.a}</p></div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq-list {
+    max-width: 780px;
+    margin-inline: auto;
+    border-top: 1px solid var(--line);
+  }
+  .faq-item { border-bottom: 1px solid var(--line); }
+  summary {
+    display: flex; align-items: center; justify-content: space-between; gap: 1.25rem;
+    padding: 1.25rem 0.25rem;
+    cursor: pointer;
+    list-style: none;
+    transition: color 0.2s ease;
+  }
+  summary::-webkit-details-marker { display: none; }
+  .fq { font-family: var(--font-display); font-weight: 600; font-size: 1.06rem; color: var(--text); transition: color 0.2s ease; }
+  summary:hover .fq { color: var(--green-bright); }
+  .ficon {
+    flex: none;
+    display: grid; place-items: center;
+    width: 30px; height: 30px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-sm);
+    color: var(--text-3);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  }
+  .ficon svg { width: 15px; height: 15px; }
+  .faq-item[open] .ficon {
+    transform: rotate(45deg);
+    color: var(--green-bright);
+    border-color: rgba(23, 212, 139, 0.4);
+    background: var(--green-tint);
+  }
+
+  .fa-wrap {
+    overflow: hidden;
+  }
+  .fa {
+    color: var(--text-3);
+    font-size: 0.96rem;
+    padding: 0 0.25rem 1.4rem;
+    max-width: 68ch;
+  }
+  .faq-item[open] .fa { animation: faqIn 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
+  @keyframes faqIn { from { opacity: 0; transform: translateY(-6px); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .faq-item[open] .fa { animation: none; }
+  }
+</style>
