@@ -1,63 +1,73 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import TrialCta from '../components/TrialCta.astro';
+import ClosingCta from '../components/ClosingCta.astro';
 
-// One package = one bot. Prices and return ranges are confirmed and static.
+// Official copy — packages page.
 const tiers = [
   {
-    name: 'Foundation',
-    bot: 'Mira',
-    market: 'Gold · XAU/USD',
+    name: 'Foundation Package',
+    bot: 'MIRA',
+    sub: 'Gold Bot',
     price: '$3,000',
     featured: false,
-    roi: '3–5%',
-    blurb: 'The steady starting point — one defensive gold engine with strict risk caps.',
-    perks: ['7-day trial included', 'Guided broker onboarding', 'Monthly account check-ins'],
-    cta: 'Choose Foundation',
+    rows: [
+      { k: 'Monthly Average ROI', v: '3–5%', accent: true },
+      { k: 'Instrument', v: 'Gold (XAU)' },
+      { k: 'Bot capacity', v: '01 unit' },
+      { k: 'Trial', v: '7-day trial' },
+    ],
+    includes: 'Guardian risk check, basic setup support, live/backtested bot logic, private client onboarding.',
   },
   {
-    name: 'Advanced',
-    bot: 'Axon',
-    market: 'Bitcoin · BTC/USD',
+    name: 'Advance Package',
+    bot: 'AXON',
+    sub: 'BTC Bot',
     price: '$4,000',
     featured: true,
-    roi: '5–7%',
-    blurb: 'Our highest-yield engine — momentum and liquidity analysis on the Bitcoin market.',
-    perks: ['7-day trial included', 'Guided broker onboarding', 'Weekly priority check-ins'],
-    cta: 'Choose Advanced',
+    rows: [
+      { k: 'Monthly Average ROI', v: '5–7%', accent: true },
+      { k: 'Instrument', v: 'Bitcoin (BTC)' },
+      { k: 'Bot capacity', v: '01 unit' },
+      { k: 'Trial', v: '7-day trial' },
+    ],
+    includes: 'Expanded risk context, BTC movement monitoring, priority setup support, private client onboarding.',
   },
   {
-    name: 'Professional',
-    bot: 'Kairo',
-    market: 'Forex · USD/JPY',
+    name: 'Elite Pro',
+    bot: 'KAIRO',
+    sub: 'USD/JPY Bot',
     price: '$5,000',
     featured: false,
-    roi: '4–6%',
-    blurb: 'The precision scalper — many small, controlled trades in the USD/JPY corridor.',
-    perks: ['7-day trial included', 'Guided broker onboarding', 'Dedicated account manager'],
-    cta: 'Choose Professional',
+    rows: [
+      { k: 'Monthly Average ROI', v: '4–6%', accent: true },
+      { k: 'Instrument', v: 'USD/JPY' },
+      { k: 'Bot capacity', v: '01 unit' },
+      { k: 'Trial', v: '7-day trial' },
+    ],
+    includes: 'Pro-level guardian logic, USD/JPY timing support, advanced setup support, private client onboarding.',
   },
 ];
 
 const compare = [
-  { feature: 'Included bot', foundation: 'Mira', advanced: 'Axon', professional: 'Kairo' },
-  { feature: 'Market', foundation: 'Gold (XAU/USD)', advanced: 'Bitcoin (BTC/USD)', professional: 'USD/JPY' },
-  { feature: 'Target monthly ROI', foundation: '3–5%', advanced: '5–7%', professional: '4–6%' },
-  { feature: 'Win rate (all bots)', foundation: '92%', advanced: '92%', professional: '92%' },
-  { feature: 'Drawdown (all bots)', foundation: '1–2%', advanced: '1–2%', professional: '1–2%' },
-  { feature: 'Trial', foundation: '7 days', advanced: '7 days', professional: '7 days' },
-  { feature: 'Check-ins', foundation: 'Monthly', advanced: 'Weekly', professional: 'Dedicated manager' },
+  { feature: 'Instrument', foundation: 'Gold (XAU)', advance: 'Bitcoin (BTC)', elite: 'USD/JPY' },
+  { feature: 'Monthly Average ROI', foundation: '3–5%', advance: '5–7%', elite: '4–6%' },
+  { feature: 'Package Price', foundation: '$3,000', advance: '$4,000', elite: '$5,000' },
+  { feature: 'Trial', foundation: '7 days', advance: '7 days', elite: '7 days' },
+  { feature: 'Risk Check', foundation: 'Core guardian check', advance: 'Expanded guardian check', elite: 'Pro guardian check' },
+  { feature: 'Client Support', foundation: 'Setup support', advance: 'Priority setup support', elite: 'Pro setup support' },
+  { feature: 'Availability', foundation: 'Coming soon', advance: 'Coming soon', elite: 'Coming soon' },
 ];
 ---
 
-<Layout title="Vectora — Our Packages" description="One package, one bot. Foundation with Mira (gold, $3,000), Advanced with Axon (Bitcoin, $4,000) and Professional with Kairo (USD/JPY, $5,000). 7-day trial, no maintenance fees.">
+<Layout title="Vectora — Packages" description="Choose your Guardian Bot package. Select one bot package based on your preferred instrument and monthly ROI profile. Packages are coming soon and will be activated through our supported broker setup.">
   <section class="section page-hero">
     <div class="container">
-      <h1 class="reveal">One package, <span class="grad-text">one bot.</span></h1>
-      <p class="lede reveal" style="--reveal-delay:120ms">
-        Every package is a one-time setup that includes exactly one bot, matched
-        to its market. No maintenance fees, no hidden costs — and a 7-day trial
-        before you commit.
+      <p class="eyebrow reveal">Bot package types</p>
+      <h1 class="reveal" style="--reveal-delay:80ms">Choose your <span class="grad-text">Guardian Bot package.</span></h1>
+      <p class="lede reveal" style="--reveal-delay:140ms">
+        Select one bot package based on your preferred instrument and monthly
+        ROI profile. Packages are coming soon and will be activated through
+        our supported broker setup.
       </p>
     </div>
   </section>
@@ -69,64 +79,64 @@ const compare = [
           <article class={`tier card spot reveal ${t.featured ? 'featured grad-border' : ''}`} style={`--reveal-delay:${i * 90}ms`}>
             <div class="tier-head">
               <h3>{t.name}</h3>
-              {t.featured && <span class="rec">Most popular</span>}
+              <span class="tier-bot">{t.bot}</span>
             </div>
-            <p class="blurb">{t.blurb}</p>
+            <span class="tier-sub">{t.sub}</span>
             <div class="price">
               <span class="amt figure">{t.price}</span>
-              <span class="per">One-time setup · no monthly fees</span>
+              <span class="per">/ setup</span>
             </div>
 
             <dl class="t-rows">
-              <div><dt>Included bot</dt><dd>{t.bot}</dd></div>
-              <div><dt>Market</dt><dd>{t.market}</dd></div>
-              <div><dt>Target monthly ROI</dt><dd class="accent">{t.roi}</dd></div>
+              {t.rows.map((r) => (
+                <div><dt>{r.k}</dt><dd class={r.accent ? 'accent' : ''}>{r.v}</dd></div>
+              ))}
             </dl>
 
-            <ul class="perks">
-              {t.perks.map((p) => (
-                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>{p}</li>
-              ))}
-            </ul>
+            <div class="includes">
+              <span class="inc-label">Includes</span>
+              <p>{t.includes}</p>
+            </div>
 
-            <a href="/support" class={`btn ${t.featured ? 'btn-primary' : 'btn-outline'} t-cta`}>{t.cta}</a>
+            <span class="btn btn-outline t-cta soon" aria-disabled="true">Coming soon</span>
           </article>
         ))}
       </div>
-      <p class="note fees-note reveal">No monthly maintenance or annual fees. The setup price is all you pay Vectora.</p>
     </div>
   </section>
 
   <section class="section compare-sec">
     <div class="container">
       <div class="section-head reveal">
-        <h2>Compare the <span class="grad-text">packages</span></h2>
+        <h2>Detailed <span class="grad-text">comparative logic</span></h2>
       </div>
 
       <div class="table-wrap card reveal">
         <table class="compare">
           <thead>
-            <tr><th>Feature</th><th>Foundation</th><th>Advanced</th><th>Professional</th></tr>
+            <tr><th>Feature Set</th><th>Foundation · MIRA</th><th>Advance · AXON</th><th>Elite Pro · KAIRO</th></tr>
           </thead>
           <tbody>
             {compare.map((row) => (
               <tr>
                 <td class="feat">{row.feature}</td>
                 <td>{row.foundation}</td>
-                <td class="hl">{row.advanced}</td>
-                <td>{row.professional}</td>
+                <td class="hl">{row.advance}</td>
+                <td>{row.elite}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      <p class="note reveal" style="margin-top: 1rem;">
-        Win rate and drawdown are measured across all three bots over live trading plus 1.5 years of backtesting.
-      </p>
     </div>
   </section>
 
-  <TrialCta />
+  <ClosingCta
+    title='Ready to add a <span class="grad-text">guardian layer?</span>'
+    body="Our team can help you choose Mira, Axon, or Kairo based on your instrument preference and trading goals. You will join through one of our supported brokers."
+    primary={{ label: 'Schedule consultation', href: '/support' }}
+    secondary={{ label: 'View bot packages', href: '/bots' }}
+  />
 </Layout>
 
 <style>
@@ -135,32 +145,40 @@ const compare = [
   .tier { position: relative; display: flex; flex-direction: column; padding: 2rem 1.75rem; }
   .tier.featured { box-shadow: 0 0 60px -22px var(--green-glow); }
   .tier-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
-  .rec {
+  .tier h3 { font-size: 1.3rem; }
+  .tier-bot {
     flex: none;
-    font-family: var(--font-mono); font-size: 0.64rem; font-weight: 500;
-    letter-spacing: 0.1em; text-transform: uppercase; color: #04281A;
-    background: var(--grad-green); padding: 0.32rem 0.6rem; border-radius: 4px;
-    box-shadow: 0 6px 18px -6px var(--green-glow);
-    white-space: nowrap;
+    font-family: var(--font-mono); font-size: 0.68rem; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--green-bright); background: var(--green-tint);
+    border: 1px solid rgba(23, 212, 139, 0.25);
+    padding: 0.3rem 0.55rem; border-radius: 4px;
   }
-  .tier h3 { font-size: 1.45rem; }
-  .blurb { color: var(--text-3); font-size: 0.92rem; margin-top: 0.5rem; min-height: 3.6em; }
-  .price { display: flex; flex-direction: column; gap: 0.3rem; margin: 1.1rem 0 1.3rem; }
+  .tier-sub { font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-3); margin-top: 0.35rem; }
+  .price { display: flex; align-items: baseline; gap: 0.45rem; margin: 1.1rem 0 1.3rem; }
   .amt { font-size: 2.6rem; line-height: 1; color: var(--green-bright); }
-  .per { font-family: var(--font-mono); color: var(--text-4); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; }
+  .per { font-family: var(--font-mono); color: var(--text-4); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; }
   .t-rows { display: grid; border-top: 1px solid var(--line); }
-  .t-rows > div { display: flex; justify-content: space-between; gap: 1rem; padding: 0.7rem 0; border-bottom: 1px solid var(--line); }
+  .t-rows > div { display: flex; justify-content: space-between; gap: 1rem; padding: 0.65rem 0; border-bottom: 1px solid var(--line); }
   .t-rows dt { color: var(--text-3); font-size: 0.85rem; }
   .t-rows dd { font-family: var(--font-display); font-weight: 600; font-size: 0.9rem; color: var(--text); text-align: right; }
   .t-rows dd.accent { color: var(--green-bright); }
-  .perks { display: grid; gap: 0.6rem; margin: 1.2rem 0 1.4rem; }
-  .perks li { display: flex; gap: 0.55rem; align-items: flex-start; color: var(--text-2); font-size: 0.92rem; }
-  .perks svg { width: 17px; height: 17px; color: var(--green-bright); flex: none; margin-top: 2px; }
+  .includes { margin: 1.1rem 0 1.4rem; padding: 1rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: rgba(255, 255, 255, 0.02); }
+  .inc-label { font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green-bright); }
+  .includes p { color: var(--text-3); font-size: 0.87rem; margin-top: 0.4rem; }
   .t-cta { width: 100%; margin-top: auto; }
-  .fees-note { margin-top: 1.5rem; text-align: center; }
+  .t-cta.soon {
+    cursor: default;
+    font-family: var(--font-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    color: var(--text-3);
+  }
+  .t-cta.soon:hover { transform: none; border-color: var(--line-strong); box-shadow: none; }
 
   .table-wrap { overflow-x: auto; padding: 0; }
-  table.compare { width: 100%; border-collapse: collapse; min-width: 640px; }
+  table.compare { width: 100%; border-collapse: collapse; min-width: 680px; }
   .compare th, .compare td { text-align: left; padding: 0.95rem 1.25rem; border-bottom: 1px solid var(--line); }
   .compare thead th {
     font-family: var(--font-mono); font-weight: 500; font-size: 0.72rem;

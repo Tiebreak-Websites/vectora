@@ -7,27 +7,26 @@ const cols = [
   {
     title: 'Product',
     links: [
-      { href: '/packages', label: 'Our Packages' },
-      { href: '/bots', label: 'Our Bots' },
+      { href: '/#how-it-works', label: 'How It Works' },
+      { href: '/packages', label: 'Packages' },
+      { href: '/bots', label: 'Bots' },
       { href: '/strategy', label: 'Strategy' },
-      { href: '/results', label: 'Results' },
+      { href: '/analytics', label: 'Analytics' },
     ],
   },
   {
     title: 'Company',
     links: [
-      { href: '#', label: 'About' },
-      { href: '#', label: 'Blog' },
-      { href: '#', label: 'Careers' },
       { href: '/support', label: 'Support' },
+      { href: '/login', label: 'Login' },
     ],
   },
   {
-    title: 'Legal',
+    title: 'Compliance',
     links: [
       { href: '#', label: 'Risk Disclosure' },
-      { href: '#', label: 'Terms of Service' },
       { href: '#', label: 'Privacy Policy' },
+      { href: '#', label: 'Terms of Service' },
     ],
   },
 ];
@@ -38,7 +37,6 @@ const cols = [
     <div class="foot-grid">
       <div class="foot-brand">
         <Logo height={32} />
-        <p>Three specialist AI trading bots across gold, Bitcoin and USD/JPY — disciplined, transparent execution around the clock.</p>
         <div class="socials" aria-label="Social links">
           <a href="#" aria-label="X / Twitter"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.5 8.6L23 22h-6.8l-5.3-7-6.1 7H1.6l8-9.2L1 2h7l4.8 6.3L18.9 2zm-2.4 18h1.9L7.6 4H5.6l10.9 16z"/></svg></a>
           <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 7.5a1.94 1.94 0 11-.01-3.88A1.94 1.94 0 016.94 7.5zM5.3 9h3.3v10.5H5.3V9zm5.4 0h3.16v1.43h.05c.44-.83 1.5-1.7 3.1-1.7 3.32 0 3.93 2.18 3.93 5.02v5.75h-3.3v-5.1c0-1.22-.02-2.78-1.7-2.78-1.7 0-1.96 1.33-1.96 2.7v5.18h-3.3V9z"/></svg></a>
@@ -56,9 +54,16 @@ const cols = [
 
     <hr class="foot-divider" />
 
+    <p class="disclaimer">
+      Vectora bots are decision-support and bot-assisted trading tools offered
+      through supported broker setup. ROI figures are historical, backtested,
+      or tracked performance ranges and are not guaranteed. Trading involves
+      risk and can result in loss of capital. Clients remain responsible for
+      their account decisions.
+    </p>
+
     <div class="foot-bottom">
       <p>© {year} Vectora. All rights reserved.</p>
-      <p class="risk">Trading involves risk of loss. Past performance does not guarantee future results. Not investment advice.</p>
     </div>
   </div>
 </footer>
@@ -79,8 +84,7 @@ const cols = [
     background: linear-gradient(90deg, transparent, var(--green-line), transparent);
   }
   .foot-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2rem; }
-  .foot-brand p { color: var(--text-3); font-size: 0.92rem; margin: 1.1rem 0 1.25rem; max-width: 34ch; }
-  .socials { display: flex; gap: 0.6rem; }
+  .socials { display: flex; gap: 0.6rem; margin-top: 1.25rem; }
   .socials a {
     width: 38px; height: 38px; display: grid; place-items: center; border-radius: var(--radius-sm);
     border: 1px solid var(--line-strong); color: var(--text-3);
@@ -99,7 +103,8 @@ const cols = [
   .foot-col a:hover { color: var(--green-bright); }
 
   .foot-divider { height: 1px; border: 0; background: var(--line); margin-top: clamp(2rem, 5vw, 3rem); }
-  .foot-bottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; font-size: 0.85rem; color: var(--text-4); }
+  .disclaimer { margin-top: 1.5rem; font-size: 0.82rem; color: var(--text-4); max-width: 90ch; }
+  .foot-bottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; font-size: 0.85rem; color: var(--text-4); }
 
   @media (max-width: 760px) { .foot-grid { grid-template-columns: 1fr 1fr; } .foot-brand { grid-column: 1 / -1; } }
   @media (max-width: 440px) { .foot-grid { grid-template-columns: 1fr; } }

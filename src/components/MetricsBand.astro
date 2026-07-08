@@ -1,21 +1,15 @@
 ---
-// Confirmed performance figures — static, reviewed with the product team.
+// Official copy: homepage stats strip.
 const metrics = [
-  { v: '25–32%', k: 'Yearly ROI' },
-  { v: '4–5%', k: 'Avg. monthly ROI' },
-  { v: '92%', k: 'Win rate, all bots', count: 92, suffix: '%' },
-  { v: '1–2%', k: 'Drawdown, all bots' },
-  { v: '548', k: 'Days live + backtested', count: 548 },
+  { v: '25–32%', k: 'Yearly ROI range' },
+  { v: '4,000+', k: 'Private clients', count: 4000, suffix: '+' },
+  { v: '548 days', k: 'Live + backtested operation' },
 ];
 ---
 
-<section class="band" aria-label="Performance metrics">
+<section class="band" aria-label="Key figures">
   <div class="container">
-    <div class="band-head reveal">
-      <h2>Measured, <span class="grad-text">not promised</span></h2>
-      <p class="band-sub">Figures across all three bots, from live trading plus 1.5 years of backtesting.</p>
-    </div>
-    <ul class="band-grid reveal" style="--reveal-delay:100ms">
+    <ul class="band-grid reveal">
       {metrics.map((m) => (
         <li>
           {m.count
@@ -25,9 +19,6 @@ const metrics = [
         </li>
       ))}
     </ul>
-    <p class="band-note reveal" style="--reveal-delay:180ms">
-      Static figures, reviewed quarterly with the product team.
-    </p>
   </div>
 </section>
 
@@ -35,10 +26,10 @@ const metrics = [
   .band {
     position: relative;
     background:
-      radial-gradient(60rem 30rem at 50% 120%, rgba(9, 161, 101, 0.14), transparent 65%),
+      radial-gradient(60rem 30rem at 50% 130%, rgba(9, 161, 101, 0.14), transparent 65%),
       var(--bg-2);
     border-block: 1px solid var(--line);
-    padding-block: clamp(3.5rem, 8vw, 6rem);
+    padding-block: clamp(2.75rem, 6vw, 4.5rem);
     overflow: hidden;
   }
   .band::before {
@@ -48,34 +39,26 @@ const metrics = [
     height: 1px;
     background: linear-gradient(90deg, transparent, var(--green-line), transparent);
   }
-  .band-head { text-align: center; max-width: 680px; margin-inline: auto; }
-  .band-head h2 { font-size: clamp(1.9rem, 4vw, 2.8rem); }
-  .band-sub { color: var(--text-3); margin-top: 1rem; }
 
   .band-grid {
-    display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.5rem 1rem;
-    margin-top: clamp(2rem, 5vw, 3rem);
-    padding-top: 1.75rem;
-    border-top: 1px solid var(--line);
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem 1rem;
     text-align: center;
   }
   .bv {
     display: block;
     font-family: var(--font-display); font-weight: 600; letter-spacing: -0.02em;
     font-variant-numeric: tabular-nums;
-    font-size: clamp(1.7rem, 3.6vw, 2.5rem);
+    font-size: clamp(2rem, 4.4vw, 3.1rem);
     background: var(--grad-text);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
   .bk {
-    display: block; margin-top: 0.35rem;
-    font-family: var(--font-mono); font-size: 0.7rem;
+    display: block; margin-top: 0.4rem;
+    font-family: var(--font-mono); font-size: 0.72rem;
     letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-4);
   }
-  .band-note { margin-top: clamp(1.75rem, 4vw, 2.5rem); font-size: 0.85rem; color: var(--text-4); text-align: center; }
 
-  @media (max-width: 900px) { .band-grid { grid-template-columns: repeat(3, 1fr); } }
-  @media (max-width: 560px) { .band-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 640px) { .band-grid { grid-template-columns: 1fr; gap: 1.75rem; } }
 </style>

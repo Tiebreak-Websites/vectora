@@ -1,34 +1,40 @@
 ---
-const steps = [
-  {
-    n: '01',
-    title: 'Connect',
-    body: 'Open an account with our partnered broker — we guide you through it. You keep full visibility of your account at all times.',
-  },
-  {
-    n: '02',
-    title: 'Configure',
-    body: 'Pick your bot and set your risk limits together with our team. The rules are fixed before a single trade is placed.',
-  },
-  {
-    n: '03',
-    title: 'Activate',
-    body: 'The bot trades for you around the clock. Follow every entry, exit and the logic behind it, live.',
-  },
-];
+// Official copy. Home uses the defaults; the Strategy page passes its own
+// body and steps via props.
+const {
+  body = 'From sign-up to guided bot setup in three clear steps. No hype, no black box, and no need to watch every tick alone.',
+  steps = [
+    {
+      n: '01',
+      title: 'Connect',
+      body: 'Open or join through one of our supported brokers and choose the instrument package that fits your trading goals.',
+    },
+    {
+      n: '02',
+      title: 'Configure',
+      body: 'Set your package, preferred bot, and risk preferences with support from our team.',
+    },
+    {
+      n: '03',
+      title: 'Activate',
+      body: 'The bot starts monitoring selected conditions and sending trade context. You stay responsible for the final action.',
+    },
+  ],
+} = Astro.props;
 ---
 
 <section class="section how" id="how-it-works">
   <div class="container">
     <div class="section-head reveal">
-      <h2>Live in <span class="grad-text">three steps</span></h2>
-      <p>From sign-up to live execution — no spreadsheets, no scripts, no staring at candles. The engine handles the rest, around the clock.</p>
+      <p class="eyebrow">How it works</p>
+      <h2>Trading <span class="grad-text">simplified</span></h2>
+      <p>{body}</p>
     </div>
 
     <div class="how-grid">
       <ol class="steps reveal">
-        {steps.map((s, i) => (
-          <li class="step" style={`--reveal-delay:${i * 80}ms`}>
+        {steps.map((s) => (
+          <li class="step">
             <span class="step-n">{s.n}</span>
             <div><h3>{s.title}</h3><p>{s.body}</p></div>
           </li>
@@ -38,7 +44,7 @@ const steps = [
       <div class="term card reveal" style="--reveal-delay:150ms" aria-hidden="true">
         <div class="term-top">
           <span class="dots"><i></i><i></i><i></i></span>
-          <span class="term-title">vectora · live engine</span>
+          <span class="term-title">vectora · guardian engine</span>
           <span class="term-live"><span class="lp"></span> 24/7</span>
         </div>
         <div class="term-body" id="term-body"></div>
@@ -63,8 +69,8 @@ const steps = [
   .step h3 { font-size: 1.12rem; }
   .step p { color: var(--text-3); font-size: 0.94rem; margin-top: 0.25rem; max-width: 48ch; }
 
-  /* Terminal — continuously running order log */
-  .term { padding: 0; overflow: hidden; background: rgba(8, 12, 10, 0.9); }
+  /* Terminal — continuously running guardian-engine log */
+  .term { padding: 0; overflow: hidden; background: rgba(8, 13, 11, 0.9); }
   .term-top {
     display: flex; align-items: center; gap: 0.75rem;
     padding: 0.8rem 1.1rem; border-bottom: 1px solid var(--line);
@@ -99,29 +105,21 @@ const steps = [
   .term-body :global(.ls.sell) { color: #fff; background: rgba(228, 104, 95, 0.85); }
   .term-body :global(.ls.risk) { color: var(--green-bright); background: var(--green-tint); }
   .term-body :global(.ls.scan) { color: var(--text-3); background: rgba(255, 255, 255, 0.07); }
-  .term-body :global(.la) { color: var(--text); font-weight: 500; }
-  .term-body :global(.ld) { color: var(--text-3); overflow: hidden; text-overflow: ellipsis; }
+  .term-body :global(.ld) { color: var(--text-2); overflow: hidden; text-overflow: ellipsis; }
 
   @media (max-width: 900px) { .how-grid { grid-template-columns: 1fr; } }
 </style>
 
 <script>
-  // Continuously cycling order log — decorative (aria-hidden), deterministic
-  // pool of the three real markets. Pauses on reduced-motion.
+  // Guardian-engine log — official copy lines, cycled. Decorative
+  // (aria-hidden). Pauses on reduced-motion.
   const POOL = [
-    { s: 'BUY', a: 'XAU/USD', d: 'filled @ 2,412.30', cls: 'buy' },
-    { s: 'RISK', a: 'stop set', d: '−0.4% · 1.2R target', cls: 'risk' },
-    { s: 'SCAN', a: 'BTC/USD', d: 'liquidity shift detected', cls: 'scan' },
-    { s: 'BUY', a: 'USD/JPY', d: 'filled @ 157.42', cls: 'buy' },
-    { s: 'SELL', a: 'XAU/USD', d: '+1.1R locked', cls: 'sell' },
-    { s: 'SCAN', a: 'all markets', d: 'no setup · holding', cls: 'scan' },
-    { s: 'BUY', a: 'BTC/USD', d: 'momentum entry confirmed', cls: 'buy' },
-    { s: 'RISK', a: 'drawdown cap', d: 'within 1–2% · ok', cls: 'risk' },
-    { s: 'SELL', a: 'USD/JPY', d: '+0.8R locked', cls: 'sell' },
-    { s: 'SCAN', a: 'XAU/USD', d: 'trend intact · tracking', cls: 'scan' },
+    { t: '09:31:02', s: 'BUY', d: 'BTC setup detected · risk context ready', cls: 'buy' },
+    { t: '09:31:09', s: 'RISK', d: 'volatility rising · review before action', cls: 'risk' },
+    { t: '10:14:48', s: 'SELL', d: 'Gold signal locked · check exposure', cls: 'sell' },
+    { t: '11:02:17', s: 'BUY', d: 'USD/JPY movement confirmed', cls: 'buy' },
+    { t: '11:46:30', s: 'SCAN', d: 'no setup · holding', cls: 'scan' },
   ];
-
-  const pad = (n: number) => String(n).padStart(2, '0');
 
   const initTerminal = () => {
     const body = document.getElementById('term-body');
@@ -129,32 +127,26 @@ const steps = [
     body.dataset.init = 'true';
 
     let idx = 0;
-    let mins = 9 * 60 + 31;
-    let secs = 2;
 
     const addLine = () => {
       const item = POOL[idx % POOL.length];
       idx++;
-      secs += 7 + (idx % 41);
-      if (secs >= 60) { mins += Math.floor(secs / 60); secs = secs % 60; }
-      if (mins >= 24 * 60) mins = 0;
 
       const line = document.createElement('div');
       line.className = 'logline';
       line.innerHTML =
-        `<span class="lt">${pad(Math.floor(mins / 60))}:${pad(mins % 60)}:${pad(secs)}</span>` +
+        `<span class="lt">${item.t}</span>` +
         `<span class="ls ${item.cls}">${item.s}</span>` +
-        `<span class="la">${item.a}</span>` +
         `<span class="ld">${item.d}</span>`;
       body.appendChild(line);
-      while (body.children.length > 8) body.removeChild(body.children[0]);
+      while (body.children.length > 7) body.removeChild(body.children[0]);
     };
 
-    // Seed a few lines immediately so the panel never looks empty.
-    for (let i = 0; i < 5; i++) addLine();
+    // Seed the full official sequence immediately.
+    for (let i = 0; i < POOL.length; i++) addLine();
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const timer = setInterval(addLine, 2200);
+    const timer = setInterval(addLine, 2600);
     document.addEventListener('astro:before-swap', () => clearInterval(timer), { once: true });
   };
 

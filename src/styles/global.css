@@ -135,6 +135,26 @@ h1, h2, h3, h4 {
 .page-hero h1 { font-size: clamp(2.4rem, 5.4vw, 4.1rem); max-width: 100%; }
 .page-hero .lede { color: var(--text-3); font-size: 1.1rem; max-width: 58ch; margin: 1.3rem auto 0; }
 
+/* Eyebrow — small mono label above headlines (official copy) */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--green-bright);
+  margin-bottom: 1.1rem;
+}
+.eyebrow::before, .eyebrow::after {
+  content: '';
+  width: 22px; height: 1px;
+  background: var(--green-line);
+}
+.section-head .eyebrow, .page-hero .eyebrow { margin-inline: auto; }
+
 /* Gradient emphasis inside headings */
 .grad-text {
   background: var(--grad-text);

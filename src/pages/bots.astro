@@ -1,59 +1,85 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import TrialCta from '../components/TrialCta.astro';
+import ClosingCta from '../components/ClosingCta.astro';
+
+// Official copy — bots page.
+const badges = ['7-day trial', 'Risk-first design', 'Private client use'];
 
 const heroStats = [
-  { k: 'Markets traded', v: '3' },
-  { k: 'Win rate, all bots', v: '92%' },
-  { k: 'Drawdown, all bots', v: '1–2%' },
-  { k: 'Days live + backtested', v: '548' },
+  { v: '25–32%', k: 'Yearly ROI range' },
+  { v: '92%', k: 'Overall win rate' },
+  { v: '1–2%', k: 'Overall drawdown' },
+  { v: '548 days', k: 'Live + backtested operation' },
 ];
 
 const bots = [
   {
-    name: 'Mira',
-    market: 'Gold',
-    pair: 'XAU/USD',
-    roi: '3–5%',
-    style: 'Trend-following',
-    pkg: 'Foundation · $3,000',
-    body: 'The defensive engine. Mira follows established trends in the gold market with strict per-trade risk caps — designed for steady, unexciting consistency.',
-    spark: 'M2 30 L16 26 L30 28 L44 22 L58 24 L72 18 L86 20 L100 14 L114 16 L128 10',
+    name: 'MIRA',
+    sub: 'Gold Bot',
+    rows: [
+      { k: 'Status', v: 'Ready', status: true },
+      { k: 'Instrument', v: 'Gold (XAU)' },
+      { k: 'Monthly Average ROI', v: '3–5%', accent: true },
+      { k: 'Price', v: '$3,000' },
+      { k: 'Role', v: 'Guardian risk reader' },
+    ],
+    strategy: 'Gold-focused market monitoring and setup-context checks.',
+    guardian: 'Helps you pause, check volatility, and avoid entering without a plan.',
+    cta: 'View Mira package',
   },
   {
-    name: 'Axon',
-    market: 'Bitcoin',
-    pair: 'BTC/USD',
-    roi: '5–7%',
-    style: 'Momentum & liquidity',
-    pkg: 'Advanced · $4,000',
-    body: 'The highest-yield engine. Axon reads momentum and liquidity shifts in the Bitcoin market and executes without hesitation — around the clock, seven days a week.',
-    spark: 'M2 32 L16 24 L30 27 L44 16 L58 21 L72 12 L86 17 L100 8 L114 12 L128 4',
+    name: 'AXON',
+    sub: 'BTC Bot',
+    rows: [
+      { k: 'Status', v: 'Ready', status: true },
+      { k: 'Instrument', v: 'Bitcoin (BTC)' },
+      { k: 'Monthly Average ROI', v: '5–7%', accent: true },
+      { k: 'Price', v: '$4,000' },
+      { k: 'Role', v: 'Momentum and risk monitor' },
+    ],
+    strategy: 'BTC movement, volatility, and momentum-context monitoring.',
+    guardian: 'Helps you avoid reacting to fast crypto moves without clear structure.',
+    cta: 'View Axon package',
   },
   {
-    name: 'Kairo',
-    market: 'Forex',
-    pair: 'USD/JPY',
-    roi: '4–6%',
-    style: 'Range scalping',
-    pkg: 'Professional · $5,000',
-    body: 'The precision scalper. Kairo works the USD/JPY corridor with many small, controlled trades and mean-reversion logic — rather than big directional bets.',
-    spark: 'M2 28 L16 24 L30 26 L44 20 L58 23 L72 17 L86 19 L100 13 L114 15 L128 8',
+    name: 'KAIRO',
+    sub: 'USD/JPY Bot',
+    rows: [
+      { k: 'Status', v: 'Ready', status: true },
+      { k: 'Instrument', v: 'USD/JPY' },
+      { k: 'Monthly Average ROI', v: '4–6%', accent: true },
+      { k: 'Price', v: '$5,000' },
+      { k: 'Role', v: 'Timing monitor' },
+    ],
+    strategy: 'USD/JPY movement, trend pressure, and timing-context monitoring.',
+    guardian: 'Helps you check whether the moment still fits the plan.',
+    cta: 'View Kairo package',
   },
+];
+
+const relStats = [
+  { v: '92%', k: 'Overall win rate' },
+  { v: '1–2%', k: 'Overall drawdown' },
+  { v: '548 days', k: 'Live + backtested operation' },
+  { v: '4–5%', k: 'Monthly average ROI' },
 ];
 ---
 
-<Layout title="Vectora — Our Bots" description="Meet Mira, Axon and Kairo — three specialist trading bots for gold, Bitcoin and USD/JPY. 92% win rate and 1–2% drawdown across 548 days of live trading and backtesting.">
+<Layout title="Vectora — Bots" description="Vectora Bots: three AI bot profiles designed for private clients who want clearer risk context and more disciplined timing across concrete instruments.">
   <section class="section page-hero">
     <div class="container">
-      <h1 class="reveal">Meet <span class="grad-text">the three.</span></h1>
-      <p class="lede reveal" style="--reveal-delay:120ms">
-        Mira, Axon and Kairo each trade one market and nothing else. Every bot
-        has run in real time alongside 1.5 years of backtesting — 548 days of
-        proof before it touches client capital.
+      <p class="eyebrow reveal">Guardian bot suite</p>
+      <h1 class="reveal" style="--reveal-delay:80ms">Vectora <span class="grad-text">Bots</span></h1>
+      <p class="lede reveal" style="--reveal-delay:140ms">
+        Three AI bot profiles designed for private clients who want clearer
+        risk context and more disciplined timing across concrete instruments.
       </p>
 
-      <ul class="hero-stats reveal" style="--reveal-delay:200ms">
+      <div class="badges reveal" style="--reveal-delay:200ms">
+        {badges.map((b) => <span class="badge">{b}</span>)}
+      </div>
+
+      <ul class="hero-stats reveal" style="--reveal-delay:260ms">
         {heroStats.map((s) => (
           <li><span class="num figure">{s.v}</span><span class="k figure-label">{s.k}</span></li>
         ))}
@@ -61,72 +87,81 @@ const bots = [
     </div>
   </section>
 
-
   <section class="section bots-sec">
     <div class="container">
-      <div class="bot-list">
+      <div class="bot-grid">
         {bots.map((b, i) => (
-          <article class="bot card spot reveal" style={`--reveal-delay:${i * 80}ms`}>
-            <div class="b-id">
-              <div class="b-name-row">
-                <h2>{b.name}</h2>
-                <span class="pair">{b.pair}</span>
-              </div>
-              <span class="market">{b.market}</span>
-              <svg class="spark" viewBox="0 0 130 36" aria-hidden="true" preserveAspectRatio="none">
-                <path d={b.spark} fill="none" stroke="url(#botspark)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
+          <article class="bot card hoverable spot reveal" style={`--reveal-delay:${i * 90}ms`}>
+            <div class="b-head">
+              <h2>{b.name}</h2>
+              <span class="b-sub">{b.sub}</span>
             </div>
 
-            <p class="b-body">{b.body}</p>
-
-            <dl class="b-specs">
-              <div><dt>Target monthly ROI</dt><dd class="accent">{b.roi}</dd></div>
-              <div><dt>Trading style</dt><dd>{b.style}</dd></div>
-              <div><dt>Package</dt><dd>{b.pkg}</dd></div>
+            <dl class="b-rows">
+              {b.rows.map((r) => (
+                <div>
+                  <dt>{r.k}</dt>
+                  <dd class={r.accent ? 'accent' : ''}>
+                    {r.status && <span class="s-dot" aria-hidden="true"></span>}{r.v}
+                  </dd>
+                </div>
+              ))}
             </dl>
 
-            <a href="/packages" class="btn btn-outline b-cta">View package <span class="arrow" aria-hidden="true">→</span></a>
+            <div class="b-block">
+              <span class="b-label">Strategy</span>
+              <p>{b.strategy}</p>
+            </div>
+            <div class="b-block">
+              <span class="b-label">Guardian role</span>
+              <p>{b.guardian}</p>
+            </div>
+
+            <a href="/packages" class="btn btn-outline b-cta">{b.cta} <span class="arrow" aria-hidden="true">→</span></a>
           </article>
         ))}
       </div>
-
-      <svg width="0" height="0" aria-hidden="true">
-        <defs>
-          <linearGradient id="botspark" x1="0" y1="1" x2="1" y2="0">
-            <stop offset="0" stop-color="#09A165" />
-            <stop offset="1" stop-color="#17D48B" />
-          </linearGradient>
-        </defs>
-      </svg>
     </div>
   </section>
 
   <section class="section testing">
     <div class="container">
       <div class="section-head reveal">
-        <h2>548 days <span class="grad-text">of proof</span></h2>
+        <p class="eyebrow">Private client reliability</p>
+        <h2>Capital discipline, <span class="grad-text">before anything else</span></h2>
         <p>
-          Each bot runs in real time alongside 1.5 years of backtesting across
-          calm and volatile market cycles. Nothing goes live for clients until
-          it has held a 92% win rate and kept drawdown within 1–2% — and the
-          figures we publish are static, reviewed with the product team.
+          Vectora is built to sit between the client and the market as a
+          guardian layer. It monitors selected conditions, checks risk
+          context, and helps keep decisions structured.
         </p>
       </div>
 
       <div class="test-stats reveal" style="--reveal-delay:120ms">
-        <div class="ts-tile card spot"><span class="ts-k figure-label">Win rate</span><span class="ts-v figure">92%</span></div>
-        <div class="ts-tile card spot"><span class="ts-k figure-label">Drawdown</span><span class="ts-v figure">1–2%</span></div>
-        <div class="ts-tile card spot"><span class="ts-k figure-label">Avg. monthly ROI</span><span class="ts-v figure">4–5%</span></div>
-        <div class="ts-tile card spot"><span class="ts-k figure-label">Yearly ROI</span><span class="ts-v figure">25–32%</span></div>
+        {relStats.map((s) => (
+          <div class="ts-tile card spot"><span class="ts-k figure-label">{s.k}</span><span class="ts-v figure">{s.v}</span></div>
+        ))}
       </div>
     </div>
   </section>
 
-  <TrialCta />
+  <ClosingCta
+    title='Deploy a bot <span class="grad-text">with guidance</span>'
+    body="Choose your instrument, speak with our team, and prepare your account through one of our supported brokers. Packages are coming soon."
+    primary={{ label: 'View packages →', href: '/packages' }}
+    secondary={{ label: 'Talk to our team', href: '/support' }}
+  />
 </Layout>
 
 <style>
+  .badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.7rem; margin-top: 1.75rem; }
+  .badge {
+    font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--green-bright); background: var(--green-tint);
+    border: 1px solid rgba(23, 212, 139, 0.25);
+    padding: 0.4rem 0.8rem; border-radius: 4px;
+  }
+
   .hero-stats {
     display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;
     margin-top: 2.5rem; padding-top: 1.75rem; border-top: 1px solid var(--line);
@@ -136,47 +171,38 @@ const bots = [
   .hero-stats .k { display: block; margin-top: 0.3rem; }
 
   .bots-sec { padding-top: clamp(1rem, 3vw, 2rem); }
-  .bot-list { display: grid; gap: 1.1rem; }
-  .bot {
-    display: grid; grid-template-columns: 0.9fr 1.3fr 1fr auto;
-    gap: clamp(1.25rem, 3vw, 2.5rem); align-items: center;
-    padding: clamp(1.5rem, 3vw, 2rem);
-  }
-  .b-name-row { display: flex; align-items: baseline; gap: 0.7rem; }
-  .bot h2 { font-size: 1.8rem; }
-  .pair { font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-4); letter-spacing: 0.06em; }
-  .market {
-    display: inline-block; margin-top: 0.6rem;
-    font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--green-bright); background: var(--green-tint);
-    border: 1px solid rgba(23, 212, 139, 0.25);
-    padding: 0.28rem 0.55rem; border-radius: 4px;
-  }
-  .spark { width: min(180px, 100%); height: 30px; margin-top: 0.9rem; opacity: 0.85; }
-  .b-body { color: var(--text-3); font-size: 0.95rem; max-width: 52ch; }
-  .b-specs { display: grid; gap: 0; }
-  .b-specs > div { display: flex; justify-content: space-between; gap: 1rem; padding: 0.55rem 0; border-bottom: 1px solid var(--line); }
-  .b-specs > div:last-child { border-bottom: 0; }
-  .b-specs dt { color: var(--text-3); font-size: 0.82rem; }
-  .b-specs dd { font-family: var(--font-display); font-weight: 600; font-size: 0.88rem; color: var(--text); text-align: right; white-space: nowrap; }
-  .b-specs dd.accent { color: var(--green-bright); }
-  .b-cta { white-space: nowrap; }
+  .bot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+  .bot { display: flex; flex-direction: column; }
+  .b-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+  .bot h2 { font-size: 1.6rem; }
+  .b-sub { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-3); letter-spacing: 0.06em; text-transform: uppercase; }
+
+  .b-rows { display: grid; margin-top: 1.1rem; border-top: 1px solid var(--line); }
+  .b-rows > div { display: flex; justify-content: space-between; gap: 1rem; padding: 0.6rem 0; border-bottom: 1px solid var(--line); }
+  .b-rows dt { color: var(--text-3); font-size: 0.84rem; }
+  .b-rows dd { font-family: var(--font-display); font-weight: 600; font-size: 0.88rem; color: var(--text); text-align: right; display: inline-flex; align-items: center; gap: 0.4rem; }
+  .b-rows dd.accent { color: var(--green-bright); }
+  .s-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green-bright); animation: bpulse 1.8s infinite; }
+  @keyframes bpulse { 0% { box-shadow: 0 0 0 0 rgba(23, 212, 139, 0.5); } 100% { box-shadow: 0 0 0 7px rgba(23, 212, 139, 0); } }
+
+  .b-block { margin-top: 1rem; }
+  .b-label { font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green-bright); }
+  .b-block p { color: var(--text-3); font-size: 0.9rem; margin-top: 0.35rem; }
+  .b-block:last-of-type { flex: 1; }
+
+  .b-cta { width: 100%; margin-top: 1.4rem; }
 
   .testing { background: var(--bg-2); border-block: 1px solid var(--line); }
-
   .test-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
   .ts-tile { padding: 1.5rem; text-align: center; }
   .ts-k { display: block; }
   .ts-v { display: block; font-size: 2rem; margin-top: 0.45rem; color: var(--green-bright); }
 
-  @media (max-width: 980px) {
-    .bot { grid-template-columns: 1fr 1fr; }
-    .b-body { grid-column: 1 / -1; }
-    .b-cta { justify-self: start; }
+  @media (max-width: 900px) {
+    .bot-grid { grid-template-columns: 1fr; max-width: 460px; margin-inline: auto; }
+    .test-stats { grid-template-columns: 1fr 1fr; }
   }
-  @media (max-width: 900px) { .test-stats { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 640px) {
-    .bot { grid-template-columns: 1fr; }
     .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 1.5rem 1rem; }
   }
   @media (max-width: 420px) { .test-stats { grid-template-columns: 1fr; } }

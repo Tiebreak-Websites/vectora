@@ -1,27 +1,49 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import HowItWorks from '../components/HowItWorks.astro';
-import TrialCta from '../components/TrialCta.astro';
+import ClosingCta from '../components/ClosingCta.astro';
+
+// Official copy — strategy page.
+const howBody =
+  'From broker setup to bot activation in three clear steps. The process is designed to keep the client informed before, during, and after each setup.';
+
+const howSteps = [
+  {
+    n: '01',
+    title: 'Join',
+    body: 'Open or join through one of our supported brokers with guidance from the Vectora team.',
+  },
+  {
+    n: '02',
+    title: 'Choose',
+    body: 'Select your bot package: MIRA for Gold, AXON for BTC, or KAIRO for USD/JPY.',
+  },
+  {
+    n: '03',
+    title: 'Review',
+    body: 'Use the guardian layer to review setup context, risk pressure, and signal logic before action.',
+  },
+];
 
 const principles = [
   {
-    title: 'Rules-based execution',
-    body: 'Every entry, position size and exit follows predefined logic — no emotion, no improvisation, the same way every session.',
+    title: 'Rules-Based Setup Support',
+    body: 'Every setup follows structured logic, helping reduce emotional or random decisions.',
     icon: 'rules',
   },
   {
-    title: 'Risk controls first',
-    body: 'Per-trade stops and drawdown caps are enforced automatically. Across all bots, drawdown has stayed within 1–2%.',
+    title: 'Risk Context First',
+    body: 'Before action, Vectora checks movement, volatility, and exposure pressure.',
     icon: 'shield',
   },
   {
-    title: 'Backtested & forward-tested',
-    body: 'Strategies are validated across 1.5 years of historical data and proven in live conditions before they touch client capital.',
+    title: 'Live + Backtested Logic',
+    body: 'Bot logic is supported by real-time tracking and 548 days of live/backtested operation.',
     icon: 'chart',
   },
   {
-    title: 'Fully transparent',
-    body: 'Watch every order, fill and the logic behind it in real time — no black boxes, no hidden behaviour.',
+    title: 'Transparent Workflow',
+    body: 'Clients can see the setup logic, instrument focus, and risk context behind the bot activity.',
     icon: 'eye',
   },
 ];
@@ -34,25 +56,25 @@ const icons: Record<string, string> = {
 };
 ---
 
-<Layout title="Vectora — Strategy" description="How Vectora executes: rules-based, risk-first and fully transparent, on three markets only. Connect, configure, activate.">
+<Layout title="Vectora — Strategy" description="No black-box promises. Vectora turns bot-assisted trading into a clearer workflow: setup context, risk check, signal logic, and human oversight in one place.">
   <section class="section page-hero">
     <div class="container">
-      <h1 class="reveal">Execution you can <span class="grad-text">see.</span></h1>
-      <p class="lede reveal" style="--reveal-delay:120ms">
-        No black boxes. Vectora turns a disciplined trading process into a
-        workflow you can set up in an afternoon — with risk control enforced
-        at every step, on three markets we know deeply.
+      <p class="eyebrow reveal">Strategy</p>
+      <h1 class="reveal" style="--reveal-delay:80ms">Execution you can <span class="grad-text">see.</span></h1>
+      <p class="lede reveal" style="--reveal-delay:140ms">
+        No black-box promises. Vectora turns bot-assisted trading into a
+        clearer workflow: setup context, risk check, signal logic, and human
+        oversight in one place.
       </p>
     </div>
   </section>
 
-  <HowItWorks />
+  <HowItWorks body={howBody} steps={howSteps} />
 
   <section class="section principles">
     <div class="container">
       <div class="section-head reveal">
         <h2>Built on <span class="grad-text">discipline</span></h2>
-        <p>The edge in trading is rarely the idea — it's executing it flawlessly, every time. That's what the engine is for.</p>
       </div>
 
       <div class="pr-grid">
@@ -69,7 +91,12 @@ const icons: Record<string, string> = {
     </div>
   </section>
 
-  <TrialCta />
+  <ClosingCta
+    title='Put your strategy under a <span class="grad-text">guardian layer.</span>'
+    body="Pick a bot package, review the structure with our team, and set the risk preferences that fit how you trade."
+    primary={{ label: 'View packages →', href: '/packages' }}
+    secondary={{ label: 'Talk to our team', href: '/support' }}
+  />
 </Layout>
 
 <style>

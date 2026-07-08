@@ -1,0 +1,76 @@
+---
+// Official copy: three cards under the home hero.
+const pillars = [
+  {
+    n: '01',
+    title: 'Proven Reliability',
+    body: 'Built around 548 days of live and backtested operation, Vectora is designed to support disciplined decisions in fast-moving markets.',
+    tag: 'Tracked bot operation',
+    icon: 'shield',
+  },
+  {
+    n: '02',
+    title: 'Private Client Use',
+    body: 'Used by around 4,000 private clients who want market assistance, clearer risk context, and a more structured way to act.',
+    tag: 'Private clients',
+    icon: 'users',
+  },
+  {
+    n: '03',
+    title: 'Risk-First Precision',
+    body: 'Reads market movement, instrument context, and risk pressure before action, so clients can trade with eyes open.',
+    tag: 'Guardian risk check',
+    icon: 'target',
+  },
+];
+
+const icons: Record<string, string> = {
+  shield: '<path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/><path d="M9.5 12l1.8 1.8L15 10"/>',
+  users: '<path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M21 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  target: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>',
+};
+---
+
+<section class="section pillars">
+  <div class="container">
+    <div class="pillar-grid">
+      {pillars.map((p, i) => (
+        <article class="card hoverable spot pillar reveal" style={`--reveal-delay:${i * 90}ms`}>
+          <div class="pillar-head">
+            <span class="picon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" set:html={icons[p.icon]} />
+            </span>
+            <span class="pnum">{p.n}</span>
+          </div>
+          <h3>{p.title}</h3>
+          <p>{p.body}</p>
+          <span class="ptag">{p.tag}</span>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .pillars { padding-block: clamp(2.5rem, 6vw, 4rem) clamp(3rem, 6vw, 4.5rem); }
+  .pillar-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+  .pillar { display: flex; flex-direction: column; }
+  .pillar-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.1rem; }
+  .picon {
+    display: inline-flex; width: 46px; height: 46px;
+    align-items: center; justify-content: center;
+    border-radius: var(--radius-sm); color: var(--green-bright);
+    background: var(--green-tint); border: 1px solid rgba(23, 212, 139, 0.22);
+  }
+  .picon svg { width: 23px; height: 23px; }
+  .pnum { font-family: var(--font-mono); font-weight: 500; font-size: 1rem; color: var(--text-4); }
+  .pillar h3 { font-size: 1.3rem; margin-bottom: 0.55rem; }
+  .pillar p { color: var(--text-3); font-size: 0.95rem; flex: 1; }
+  .ptag {
+    margin-top: 1.3rem; align-self: flex-start;
+    font-family: var(--font-mono); font-size: 0.68rem; font-weight: 500;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--green-bright);
+  }
+
+  @media (max-width: 900px) { .pillar-grid { grid-template-columns: 1fr; max-width: 460px; margin-inline: auto; } }
+</style>

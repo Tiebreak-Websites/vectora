@@ -1,0 +1,171 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+// Official copy — analytics page.
+const topStats = [
+  { v: '+4–5%', k: 'Monthly Average ROI' },
+  { v: '4,000+', k: 'Private Clients', count: 4000, suffix: '+' },
+];
+
+const bots = [
+  {
+    name: 'Mira', asset: 'Gold',
+    strategy: 'Gold-focused market monitoring and setup context.',
+    roi: '3–5%',
+    spark: 'M2 30 L16 26 L30 28 L44 22 L58 24 L72 18 L86 20 L100 14 L114 16 L128 10',
+  },
+  {
+    name: 'Axon', asset: 'BTC',
+    strategy: 'Bitcoin volatility and momentum context across selected broker conditions.',
+    roi: '5–7%',
+    spark: 'M2 32 L16 24 L30 27 L44 16 L58 21 L72 12 L86 17 L100 8 L114 12 L128 4',
+  },
+  {
+    name: 'Kairo', asset: 'USD/JPY',
+    strategy: 'USD/JPY timing, movement pressure, and risk-context monitoring.',
+    roi: '4–6%',
+    spark: 'M2 28 L16 24 L30 26 L44 20 L58 23 L72 17 L86 19 L100 13 L114 15 L128 8',
+  },
+];
+---
+
+<Layout title="Vectora — Analytics" description="Private client analytics: real-time oversight of supported bot activity, ROI ranges, risk context, and client performance signals.">
+  <section class="section page-hero">
+    <div class="container">
+      <p class="eyebrow reveal">Client analytics</p>
+      <h1 class="reveal" style="--reveal-delay:80ms">Private client <span class="grad-text">analytics</span></h1>
+      <p class="lede reveal" style="--reveal-delay:140ms">
+        Real-time oversight of supported bot activity, ROI ranges, risk
+        context, and client performance signals.
+      </p>
+
+      <ul class="top-stats reveal" style="--reveal-delay:220ms">
+        {topStats.map((s) => (
+          <li class="ts card spot">
+            {s.count
+              ? <span class="ts-v figure" data-count={s.count} data-suffix={s.suffix ?? ''}>{s.v}</span>
+              : <span class="ts-v figure">{s.v}</span>}
+            <span class="ts-k figure-label">{s.k}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section rows-sec">
+    <div class="container">
+      <div class="bot-rows">
+        {bots.map((b, i) => (
+          <article class="row card spot reveal" style={`--reveal-delay:${i * 80}ms`}>
+            <div class="r-id">
+              <h3>{b.name} <span class="asset">({b.asset})</span></h3>
+              <span class="online"><span class="o-dot"></span> Status: Online</span>
+              <svg class="spark" viewBox="0 0 130 36" aria-hidden="true" preserveAspectRatio="none">
+                <path d={b.spark} fill="none" stroke="url(#anaspark)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </div>
+
+            <div class="r-strategy">
+              <span class="r-label">Strategy</span>
+              <p>{b.strategy}</p>
+            </div>
+
+            <dl class="r-metrics">
+              <div><dt>Monthly Average ROI</dt><dd class="accent">{b.roi}</dd></div>
+              <div><dt>Bot Use</dt><dd>Private clients</dd></div>
+              <div><dt>Today's P&amp;L</dt><dd>Dynamic</dd></div>
+              <div><dt>Risk Profile</dt><dd>Guardian risk check</dd></div>
+            </dl>
+
+            <a href="/strategy" class="btn btn-outline r-link">View full strategy <span class="arrow" aria-hidden="true">→</span></a>
+          </article>
+        ))}
+      </div>
+
+      <svg width="0" height="0" aria-hidden="true">
+        <defs>
+          <linearGradient id="anaspark" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0" stop-color="#09A165" />
+            <stop offset="1" stop-color="#17D48B" />
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+  </section>
+
+  <section class="section milestone-sec">
+    <div class="container milestone grad-border spot reveal">
+      <p class="eyebrow">Private client milestone</p>
+      <h2><span class="big" data-count="4000" data-suffix="+">4,000+</span> Private Clients</h2>
+      <p class="m-body">
+        Vectora supports private clients who want a clearer, calmer way to use
+        bot-assisted trading. The system is built for risk context, structured
+        decisions, and guided onboarding through supported brokers.
+      </p>
+      <a href="/support" class="btn btn-primary btn-lg">Join the network <span class="arrow" aria-hidden="true">→</span></a>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .top-stats {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem;
+    max-width: 640px; margin: 2.25rem auto 0;
+  }
+  .ts { padding: 1.5rem; text-align: center; }
+  .ts-v { display: block; font-size: clamp(1.7rem, 3.5vw, 2.3rem); color: var(--green-bright); }
+  .ts-k { display: block; margin-top: 0.4rem; }
+
+  .rows-sec { padding-top: clamp(1rem, 3vw, 2rem); }
+  .bot-rows { display: grid; gap: 1.1rem; }
+  .row {
+    display: grid; grid-template-columns: 0.9fr 1.1fr 1.4fr auto;
+    gap: clamp(1.25rem, 3vw, 2.25rem); align-items: center;
+  }
+  .r-id h3 { font-size: 1.4rem; }
+  .r-id .asset { color: var(--text-3); font-weight: 500; font-size: 1rem; }
+  .online { display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 0.35rem; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--green-bright); }
+  .o-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green-bright); animation: opulse 1.8s infinite; }
+  @keyframes opulse { 0% { box-shadow: 0 0 0 0 rgba(23, 212, 139, 0.5); } 100% { box-shadow: 0 0 0 6px rgba(23, 212, 139, 0); } }
+  .spark { width: min(150px, 100%); height: 28px; margin-top: 0.8rem; opacity: 0.85; }
+
+  .r-label { font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green-bright); }
+  .r-strategy p { color: var(--text-3); font-size: 0.92rem; margin-top: 0.35rem; max-width: 36ch; }
+
+  .r-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 0.35rem 1.5rem; }
+  .r-metrics > div { display: flex; flex-direction: column; padding: 0.35rem 0; }
+  .r-metrics dt { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-4); }
+  .r-metrics dd { font-family: var(--font-display); font-weight: 600; font-size: 0.95rem; color: var(--text); margin-top: 0.15rem; }
+  .r-metrics dd.accent { color: var(--green-bright); }
+
+  .r-link { white-space: nowrap; justify-self: end; }
+
+  .milestone {
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+    padding: clamp(2.5rem, 6vw, 4rem) clamp(1.5rem, 5vw, 3.25rem);
+    border-radius: var(--radius-lg);
+    position: relative;
+    box-shadow: 0 0 70px -28px var(--green-glow);
+  }
+  .milestone h2 { font-size: clamp(2rem, 4.6vw, 3rem); }
+  .milestone .big {
+    background: var(--grad-text);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-variant-numeric: tabular-nums;
+  }
+  .m-body { color: var(--text-3); margin-top: 1rem; max-width: 58ch; }
+  .milestone .btn { margin-top: 1.9rem; }
+
+  @media (max-width: 1020px) {
+    .row { grid-template-columns: 1fr 1fr; }
+    .r-metrics { grid-column: 1 / -1; grid-template-columns: repeat(4, 1fr); }
+    .r-link { justify-self: start; }
+  }
+  @media (max-width: 700px) {
+    .row { grid-template-columns: 1fr; }
+    .r-metrics { grid-template-columns: 1fr 1fr; }
+    .top-stats { grid-template-columns: 1fr; }
+  }
+</style>

@@ -3,16 +3,17 @@ import Logo from './Logo.astro';
 
 const links = [
   { href: '/', label: 'Home' },
-  { href: '/packages', label: 'Our Packages' },
-  { href: '/bots', label: 'Our Bots' },
+  { href: '/#how-it-works', label: 'How It Works' },
+  { href: '/packages', label: 'Packages' },
+  { href: '/bots', label: 'Bots' },
   { href: '/strategy', label: 'Strategy' },
-  { href: '/results', label: 'Results' },
+  { href: '/analytics', label: 'Analytics' },
   { href: '/support', label: 'Support' },
 ];
 
 const current = Astro.url.pathname;
 const isActive = (href: string) =>
-  href === '/' ? current === '/' : current.startsWith(href);
+  href === '/' ? current === '/' : !href.includes('#') && current.startsWith(href);
 ---
 
 <header class="site-header" id="site-header">
@@ -28,8 +29,7 @@ const isActive = (href: string) =>
     </nav>
 
     <div class="actions">
-      <a href="/login" class="login">Log in</a>
-      <a href="/signup" class="btn btn-primary nav-cta">Sign up</a>
+      <a href="/login" class="btn btn-primary nav-cta">Login</a>
       <button class="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
         <span></span><span></span><span></span>
       </button>
@@ -38,8 +38,7 @@ const isActive = (href: string) =>
 
   <nav class="nav-mobile" id="mobile-nav" aria-label="Mobile">
     {links.map((l) => <a href={l.href} class="m-link">{l.label}</a>)}
-    <a href="/login" class="m-link">Log in</a>
-    <a href="/signup" class="btn btn-primary m-cta">Sign up</a>
+    <a href="/login" class="btn btn-primary m-cta">Login</a>
   </nav>
 </header>
 
@@ -87,13 +86,6 @@ const isActive = (href: string) =>
   }
 
   .actions { display: flex; align-items: center; gap: 0.9rem; }
-  .login {
-    font-family: var(--font-display);
-    font-size: 0.92rem; font-weight: 500;
-    color: var(--text-2);
-    transition: color 0.2s ease;
-  }
-  .login:hover { color: var(--text); }
 
   .menu-toggle {
     display: none;
@@ -133,9 +125,9 @@ const isActive = (href: string) =>
   }
   .m-cta { margin-top: 1rem; justify-content: center; }
 
-  @media (max-width: 900px) {
+  @media (max-width: 960px) {
     .nav-desktop { display: none; }
-    .nav-cta, .login { display: none; }
+    .nav-cta { display: none; }
     .menu-toggle { display: flex; }
   }
 </style>

@@ -1,33 +1,11 @@
 ---
-const stats = [
-  { v: '4–5%', k: 'Avg. monthly return' },
-  { v: '92%', k: 'Win rate' },
-  { v: '1–2%', k: 'Max drawdown' },
-  { v: '548', k: 'Days live + backtested' },
-];
-
-const bots = [
-  {
-    name: 'Mira', market: 'Gold', pair: 'XAU/USD', roi: '3–5%',
-    spark: 'M2 30 L16 26 L30 28 L44 22 L58 24 L72 18 L86 20 L100 14 L114 16 L128 10',
-  },
-  {
-    name: 'Axon', market: 'Bitcoin', pair: 'BTC/USD', roi: '5–7%',
-    spark: 'M2 32 L16 24 L30 27 L44 16 L58 21 L72 12 L86 17 L100 8 L114 12 L128 4',
-  },
-  {
-    name: 'Kairo', market: 'Forex', pair: 'USD/JPY', roi: '4–6%',
-    spark: 'M2 28 L16 24 L30 26 L44 20 L58 23 L72 17 L86 19 L100 13 L114 15 L128 8',
-  },
-];
-
 const ticker = [
-  { a: 'MIRA', b: 'XAU/USD', c: '3–5% / mo' },
-  { a: 'AXON', b: 'BTC/USD', c: '5–7% / mo' },
+  { a: 'MIRA', b: 'GOLD (XAU)', c: '3–5% / mo' },
+  { a: 'AXON', b: 'BITCOIN (BTC)', c: '5–7% / mo' },
   { a: 'KAIRO', b: 'USD/JPY', c: '4–6% / mo' },
-  { a: 'ALL BOTS', b: 'WIN RATE', c: '92%' },
-  { a: 'ALL BOTS', b: 'DRAWDOWN', c: '1–2%' },
-  { a: 'ENGINE', b: 'EXECUTION', c: '24/7' },
+  { a: 'ALL BOTS', b: 'OVERALL WIN RATE', c: '92%' },
+  { a: 'ALL BOTS', b: 'OVERALL DRAWDOWN', c: '1–2%' },
+  { a: 'ENGINE', b: 'STATUS', c: '24/7' },
 ];
 ---
 
@@ -36,63 +14,23 @@ const ticker = [
   <div class="hero-fade" aria-hidden="true"></div>
 
   <div class="container hero-copy">
-    <h1 id="hero-title" class="reveal">
-      Trading discipline,<br /><span class="grad-text">automated.</span>
+    <p class="eyebrow reveal">Live portfolio bots</p>
+
+    <h1 id="hero-title" class="reveal" style="--reveal-delay:80ms">
+      Your guardian layer for<br /><span class="grad-text">clearer market decisions.</span>
     </h1>
 
-    <p class="lede reveal" style="--reveal-delay:120ms">
-      Vectora runs three specialist trading bots — on gold, Bitcoin and
-      USD/JPY. Rules-based execution around the clock, with every trade
-      visible in your account.
+    <p class="lede reveal" style="--reveal-delay:160ms">
+      Vectora watches selected market conditions, checks risk around each
+      setup, and helps you see the trade more clearly before you commit.
+      You choose the broker setup, you choose the package, and the final
+      decision stays yours.
     </p>
 
-    <div class="hero-cta reveal" style="--reveal-delay:220ms">
+    <div class="hero-cta reveal" style="--reveal-delay:240ms">
       <a href="/packages" class="btn btn-primary btn-lg">View packages <span class="arrow" aria-hidden="true">→</span></a>
-      <a href="/support" class="btn btn-outline btn-lg">Talk to our team</a>
+      <a href="/support" class="btn btn-outline btn-lg">Get a call from our team</a>
     </div>
-  </div>
-
-  <div class="container">
-    <div class="hero-bots" aria-label="The three Vectora bots">
-      {bots.map((b, i) => (
-        <a href="/bots" class="hb card hoverable spot reveal" style={`--reveal-delay:${300 + i * 90}ms`}>
-          <div class="hb-top">
-            <span class="hb-name">{b.name}</span>
-            <span class="hb-live"><span class="lp"></span> Live</span>
-          </div>
-          <span class="hb-market">{b.market} · {b.pair}</span>
-          <svg class="spark" viewBox="0 0 130 36" aria-hidden="true" preserveAspectRatio="none">
-            <path d={b.spark} fill="none" stroke="url(#herospark)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-          <div class="hb-foot">
-            <div>
-              <span class="hb-roi">{b.roi}</span>
-              <span class="hb-roi-k figure-label">Target / month</span>
-            </div>
-            <span class="hb-arrow" aria-hidden="true">→</span>
-          </div>
-        </a>
-      ))}
-    </div>
-    <p class="hb-note reveal" style="--reveal-delay:560ms">Target monthly return ranges. Live trading plus 1.5 years of backtesting.</p>
-
-    <svg width="0" height="0" aria-hidden="true">
-      <defs>
-        <linearGradient id="herospark" x1="0" y1="1" x2="1" y2="0">
-          <stop offset="0" stop-color="#09A165" />
-          <stop offset="1" stop-color="#17D48B" />
-        </linearGradient>
-      </defs>
-    </svg>
-
-    <ul class="hero-stats reveal" style="--reveal-delay:380ms">
-      {stats.map((s) => (
-        <li>
-          <span class="hs-v figure">{s.v}</span>
-          <span class="hs-k figure-label">{s.k}</span>
-        </li>
-      ))}
-    </ul>
   </div>
 </section>
 
@@ -111,7 +49,7 @@ const ticker = [
 </div>
 
 <style>
-  .hero { padding-block: clamp(3.5rem, 8vw, 6rem) clamp(3rem, 6vw, 4.5rem); position: relative; overflow: hidden; }
+  .hero { padding-block: clamp(4rem, 10vw, 7.5rem); position: relative; overflow: hidden; }
   .hero-canvas {
     position: absolute; inset: 0;
     width: 100%; height: 100%;
@@ -125,72 +63,24 @@ const ticker = [
       linear-gradient(90deg, var(--bg) 0%, transparent 22%, transparent 78%, var(--bg) 100%),
       linear-gradient(180deg, rgba(14, 21, 18, 0.5), transparent 30%, transparent 62%, var(--bg));
   }
-  .hero-copy, .hero-stats, .hero-card { position: relative; }
-
   .hero-copy {
+    position: relative;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
   h1 {
-    font-size: clamp(2.7rem, 6.2vw, 4.6rem);
+    font-size: clamp(2.5rem, 5.6vw, 4.2rem);
     font-weight: 600;
   }
   .lede {
     color: var(--text-2);
-    font-size: 1.16rem;
-    max-width: 56ch;
+    font-size: 1.14rem;
+    max-width: 62ch;
     margin-top: 1.4rem;
   }
   .hero-cta { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.85rem; margin-top: 2.3rem; }
-
-  /* Bots strip — three interactive mini-cards */
-  .hero-bots {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.1rem;
-    margin-top: clamp(2.75rem, 6vw, 4.25rem);
-  }
-  .hb {
-    display: flex; flex-direction: column;
-    padding: 1.35rem 1.45rem 1.25rem;
-    background: rgba(18, 26, 22, 0.85);
-    backdrop-filter: blur(8px);
-    text-align: left;
-  }
-  .hb-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
-  .hb-name { font-family: var(--font-display); font-weight: 600; font-size: 1.25rem; color: var(--text); }
-  .hb-live {
-    display: inline-flex; align-items: center; gap: 0.4rem;
-    font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em;
-    text-transform: uppercase; color: var(--green-bright);
-  }
-  .lp { width: 7px; height: 7px; border-radius: 50%; background: var(--green-bright); animation: lpulse 1.8s infinite; }
-  @keyframes lpulse { 0% { box-shadow: 0 0 0 0 rgba(23, 212, 139, 0.5); } 100% { box-shadow: 0 0 0 8px rgba(23, 212, 139, 0); } }
-  .hb-market { font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-3); margin-top: 0.25rem; letter-spacing: 0.04em; }
-  .hb .spark { width: 100%; height: 34px; margin-top: 1rem; opacity: 0.9; }
-  .hb-foot {
-    display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem;
-    margin-top: 1rem; padding-top: 0.9rem;
-    border-top: 1px solid var(--line);
-  }
-  .hb-roi { display: block; font-family: var(--font-display); font-weight: 600; font-size: 1.45rem; letter-spacing: -0.02em; color: var(--green-bright); font-variant-numeric: tabular-nums; }
-  .hb-roi-k { display: block; margin-top: 0.15rem; }
-  .hb-arrow { color: var(--text-4); font-size: 1.1rem; transition: transform 0.2s ease, color 0.2s ease; }
-  .hb:hover .hb-arrow { transform: translateX(3px); color: var(--green-bright); }
-  .hb-note { margin-top: 1rem; font-size: 0.78rem; color: var(--text-4); text-align: center; }
-
-  /* Stats strip */
-  .hero-stats {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;
-    margin-top: clamp(2.25rem, 5vw, 3.25rem);
-    padding-top: 1.75rem;
-    border-top: 1px solid var(--line);
-    text-align: center;
-  }
-  .hs-v { display: block; font-size: clamp(1.6rem, 3.4vw, 2.3rem); }
-  .hs-k { display: block; margin-top: 0.3rem; }
 
   /* Ticker */
   .marquee { border-block: 1px solid var(--line); background: var(--bg-2); }
@@ -198,11 +88,6 @@ const ticker = [
   .t-a { color: var(--text); font-weight: 500; }
   .t-b { color: var(--text-4); }
   .t-c { color: var(--green-bright); }
-
-  @media (max-width: 860px) {
-    .hero-bots { grid-template-columns: 1fr; max-width: 420px; margin-inline: auto; margin-top: 2.5rem; }
-    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 1.5rem 1rem; }
-  }
 </style>
 
 <script>
