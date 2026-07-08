@@ -9,9 +9,9 @@
 
 :root {
   /* ---- Background scale (dark, but clearly not black) ---- */
-  --bg:      #131C18;
-  --bg-2:    #17221D;
-  --bg-3:    #1C2822;
+  --bg:      #0E1512;
+  --bg-2:    #121A16;
+  --bg-3:    #17211C;
 
   /* ---- Text ---- */
   --text:    #F2F5F3;
