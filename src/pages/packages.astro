@@ -1,67 +1,64 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import TrialCta from '../components/TrialCta.astro';
 
+// One package = one bot. Prices and return ranges are confirmed and static.
 const tiers = [
   {
-    tier: 'Tier 01',
-    name: 'Foundation Package',
+    name: 'Foundation',
+    bot: 'Mira',
+    market: 'Gold · XAU/USD',
     price: '$3,000',
-    period: '/ setup',
     featured: false,
-    rows: [
-      { k: 'Bot capacity', v: '01 unit' },
-      { k: 'Min. deposit', v: '$5,000.00' },
-    ],
-    maintenance: '3 months free maintenance included. Reg. $100/mo thereafter.',
-    perks: ['Monthly account check-ins'],
-    cta: 'Select package',
+    roi: '3–5%',
+    blurb: 'The steady starting point — one defensive gold engine with strict risk caps.',
+    perks: ['7-day trial included', 'Guided broker onboarding', 'Monthly account check-ins'],
+    cta: 'Choose Foundation',
   },
   {
-    tier: 'Tier 02',
-    name: 'Advance Package',
-    price: '$5,000',
-    period: '/ setup',
+    name: 'Advanced',
+    bot: 'Axon',
+    market: 'Bitcoin · BTC/USD',
+    price: '$4,000',
     featured: true,
-    rows: [
-      { k: 'Min. deposit', v: '$10,000.00' },
-      { k: 'Execution', v: 'Advanced settings' },
-    ],
-    maintenance: 'Reg. $100/mo thereafter.',
-    perks: ['Weekly priority check-ins'],
-    cta: 'Upgrade now',
+    roi: '5–7%',
+    blurb: 'Our highest-yield engine — momentum and liquidity analysis on the Bitcoin market.',
+    perks: ['7-day trial included', 'Guided broker onboarding', 'Weekly priority check-ins'],
+    cta: 'Choose Advanced',
   },
   {
-    tier: 'Tier 03',
-    name: 'Professional Elite',
-    price: '$7,000',
-    period: '/ setup',
+    name: 'Professional',
+    bot: 'Kairo',
+    market: 'Forex · USD/JPY',
+    price: '$5,000',
     featured: false,
-    rows: [
-      { k: 'Min. deposit', v: '$25,000.00' },
-      { k: 'Maintenance', v: '$200 annual fixed' },
-    ],
-    maintenance: '$200 annual fixed fee only.',
-    perks: ['Weekly strategic check-ins', 'Real-time macro event alerts'],
-    cta: 'Request elite access',
+    roi: '4–6%',
+    blurb: 'The precision scalper — many small, controlled trades in the USD/JPY corridor.',
+    perks: ['7-day trial included', 'Guided broker onboarding', 'Dedicated account manager'],
+    cta: 'Choose Professional',
   },
 ];
 
 const compare = [
-  { feature: 'Algorithmic Precision', foundation: 'Standard', advance: 'High-Frequency', elite: 'Quantum Priority' },
-  { feature: 'Risk Management Matrix', foundation: 'Auto-Stop', advance: 'Dynamic Hedging', elite: 'Institutional Grade' },
-  { feature: 'Account Manager Access', foundation: 'Email / Portal', advance: 'Dedicated Slack', elite: 'Direct Line / 24-7' },
-  { feature: 'System Latency', foundation: '5ms', advance: '1.2ms', elite: '<0.5ms' },
+  { feature: 'Included bot', foundation: 'Mira', advanced: 'Axon', professional: 'Kairo' },
+  { feature: 'Market', foundation: 'Gold (XAU/USD)', advanced: 'Bitcoin (BTC/USD)', professional: 'USD/JPY' },
+  { feature: 'Target monthly ROI', foundation: '3–5%', advanced: '5–7%', professional: '4–6%' },
+  { feature: 'Win rate (all bots)', foundation: '92%', advanced: '92%', professional: '92%' },
+  { feature: 'Drawdown (all bots)', foundation: '1–2%', advanced: '1–2%', professional: '1–2%' },
+  { feature: 'Trial', foundation: '7 days', advanced: '7 days', professional: '7 days' },
+  { feature: 'Check-ins', foundation: 'Monthly', advanced: 'Weekly', professional: 'Dedicated manager' },
 ];
 ---
 
-<Layout title="Vectora — Our Packages" description="Institutional deployment tiers for Vectora's high-frequency execution protocols. Foundation, Advance and Professional Elite packages.">
+<Layout title="Vectora — Our Packages" description="One package, one bot. Foundation with Mira (gold, $3,000), Advanced with Axon (Bitcoin, $4,000) and Professional with Kairo (USD/JPY, $5,000). 7-day trial, no maintenance fees.">
   <section class="section page-hero">
     <div class="container">
-      <span class="eyebrow reveal"><span class="dot"></span> System classification: institutional tiers</span>
-      <h1 class="reveal" style="--reveal-delay:80ms">High-Frequency <span class="text-accent">Execution Protocols</span>.</h1>
+      <span class="eyebrow reveal">Our packages</span>
+      <h1 class="reveal" style="--reveal-delay:80ms">One package,<br />one bot.</h1>
       <p class="lede reveal" style="--reveal-delay:140ms">
-        Select a deployment package optimised for your capital allocation. All bots
-        operate on our proprietary quantum-kinetic latency engine.
+        Every package is a one-time setup that includes exactly one bot, matched
+        to its market. No maintenance fees, no hidden costs — and a 7-day trial
+        before you commit.
       </p>
     </div>
   </section>
@@ -70,19 +67,17 @@ const compare = [
     <div class="container">
       <div class="tier-grid">
         {tiers.map((t, i) => (
-          <article class={`tier reveal ${t.featured ? 'featured' : ''}`} style={`--reveal-delay:${i * 90}ms`}>
-            {t.featured && <span class="rec">Recommended</span>}
-            <span class="tier-no">{t.tier}</span>
+          <article class={`tier card reveal ${t.featured ? 'featured' : ''}`} style={`--reveal-delay:${i * 90}ms`}>
+            {t.featured && <span class="rec">Most popular</span>}
             <h3>{t.name}</h3>
-            <div class="price"><span class="amt">{t.price}</span><span class="per">{t.period}</span></div>
+            <p class="blurb">{t.blurb}</p>
+            <div class="price"><span class="amt figure">{t.price}</span><span class="per">one-time setup</span></div>
 
             <dl class="t-rows">
-              {t.rows.map((r) => (
-                <div><dt>{r.k}</dt><dd>{r.v}</dd></div>
-              ))}
+              <div><dt>Included bot</dt><dd>{t.bot}</dd></div>
+              <div><dt>Market</dt><dd>{t.market}</dd></div>
+              <div><dt>Target monthly ROI</dt><dd class="accent">{t.roi}</dd></div>
             </dl>
-
-            <div class="maint"><span class="maint-label">Maintenance</span><p>{t.maintenance}</p></div>
 
             <ul class="perks">
               {t.perks.map((p) => (
@@ -90,106 +85,92 @@ const compare = [
               ))}
             </ul>
 
-            <a href="/support" class={`btn ${t.featured ? 'btn-primary' : 'btn-ghost'} t-cta`}>{t.cta}</a>
+            <a href="/support" class={`btn ${t.featured ? 'btn-primary' : 'btn-outline'} t-cta`}>{t.cta}</a>
           </article>
         ))}
       </div>
+      <p class="note fees-note reveal">No monthly maintenance or annual fees. The setup price is all you pay Vectora.</p>
     </div>
   </section>
 
   <section class="section compare-sec">
     <div class="container">
       <div class="section-head reveal">
-        <span class="eyebrow">Technical specification breakdown</span>
-        <h2>Detailed <span class="text-accent">comparative logic</span></h2>
+        <span class="eyebrow">Side by side</span>
+        <h2>Compare the packages</h2>
       </div>
 
-      <div class="table-wrap reveal">
+      <div class="table-wrap card reveal">
         <table class="compare">
           <thead>
-            <tr><th>Feature set</th><th>Foundation</th><th>Advance</th><th>Elite</th></tr>
+            <tr><th>Feature</th><th>Foundation</th><th>Advanced</th><th>Professional</th></tr>
           </thead>
           <tbody>
             {compare.map((row) => (
               <tr>
                 <td class="feat">{row.feature}</td>
                 <td>{row.foundation}</td>
-                <td>{row.advance}</td>
-                <td class="elite">{row.elite}</td>
+                <td class="hl">{row.advanced}</td>
+                <td>{row.professional}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+      <p class="note reveal" style="margin-top: 1rem;">
+        Win rate and drawdown are measured across all three bots over live trading plus 1.5 years of backtesting.
+      </p>
     </div>
   </section>
 
-  <section class="section cta-sec">
-    <div class="container cta reveal">
-      <h2>Ready to <span class="text-accent">initiate deployment</span>?</h2>
-      <p>Our institutional consultants are available to assist with your initial bot configuration and capital structuring.</p>
-      <div class="cta-actions">
-        <a href="/support" class="btn btn-primary btn-lg">Schedule consultation</a>
-        <a href="/bots" class="btn btn-ghost btn-lg">View system docs</a>
-      </div>
-    </div>
-  </section>
+  <TrialCta />
 </Layout>
 
 <style>
   .page-hero { padding-block: clamp(2.5rem, 6vw, 4rem) clamp(1rem, 3vw, 2rem); }
-  .page-hero h1 { font-size: clamp(2.4rem, 6vw, 4rem); font-weight: 800; margin-top: 1.2rem; max-width: 16ch; }
-  .lede { color: var(--c-text-muted); font-size: 1.1rem; max-width: 56ch; margin-top: 1.2rem; }
+  .page-hero h1 { font-size: clamp(2.4rem, 6vw, 4rem); margin-top: 1.2rem; }
+  .lede { color: var(--ink-3); font-size: 1.1rem; max-width: 56ch; margin-top: 1.2rem; }
 
   .tiers-sec { padding-top: clamp(1rem, 3vw, 2rem); }
-  .tier-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; align-items: start; }
-  .tier {
-    position: relative; display: flex; flex-direction: column;
-    padding: 2rem 1.75rem; background: var(--grad-panel);
-    border: 1px solid var(--glass-border); border-radius: var(--radius-lg);
-    backdrop-filter: blur(var(--glass-blur));
-  }
-  .tier.featured { border-color: rgba(18,201,125,0.45); box-shadow: var(--glow-accent); transform: translateY(-8px); }
+  .tier-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; align-items: stretch; }
+  .tier { position: relative; display: flex; flex-direction: column; padding: 2rem 1.75rem; }
+  .tier.featured { border-color: var(--green); box-shadow: 0 0 0 1px var(--green), var(--shadow-lift); }
   .rec {
-    position: absolute; top: 0; right: 0;
-    font-family: var(--font-display); font-size: 0.66rem; font-weight: 700;
-    letter-spacing: 0.08em; text-transform: uppercase; color: #062A1B;
-    background: var(--grad-accent); padding: 0.35rem 0.7rem;
-    border-radius: 0 var(--radius-lg) 0 var(--radius);
+    position: absolute; top: -12px; left: 1.75rem;
+    font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase; color: #fff;
+    background: var(--green); padding: 0.32rem 0.65rem; border-radius: 4px;
   }
-  .tier-no { font-family: var(--font-display); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--c-text-dim); }
-  .tier h3 { font-size: 1.5rem; margin-top: 0.3rem; }
-  .price { display: flex; align-items: baseline; gap: 0.4rem; margin: 1rem 0 1.4rem; }
-  .amt { font-family: var(--font-display); font-weight: 800; font-size: 2.6rem; letter-spacing: -0.03em; color: var(--c-accent-bright); }
-  .per { color: var(--c-text-dim); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em; }
-  .t-rows { display: grid; gap: 0; border-top: 1px solid var(--c-border); }
-  .t-rows > div { display: flex; justify-content: space-between; padding: 0.7rem 0; border-bottom: 1px solid var(--c-border); }
-  .t-rows dt { color: var(--c-text-muted); font-size: 0.85rem; }
-  .t-rows dd { font-family: var(--font-display); font-weight: 600; font-size: 0.9rem; color: var(--c-text); }
-  .maint { margin: 1.1rem 0; padding: 1rem; border: 1px solid var(--glass-border); border-radius: var(--radius); background: var(--c-accent-soft); }
-  .maint-label { font-family: var(--font-display); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--c-accent-bright); }
-  .maint p { color: var(--c-text-muted); font-size: 0.85rem; margin-top: 0.4rem; }
-  .perks { display: grid; gap: 0.6rem; margin-bottom: 1.4rem; }
-  .perks li { display: flex; gap: 0.55rem; align-items: flex-start; color: var(--c-text-soft); font-size: 0.92rem; }
-  .perks svg { width: 17px; height: 17px; color: var(--c-accent-bright); flex: none; margin-top: 2px; }
+  .tier h3 { font-size: 1.45rem; }
+  .blurb { color: var(--ink-3); font-size: 0.92rem; margin-top: 0.5rem; min-height: 3.6em; }
+  .price { display: flex; align-items: baseline; gap: 0.55rem; margin: 1.1rem 0 1.3rem; }
+  .amt { font-size: 2.5rem; }
+  .per { font-family: var(--font-mono); color: var(--ink-4); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; }
+  .t-rows { display: grid; border-top: 1px solid var(--line); }
+  .t-rows > div { display: flex; justify-content: space-between; gap: 1rem; padding: 0.7rem 0; border-bottom: 1px solid var(--line); }
+  .t-rows dt { color: var(--ink-3); font-size: 0.85rem; }
+  .t-rows dd { font-family: var(--font-display); font-weight: 600; font-size: 0.9rem; color: var(--ink); text-align: right; }
+  .t-rows dd.accent { color: var(--green-deep); }
+  .perks { display: grid; gap: 0.6rem; margin: 1.2rem 0 1.4rem; }
+  .perks li { display: flex; gap: 0.55rem; align-items: flex-start; color: var(--ink-2); font-size: 0.92rem; }
+  .perks svg { width: 17px; height: 17px; color: var(--green); flex: none; margin-top: 2px; }
   .t-cta { width: 100%; margin-top: auto; }
+  .fees-note { margin-top: 1.25rem; }
 
-  .table-wrap { overflow-x: auto; border: 1px solid var(--glass-border); border-radius: var(--radius-lg); background: var(--grad-panel); }
+  .table-wrap { overflow-x: auto; padding: 0; }
   table.compare { width: 100%; border-collapse: collapse; min-width: 640px; }
-  .compare th, .compare td { text-align: left; padding: 1rem 1.25rem; border-bottom: 1px solid var(--c-border); }
-  .compare thead th { font-family: var(--font-display); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--c-text-dim); background: rgba(0,0,0,0.2); }
+  .compare th, .compare td { text-align: left; padding: 0.95rem 1.25rem; border-bottom: 1px solid var(--line); }
+  .compare thead th {
+    font-family: var(--font-mono); font-weight: 500; font-size: 0.72rem;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-4);
+    background: var(--paper-2);
+  }
   .compare tbody tr:last-child td { border-bottom: 0; }
-  .compare td { font-size: 0.94rem; color: var(--c-text-soft); }
-  .compare td.feat { font-family: var(--font-display); font-weight: 600; color: var(--c-text); }
-  .compare td.elite { color: var(--c-accent-bright); font-weight: 600; }
-
-  .cta { text-align: center; max-width: 680px; margin-inline: auto; padding: clamp(2rem, 5vw, 3.5rem); background: var(--grad-soft); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); }
-  .cta h2 { font-size: clamp(1.8rem, 4vw, 2.7rem); }
-  .cta p { color: var(--c-text-muted); margin-top: 0.8rem; }
-  .cta-actions { display: flex; gap: 0.85rem; justify-content: center; flex-wrap: wrap; margin-top: 1.8rem; }
+  .compare td { font-size: 0.94rem; color: var(--ink-2); }
+  .compare td.feat { font-family: var(--font-display); font-weight: 600; color: var(--ink); }
+  .compare td.hl { color: var(--green-deep); font-weight: 500; }
 
   @media (max-width: 900px) {
     .tier-grid { grid-template-columns: 1fr; max-width: 420px; margin-inline: auto; }
-    .tier.featured { transform: none; }
   }
 </style>

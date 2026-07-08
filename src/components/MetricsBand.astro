@@ -1,0 +1,63 @@
+---
+// Confirmed performance figures — static, reviewed with the product team.
+const metrics = [
+  { v: '25–32%', k: 'Yearly ROI' },
+  { v: '4–5%', k: 'Avg. monthly ROI' },
+  { v: '92%', k: 'Win rate, all bots' },
+  { v: '1–2%', k: 'Drawdown, all bots' },
+  { v: '548', k: 'Days live + backtested' },
+];
+---
+
+<section class="band" aria-label="Performance metrics">
+  <div class="container">
+    <div class="band-head reveal">
+      <span class="band-eyebrow">The numbers</span>
+      <h2>Measured, not promised</h2>
+    </div>
+    <ul class="band-grid reveal" style="--reveal-delay:100ms">
+      {metrics.map((m) => (
+        <li>
+          <span class="bv">{m.v}</span>
+          <span class="bk">{m.k}</span>
+        </li>
+      ))}
+    </ul>
+    <p class="band-note reveal" style="--reveal-delay:180ms">
+      Figures across all three bots, from live trading plus 1.5 years of backtesting. Reviewed quarterly.
+    </p>
+  </div>
+</section>
+
+<style>
+  .band { background: var(--dark); padding-block: clamp(3.5rem, 8vw, 6rem); }
+  .band-eyebrow {
+    display: inline-flex; align-items: center; gap: 0.55rem;
+    font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase; color: #3ECF95;
+  }
+  .band-eyebrow::before { content: ''; width: 8px; height: 8px; background: var(--green); }
+  .band-head h2 { color: #fff; font-size: clamp(1.9rem, 4vw, 2.7rem); margin-top: 1rem; }
+
+  .band-grid {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.5rem 1rem;
+    margin-top: clamp(2rem, 5vw, 3rem);
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--dark-line);
+  }
+  .bv {
+    display: block;
+    font-family: var(--font-display); font-weight: 600; letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    font-size: clamp(1.7rem, 3.6vw, 2.5rem); color: #3ECF95;
+  }
+  .bk {
+    display: block; margin-top: 0.35rem;
+    font-family: var(--font-mono); font-size: 0.7rem;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--dark-muted);
+  }
+  .band-note { margin-top: clamp(1.75rem, 4vw, 2.5rem); font-size: 0.85rem; color: var(--dark-muted); max-width: 60ch; }
+
+  @media (max-width: 900px) { .band-grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 560px) { .band-grid { grid-template-columns: repeat(2, 1fr); } }
+</style>

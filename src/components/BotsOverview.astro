@@ -1,0 +1,93 @@
+---
+const bots = [
+  {
+    name: 'Mira',
+    market: 'Gold',
+    pair: 'XAU/USD',
+    roi: '3–5%',
+    package: 'Foundation package',
+    body: 'A steady, defensive engine. Mira trades gold with strict per-trade risk caps — built for consistency over excitement.',
+  },
+  {
+    name: 'Axon',
+    market: 'Bitcoin',
+    pair: 'BTC/USD',
+    roi: '5–7%',
+    package: 'Advanced package',
+    body: 'Our highest-yield engine. Axon reads momentum and liquidity in the Bitcoin market and executes without hesitation.',
+  },
+  {
+    name: 'Kairo',
+    market: 'Forex',
+    pair: 'USD/JPY',
+    roi: '4–6%',
+    package: 'Professional package',
+    body: 'A precision scalper. Kairo works the USD/JPY corridor — many small, controlled trades rather than big bets.',
+  },
+];
+---
+
+<section class="section bots-overview">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Three bots, three markets</span>
+      <h2>Specialists, not generalists</h2>
+      <p>
+        We deliberately trade three markets only — gold, Bitcoin and USD/JPY.
+        Each bot masters one market, and every trade goes through the brokers
+        we work with directly.
+      </p>
+    </div>
+
+    <div class="bot-grid">
+      {bots.map((b, i) => (
+        <article class="card hoverable bot reveal" style={`--reveal-delay:${i * 90}ms`}>
+          <div class="bot-top">
+            <h3>{b.name}</h3>
+            <span class="pair">{b.pair}</span>
+          </div>
+          <span class="market">{b.market}</span>
+          <p class="body">{b.body}</p>
+          <div class="bot-foot">
+            <div>
+              <span class="roi figure">{b.roi}</span>
+              <span class="figure-label">Target / month</span>
+            </div>
+            <a href="/packages" class="pkg">{b.package} →</a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .bots-overview { padding-top: 0; }
+  .bot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+  .bot { display: flex; flex-direction: column; }
+  .bot-top { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+  .bot-top h3 { font-size: 1.55rem; }
+  .pair { font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-4); letter-spacing: 0.06em; }
+  .market {
+    display: inline-block; margin-top: 0.5rem; align-self: flex-start;
+    font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--green-ink); background: var(--green-tint);
+    padding: 0.3rem 0.6rem; border-radius: 4px;
+  }
+  .body { color: var(--ink-3); font-size: 0.95rem; margin-top: 1rem; flex: 1; }
+  .bot-foot {
+    display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem;
+    margin-top: 1.5rem; padding-top: 1.15rem; border-top: 1px solid var(--line);
+  }
+  .roi { display: block; font-size: 1.7rem; color: var(--green-deep); }
+  .pkg {
+    font-family: var(--font-display); font-size: 0.88rem; font-weight: 600; color: var(--ink);
+    border-bottom: 1px solid var(--line-strong);
+    padding-bottom: 2px;
+    transition: border-color 0.2s ease, color 0.2s ease;
+    white-space: nowrap;
+  }
+  .pkg:hover { color: var(--green-deep); border-color: var(--green); }
+
+  @media (max-width: 900px) { .bot-grid { grid-template-columns: 1fr; max-width: 460px; margin-inline: auto; } }
+</style>

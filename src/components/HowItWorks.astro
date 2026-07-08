@@ -1,0 +1,109 @@
+---
+const steps = [
+  {
+    n: '01',
+    title: 'Connect',
+    body: 'Open an account with our partnered broker — we guide you through it. You keep full visibility of your account at all times.',
+  },
+  {
+    n: '02',
+    title: 'Configure',
+    body: 'Pick your bot and set your risk limits together with our team. The rules are fixed before a single trade is placed.',
+  },
+  {
+    n: '03',
+    title: 'Activate',
+    body: 'The bot trades for you around the clock. Follow every entry, exit and the logic behind it, live.',
+  },
+];
+
+const log = [
+  { t: '09:31:02', s: 'BUY', a: 'XAU/USD', d: 'filled @ 2,412.30', cls: 'buy' },
+  { t: '09:31:02', s: 'RISK', a: 'stop set', d: '−0.4% · 1.2R target', cls: 'risk' },
+  { t: '10:14:48', s: 'SELL', a: 'BTC/USD', d: '+1.1R locked', cls: 'sell' },
+  { t: '11:02:17', s: 'BUY', a: 'USD/JPY', d: 'filled @ 157.42', cls: 'buy' },
+  { t: '11:46:30', s: 'SCAN', a: 'all markets', d: 'no setup · holding', cls: 'scan' },
+];
+---
+
+<section class="section how" id="how-it-works">
+  <div class="container how-grid">
+    <div class="how-intro reveal">
+      <span class="eyebrow">How it works</span>
+      <h2>Live in three steps</h2>
+      <p>From sign-up to live execution — no spreadsheets, no scripts, no staring at candles. The engine handles the rest, around the clock.</p>
+
+      <ol class="steps">
+        {steps.map((s, i) => (
+          <li class="step" style={`--reveal-delay:${i * 80}ms`}>
+            <span class="step-n">{s.n}</span>
+            <div><h3>{s.title}</h3><p>{s.body}</p></div>
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    <div class="term card reveal" style="--reveal-delay:150ms" aria-hidden="true">
+      <div class="term-top">
+        <span class="term-title">vectora · live engine</span>
+        <span class="term-live"><span class="lp"></span> 24/7</span>
+      </div>
+      <div class="term-body">
+        {log.map((l, i) => (
+          <div class="logline" style={`--i:${i}`}>
+            <span class="lt">{l.t}</span>
+            <span class={`ls ${l.cls}`}>{l.s}</span>
+            <span class="la">{l.a}</span>
+            <span class="ld">{l.d}</span>
+          </div>
+        ))}
+        <div class="logline cursor"><span class="lt">11:46:31</span><span class="caret"></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .how { background: var(--paper-2); border-block: 1px solid var(--line); }
+  .how-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 6vw, 4.5rem); align-items: center; }
+  .how-intro > p { color: var(--ink-3); margin-top: 1rem; font-size: 1.02rem; max-width: 46ch; }
+
+  .steps { margin-top: 2rem; display: grid; gap: 1.1rem; }
+  .step { display: flex; gap: 1.05rem; align-items: flex-start; }
+  .step-n {
+    flex: none; width: 40px; height: 40px;
+    display: grid; place-items: center; border-radius: var(--radius-sm);
+    font-family: var(--font-mono); font-weight: 500; font-size: 0.85rem;
+    color: var(--green-ink); background: var(--green-tint);
+    border: 1px solid var(--line);
+  }
+  .step h3 { font-size: 1.12rem; }
+  .step p { color: var(--ink-3); font-size: 0.94rem; margin-top: 0.25rem; max-width: 48ch; }
+
+  /* Order-log visual */
+  .term { padding: 0; overflow: hidden; }
+  .term-top {
+    display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;
+    padding: 0.8rem 1.1rem; border-bottom: 1px solid var(--line); background: var(--paper);
+  }
+  .term-title { font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-3); }
+  .term-live { display: inline-flex; align-items: center; gap: 0.4rem; font-family: var(--font-mono); font-size: 0.72rem; color: var(--green-deep); }
+  .lp { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: pulse2 1.6s infinite; }
+  @keyframes pulse2 { 0%{box-shadow:0 0 0 0 rgba(9,161,101,.35)} 100%{box-shadow:0 0 0 9px rgba(9,161,101,0)} }
+
+  .term-body { padding: 1.1rem 1.2rem 1.3rem; font-family: var(--font-mono); font-size: 0.8rem; display: grid; gap: 0.6rem; min-height: 220px; }
+  .logline { display: flex; gap: 0.7rem; align-items: center; opacity: 0; transform: translateX(-6px); animation: logIn 0.5s ease forwards; animation-delay: calc(var(--i) * 0.5s + 0.3s); white-space: nowrap; }
+  @keyframes logIn { to { opacity: 1; transform: none; } }
+  .lt { color: var(--ink-4); }
+  .ls { font-weight: 500; padding: 0.1rem 0.45rem; border-radius: 4px; font-size: 0.7rem; }
+  .ls.buy { color: #fff; background: var(--green); }
+  .ls.sell { color: #fff; background: var(--ink); }
+  .ls.risk { color: var(--green-ink); background: var(--green-tint); }
+  .ls.scan { color: var(--ink-3); background: var(--paper-2); border: 1px solid var(--line); }
+  .la { color: var(--ink); font-weight: 500; }
+  .ld { color: var(--ink-3); overflow: hidden; text-overflow: ellipsis; }
+  .caret { display: inline-block; width: 8px; height: 15px; background: var(--green); animation: blink 1s steps(2) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  @media (max-width: 900px) { .how-grid { grid-template-columns: 1fr; } }
+</style>

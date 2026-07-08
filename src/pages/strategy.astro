@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Strategy from '../components/Strategy.astro';
+import HowItWorks from '../components/HowItWorks.astro';
+import TrialCta from '../components/TrialCta.astro';
 
 const principles = [
   {
@@ -10,12 +11,12 @@ const principles = [
   },
   {
     title: 'Risk controls first',
-    body: 'Per-trade stops, daily loss limits and maximum-drawdown caps that you set and the engine enforces automatically.',
+    body: 'Per-trade stops and drawdown caps are enforced automatically. Across all bots, drawdown has stayed within 1–2%.',
     icon: 'shield',
   },
   {
     title: 'Backtested & forward-tested',
-    body: 'Strategies are validated across historical data and proven on a live demo account before they touch real capital.',
+    body: 'Strategies are validated across 1.5 years of historical data and proven in live conditions before they touch client capital.',
     icon: 'chart',
   },
   {
@@ -33,31 +34,32 @@ const icons: Record<string, string> = {
 };
 ---
 
-<Layout title="Vectora — Strategy" description="How Vectora executes your strategy: rules-based, risk-first and fully transparent. Connect, configure, activate.">
+<Layout title="Vectora — Strategy" description="How Vectora executes: rules-based, risk-first and fully transparent, on three markets only. Connect, configure, activate.">
   <section class="section page-hero">
     <div class="container">
-      <span class="eyebrow reveal"><span class="dot"></span> Strategy</span>
-      <h1 class="reveal" style="--reveal-delay:80ms">Execution you can <span class="text-accent">see</span>.</h1>
+      <span class="eyebrow reveal">Strategy</span>
+      <h1 class="reveal" style="--reveal-delay:80ms">Execution you can see.</h1>
       <p class="lede reveal" style="--reveal-delay:140ms">
-        No black boxes. Vectora turns a disciplined trading process into a workflow
-        you can set up in an afternoon — with risk control enforced at every step.
+        No black boxes. Vectora turns a disciplined trading process into a
+        workflow you can set up in an afternoon — with risk control enforced
+        at every step, on three markets we know deeply.
       </p>
     </div>
   </section>
 
-  <Strategy />
+  <HowItWorks />
 
   <section class="section principles">
     <div class="container">
       <div class="section-head reveal">
         <span class="eyebrow">Principles</span>
-        <h2>Built on <span class="text-accent">discipline</span></h2>
+        <h2>Built on discipline</h2>
         <p>The edge in trading is rarely the idea — it's executing it flawlessly, every time. That's what the engine is for.</p>
       </div>
 
       <div class="pr-grid">
         {principles.map((p, i) => (
-          <article class="card pr reveal" style={`--reveal-delay:${i * 70}ms`}>
+          <article class="card hoverable pr reveal" style={`--reveal-delay:${i * 70}ms`}>
             <span class="pr-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" set:html={icons[p.icon]} />
             </span>
@@ -69,39 +71,25 @@ const icons: Record<string, string> = {
     </div>
   </section>
 
-  <section class="section cta-sec">
-    <div class="container cta reveal">
-      <h2>Put your strategy <span class="text-accent">on autopilot</span></h2>
-      <p>Pick a package or talk to our team about a setup that fits how you trade.</p>
-      <div class="cta-actions">
-        <a href="/packages" class="btn btn-primary btn-lg">View packages <span class="arrow" aria-hidden="true">→</span></a>
-        <a href="/support" class="btn btn-ghost btn-lg">Talk to our team</a>
-      </div>
-    </div>
-  </section>
+  <TrialCta />
 </Layout>
 
 <style>
-  .page-hero { padding-block: clamp(2.5rem, 6vw, 4rem) clamp(0.5rem, 2vw, 1rem); }
-  .page-hero h1 { font-size: clamp(2.6rem, 6vw, 4.2rem); font-weight: 800; margin-top: 1.2rem; }
-  .lede { color: var(--c-text-muted); font-size: 1.1rem; max-width: 58ch; margin-top: 1.2rem; }
+  .page-hero { padding-block: clamp(2.5rem, 6vw, 4rem) clamp(1.5rem, 4vw, 3rem); }
+  .page-hero h1 { font-size: clamp(2.6rem, 6vw, 4.2rem); margin-top: 1.2rem; }
+  .lede { color: var(--ink-3); font-size: 1.1rem; max-width: 58ch; margin-top: 1.2rem; }
 
   .pr-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
   .pr { display: flex; flex-direction: column; }
   .pr-icon {
-    display: inline-flex; width: 46px; height: 46px;
-    align-items: center; justify-content: center; border-radius: 12px;
-    margin-bottom: 1.1rem; color: var(--c-accent-bright);
-    background: var(--c-accent-soft); border: 1px solid var(--glass-border);
+    display: inline-flex; width: 44px; height: 44px;
+    align-items: center; justify-content: center; border-radius: var(--radius-sm);
+    margin-bottom: 1.1rem; color: var(--green-deep);
+    background: var(--green-tint); border: 1px solid var(--line);
   }
-  .pr-icon svg { width: 23px; height: 23px; }
+  .pr-icon svg { width: 22px; height: 22px; }
   .pr h3 { font-size: 1.12rem; margin-bottom: 0.5rem; }
-  .pr p { color: var(--c-text-muted); font-size: 0.93rem; }
-
-  .cta { text-align: center; max-width: 660px; margin-inline: auto; padding: clamp(2rem, 5vw, 3.5rem); background: var(--grad-soft); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); }
-  .cta h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); }
-  .cta p { color: var(--c-text-muted); margin-top: 0.8rem; }
-  .cta-actions { display: flex; gap: 0.85rem; justify-content: center; flex-wrap: wrap; margin-top: 1.8rem; }
+  .pr p { color: var(--ink-3); font-size: 0.93rem; }
 
   @media (max-width: 900px) { .pr-grid { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 520px) { .pr-grid { grid-template-columns: 1fr; } }

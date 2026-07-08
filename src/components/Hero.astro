@@ -1,57 +1,119 @@
 ---
+const stats = [
+  { v: '4–5%', k: 'Avg. monthly return' },
+  { v: '92%', k: 'Win rate' },
+  { v: '1–2%', k: 'Max drawdown' },
+  { v: '548', k: 'Days live + backtested' },
+];
+
+const bots = [
+  { name: 'Mira', market: 'Gold · XAU/USD', roi: '3–5% / mo' },
+  { name: 'Axon', market: 'Bitcoin · BTC/USD', roi: '5–7% / mo' },
+  { name: 'Kairo', market: 'Forex · USD/JPY', roi: '4–6% / mo' },
+];
 ---
 
 <section class="hero" aria-labelledby="hero-title">
-  <div class="container hero-inner">
-    <p class="eyebrow reveal"><span class="dot"></span> Live portfolio bots</p>
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow reveal">AI trading bots</p>
 
-    <h1 id="hero-title" class="reveal" style="--reveal-delay:80ms">
-      The future of <span class="text-accent">high-velocity</span><br /> trading is here.
-    </h1>
+      <h1 id="hero-title" class="reveal" style="--reveal-delay:80ms">
+        Trading discipline,<br />automated.
+      </h1>
 
-    <p class="lede reveal" style="--reveal-delay:160ms">
-      Leverage quantum-inspired neural networks for ultra-low latency execution
-      and adaptive risk management — built for institutional liquidity and
-      unyielding performance.
-    </p>
+      <p class="lede reveal" style="--reveal-delay:160ms">
+        Vectora runs three specialist trading bots — on gold, Bitcoin and
+        USD/JPY. Rules-based execution around the clock, with every trade
+        visible in your account.
+      </p>
 
-    <div class="hero-cta reveal" style="--reveal-delay:240ms">
-      <a href="/packages" class="btn btn-primary btn-lg">View packages <span class="arrow" aria-hidden="true">→</span></a>
-      <a href="/support" class="btn btn-ghost btn-lg">Get a call from our team</a>
+      <div class="hero-cta reveal" style="--reveal-delay:240ms">
+        <a href="/packages" class="btn btn-primary btn-lg">View packages <span class="arrow" aria-hidden="true">→</span></a>
+        <a href="/support" class="btn btn-outline btn-lg">Talk to our team</a>
+      </div>
     </div>
+
+    <aside class="hero-card card reveal" style="--reveal-delay:200ms" aria-label="The three Vectora bots">
+      <span class="hc-label">The bots</span>
+      <ul>
+        {bots.map((b) => (
+          <li>
+            <div class="hc-id">
+              <span class="hc-name">{b.name}</span>
+              <span class="hc-market">{b.market}</span>
+            </div>
+            <span class="hc-roi">{b.roi}</span>
+          </li>
+        ))}
+      </ul>
+      <p class="hc-note">Target monthly return ranges. Live trading plus 1.5 years of backtesting.</p>
+    </aside>
+  </div>
+
+  <div class="container">
+    <ul class="hero-stats reveal" style="--reveal-delay:320ms">
+      {stats.map((s) => (
+        <li>
+          <span class="hs-v figure">{s.v}</span>
+          <span class="hs-k figure-label">{s.k}</span>
+        </li>
+      ))}
+    </ul>
   </div>
 </section>
 
 <style>
-  .hero {
-    padding-block: clamp(4rem, 12vw, 8.5rem);
-    text-align: center;
-    position: relative;
-  }
-  .hero-inner {
-    max-width: 1040px;
-    margin-inline: auto;
-    display: flex;
-    flex-direction: column;
+  .hero { padding-block: clamp(3.5rem, 9vw, 6.5rem) clamp(3rem, 7vw, 5rem); }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: clamp(2rem, 6vw, 5rem);
     align-items: center;
   }
   h1 {
-    font-size: clamp(2.3rem, 6vw, 4rem);
-    font-weight: 800;
-    margin-top: 1.5rem;
-    max-width: none;
+    font-size: clamp(2.6rem, 6vw, 4.3rem);
+    font-weight: 600;
+    margin-top: 1.3rem;
   }
   .lede {
-    color: var(--c-text-muted);
-    font-size: 1.2rem;
-    max-width: 62ch;
-    margin-top: 1.5rem;
+    color: var(--ink-3);
+    font-size: 1.15rem;
+    max-width: 50ch;
+    margin-top: 1.3rem;
   }
-  .hero-cta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.85rem;
-    justify-content: center;
-    margin-top: 2.2rem;
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 2.1rem; }
+
+  /* Fact card */
+  .hero-card { padding: 1.5rem; }
+  .hc-label {
+    font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-4);
+  }
+  .hero-card ul { margin-top: 0.9rem; }
+  .hero-card li {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    padding-block: 0.85rem;
+    border-top: 1px solid var(--line);
+  }
+  .hc-name { display: block; font-family: var(--font-display); font-weight: 600; font-size: 1.05rem; color: var(--ink); }
+  .hc-market { font-size: 0.8rem; color: var(--ink-3); }
+  .hc-roi { font-family: var(--font-mono); font-size: 0.9rem; font-weight: 500; color: var(--green-deep); white-space: nowrap; }
+  .hc-note { margin-top: 0.9rem; padding-top: 0.9rem; border-top: 1px solid var(--line); font-size: 0.78rem; color: var(--ink-4); }
+
+  /* Stats strip */
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;
+    margin-top: clamp(2.5rem, 6vw, 4rem);
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--line);
+  }
+  .hs-v { display: block; font-size: clamp(1.6rem, 3.4vw, 2.3rem); }
+  .hs-k { display: block; margin-top: 0.3rem; }
+
+  @media (max-width: 900px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-card { max-width: 460px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 1.5rem 1rem; }
   }
 </style>

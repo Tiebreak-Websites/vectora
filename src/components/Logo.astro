@@ -1,11 +1,12 @@
 ---
-// Vectora brand lockup (white wordmark + green mark).
-// Source asset: /public/vectora-logo-white.svg
-const { height = 30 } = Astro.props;
+// Vectora brand lockup. variant="dark" = dark-ink wordmark for light
+// backgrounds (default); variant="white" = white wordmark for dark bands.
+const { height = 30, variant = 'dark' } = Astro.props;
+const src = variant === 'white' ? '/vectora-logo-white.svg' : '/vectora-logo-dark.svg';
 ---
 
 <img
-  src="/vectora-logo-white.svg"
+  src={src}
   alt="Vectora"
   class="logo"
   height={height}

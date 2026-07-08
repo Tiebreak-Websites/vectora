@@ -9,16 +9,22 @@ const links = [
   { href: '/results', label: 'Results' },
   { href: '/support', label: 'Support' },
 ];
+
+const current = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === '/' ? current === '/' : current.startsWith(href);
 ---
 
 <header class="site-header" id="site-header">
   <div class="container bar">
     <a href="/" class="brand" aria-label="Vectora home">
-      <Logo height={30} />
+      <Logo height={28} />
     </a>
 
     <nav class="nav-desktop" aria-label="Primary">
-      {links.map((l) => <a href={l.href}>{l.label}</a>)}
+      {links.map((l) => (
+        <a href={l.href} class={isActive(l.href) ? 'active' : ''} aria-current={isActive(l.href) ? 'page' : undefined}>{l.label}</a>
+      ))}
     </nav>
 
     <div class="actions">
@@ -37,8 +43,6 @@ const links = [
   </nav>
 </header>
 
-<span id="home"></span>
-
 <style>
   .site-header {
     position: sticky;
@@ -47,39 +51,40 @@ const links = [
     height: var(--header-h);
     display: flex;
     align-items: center;
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    background: rgba(22, 28, 33, 0.6);
+    background: rgba(250, 250, 247, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-bottom: 1px solid transparent;
-    transition: background 0.3s ease, border-color 0.3s ease;
+    transition: border-color 0.3s ease, background 0.3s ease;
   }
   .site-header.scrolled {
-    background: rgba(22, 28, 33, 0.85);
-    border-bottom-color: var(--c-border);
+    background: rgba(250, 250, 247, 0.95);
+    border-bottom-color: var(--line);
   }
   .bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; width: 100%; }
   .brand { display: inline-flex; }
 
-  .nav-desktop { display: flex; gap: 0.25rem; align-items: center; }
+  .nav-desktop { display: flex; gap: 0.15rem; align-items: center; }
   .nav-desktop a {
-    color: var(--c-text-muted);
+    color: var(--ink-3);
     font-family: var(--font-display);
     font-size: 0.92rem;
     font-weight: 500;
-    padding: 0.5rem 0.85rem;
-    border-radius: var(--radius-pill);
+    padding: 0.5rem 0.8rem;
+    border-radius: var(--radius-sm);
     transition: color 0.2s ease, background 0.2s ease;
   }
-  .nav-desktop a:hover { color: var(--c-text); background: rgba(255, 255, 255, 0.05); }
+  .nav-desktop a:hover { color: var(--ink); background: rgba(22, 33, 28, 0.05); }
+  .nav-desktop a.active { color: var(--ink); }
 
   .actions { display: flex; align-items: center; gap: 0.9rem; }
   .login {
     font-family: var(--font-display);
     font-size: 0.92rem; font-weight: 500;
-    color: var(--c-text-soft);
+    color: var(--ink-2);
     transition: color 0.2s ease;
   }
-  .login:hover { color: var(--c-text); }
+  .login:hover { color: var(--ink); }
 
   .menu-toggle {
     display: none;
@@ -87,12 +92,12 @@ const links = [
     gap: 5px;
     width: 44px; height: 44px;
     align-items: center; justify-content: center;
-    background: var(--glass-bg);
-    border: 1px solid var(--c-border-strong);
-    border-radius: 12px;
+    background: var(--surface);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-sm);
     cursor: pointer;
   }
-  .menu-toggle span { width: 20px; height: 2px; background: var(--c-text); border-radius: 2px; transition: transform 0.25s ease, opacity 0.25s ease; }
+  .menu-toggle span { width: 20px; height: 2px; background: var(--ink); border-radius: 2px; transition: transform 0.25s ease, opacity 0.25s ease; }
   .menu-toggle[aria-expanded='true'] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
   .menu-toggle[aria-expanded='true'] span:nth-child(2) { opacity: 0; }
   .menu-toggle[aria-expanded='true'] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
@@ -102,9 +107,8 @@ const links = [
     top: var(--header-h); left: 0; right: 0;
     display: flex; flex-direction: column; gap: 0.25rem;
     padding: 1rem var(--gutter) 1.5rem;
-    background: rgba(20, 26, 31, 0.97);
-    backdrop-filter: blur(14px);
-    border-bottom: 1px solid var(--c-border);
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
     transform: translateY(-12px);
     opacity: 0; pointer-events: none;
     transition: opacity 0.25s ease, transform 0.25s ease;
@@ -113,9 +117,9 @@ const links = [
   .nav-mobile.open { opacity: 1; transform: none; pointer-events: auto; }
   .m-link {
     padding: 0.85rem 0.5rem;
-    color: var(--c-text);
+    color: var(--ink);
     font-family: var(--font-display); font-weight: 500;
-    border-bottom: 1px solid var(--c-border);
+    border-bottom: 1px solid var(--line);
   }
   .m-cta { margin-top: 1rem; justify-content: center; }
 

@@ -1,0 +1,68 @@
+---
+const features = [
+  {
+    n: '01',
+    title: 'Around-the-clock execution',
+    body: 'Markets move while you sleep. The bots monitor their markets continuously and never miss a setup out of fatigue.',
+  },
+  {
+    n: '02',
+    title: 'No emotion, only rules',
+    body: 'Every trade follows predefined logic. No revenge trading, no hesitation, no greed — the same discipline in every session.',
+  },
+  {
+    n: '03',
+    title: 'Risk control first',
+    body: 'Per-trade stops and drawdown caps are enforced automatically. Across all bots, drawdown has stayed within 1–2%.',
+  },
+  {
+    n: '04',
+    title: 'Fully transparent',
+    body: 'You see every order, fill and the logic behind it in your own account — no black boxes, no hidden behaviour.',
+  },
+];
+---
+
+<section class="section why" id="why">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Why automated execution</span>
+      <h2>Built on discipline</h2>
+      <p>The edge in trading is rarely the idea — it's executing it flawlessly, every time. That's what the engine is for.</p>
+    </div>
+
+    <div class="why-grid">
+      {features.map((f, i) => (
+        <article class="why-item reveal" style={`--reveal-delay:${i * 70}ms`}>
+          <span class="wn">{f.n}</span>
+          <h3>{f.title}</h3>
+          <p>{f.body}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .why-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid var(--line);
+  }
+  .why-item {
+    padding: 1.75rem 1.5rem 1.75rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .why-item + .why-item { border-left: 1px solid var(--line); padding-left: 1.5rem; }
+  .wn { font-family: var(--font-mono); font-size: 0.78rem; color: var(--green-deep); }
+  .why-item h3 { font-size: 1.12rem; margin-top: 0.8rem; }
+  .why-item p { color: var(--ink-3); font-size: 0.93rem; margin-top: 0.55rem; }
+
+  @media (max-width: 900px) {
+    .why-grid { grid-template-columns: 1fr 1fr; }
+    .why-item:nth-child(3) { border-left: 0; padding-left: 0; }
+  }
+  @media (max-width: 560px) {
+    .why-grid { grid-template-columns: 1fr; }
+    .why-item + .why-item { border-left: 0; padding-left: 0; }
+  }
+</style>

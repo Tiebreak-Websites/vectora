@@ -1,176 +1,158 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import TrialCta from '../components/TrialCta.astro';
 
-const topStats = [
-  { k: 'Global daily PnL', v: '+4.4%' },
-  { k: 'Total node count', v: '+14.0%' },
+// Confirmed figures — static, reviewed quarterly with the product team.
+const overall = [
+  { v: '25–32%', k: 'Yearly ROI' },
+  { v: '4–5%', k: 'Avg. monthly ROI' },
+  { v: '92%', k: 'Win rate, all bots' },
+  { v: '1–2%', k: 'Drawdown, all bots' },
+  { v: '548', k: 'Days live + backtested' },
+  { v: '4,200+', k: 'Clients' },
 ];
 
 const bots = [
   {
-    name: 'Mira', asset: 'Gold',
-    arch: 'Neural Trend Following & Arbitrage cross-exchange optimisation.',
-    roi: '3.2% – 4.8%', usage: '4,200+', pnl: '+1.2%', pnlPct: 35,
-    hue: 'var(--c-accent-bright)',
+    name: 'Mira', market: 'Gold · XAU/USD',
+    arch: 'Trend-following on gold with strict per-trade risk caps.',
+    roi: '3–5%',
   },
   {
-    name: 'Axon', asset: 'BTC',
-    arch: 'Liquidity Gap Analysis & Sentiment Momentum scoring across 40+ signals.',
-    roi: '5.1% – 7.4%', usage: '6,800+', pnl: '+2.4%', pnlPct: 70,
-    hue: '#3FD9C0',
+    name: 'Axon', market: 'Bitcoin · BTC/USD',
+    arch: 'Momentum and liquidity analysis on the Bitcoin market.',
+    roi: '5–7%',
   },
   {
-    name: 'Kairo', asset: 'USD/JPY',
-    arch: 'High-Frequency Scalping & Mean Reversion within currency corridors.',
-    roi: '2.8% – 4.1%', usage: '3,100+', pnl: '+0.8%', pnlPct: 22,
-    hue: '#5BC8E6',
+    name: 'Kairo', market: 'Forex · USD/JPY',
+    arch: 'Mean-reversion scalping within the USD/JPY corridor.',
+    roi: '4–6%',
   },
 ];
 ---
 
-<Layout title="Vectora — Results" description="Institutional Analytics: real-time oversight of Vectora's autonomous trading systems with 99.998% aggregated uptime.">
+<Layout title="Vectora — Results" description="Vectora performance: 25–32% yearly ROI, 4–5% average monthly ROI, 92% win rate and 1–2% drawdown across 548 days of live trading and backtesting.">
   <section class="section page-hero">
-    <div class="container hero-row">
-      <div>
-        <h1 class="reveal">Institutional <span class="text-accent">Analytics</span></h1>
-        <p class="lede reveal" style="--reveal-delay:80ms">
-          Real-time oversight of quantum-executable autonomous trading systems.
-          Aggregated institutional uptime: 99.998%.
-        </p>
-      </div>
-      <div class="top-stats reveal" style="--reveal-delay:140ms">
-        {topStats.map((s) => (
-          <div class="ts"><span class="ts-k">{s.k}</span><span class="ts-v">{s.v}</span></div>
-        ))}
-      </div>
+    <div class="container">
+      <span class="eyebrow reveal">Results</span>
+      <h1 class="reveal" style="--reveal-delay:80ms">The numbers,<br />plainly stated.</h1>
+      <p class="lede reveal" style="--reveal-delay:140ms">
+        Every figure on this page comes from live trading plus 1.5 years of
+        backtesting. They are static, reviewed quarterly — not live tickers,
+        not projections.
+      </p>
     </div>
   </section>
 
-  <section class="section rows-sec">
+  <section class="section overall-sec">
     <div class="container">
+      <ul class="overall-grid reveal">
+        {overall.map((m) => (
+          <li class="ov card">
+            <span class="ov-v figure">{m.v}</span>
+            <span class="ov-k figure-label">{m.k}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section perbot-sec">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Per bot</span>
+        <h2>Target monthly returns</h2>
+      </div>
+
       <div class="bot-rows">
         {bots.map((b, i) => (
-          <article class="row card reveal" style={`--hue:${b.hue}; --reveal-delay:${i * 80}ms`}>
-            <span class="bar" aria-hidden="true"></span>
-
+          <article class="row card reveal" style={`--reveal-delay:${i * 80}ms`}>
             <div class="r-id">
-              <div class="r-head">
-                <span class="r-chip" aria-hidden="true"></span>
-                <div>
-                  <h3>{b.name} <span class="asset">({b.asset})</span></h3>
-                  <span class="online"><span class="o-dot"></span> System online</span>
-                </div>
-              </div>
-              <div class="arch">
-                <span class="arch-label">Strategy architecture</span>
-                <p>{b.arch}</p>
-              </div>
+              <h3>{b.name}</h3>
+              <span class="r-market">{b.market}</span>
             </div>
-
-            <div class="r-metrics">
-              <div class="m"><span class="m-k">Target ROI</span><span class="m-v">{b.roi}</span><span class="m-sub">Monthly</span></div>
-              <div class="m"><span class="m-k">Institutional usage</span><span class="m-v">{b.usage}</span><span class="m-sub">Active nodes</span></div>
-              <div class="m">
-                <span class="m-k">Today's PnL</span>
-                <span class="m-v accent">{b.pnl}</span>
-                <span class="bar-track"><span class="bar-fill" style={`width:${b.pnlPct}%`}></span></span>
-              </div>
-              <div class="m">
-                <span class="m-k">Risk profile</span>
-                <span class="risk">Zero drawdown</span>
-                <span class="m-sub">YTD verified</span>
-              </div>
+            <p class="r-arch">{b.arch}</p>
+            <div class="r-roi">
+              <span class="rv figure">{b.roi}</span>
+              <span class="rk figure-label">Target / month</span>
             </div>
-
-            <div class="r-cta">
-              <div class="r-viz" aria-hidden="true"></div>
-              <a href="/support" class="btn btn-ghost r-link">View full strategy <span class="arrow" aria-hidden="true">→</span></a>
-            </div>
+            <a href="/bots" class="btn btn-outline r-link">About this bot <span class="arrow" aria-hidden="true">→</span></a>
           </article>
         ))}
       </div>
+
+      <p class="note reveal" style="margin-top: 1.25rem;">
+        Win rate (92%) and drawdown (1–2%) are measured across all three bots combined.
+        Trading involves risk of loss; past performance does not guarantee future results.
+      </p>
     </div>
   </section>
 
-  <section class="section milestone-sec">
-    <div class="container milestone reveal">
-      <div class="m-copy">
-        <span class="eyebrow"><span class="dot"></span> Global adoption milestone</span>
-        <h2><span class="big">15,000+</span> Institutional Clients</h2>
+  <section class="section clients-sec">
+    <div class="container clients card reveal">
+      <div class="c-copy">
+        <span class="eyebrow">Adoption</span>
+        <h2><span class="big" data-count="4200" data-suffix="+">4,200+</span> clients</h2>
         <p>
-          Vectora powers the world's most sophisticated trading desks. From sovereign
-          wealth funds to high-frequency boutiques, our quantum-kinetic execution is
-          the industry standard for autonomous alpha generation.
+          From first-time algo users to experienced traders, more than 4,200
+          clients run Vectora bots on their accounts today — with full
+          visibility of every trade.
         </p>
-        <a href="/support" class="btn btn-primary btn-lg">Join the network <span class="arrow" aria-hidden="true">→</span></a>
+        <a href="/support" class="btn btn-primary btn-lg">Get a call from our team <span class="arrow" aria-hidden="true">→</span></a>
       </div>
-      <div class="trusted">
-        <span class="trusted-label">Trusted by</span>
-        <div class="logos">
-          {Array.from({ length: 4 }).map(() => (
-            <span class="logo-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V10l7-5 7 5v11M9 21v-6h6v6"/></svg></span>
-          ))}
-        </div>
-      </div>
+      <ul class="c-facts">
+        <li><span class="cf-v figure">3</span><span class="cf-k figure-label">Markets traded</span></li>
+        <li><span class="cf-v figure">24/7</span><span class="cf-k figure-label">Execution</span></li>
+        <li><span class="cf-v figure">7 days</span><span class="cf-k figure-label">Free trial</span></li>
+      </ul>
     </div>
   </section>
+
+  <TrialCta />
 </Layout>
 
 <style>
   .page-hero { padding-block: clamp(2.5rem, 6vw, 4rem) clamp(1rem, 3vw, 2rem); }
-  .hero-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 2rem; flex-wrap: wrap; }
-  .page-hero h1 { font-size: clamp(2.4rem, 6vw, 4rem); font-weight: 800; }
-  .lede { color: var(--c-text-muted); font-size: 1.08rem; max-width: 52ch; margin-top: 1rem; }
-  .top-stats { display: flex; gap: 1rem; }
-  .ts { padding: 1rem 1.4rem; border: 1px solid var(--glass-border); border-radius: var(--radius); background: var(--grad-panel); backdrop-filter: blur(var(--glass-blur)); min-width: 120px; }
-  .ts-k { display: block; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--c-text-dim); }
-  .ts-v { display: block; font-family: var(--font-display); font-weight: 800; font-size: 1.5rem; color: var(--c-accent-bright); margin-top: 0.3rem; }
+  .page-hero h1 { font-size: clamp(2.4rem, 6vw, 4rem); margin-top: 1.2rem; }
+  .lede { color: var(--ink-3); font-size: 1.08rem; max-width: 54ch; margin-top: 1.2rem; }
 
-  .rows-sec { padding-top: clamp(1rem, 3vw, 2rem); }
-  .bot-rows { display: grid; gap: 1.1rem; }
-  .row { position: relative; display: grid; grid-template-columns: 1.3fr 1.7fr 0.9fr; gap: 1.5rem; align-items: center; overflow: hidden; padding-left: 2rem; }
-  .bar { position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--hue); }
-  .r-head { display: flex; gap: 0.8rem; align-items: flex-start; }
-  .r-chip { width: 38px; height: 38px; border-radius: 9px; background: var(--hue); flex: none; box-shadow: 0 0 18px -2px var(--hue); }
-  .r-head h3 { font-size: 1.4rem; font-family: var(--font-display); }
-  .r-head .asset { color: var(--c-text-muted); font-weight: 500; font-size: 1rem; }
-  .online { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--c-accent-bright); }
-  .o-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--c-accent-bright); }
-  .arch { margin-top: 1rem; padding: 0.9rem; border: 1px solid var(--c-border); border-radius: var(--radius-sm); background: rgba(0,0,0,0.18); }
-  .arch-label { font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--c-text-dim); }
-  .arch p { color: var(--c-text-soft); font-size: 0.88rem; margin-top: 0.35rem; }
+  .overall-sec { padding-top: clamp(1rem, 3vw, 2rem); }
+  .overall-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .ov { padding: 1.5rem; }
+  .ov-v { display: block; font-size: clamp(1.7rem, 3.5vw, 2.3rem); color: var(--green-deep); }
+  .ov-k { display: block; margin-top: 0.4rem; }
 
-  .r-metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
-  .m { display: flex; flex-direction: column; gap: 0.25rem; }
-  .m-k { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--c-text-dim); }
-  .m-v { font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; color: var(--c-text); }
-  .m-v.accent { color: var(--c-accent-bright); }
-  .m-sub { font-size: 0.7rem; color: var(--c-text-dim); }
-  .risk { display: inline-block; font-family: var(--font-display); font-size: 0.74rem; font-weight: 700; color: var(--c-accent-bright); padding: 0.25rem 0.5rem; border: 1px solid var(--c-accent-line); border-radius: 6px; width: fit-content; }
-  .bar-track { height: 5px; border-radius: 3px; background: rgba(255,255,255,0.1); overflow: hidden; margin-top: 0.2rem; }
-  .bar-fill { display: block; height: 100%; background: var(--c-accent-bright); border-radius: 3px; }
+  .bot-rows { display: grid; gap: 1rem; }
+  .row {
+    display: grid; grid-template-columns: 0.8fr 1.6fr 0.8fr auto;
+    gap: clamp(1.25rem, 3vw, 2.25rem); align-items: center;
+  }
+  .r-id h3 { font-size: 1.4rem; }
+  .r-market { font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-4); }
+  .r-arch { color: var(--ink-3); font-size: 0.93rem; max-width: 44ch; }
+  .rv { display: block; font-size: 1.7rem; color: var(--green-deep); }
+  .rk { display: block; margin-top: 0.2rem; }
+  .r-link { white-space: nowrap; }
 
-  .r-cta { display: flex; flex-direction: column; gap: 0.8rem; }
-  .r-viz { height: 70px; border-radius: var(--radius-sm); border: 1px solid var(--glass-border); background: radial-gradient(120% 140% at 100% 0%, color-mix(in srgb, var(--hue) 35%, transparent), transparent 60%), repeating-linear-gradient(125deg, rgba(255,255,255,0.05) 0 2px, transparent 2px 8px), var(--c-bg-deep); }
-  .r-link { width: 100%; border-color: var(--hue); color: var(--c-text); }
-
-  .milestone { display: grid; grid-template-columns: 1.6fr 1fr; gap: 2.5rem; align-items: center; padding: clamp(2rem, 5vw, 3.5rem); background: var(--grad-soft); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); position: relative; overflow: hidden; }
-  .m-copy h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); margin-top: 1rem; }
-  .m-copy h2 .big { color: var(--c-accent-bright); }
-  .m-copy p { color: var(--c-text-muted); margin: 1rem 0 1.6rem; max-width: 52ch; }
-  .trusted { text-align: right; }
-  .trusted-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--c-text-dim); }
-  .logos { display: flex; gap: 0.7rem; justify-content: flex-end; margin-top: 0.9rem; flex-wrap: wrap; }
-  .logo-box { width: 48px; height: 48px; display: grid; place-items: center; border: 1px solid var(--c-border-strong); border-radius: 10px; color: var(--c-text-muted); }
-  .logo-box svg { width: 22px; height: 22px; }
+  .clients { display: grid; grid-template-columns: 1.5fr 1fr; gap: clamp(1.5rem, 5vw, 3.5rem); align-items: center; padding: clamp(2rem, 5vw, 3.25rem); }
+  .c-copy h2 { font-size: clamp(2rem, 4.5vw, 3rem); margin-top: 1rem; }
+  .c-copy .big { color: var(--green-deep); font-variant-numeric: tabular-nums; }
+  .c-copy p { color: var(--ink-3); margin: 1rem 0 1.6rem; max-width: 48ch; }
+  .c-facts { display: grid; gap: 1rem; }
+  .c-facts li { padding: 1rem 1.25rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--paper); display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+  .cf-v { font-size: 1.3rem; }
 
   @media (max-width: 980px) {
-    .row { grid-template-columns: 1fr; gap: 1.2rem; }
-    .r-metrics { grid-template-columns: repeat(2, 1fr); }
+    .row { grid-template-columns: 1fr 1fr; }
+    .r-arch { grid-column: 1 / -1; }
+    .r-link { justify-self: start; }
   }
   @media (max-width: 760px) {
-    .milestone { grid-template-columns: 1fr; }
-    .trusted, .logos { text-align: left; justify-content: flex-start; }
+    .overall-grid { grid-template-columns: 1fr 1fr; }
+    .clients { grid-template-columns: 1fr; }
   }
-  @media (max-width: 460px) { .r-metrics { grid-template-columns: 1fr 1fr; } .top-stats { width: 100%; } .ts { flex: 1; } }
+  @media (max-width: 480px) {
+    .row { grid-template-columns: 1fr; }
+    .overall-grid { grid-template-columns: 1fr 1fr; }
+  }
 </style>
