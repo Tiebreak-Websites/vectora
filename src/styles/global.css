@@ -17,7 +17,7 @@
   --text:    #F2F5F3;
   --text-2:  #BCC7C1;
   --text-3:  #8C9891;
-  --text-4:  #626E68;
+  --text-4:  #78847E; /* AA contrast (≥4.5:1) on --bg for small labels */
 
   /* ---- Lines ---- */
   --line:        rgba(255, 255, 255, 0.09);

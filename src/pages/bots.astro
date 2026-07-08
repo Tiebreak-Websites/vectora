@@ -61,12 +61,8 @@ const bots = [
   },
 ];
 
-const relStats = [
-  { v: '92%', k: 'Overall win rate' },
-  { v: '1–2%', k: 'Overall drawdown' },
-  { v: '548 days', k: 'Live + backtested operation' },
-  { v: '4–5%', k: 'Monthly average ROI' },
-];
+// The win-rate / drawdown / 548-day figures already headline this page's
+// hero strip, so this section features only the remaining metric.
 ---
 
 <Layout title="Vectora — Bots" description="Vectora Bots: three AI bot profiles designed for private clients who want clearer risk context and more disciplined timing across concrete instruments.">
@@ -133,8 +129,8 @@ const relStats = [
   </section>
 
   <section class="section testing">
-    <div class="container">
-      <div class="section-head reveal">
+    <div class="container discipline card spot reveal">
+      <div class="d-copy">
         <h2>Capital discipline, <span class="grad-text">before anything else</span></h2>
         <p>
           Vectora is built to sit between the client and the market as a
@@ -142,11 +138,9 @@ const relStats = [
           context, and helps keep decisions structured.
         </p>
       </div>
-
-      <div class="test-stats reveal" style="--reveal-delay:120ms">
-        {relStats.map((s) => (
-          <div class="ts-tile card spot"><span class="ts-k figure-label">{s.k}</span><span class="ts-v figure">{s.v}</span></div>
-        ))}
+      <div class="d-figure">
+        <span class="df-v">4–5%</span>
+        <span class="df-k figure-label">Monthly average ROI</span>
       </div>
     </div>
   </section>
@@ -209,18 +203,37 @@ const relStats = [
 
   .b-cta { width: 100%; margin-top: 1.4rem; }
 
-  .testing { background: var(--bg-2); border-block: 1px solid var(--line); }
-  .test-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
-  .ts-tile { padding: 1.5rem; text-align: center; }
-  .ts-k { display: block; }
-  .ts-v { display: block; font-size: 2rem; margin-top: 0.45rem; color: var(--green-bright); }
+  .discipline {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: clamp(1.5rem, 5vw, 3.5rem);
+    align-items: center;
+    padding: clamp(2rem, 5vw, 3.25rem);
+    border-radius: var(--radius-lg);
+  }
+  .d-copy h2 { font-size: clamp(1.7rem, 3.6vw, 2.4rem); }
+  .d-copy p { color: var(--text-3); margin-top: 1rem; max-width: 56ch; }
+  .d-figure { text-align: center; border-left: 1px solid var(--line); padding-left: clamp(1.5rem, 4vw, 3rem); }
+  .df-v {
+    display: block;
+    font-family: var(--font-display); font-weight: 600; letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    font-size: clamp(2.6rem, 6vw, 4rem);
+    background: var(--grad-text);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .df-k { display: block; margin-top: 0.5rem; }
 
   @media (max-width: 900px) {
     .bot-grid { grid-template-columns: 1fr; max-width: 460px; margin-inline: auto; }
-    .test-stats { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 760px) {
+    .discipline { grid-template-columns: 1fr; }
+    .d-figure { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); padding-top: 1.5rem; }
   }
   @media (max-width: 640px) {
     .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 1.5rem 1rem; }
   }
-  @media (max-width: 420px) { .test-stats { grid-template-columns: 1fr; } }
 </style>

@@ -29,20 +29,20 @@
   </g>
   <text x="178" y="128" font-family="'Space Grotesk', Arial, sans-serif" font-size="50" font-weight="700" fill="#FFFFFF">Vectora</text>
 
-  <!-- headline -->
-  <text x="84" y="312" font-family="'Space Grotesk', Arial, sans-serif" font-size="80" font-weight="600" fill="#FFFFFF" letter-spacing="-2">Trading discipline,</text>
-  <text x="84" y="400" font-family="'Space Grotesk', Arial, sans-serif" font-size="80" font-weight="600" fill="url(#txt)" letter-spacing="-2">automated.</text>
+  <!-- headline (official copy) -->
+  <text x="84" y="312" font-family="'Space Grotesk', Arial, sans-serif" font-size="66" font-weight="600" fill="#FFFFFF" letter-spacing="-1.5">Your guardian layer for</text>
+  <text x="84" y="392" font-family="'Space Grotesk', Arial, sans-serif" font-size="66" font-weight="600" fill="url(#txt)" letter-spacing="-1.5">clearer market decisions.</text>
 
-  <text x="86" y="466" font-family="Arial, sans-serif" font-size="28" fill="#87938C">Three specialist AI trading bots — gold, Bitcoin and USD/JPY.</text>
+  <text x="86" y="458" font-family="Arial, sans-serif" font-size="28" fill="#8C9891">Guardian Bot packages for Gold, Bitcoin, and USD/JPY.</text>
 
-  <!-- metric chips -->
+  <!-- metric chips (official stats strip) -->
   <g font-family="'IBM Plex Mono', 'Courier New', monospace" font-size="22" fill="#F2F5F3">
-    <rect x="84" y="512" width="252" height="58" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)"/>
-    <text x="108" y="548">4–5% avg / mo</text>
-    <rect x="356" y="512" width="216" height="58" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)"/>
-    <text x="380" y="548">92% win rate</text>
-    <rect x="592" y="512" width="252" height="58" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)"/>
-    <text x="616" y="548">1–2% drawdown</text>
+    <rect x="84" y="508" width="286" height="58" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)"/>
+    <text x="108" y="544">25–32% yearly ROI</text>
+    <rect x="390" y="508" width="230" height="58" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)"/>
+    <text x="414" y="544">4,000+ clients</text>
+    <rect x="640" y="508" width="200" height="58" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)"/>
+    <text x="664" y="544">548 days</text>
   </g>
 
   <!-- chart accent -->
