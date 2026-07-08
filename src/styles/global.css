@@ -234,7 +234,10 @@ h1, h2, h3, h4 {
 }
 .reveal.is-visible .spark path, .reveal.is-visible .spark polyline { stroke-dashoffset: 0; }
 
-/* ---------------- Marquee ticker ---------------- */
+/* ---------------- Marquee ticker ----------------
+   Seamless infinite loop: the track holds 4 identical copies and the
+   animation shifts exactly one copy width (-25%). Spacing lives on the
+   items (margin), not the container gap, so the loop point is exact. */
 .marquee {
   overflow: hidden;
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
@@ -243,13 +246,12 @@ h1, h2, h3, h4 {
 .marquee-track {
   display: flex;
   align-items: center;
-  gap: 3rem;
   width: max-content;
   padding-block: 1rem;
+  will-change: transform;
   animation: marquee 30s linear infinite;
 }
-.marquee:hover .marquee-track { animation-play-state: paused; }
-@keyframes marquee { to { transform: translateX(-50%); } }
+@keyframes marquee { to { transform: translateX(-25%); } }
 
 /* ---------------- Scroll reveal ---------------- */
 .reveal {

@@ -78,7 +78,7 @@ const ticker = [
 
 <div class="marquee" aria-hidden="true">
   <div class="marquee-track">
-    {[0, 1].map(() => (
+    {[0, 1, 2, 3].map(() => (
       ticker.map((t) => (
         <span class="tick">
           <span class="t-a">{t.a}</span>
@@ -162,7 +162,7 @@ const ticker = [
 
   /* Ticker */
   .marquee { border-block: 1px solid var(--line); background: var(--bg-2); }
-  .tick { display: inline-flex; align-items: baseline; gap: 0.7rem; font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.06em; white-space: nowrap; }
+  .tick { display: inline-flex; align-items: baseline; gap: 0.7rem; margin-right: 3rem; font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.06em; white-space: nowrap; }
   .t-a { color: var(--text); font-weight: 500; }
   .t-b { color: var(--text-4); }
   .t-c { color: var(--green-bright); }
