@@ -9,24 +9,31 @@ const overall = [
   { v: '92%', k: 'Win rate, all bots', count: 92, suffix: '%' },
   { v: '1–2%', k: 'Drawdown, all bots' },
   { v: '548', k: 'Days live + backtested', count: 548 },
-  { v: '4,200+', k: 'Clients', count: 4200, suffix: '+' },
+  { v: '4,000+', k: 'Clients', count: 4000, suffix: '+' },
 ];
 
+// ~4,000 users split across the three bots.
 const bots = [
   {
     name: 'Mira', market: 'Gold · XAU/USD',
     arch: 'Trend-following on gold with strict per-trade risk caps.',
     roi: '3–5%',
+    clients: '1,350+',
+    drawdown: '1–2%',
   },
   {
     name: 'Axon', market: 'Bitcoin · BTC/USD',
     arch: 'Momentum and liquidity analysis on the Bitcoin market.',
     roi: '5–7%',
+    clients: '1,600+',
+    drawdown: '1–2%',
   },
   {
     name: 'Kairo', market: 'Forex · USD/JPY',
     arch: 'Mean-reversion scalping within the USD/JPY corridor.',
     roi: '4–6%',
+    clients: '1,050+',
+    drawdown: '1–2%',
   },
 ];
 ---
@@ -61,7 +68,7 @@ const bots = [
   <section class="section perbot-sec">
     <div class="container">
       <div class="section-head reveal">
-        <h2>Target monthly returns, <span class="grad-text">per bot</span></h2>
+        <h2>Performance, <span class="grad-text">per bot</span></h2>
       </div>
 
       <div class="bot-rows">
@@ -70,19 +77,35 @@ const bots = [
             <div class="r-id">
               <h3>{b.name}</h3>
               <span class="r-market">{b.market}</span>
+              <p class="r-arch">{b.arch}</p>
             </div>
-            <p class="r-arch">{b.arch}</p>
-            <div class="r-roi">
-              <span class="rv figure">{b.roi}</span>
-              <span class="rk figure-label">Target / month</span>
-            </div>
-            <a href="/bots" class="btn btn-outline r-link">About this bot <span class="arrow" aria-hidden="true">→</span></a>
+
+            <dl class="r-metrics">
+              <div class="m">
+                <dt class="figure-label">Target ROI</dt>
+                <dd class="figure accent">{b.roi}</dd>
+                <span class="m-sub">Monthly</span>
+              </div>
+              <div class="m">
+                <dt class="figure-label">Clients</dt>
+                <dd class="figure">{b.clients}</dd>
+                <span class="m-sub">Using this bot</span>
+              </div>
+              <div class="m">
+                <dt class="figure-label">Drawdown</dt>
+                <dd class="figure">{b.drawdown}</dd>
+                <span class="m-sub">Max, verified</span>
+              </div>
+            </dl>
+
+            <a href="/bots" class="btn btn-outline r-link">View full strategy <span class="arrow" aria-hidden="true">→</span></a>
           </article>
         ))}
       </div>
 
       <p class="note reveal" style="margin-top: 1.25rem;">
-        Win rate (92%) and drawdown (1–2%) are measured across all three bots combined.
+        Win rate (92%) is measured across all three bots combined. Detailed
+        per-bot strategy breakdowns are being prepared and will be published here.
         Trading involves risk of loss; past performance does not guarantee future results.
       </p>
     </div>
@@ -91,9 +114,9 @@ const bots = [
   <section class="section clients-sec">
     <div class="container clients card grad-border spot reveal">
       <div class="c-copy">
-        <h2><span class="big" data-count="4200" data-suffix="+">4,200+</span> clients</h2>
+        <h2><span class="big" data-count="4000" data-suffix="+">4,000+</span> clients</h2>
         <p>
-          From first-time algo users to experienced traders, more than 4,200
+          From first-time algo users to experienced traders, more than 4,000
           clients run Vectora bots on their accounts today — with full
           visibility of every trade.
         </p>
@@ -123,15 +146,20 @@ const bots = [
 
   .bot-rows { display: grid; gap: 1rem; }
   .row {
-    display: grid; grid-template-columns: 0.8fr 1.6fr 0.8fr auto;
-    gap: clamp(1.25rem, 3vw, 2.25rem); align-items: center;
+    display: grid; grid-template-columns: 1.1fr 1.5fr auto;
+    gap: clamp(1.25rem, 3vw, 2.5rem); align-items: center;
   }
   .r-id h3 { font-size: 1.4rem; }
   .r-market { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-4); }
-  .r-arch { color: var(--text-3); font-size: 0.93rem; max-width: 44ch; }
-  .rv { display: block; font-size: 1.7rem; color: var(--green-bright); }
-  .rk { display: block; margin-top: 0.2rem; }
-  .r-link { white-space: nowrap; }
+  .r-arch { color: var(--text-3); font-size: 0.9rem; margin-top: 0.6rem; max-width: 40ch; }
+
+  .r-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .m { display: flex; flex-direction: column; gap: 0.3rem; }
+  .m dd { font-size: 1.45rem; margin: 0; }
+  .m dd.accent { color: var(--green-bright); }
+  .m-sub { font-size: 0.72rem; color: var(--text-4); }
+
+  .r-link { white-space: nowrap; justify-self: end; }
 
   .clients {
     display: grid; grid-template-columns: 1.5fr 1fr;
@@ -159,16 +187,14 @@ const bots = [
   .cf-v { font-size: 1.3rem; color: var(--green-bright); }
 
   @media (max-width: 980px) {
-    .row { grid-template-columns: 1fr 1fr; }
-    .r-arch { grid-column: 1 / -1; }
+    .row { grid-template-columns: 1fr; }
     .r-link { justify-self: start; }
   }
   @media (max-width: 760px) {
     .overall-grid { grid-template-columns: 1fr 1fr; }
     .clients { grid-template-columns: 1fr; }
   }
-  @media (max-width: 480px) {
-    .row { grid-template-columns: 1fr; }
-    .overall-grid { grid-template-columns: 1fr 1fr; }
+  @media (max-width: 520px) {
+    .r-metrics { grid-template-columns: 1fr 1fr; }
   }
 </style>
