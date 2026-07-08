@@ -8,20 +8,20 @@
    ============================================================ */
 
 :root {
-  /* ---- Background scale ---- */
-  --bg:      #0A0F0D;
-  --bg-2:    #0D1411;
-  --bg-3:    #111916;
+  /* ---- Background scale (dark, but clearly not black) ---- */
+  --bg:      #131C18;
+  --bg-2:    #17221D;
+  --bg-3:    #1C2822;
 
   /* ---- Text ---- */
   --text:    #F2F5F3;
-  --text-2:  #B9C4BE;
-  --text-3:  #87938C;
-  --text-4:  #5C6862;
+  --text-2:  #BCC7C1;
+  --text-3:  #8C9891;
+  --text-4:  #626E68;
 
   /* ---- Lines ---- */
-  --line:        rgba(255, 255, 255, 0.08);
-  --line-strong: rgba(255, 255, 255, 0.16);
+  --line:        rgba(255, 255, 255, 0.09);
+  --line-strong: rgba(255, 255, 255, 0.18);
 
   /* ---- Brand green ---- */
   --green:        #09A165;
@@ -50,7 +50,7 @@
   --shadow-glow: 0 0 0 1px var(--green-line), 0 14px 50px -12px rgba(9, 161, 101, 0.45);
 
   /* ---- Layout ---- */
-  --maxw: 1160px;
+  --maxw: 1280px;
   --gutter: clamp(1.1rem, 4vw, 2.25rem);
   --header-h: 72px;
 }
@@ -120,10 +120,20 @@ h1, h2, h3, h4 {
 
 .section { padding-block: clamp(3.5rem, 8vw, 6.5rem); position: relative; }
 
-.section-head { max-width: 640px; margin-bottom: clamp(2.25rem, 5vw, 3.5rem); }
-.section-head.center { margin-inline: auto; text-align: center; }
+/* Section heads are centered site-wide */
+.section-head {
+  max-width: 680px;
+  margin-inline: auto;
+  text-align: center;
+  margin-bottom: clamp(2.25rem, 5vw, 3.5rem);
+}
 .section h2 { font-size: clamp(1.9rem, 4vw, 2.8rem); }
 .section-head p { color: var(--text-3); font-size: 1.05rem; margin-top: 1rem; }
+
+/* Centered page heros — headlines stay on one row on desktop */
+.page-hero { padding-block: clamp(2.5rem, 6vw, 4.25rem) clamp(1rem, 3vw, 2rem); text-align: center; }
+.page-hero h1 { font-size: clamp(2.4rem, 5.4vw, 4.1rem); max-width: 100%; }
+.page-hero .lede { color: var(--text-3); font-size: 1.1rem; max-width: 58ch; margin: 1.3rem auto 0; }
 
 /* Gradient emphasis inside headings */
 .grad-text {

@@ -19,12 +19,14 @@ const steps = [
 ---
 
 <section class="section how" id="how-it-works">
-  <div class="container how-grid">
-    <div class="how-intro reveal">
+  <div class="container">
+    <div class="section-head reveal">
       <h2>Live in <span class="grad-text">three steps</span></h2>
       <p>From sign-up to live execution — no spreadsheets, no scripts, no staring at candles. The engine handles the rest, around the clock.</p>
+    </div>
 
-      <ol class="steps">
+    <div class="how-grid">
+      <ol class="steps reveal">
         {steps.map((s, i) => (
           <li class="step" style={`--reveal-delay:${i * 80}ms`}>
             <span class="step-n">{s.n}</span>
@@ -32,15 +34,15 @@ const steps = [
           </li>
         ))}
       </ol>
-    </div>
 
-    <div class="term card reveal" style="--reveal-delay:150ms" aria-hidden="true">
-      <div class="term-top">
-        <span class="dots"><i></i><i></i><i></i></span>
-        <span class="term-title">vectora · live engine</span>
-        <span class="term-live"><span class="lp"></span> 24/7</span>
+      <div class="term card reveal" style="--reveal-delay:150ms" aria-hidden="true">
+        <div class="term-top">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span class="term-title">vectora · live engine</span>
+          <span class="term-live"><span class="lp"></span> 24/7</span>
+        </div>
+        <div class="term-body" id="term-body"></div>
       </div>
-      <div class="term-body" id="term-body"></div>
     </div>
   </div>
 </section>
@@ -48,9 +50,8 @@ const steps = [
 <style>
   .how { background: var(--bg-2); border-block: 1px solid var(--line); }
   .how-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 6vw, 4.5rem); align-items: center; }
-  .how-intro > p { color: var(--text-3); margin-top: 1.1rem; font-size: 1.02rem; max-width: 46ch; }
 
-  .steps { margin-top: 2rem; display: grid; gap: 1.1rem; }
+  .steps { display: grid; gap: 1.35rem; }
   .step { display: flex; gap: 1.05rem; align-items: flex-start; }
   .step-n {
     flex: none; width: 40px; height: 40px;

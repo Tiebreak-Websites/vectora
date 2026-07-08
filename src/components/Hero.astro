@@ -26,46 +26,42 @@ const ticker = [
   <canvas id="hero-canvas" class="hero-canvas" aria-hidden="true"></canvas>
   <div class="hero-fade" aria-hidden="true"></div>
 
-  <div class="container hero-grid">
-    <div class="hero-copy">
-      <h1 id="hero-title" class="reveal">
-        Trading discipline,<br /><span class="grad-text">automated.</span>
-      </h1>
+  <div class="container hero-copy">
+    <h1 id="hero-title" class="reveal">
+      Trading discipline,<br /><span class="grad-text">automated.</span>
+    </h1>
 
-      <p class="lede reveal" style="--reveal-delay:120ms">
-        Vectora runs three specialist trading bots — on gold, Bitcoin and
-        USD/JPY. Rules-based execution around the clock, with every trade
-        visible in your account.
-      </p>
+    <p class="lede reveal" style="--reveal-delay:120ms">
+      Vectora runs three specialist trading bots — on gold, Bitcoin and
+      USD/JPY. Rules-based execution around the clock, with every trade
+      visible in your account.
+    </p>
 
-      <div class="hero-cta reveal" style="--reveal-delay:220ms">
-        <a href="/packages" class="btn btn-primary btn-lg">View packages <span class="arrow" aria-hidden="true">→</span></a>
-        <a href="/support" class="btn btn-outline btn-lg">Talk to our team</a>
-      </div>
+    <div class="hero-cta reveal" style="--reveal-delay:220ms">
+      <a href="/packages" class="btn btn-primary btn-lg">View packages <span class="arrow" aria-hidden="true">→</span></a>
+      <a href="/support" class="btn btn-outline btn-lg">Talk to our team</a>
     </div>
+  </div>
 
-    <aside class="hero-card card spot reveal" style="--reveal-delay:180ms" aria-label="The three Vectora bots">
+  <div class="container">
+    <aside class="hero-card card spot reveal" style="--reveal-delay:300ms" aria-label="The three Vectora bots">
       <div class="hc-top">
         <span class="hc-label">The bots</span>
         <span class="hc-live"><span class="lp"></span> Running</span>
       </div>
-      <ul>
+      <ul class="hc-grid">
         {bots.map((b) => (
           <li>
-            <div class="hc-id">
-              <span class="hc-name">{b.name}</span>
-              <span class="hc-market">{b.market}</span>
-            </div>
+            <span class="hc-name">{b.name}</span>
+            <span class="hc-market">{b.market}</span>
             <span class="hc-roi">{b.roi}</span>
           </li>
         ))}
       </ul>
       <p class="hc-note">Target monthly return ranges. Live trading plus 1.5 years of backtesting.</p>
     </aside>
-  </div>
 
-  <div class="container">
-    <ul class="hero-stats reveal" style="--reveal-delay:300ms">
+    <ul class="hero-stats reveal" style="--reveal-delay:380ms">
       {stats.map((s) => (
         <li>
           <span class="hs-v figure">{s.v}</span>
@@ -91,41 +87,47 @@ const ticker = [
 </div>
 
 <style>
-  .hero { padding-block: clamp(3.5rem, 9vw, 6.5rem) clamp(3rem, 7vw, 5rem); position: relative; overflow: hidden; }
+  .hero { padding-block: clamp(3.5rem, 8vw, 6rem) clamp(3rem, 6vw, 4.5rem); position: relative; overflow: hidden; }
   .hero-canvas {
     position: absolute; inset: 0;
     width: 100%; height: 100%;
-    opacity: 0.55;
+    opacity: 0.5;
     pointer-events: none;
   }
   .hero-fade {
     position: absolute; inset: 0;
     pointer-events: none;
     background:
-      linear-gradient(90deg, var(--bg) 0%, rgba(10, 15, 13, 0.55) 45%, rgba(10, 15, 13, 0.2) 100%),
-      linear-gradient(180deg, rgba(10, 15, 13, 0.4), transparent 30%, transparent 70%, var(--bg));
+      linear-gradient(90deg, var(--bg) 0%, transparent 22%, transparent 78%, var(--bg) 100%),
+      linear-gradient(180deg, rgba(19, 28, 24, 0.5), transparent 30%, transparent 62%, var(--bg));
   }
-  .hero-grid, .hero-stats { position: relative; }
-  .hero-grid {
-    display: grid;
-    grid-template-columns: 1.5fr 1fr;
-    gap: clamp(2rem, 6vw, 5rem);
+  .hero-copy, .hero-stats, .hero-card { position: relative; }
+
+  .hero-copy {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
     align-items: center;
   }
   h1 {
-    font-size: clamp(2.6rem, 6vw, 4.4rem);
+    font-size: clamp(2.7rem, 6.2vw, 4.6rem);
     font-weight: 600;
   }
   .lede {
     color: var(--text-2);
-    font-size: 1.15rem;
-    max-width: 50ch;
+    font-size: 1.16rem;
+    max-width: 56ch;
     margin-top: 1.4rem;
   }
-  .hero-cta { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 2.2rem; }
+  .hero-cta { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.85rem; margin-top: 2.3rem; }
 
-  /* Fact card */
-  .hero-card { padding: 1.5rem; background: rgba(13, 20, 17, 0.82); backdrop-filter: blur(8px); }
+  /* Bots strip — wide, centered */
+  .hero-card {
+    margin-top: clamp(2.75rem, 6vw, 4.25rem);
+    padding: 1.4rem 1.75rem 1.2rem;
+    background: rgba(23, 34, 29, 0.82);
+    backdrop-filter: blur(8px);
+  }
   .hc-top { display: flex; align-items: center; justify-content: space-between; }
   .hc-label {
     font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500;
@@ -139,23 +141,29 @@ const ticker = [
   .lp { width: 7px; height: 7px; border-radius: 50%; background: var(--green-bright); animation: lpulse 1.8s infinite; }
   @keyframes lpulse { 0% { box-shadow: 0 0 0 0 rgba(23, 212, 139, 0.5); } 100% { box-shadow: 0 0 0 8px rgba(23, 212, 139, 0); } }
 
-  .hero-card ul { margin-top: 0.9rem; }
-  .hero-card li {
-    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-    padding-block: 0.85rem;
+  .hc-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 1rem;
     border-top: 1px solid var(--line);
   }
-  .hc-name { display: block; font-family: var(--font-display); font-weight: 600; font-size: 1.05rem; color: var(--text); }
-  .hc-market { font-size: 0.8rem; color: var(--text-3); }
-  .hc-roi { font-family: var(--font-mono); font-size: 0.9rem; font-weight: 500; color: var(--green-bright); white-space: nowrap; }
-  .hc-note { margin-top: 0.9rem; padding-top: 0.9rem; border-top: 1px solid var(--line); font-size: 0.78rem; color: var(--text-4); }
+  .hc-grid li {
+    display: flex; flex-direction: column; gap: 0.2rem;
+    padding-top: 1.1rem;
+  }
+  .hc-grid li + li { border-left: 1px solid var(--line); padding-left: 1.5rem; }
+  .hc-name { font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; color: var(--text); }
+  .hc-market { font-size: 0.82rem; color: var(--text-3); }
+  .hc-roi { font-family: var(--font-mono); font-size: 0.95rem; font-weight: 500; color: var(--green-bright); margin-top: 0.35rem; }
+  .hc-note { margin-top: 1.1rem; padding-top: 0.9rem; border-top: 1px solid var(--line); font-size: 0.78rem; color: var(--text-4); text-align: center; }
 
   /* Stats strip */
   .hero-stats {
     display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;
-    margin-top: clamp(2.5rem, 6vw, 4rem);
+    margin-top: clamp(2.25rem, 5vw, 3.25rem);
     padding-top: 1.75rem;
     border-top: 1px solid var(--line);
+    text-align: center;
   }
   .hs-v { display: block; font-size: clamp(1.6rem, 3.4vw, 2.3rem); }
   .hs-k { display: block; margin-top: 0.3rem; }
@@ -167,9 +175,10 @@ const ticker = [
   .t-b { color: var(--text-4); }
   .t-c { color: var(--green-bright); }
 
-  @media (max-width: 900px) {
-    .hero-grid { grid-template-columns: 1fr; }
-    .hero-card { max-width: 460px; }
+  @media (max-width: 760px) {
+    .hc-grid { grid-template-columns: 1fr; gap: 0; border-top: 0; }
+    .hc-grid li { border-top: 1px solid var(--line); padding-block: 0.9rem; }
+    .hc-grid li + li { border-left: 0; padding-left: 0; }
     .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 1.5rem 1rem; }
   }
 </style>
@@ -219,7 +228,7 @@ const ticker = [
       ctx.clearRect(0, 0, w, h);
 
       // Faint grid
-      ctx.strokeStyle = 'rgba(255,255,255,0.045)';
+      ctx.strokeStyle = 'rgba(255,255,255,0.05)';
       ctx.lineWidth = 1;
       const gs = 56;
       for (let x = (t * -18) % gs; x < w; x += gs) {
@@ -258,9 +267,9 @@ const ticker = [
         const y = yFor(i + shift);
         if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
       }
-      ctx.strokeStyle = 'rgba(23, 212, 139, 0.55)';
+      ctx.strokeStyle = 'rgba(23, 212, 139, 0.5)';
       ctx.lineWidth = 1.6;
-      ctx.shadowColor = 'rgba(23, 212, 139, 0.5)';
+      ctx.shadowColor = 'rgba(23, 212, 139, 0.45)';
       ctx.shadowBlur = 10;
       ctx.stroke();
       ctx.shadowBlur = 0;

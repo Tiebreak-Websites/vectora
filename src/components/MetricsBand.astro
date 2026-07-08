@@ -13,6 +13,7 @@ const metrics = [
   <div class="container">
     <div class="band-head reveal">
       <h2>Measured, <span class="grad-text">not promised</span></h2>
+      <p class="band-sub">Figures across all three bots, from live trading plus 1.5 years of backtesting.</p>
     </div>
     <ul class="band-grid reveal" style="--reveal-delay:100ms">
       {metrics.map((m) => (
@@ -25,7 +26,7 @@ const metrics = [
       ))}
     </ul>
     <p class="band-note reveal" style="--reveal-delay:180ms">
-      Figures across all three bots, from live trading plus 1.5 years of backtesting. Reviewed quarterly.
+      Static figures, reviewed quarterly with the product team.
     </p>
   </div>
 </section>
@@ -47,13 +48,16 @@ const metrics = [
     height: 1px;
     background: linear-gradient(90deg, transparent, var(--green-line), transparent);
   }
+  .band-head { text-align: center; max-width: 680px; margin-inline: auto; }
   .band-head h2 { font-size: clamp(1.9rem, 4vw, 2.8rem); }
+  .band-sub { color: var(--text-3); margin-top: 1rem; }
 
   .band-grid {
     display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.5rem 1rem;
     margin-top: clamp(2rem, 5vw, 3rem);
     padding-top: 1.75rem;
     border-top: 1px solid var(--line);
+    text-align: center;
   }
   .bv {
     display: block;
@@ -70,7 +74,7 @@ const metrics = [
     font-family: var(--font-mono); font-size: 0.7rem;
     letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-4);
   }
-  .band-note { margin-top: clamp(1.75rem, 4vw, 2.5rem); font-size: 0.85rem; color: var(--text-3); max-width: 60ch; }
+  .band-note { margin-top: clamp(1.75rem, 4vw, 2.5rem); font-size: 0.85rem; color: var(--text-4); text-align: center; }
 
   @media (max-width: 900px) { .band-grid { grid-template-columns: repeat(3, 1fr); } }
   @media (max-width: 560px) { .band-grid { grid-template-columns: repeat(2, 1fr); } }
