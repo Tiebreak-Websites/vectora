@@ -13,18 +13,21 @@ const bots = [
   {
     name: 'Mira', asset: 'Gold',
     strategy: 'Gold-focused market monitoring and setup context.',
+    full: 'Mira Gold is built for traders who value precision over frequency. Every trade is taken only after multiple market conditions align, with three to four confirmations used to validate the setup. By combining trend analysis, momentum, and price action, Mira focuses on high quality opportunities while filtering out unnecessary market noise.',
     roi: '3–5%',
     spark: 'M2 31 L9 29.5 L16 30.5 L23 28 L30 26.5 L37 28.5 L44 30 L51 29 L58 26 L65 27 L72 24.5 L79 25.5 L86 22.5 L93 23.5 L100 21 L107 22.5 L114 18 L121 19.5 L128 15.5',
   },
   {
     name: 'Axon', asset: 'BTC',
     strategy: 'Bitcoin volatility and momentum context across selected broker conditions.',
+    full: 'Axon BTC is designed to take advantage of Bitcoin’s fast moving price action with a disciplined approach. Instead of reacting to every market move, it patiently waits for three to four confirmations before entering a position. This selective process helps identify stronger setups and keeps the focus on consistency rather than excessive trading.',
     roi: '5–7%',
     spark: 'M2 32 L8 28 L13 30 L19 23 L25 26 L30 18.5 L36 22 L42 27 L48 25 L53 26.5 L59 17 L64 20.5 L70 12 L76 15.5 L82 8 L88 13 L94 11 L100 5.5 L106 9 L113 7 L120 10.5 L128 3',
   },
   {
     name: 'Kairo', asset: 'USD/JPY',
     strategy: 'USD/JPY timing, movement pressure, and risk-context monitoring.',
+    full: 'Kairo USD/JPY Scalper is developed for one of the world’s most active currency pairs, using a structured approach to every trade. Each position is opened only after three to four key confirmations support the setup. By analyzing market direction, momentum, and price behavior, Kairo aims to capture high probability opportunities while maintaining disciplined trade execution.',
     roi: '4–6%',
     spark: 'M2 29 L8 26 L14 30.5 L20 31.5 L26 27.5 L32 29.5 L38 24 L44 26.5 L50 21.5 L56 25 L62 23.5 L68 18.5 L74 21.5 L80 20 L86 15.5 L92 18.5 L98 17 L104 13 L110 15.5 L116 14 L122 10.5 L128 8',
   },
@@ -78,10 +81,31 @@ const bots = [
               <div><dt>Risk Profile</dt><dd>Guardian risk check</dd></div>
             </dl>
 
-            <a href="/strategy" class="btn btn-outline r-link">View full strategy <span class="arrow" aria-hidden="true">→</span></a>
+            <button type="button" class="btn btn-outline r-link" data-modal={`strategy-modal-${i}`}>View full strategy <span class="arrow" aria-hidden="true">→</span></button>
           </article>
         ))}
       </div>
+
+      {bots.map((b, i) => (
+        <dialog class="strategy-modal" id={`strategy-modal-${i}`} aria-labelledby={`strategy-modal-title-${i}`}>
+          <div class="sm-inner">
+            <div class="sm-head">
+              <div>
+                <h3 id={`strategy-modal-title-${i}`}>{b.name} <span class="sm-asset">({b.asset})</span></h3>
+                <span class="sm-label">Full strategy</span>
+              </div>
+              <button type="button" class="sm-close" data-close aria-label="Close">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+              </button>
+            </div>
+            <p class="sm-body">{b.full}</p>
+            <div class="sm-foot">
+              <span class="sm-k">Monthly Average ROI</span>
+              <span class="sm-v">{b.roi}</span>
+            </div>
+          </div>
+        </dialog>
+      ))}
 
       <svg width="0" height="0" aria-hidden="true">
         <defs>
@@ -129,7 +153,7 @@ const bots = [
   @keyframes opulse { 0% { box-shadow: 0 0 0 0 rgba(23, 212, 139, 0.5); } 100% { box-shadow: 0 0 0 6px rgba(23, 212, 139, 0); } }
   .spark { width: min(150px, 100%); height: 40px; margin-top: 0.8rem; opacity: 0.85; }
 
-  .r-label { font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green-bright); }
+  .r-label { font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-4); }
   .r-strategy p { color: var(--text-3); font-size: 0.92rem; margin-top: 0.35rem; max-width: 36ch; }
 
   .r-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 0.35rem 1.5rem; }
@@ -139,6 +163,58 @@ const bots = [
   .r-metrics dd.accent { color: var(--green-bright); }
 
   .r-link { white-space: nowrap; justify-self: end; }
+
+  /* ---- Per-bot strategy modal ---- */
+  .strategy-modal {
+    /* The global `* { margin: 0 }` reset removes the UA's `margin: auto`
+       that centers <dialog> — restore it. */
+    margin: auto;
+    width: min(560px, calc(100vw - 2 * var(--gutter)));
+    max-height: min(85vh, 100%);
+    overflow-y: auto;
+    padding: 0;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-lg);
+    background: var(--bg-3);
+    color: var(--text-2);
+    box-shadow: var(--shadow);
+  }
+  .strategy-modal::backdrop {
+    background: rgba(8, 12, 10, 0.72);
+    backdrop-filter: blur(4px);
+  }
+  .strategy-modal[open] { animation: smIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+  @keyframes smIn { from { opacity: 0; transform: translateY(14px); } }
+  .sm-inner { padding: clamp(1.5rem, 4vw, 2.25rem); }
+  .sm-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+  .sm-head h3 { font-size: 1.45rem; }
+  .sm-asset { color: var(--text-3); font-weight: 500; font-size: 1rem; }
+  .sm-label {
+    display: block; margin-top: 0.35rem;
+    font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-4);
+  }
+  .sm-close {
+    flex: none;
+    display: grid; place-items: center;
+    width: 34px; height: 34px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-sm);
+    color: var(--text-3);
+    cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+  .sm-close:hover { color: var(--text); border-color: var(--text-4); }
+  .sm-close svg { width: 15px; height: 15px; }
+  .sm-body { margin-top: 1.1rem; font-size: 0.96rem; line-height: 1.7; color: var(--text-2); }
+  .sm-foot {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 1rem;
+    margin-top: 1.4rem; padding-top: 1.1rem;
+    border-top: 1px solid var(--line);
+  }
+  .sm-k { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-4); }
+  .sm-v { font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; color: var(--green-bright); font-variant-numeric: tabular-nums; }
 
   .milestone {
     display: flex; flex-direction: column; align-items: center; text-align: center;
@@ -169,3 +245,30 @@ const bots = [
     .top-stats { grid-template-columns: 1fr; }
   }
 </style>
+
+<script>
+  // Per-bot strategy modals — native <dialog> gives focus trapping and
+  // Esc-to-close; backdrop clicks close via the target check below.
+  const initStrategyModals = () => {
+    document.querySelectorAll<HTMLButtonElement>('[data-modal]').forEach((btn) => {
+      if (btn.dataset.init) return;
+      btn.dataset.init = 'true';
+      btn.addEventListener('click', () => {
+        const dialog = document.getElementById(btn.dataset.modal || '') as HTMLDialogElement | null;
+        dialog?.showModal();
+      });
+    });
+
+    document.querySelectorAll<HTMLDialogElement>('.strategy-modal').forEach((dialog) => {
+      if (dialog.dataset.init) return;
+      dialog.dataset.init = 'true';
+      dialog.querySelector('[data-close]')?.addEventListener('click', () => dialog.close());
+      // A click on the dialog element itself (not .sm-inner) is the backdrop.
+      dialog.addEventListener('click', (e) => {
+        if (e.target === dialog) dialog.close();
+      });
+    });
+  };
+
+  document.addEventListener('astro:page-load', initStrategyModals);
+</script>

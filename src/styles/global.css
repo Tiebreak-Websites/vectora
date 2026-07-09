@@ -131,7 +131,7 @@ h1, h2, h3, h4 {
 .section-head p { color: var(--text-3); font-size: 1.05rem; margin-top: 1rem; }
 
 /* Centered page heros — headlines stay on one row on desktop */
-.page-hero { padding-block: clamp(2.5rem, 6vw, 4.25rem) clamp(1rem, 3vw, 2rem); text-align: center; }
+.page-hero { padding-block: clamp(4.25rem, 9vw, 6.5rem) clamp(1rem, 3vw, 2rem); text-align: center; }
 .page-hero h1 { font-size: clamp(2.4rem, 5.4vw, 4.1rem); max-width: 100%; }
 .page-hero .lede { color: var(--text-3); font-size: 1.1rem; max-width: 58ch; margin: 1.3rem auto 0; }
 

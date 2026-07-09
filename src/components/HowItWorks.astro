@@ -34,7 +34,7 @@ const stepIcons = [
 <section class="section how" id="how-it-works">
   <div class="container">
     <div class="section-head reveal">
-      <h2>Trading <span class="grad-text">simplified</span></h2>
+      <h2>Trading simplified</h2>
       <p>{body}</p>
     </div>
 
@@ -95,13 +95,12 @@ const stepIcons = [
     display: inline-flex; width: 52px; height: 52px;
     align-items: center; justify-content: center;
     border-radius: var(--radius-sm);
-    color: var(--green-bright);
-    background: var(--green-tint);
-    border: 1px solid rgba(23, 212, 139, 0.25);
-    box-shadow: 0 0 24px -10px var(--green-glow);
+    color: var(--text-2);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--line-strong);
   }
   .f-icon svg { width: 24px; height: 24px; }
-  .f-num { font-family: var(--font-mono); font-size: 0.8rem; color: var(--green-bright); }
+  .f-num { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-4); }
   /* Connector runs from this node's edge, across the grid gap, to the next node's edge */
   .f-line {
     position: absolute;
@@ -110,7 +109,7 @@ const stepIcons = [
     width: calc(100% + 2rem - 116px);
     height: 2px;
     transform: translateY(-50%);
-    background: repeating-linear-gradient(90deg, var(--green-line) 0 8px, transparent 8px 16px);
+    background: repeating-linear-gradient(90deg, var(--line-strong) 0 8px, transparent 8px 16px);
     background-size: 16px 2px;
     animation: flowdash 1s linear infinite;
   }
@@ -119,8 +118,8 @@ const stepIcons = [
     position: absolute;
     right: -2px; top: 50%;
     width: 8px; height: 8px;
-    border-top: 2px solid var(--green-line);
-    border-right: 2px solid var(--green-line);
+    border-top: 2px solid var(--line-strong);
+    border-right: 2px solid var(--line-strong);
     transform: translateY(-50%) rotate(45deg);
   }
   @keyframes flowdash { to { background-position: 16px 0; } }
