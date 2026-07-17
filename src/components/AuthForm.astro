@@ -7,7 +7,7 @@ const isLogin = mode === 'login';
 const perks = [
   'Three specialist bots — gold, Bitcoin, USD/JPY',
   'Every trade visible in your own account',
-  '7-day trial, cancel anytime',
+  '30-day refund guarantee',
 ];
 ---
 
@@ -36,7 +36,7 @@ const perks = [
         </div>
 
         <h1>{isLogin ? 'Welcome back' : 'Create your account'}</h1>
-        <p class="sub">{isLogin ? 'Log in to your Vectora dashboard.' : 'Start your 7-day trial — no credit card needed.'}</p>
+        <p class="sub">{isLogin ? 'Log in to your Vectora dashboard.' : 'Sign up in minutes — every package comes with a 30-day refund.'}</p>
 
         <form id="auth-form" class="auth-form" novalidate data-mode={mode}>
           {!isLogin && (
@@ -68,7 +68,7 @@ const perks = [
             <label class="check terms"><input type="checkbox" name="terms" /> <span>I agree to the Terms &amp; Risk Disclosure</span></label>
           )}
 
-          <button type="submit" class="btn btn-primary btn-lg auth-submit">{isLogin ? 'Log in' : 'Start your trial'} <span class="arrow" aria-hidden="true">→</span></button>
+          <button type="submit" class="btn btn-primary btn-lg auth-submit">{isLogin ? 'Log in' : 'Create account'} <span class="arrow" aria-hidden="true">→</span></button>
           <p class="form-status" id="auth-status" role="status" aria-live="polite"></p>
         </form>
 
