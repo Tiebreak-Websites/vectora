@@ -12,7 +12,7 @@ const bots = [
     spark: 'M2 32 L8 28 L13 30 L19 23 L25 26 L30 18.5 L36 22 L42 27 L48 25 L53 26.5 L59 17 L64 20.5 L70 12 L76 15.5 L82 8 L88 13 L94 11 L100 5.5 L106 9 L113 7 L120 10.5 L128 3',
   },
   {
-    name: 'KAIRO', instrument: 'USD/JPY', roi: '4–6%',
+    name: 'KAIRO', instrument: 'Nasdaq (NDX)', roi: '4–6%',
     spark: 'M2 29 L8 26 L14 30.5 L20 31.5 L26 27.5 L32 29.5 L38 24 L44 26.5 L50 21.5 L56 25 L62 23.5 L68 18.5 L74 21.5 L80 20 L86 15.5 L92 18.5 L98 17 L104 13 L110 15.5 L116 14 L122 10.5 L128 8',
   },
 ];
@@ -20,9 +20,9 @@ const bots = [
 const ticker = [
   { a: 'MIRA', b: 'GOLD (XAU)', c: '3–5% / mo' },
   { a: 'AXON', b: 'BITCOIN (BTC)', c: '5–7% / mo' },
-  { a: 'KAIRO', b: 'USD/JPY', c: '4–6% / mo' },
-  { a: 'ALL BOTS', b: 'OVERALL WIN RATE', c: '92%' },
-  { a: 'ALL BOTS', b: 'OVERALL DRAWDOWN', c: '1–2%' },
+  { a: 'KAIRO', b: 'NASDAQ (NDX)', c: '4–6% / mo' },
+  { a: 'ALL ALGOS', b: 'OVERALL WIN RATE', c: '92%' },
+  { a: 'ALL ALGOS', b: 'OVERALL DRAWDOWN', c: '1–2%' },
   { a: 'ENGINE', b: 'STATUS', c: '24/7' },
 ];
 ---
@@ -50,9 +50,9 @@ const ticker = [
   </div>
 
   <div class="container">
-    <div class="hero-bots" aria-label="The three Vectora bots">
+    <div class="hero-bots" aria-label="The three Vectora algos">
       {bots.map((b, i) => (
-        <a href="/bots" class="hb card hoverable spot reveal" style={`--reveal-delay:${320 + i * 90}ms`}>
+        <a href="/algos" class="hb card hoverable spot reveal" style={`--reveal-delay:${320 + i * 90}ms`}>
           <div class="hb-top">
             <span class="hb-name">{b.name}</span>
             <span class="hb-market">{b.instrument}</span>

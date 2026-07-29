@@ -8,14 +8,14 @@ import ClosingCta from '../components/ClosingCta.astro';
 const bots = [
   { name: 'MIRA', market: 'Gold', instrument: 'Gold (XAU)', min: 3, max: 5 },
   { name: 'AXON', market: 'BTC', instrument: 'Bitcoin (BTC)', min: 5, max: 7 },
-  { name: 'KAIRO', market: 'USD/JPY', instrument: 'USD/JPY', min: 4, max: 6 },
+  { name: 'KAIRO', market: 'Nasdaq', instrument: 'Nasdaq (NDX)', min: 4, max: 6 },
 ];
 
 const tiers = [
   {
     name: 'Foundation',
-    chip: '1 bot',
-    sub: 'Any one bot of your choice',
+    chip: '1 algo',
+    sub: 'Any one algo of your choice',
     price: '$3,000',
     deposit: '$5,000',
     limit: 1,
@@ -23,37 +23,37 @@ const tiers = [
     featured: false,
     available: true,
     defaults: ['MIRA'],
-    pickLabel: 'Choose your bot',
-    desc: 'Choose any one trading bot based on your preferred market and trading style. Full access to a single bot of your choice.',
-    includes: 'Full access to one bot of your choice, guardian risk check, basic setup support, private client onboarding.',
+    pickLabel: 'Choose your algo',
+    desc: 'Choose any one trading algo based on your preferred market and trading style. Full access to a single algo of your choice.',
+    includes: 'Full access to one algo of your choice for 1 year, guardian risk check, basic setup support, private client onboarding.',
   },
   {
     name: 'Advanced',
-    chip: '2 bots',
-    sub: 'Any two bots of your choice',
+    chip: '2 algos',
+    sub: 'Any two algos of your choice',
     price: '$5,000',
     deposit: '$10,000',
     limit: 2,
     locked: false,
     featured: true,
     defaults: ['MIRA', 'AXON'],
-    pickLabel: 'Choose any two bots',
-    desc: 'Combine any two trading bots to diversify your trading strategy across multiple markets. Select any two and gain access to both.',
-    includes: 'Full access to two bots of your choice, expanded risk context, priority setup support, private client onboarding.',
+    pickLabel: 'Choose any two algos',
+    desc: 'Combine any two trading algos to diversify your trading strategy across multiple markets. Select any two and gain access to both.',
+    includes: 'Full access to two algos of your choice for 1 year, expanded risk context, priority setup support, private client onboarding.',
   },
   {
     name: 'Elite',
-    chip: '3 bots',
-    sub: 'All three bots included',
+    chip: '3 algos',
+    sub: 'All three algos included',
     price: '$7,000',
-    deposit: '$25,000',
+    deposit: '$15,000',
     limit: 3,
     locked: true,
     featured: false,
     defaults: ['MIRA', 'AXON', 'KAIRO'],
-    pickLabel: 'All bots included',
-    desc: 'Unlock all three trading bots in one complete package — maximum market exposure, greater diversification, and every available strategy.',
-    includes: 'Full access to all three bots, pro guardian logic, advanced setup support, private client onboarding.',
+    pickLabel: 'All algos included',
+    desc: 'Unlock all three trading algos in one complete package — maximum market exposure, greater diversification, and every available strategy.',
+    includes: 'Full access to all three algos for 1 year, pro guardian logic, advanced setup support, private client onboarding.',
   },
 ];
 
@@ -65,24 +65,25 @@ const roiFor = (names) => {
 const marketsFor = (names) => selection(names).map((b) => b.market).join(' + ');
 
 const compare = [
-  { feature: 'Bots included', foundation: 'Any 1 of 3', advance: 'Any 2 of 3', elite: 'All 3 bots' },
-  { feature: 'Bot selection', foundation: 'Your choice', advance: 'Your choice', elite: 'MIRA + AXON + KAIRO' },
+  { feature: 'Algos included', foundation: 'Any 1 of 3', advance: 'Any 2 of 3', elite: 'All 3 algos' },
+  { feature: 'Algo selection', foundation: 'Your choice', advance: 'Your choice', elite: 'MIRA + AXON + KAIRO' },
   { feature: 'Package Price', foundation: '$3,000', advance: '$5,000', elite: '$7,000' },
-  { feature: 'Minimum deposit', foundation: '$5,000', advance: '$10,000', elite: '$25,000' },
+  { feature: 'Minimum deposit', foundation: '$5,000', advance: '$10,000', elite: '$15,000' },
+  { feature: 'Algo access', foundation: '1 year', advance: '1 year', elite: '1 year' },
   { feature: 'Risk Check', foundation: 'Core guardian check', advance: 'Expanded guardian check', elite: 'Pro guardian check' },
   { feature: 'Client Support', foundation: 'Setup support', advance: 'Priority setup support', elite: 'Pro setup support' },
-  { feature: 'Refund', foundation: '30-day refund', advance: '30-day refund', elite: '30-day refund' },
+  { feature: 'Refund', foundation: '90-day refund', advance: '90-day refund', elite: '90-day refund' },
   { feature: 'Availability', foundation: 'Available now', advance: 'Coming soon', elite: 'Coming soon' },
 ];
 ---
 
-<Layout title="Vectora — Packages" description="Choose your Guardian Bot package. Foundation unlocks any one bot, Advanced any two, and Elite includes all three. Every package comes with a 30-day refund guarantee.">
+<Layout title="Vectora — Packages" description="Choose your Guardian Algo package. Foundation unlocks any one algo, Advanced any two, and Elite includes all three. Every package comes with a 90-day refund guarantee.">
   <section class="section page-hero">
     <div class="container">
-      <h1 class="reveal">Choose your <span class="grad-text">Guardian Bot package.</span></h1>
+      <h1 class="reveal">Choose your <span class="grad-text">Guardian Algo package.</span></h1>
       <p class="lede wide reveal" style="--reveal-delay:140ms">
-        Pick your package, then choose which bots power it — Foundation
-        unlocks any one bot, Advanced any two, and Elite includes all three.
+        Pick your package, then choose which algos power it — Foundation
+        unlocks any one algo, Advanced any two, and Elite includes all three.
         Foundation is available now; Advanced and Elite are coming soon and
         will be activated through our supported broker setup.
       </p>
@@ -115,7 +116,7 @@ const compare = [
                 <span class="pick-label">{t.pickLabel}</span>
                 <span class="pick-count js-count" aria-live="polite">{t.defaults.length} of {t.limit} selected</span>
               </div>
-              <div class="pick-list" role="group" aria-label={`${t.name} bot selection`}>
+              <div class="pick-list" role="group" aria-label={`${t.name} algo selection`}>
                 {bots.map((b) => (
                   <button
                     type="button"
@@ -143,7 +144,8 @@ const compare = [
               <div><dt>Monthly Average ROI</dt><dd class="accent js-roi">{roiFor(t.defaults)}</dd></div>
               <div><dt>Markets</dt><dd class="js-markets">{marketsFor(t.defaults)}</dd></div>
               <div><dt>Minimum deposit</dt><dd>{t.deposit}</dd></div>
-              <div><dt>Refund</dt><dd>30-day refund</dd></div>
+              <div><dt>Algo access</dt><dd>1 year</dd></div>
+              <div><dt>Refund</dt><dd>90-day refund</dd></div>
             </dl>
 
             <div class="includes">
@@ -163,10 +165,10 @@ const compare = [
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v4h4"/><path d="M9.5 12.2l1.8 1.8 3.7-3.7"/></svg>
         </span>
         <div class="refund-copy">
-          <strong>30-day refund guarantee</strong>
-          <p>Every package comes with a 30-day refund — if it's not the right fit, you get your money back.</p>
+          <strong>90-day refund guarantee</strong>
+          <p>Every package comes with a 90-day refund and 1 year of algo access from the date of purchase — if it's not the right fit, you get your money back.</p>
         </div>
-        <span class="refund-chip">30 days</span>
+        <span class="refund-chip">90 days</span>
       </aside>
     </div>
   </section>
@@ -201,7 +203,7 @@ const compare = [
     title='Ready to add a guardian layer?'
     body="Our team can help you pick the right package and combination of Mira, Axon, and Kairo for your goals. You will join through one of our supported brokers."
     primary={{ label: 'Schedule consultation', href: '/support' }}
-    secondary={{ label: 'View bot packages', href: '/bots' }}
+    secondary={{ label: 'View algo packages', href: '/algos' }}
   />
 </Layout>
 

@@ -5,7 +5,7 @@ import ClosingCta from '../components/ClosingCta.astro';
 
 // Official copy — strategy page.
 const howBody =
-  'From broker setup to bot activation in three clear steps. The process is designed to keep the client informed before, during, and after each setup.';
+  'From broker setup to algo activation in three clear steps. The process is designed to keep the client informed before, during, and after each setup.';
 
 const howSteps = [
   {
@@ -16,7 +16,7 @@ const howSteps = [
   {
     n: '02',
     title: 'Choose',
-    body: 'Select your bot package: MIRA for Gold, AXON for BTC, or KAIRO for USD/JPY.',
+    body: 'Select your algo package: MIRA for Gold, AXON for BTC, or KAIRO for Nasdaq.',
   },
   {
     n: '03',
@@ -38,12 +38,12 @@ const principles = [
   },
   {
     title: 'Live + Backtested Logic',
-    body: 'Bot logic is supported by real-time tracking and 548 days of live/backtested operation.',
+    body: 'Algo logic is supported by real-time tracking and 548 days of live/backtested operation.',
     icon: 'chart',
   },
   {
     title: 'Transparent Workflow',
-    body: 'Clients can see the setup logic, instrument focus, and risk context behind the bot activity.',
+    body: 'Clients can see the setup logic, instrument focus, and risk context behind the algo activity.',
     icon: 'eye',
   },
 ];
@@ -56,12 +56,12 @@ const icons: Record<string, string> = {
 };
 ---
 
-<Layout title="Vectora — Strategy" description="No black-box promises. Vectora turns bot-assisted trading into a clearer workflow: setup context, risk check, signal logic, and human oversight in one place.">
+<Layout title="Vectora — Strategy" description="No black-box promises. Vectora turns algo-assisted trading into a clearer workflow: setup context, risk check, signal logic, and human oversight in one place.">
   <section class="section page-hero">
     <div class="container">
       <h1 class="reveal">Execution you can <span class="grad-text">see.</span></h1>
       <p class="lede reveal" style="--reveal-delay:140ms">
-        No black-box promises. Vectora turns bot-assisted trading into a
+        No black-box promises. Vectora turns algo-assisted trading into a
         clearer workflow: setup context, risk check, signal logic, and human
         oversight in one place.
       </p>
@@ -92,7 +92,7 @@ const icons: Record<string, string> = {
 
   <ClosingCta
     title='Put your strategy under a guardian layer.'
-    body="Pick a bot package, review the structure with our team, and set the risk preferences that fit how you trade."
+    body="Pick an algo package, review the structure with our team, and set the risk preferences that fit how you trade."
     primary={{ label: 'View packages →', href: '/packages' }}
     secondary={{ label: 'Talk to our team', href: '/support' }}
   />

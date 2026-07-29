@@ -5,9 +5,10 @@ const { mode = 'login' } = Astro.props;
 const isLogin = mode === 'login';
 
 const perks = [
-  'Three specialist bots — gold, Bitcoin, USD/JPY',
+  'Three specialist algos — gold, Bitcoin, Nasdaq',
   'Every trade visible in your own account',
-  '30-day refund guarantee',
+  '90-day refund guarantee',
+  '1 year of algo access with every package',
 ];
 ---
 
@@ -36,7 +37,7 @@ const perks = [
         </div>
 
         <h1>{isLogin ? 'Welcome back' : 'Create your account'}</h1>
-        <p class="sub">{isLogin ? 'Log in to your Vectora dashboard.' : 'Sign up in minutes — every package comes with a 30-day refund.'}</p>
+        <p class="sub">{isLogin ? 'Log in to your Vectora dashboard.' : 'Sign up in minutes — every package comes with a 90-day refund.'}</p>
 
         <form id="auth-form" class="auth-form" novalidate data-mode={mode}>
           {!isLogin && (

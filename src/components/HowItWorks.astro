@@ -3,7 +3,7 @@
 // body and steps via props. Rendered as a fast left-to-right flow:
 // numbered nodes joined by animated connectors, terminal below.
 const {
-  body = 'From sign-up to guided bot setup in three clear steps. No hype, no black box, and no need to watch every tick alone.',
+  body = 'From sign-up to guided algo setup in three clear steps. No hype, no black box, and no need to watch every tick alone.',
   steps = [
     {
       n: '01',
@@ -13,12 +13,12 @@ const {
     {
       n: '02',
       title: 'Configure',
-      body: 'Set your package, preferred bot, and risk preferences with support from our team.',
+      body: 'Set your package, preferred algo, and risk preferences with support from our team.',
     },
     {
       n: '03',
       title: 'Activate',
-      body: 'The bot starts monitoring selected conditions and sending trade context. You stay responsible for the final action.',
+      body: 'The algo starts monitoring selected conditions and sending trade context. You stay responsible for the final action.',
     },
   ],
 } = Astro.props;
@@ -183,7 +183,7 @@ const stepIcons = [
     { t: '09:31:02', s: 'BUY', d: 'BTC setup detected · risk context ready', cls: 'buy' },
     { t: '09:31:09', s: 'RISK', d: 'volatility rising · review before action', cls: 'risk' },
     { t: '10:14:48', s: 'SELL', d: 'Gold signal locked · check exposure', cls: 'sell' },
-    { t: '11:02:17', s: 'BUY', d: 'USD/JPY movement confirmed', cls: 'buy' },
+    { t: '11:02:17', s: 'BUY', d: 'Nasdaq movement confirmed', cls: 'buy' },
     { t: '11:46:30', s: 'SCAN', d: 'no setup · holding', cls: 'scan' },
   ];
 

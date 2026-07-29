@@ -4,7 +4,7 @@ import Logo from './Logo.astro';
 const links = [
   { href: '/', label: 'Home' },
   { href: '/packages', label: 'Packages' },
-  { href: '/bots', label: 'Bots' },
+  { href: '/algos', label: 'Algos' },
   { href: '/strategy', label: 'Strategy' },
   { href: '/analytics', label: 'Analytics' },
   { href: '/support', label: 'Support' },
@@ -28,7 +28,8 @@ const isActive = (href: string) =>
     </nav>
 
     <div class="actions">
-      <a href="/login" class="btn btn-primary nav-cta">Login</a>
+      <a href="/login" class="nav-login">Log in</a>
+      <a href="/signup" class="btn btn-primary nav-cta">Sign up</a>
       <button class="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
         <span></span><span></span><span></span>
       </button>
@@ -37,7 +38,8 @@ const isActive = (href: string) =>
 
   <nav class="nav-mobile" id="mobile-nav" aria-label="Mobile">
     {links.map((l) => <a href={l.href} class="m-link">{l.label}</a>)}
-    <a href="/login" class="btn btn-primary m-cta">Login</a>
+    <a href="/login" class="m-link">Log in</a>
+    <a href="/signup" class="btn btn-primary m-cta">Sign up</a>
   </nav>
 </header>
 
@@ -85,6 +87,15 @@ const isActive = (href: string) =>
   }
 
   .actions { display: flex; align-items: center; gap: 0.9rem; }
+  .nav-login {
+    color: var(--text-3);
+    font-family: var(--font-display);
+    font-size: 0.92rem;
+    font-weight: 500;
+    padding: 0.5rem 0.4rem;
+    transition: color 0.2s ease;
+  }
+  .nav-login:hover { color: var(--text); }
 
   .menu-toggle {
     display: none;
@@ -127,6 +138,7 @@ const isActive = (href: string) =>
   @media (max-width: 960px) {
     .nav-desktop { display: none; }
     .nav-cta { display: none; }
+    .nav-login { display: none; }
     .menu-toggle { display: flex; }
   }
 </style>

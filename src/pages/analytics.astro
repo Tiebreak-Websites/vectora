@@ -25,21 +25,21 @@ const bots = [
     spark: 'M2 32 L8 28 L13 30 L19 23 L25 26 L30 18.5 L36 22 L42 27 L48 25 L53 26.5 L59 17 L64 20.5 L70 12 L76 15.5 L82 8 L88 13 L94 11 L100 5.5 L106 9 L113 7 L120 10.5 L128 3',
   },
   {
-    name: 'Kairo', asset: 'USD/JPY',
-    strategy: 'USD/JPY timing, movement pressure, and risk-context monitoring.',
-    full: 'Kairo USD/JPY Scalper is developed for one of the world’s most active currency pairs, using a structured approach to every trade. Each position is opened only after three to four key confirmations support the setup. By analyzing market direction, momentum, and price behavior, Kairo aims to capture high probability opportunities while maintaining disciplined trade execution.',
+    name: 'Kairo', asset: 'Nasdaq',
+    strategy: 'Nasdaq index timing, movement pressure, and risk-context monitoring.',
+    full: 'Kairo Nasdaq Scalper is developed for one of the world’s most active equity indices, using a structured approach to every trade. Each position is opened only after three to four key confirmations support the setup. By analyzing market direction, momentum, and price behavior, Kairo aims to capture high probability opportunities while maintaining disciplined trade execution.',
     roi: '4–6%',
     spark: 'M2 29 L8 26 L14 30.5 L20 31.5 L26 27.5 L32 29.5 L38 24 L44 26.5 L50 21.5 L56 25 L62 23.5 L68 18.5 L74 21.5 L80 20 L86 15.5 L92 18.5 L98 17 L104 13 L110 15.5 L116 14 L122 10.5 L128 8',
   },
 ];
 ---
 
-<Layout title="Vectora — Analytics" description="Private client analytics: real-time oversight of supported bot activity, ROI ranges, risk context, and client performance signals.">
+<Layout title="Vectora — Analytics" description="Private client analytics: real-time oversight of supported algo activity, ROI ranges, risk context, and client performance signals.">
   <section class="section page-hero">
     <div class="container">
       <h1 class="reveal">Private client <span class="grad-text">analytics</span></h1>
       <p class="lede reveal" style="--reveal-delay:140ms">
-        Real-time oversight of supported bot activity, ROI ranges, risk
+        Real-time oversight of supported algo activity, ROI ranges, risk
         context, and client performance signals.
       </p>
 
@@ -76,7 +76,7 @@ const bots = [
 
             <dl class="r-metrics">
               <div><dt>Monthly Average ROI</dt><dd class="accent">{b.roi}</dd></div>
-              <div><dt>Bot Use</dt><dd>Private clients</dd></div>
+              <div><dt>Algo Use</dt><dd>Private clients</dd></div>
               <div><dt>Today's P&amp;L</dt><dd>Dynamic</dd></div>
               <div><dt>Risk Profile</dt><dd>Guardian risk check</dd></div>
             </dl>
@@ -123,7 +123,7 @@ const bots = [
       <h2><span class="big" data-count="4000" data-suffix="+">4,000+</span> Private Clients</h2>
       <p class="m-body">
         Vectora supports private clients who want a clearer, calmer way to use
-        bot-assisted trading. The system is built for risk context, structured
+        algo-assisted trading. The system is built for risk context, structured
         decisions, and guided onboarding through supported brokers.
       </p>
       <a href="/support" class="btn btn-primary btn-lg">Join the network <span class="arrow" aria-hidden="true">→</span></a>

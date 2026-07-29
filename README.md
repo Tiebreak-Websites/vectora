@@ -1,6 +1,6 @@
 # Vectora
 
-Marketing site for **Vectora** — institutional-grade AI trading bots. Built with
+Marketing site for **Vectora** — institutional-grade AI trading algos. Built with
 [Astro](https://astro.build) and plain CSS/JS (no UI framework).
 
 ## Design system
