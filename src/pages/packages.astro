@@ -9,8 +9,9 @@ const tiers = [
     period: '/ setup',
     featured: false,
     rows: [
-      { k: 'Bot capacity', v: '01 unit' },
+      { k: 'Algo capacity', v: '01 unit' },
       { k: 'Min. deposit', v: '$5,000.00' },
+      { k: 'Algo access', v: '1 year' },
     ],
     maintenance: '3 months free maintenance included. Reg. $100/mo thereafter.',
     perks: ['Monthly account check-ins'],
@@ -25,6 +26,7 @@ const tiers = [
     rows: [
       { k: 'Min. deposit', v: '$10,000.00' },
       { k: 'Execution', v: 'Advanced settings' },
+      { k: 'Algo access', v: '1 year' },
     ],
     maintenance: 'Reg. $100/mo thereafter.',
     perks: ['Weekly priority check-ins'],
@@ -37,8 +39,9 @@ const tiers = [
     period: '/ setup',
     featured: false,
     rows: [
-      { k: 'Min. deposit', v: '$25,000.00' },
+      { k: 'Min. deposit', v: '$15,000.00' },
       { k: 'Maintenance', v: '$200 annual fixed' },
+      { k: 'Algo access', v: '1 year' },
     ],
     maintenance: '$200 annual fixed fee only.',
     perks: ['Weekly strategic check-ins', 'Real-time macro event alerts'],
@@ -47,6 +50,7 @@ const tiers = [
 ];
 
 const compare = [
+  { feature: 'Algo Access Period', foundation: '1 year', advance: '1 year', elite: '1 year' },
   { feature: 'Algorithmic Precision', foundation: 'Standard', advance: 'High-Frequency', elite: 'Quantum Priority' },
   { feature: 'Risk Management Matrix', foundation: 'Auto-Stop', advance: 'Dynamic Hedging', elite: 'Institutional Grade' },
   { feature: 'Account Manager Access', foundation: 'Email / Portal', advance: 'Dedicated Slack', elite: 'Direct Line / 24-7' },
@@ -60,7 +64,7 @@ const compare = [
       <span class="eyebrow reveal"><span class="dot"></span> System classification: institutional tiers</span>
       <h1 class="reveal" style="--reveal-delay:80ms">High-Frequency <span class="text-accent">Execution Protocols</span>.</h1>
       <p class="lede reveal" style="--reveal-delay:140ms">
-        Select a deployment package optimised for your capital allocation. All bots
+        Select a deployment package optimised for your capital allocation. All algos
         operate on our proprietary quantum-kinetic latency engine.
       </p>
     </div>
@@ -94,6 +98,11 @@ const compare = [
           </article>
         ))}
       </div>
+
+      <p class="policy-note reveal">
+        Every package includes <strong>1 year of algo access</strong> from the date of
+        purchase and is covered by our <strong>90-day refund policy</strong>.
+      </p>
     </div>
   </section>
 
@@ -127,10 +136,10 @@ const compare = [
   <section class="section cta-sec">
     <div class="container cta reveal">
       <h2>Ready to <span class="text-accent">initiate deployment</span>?</h2>
-      <p>Our institutional consultants are available to assist with your initial bot configuration and capital structuring.</p>
+      <p>Our institutional consultants are available to assist with your initial algo configuration and capital structuring.</p>
       <div class="cta-actions">
         <a href="/support" class="btn btn-primary btn-lg">Schedule consultation</a>
-        <a href="/bots" class="btn btn-ghost btn-lg">View system docs</a>
+        <a href="/algos" class="btn btn-ghost btn-lg">View system docs</a>
       </div>
     </div>
   </section>
@@ -173,6 +182,9 @@ const compare = [
   .perks li { display: flex; gap: 0.55rem; align-items: flex-start; color: var(--c-text-soft); font-size: 0.92rem; }
   .perks svg { width: 17px; height: 17px; color: var(--c-accent-bright); flex: none; margin-top: 2px; }
   .t-cta { width: 100%; margin-top: auto; }
+
+  .policy-note { text-align: center; color: var(--c-text-muted); font-size: 0.92rem; margin-top: 1.75rem; }
+  .policy-note strong { color: var(--c-text); font-weight: 600; }
 
   .table-wrap { overflow-x: auto; border: 1px solid var(--glass-border); border-radius: var(--radius-lg); background: var(--grad-panel); }
   table.compare { width: 100%; border-collapse: collapse; min-width: 640px; }

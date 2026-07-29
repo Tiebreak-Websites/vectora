@@ -24,8 +24,8 @@ const bots = [
   },
   {
     name: 'KAIRO',
-    tag: 'Forex · USD/JPY',
-    desc: 'High-frequency scalping and mean reversion within currency corridors, mapping liquidity in real time.',
+    tag: 'Indices · Nasdaq',
+    desc: 'High-frequency scalping and mean reversion across Nasdaq index liquidity, mapping order flow in real time.',
     stats: [
       { k: 'Target ROI', v: '4–6%' },
       { k: 'Strategy', v: 'H-F Scalp' },
@@ -39,9 +39,9 @@ const bots = [
 <section class="section bots" id="bots">
   <div class="container">
     <div class="section-head reveal">
-      <span class="eyebrow">Our Bots</span>
-      <h2>A bot for <span class="text-accent">every market regime</span></h2>
-      <p>Markets trend, they range, they snap back. Run one bot or combine them into an all-weather portfolio that adapts as conditions change.</p>
+      <span class="eyebrow">Our Algos</span>
+      <h2>An algo for <span class="text-accent">every market regime</span></h2>
+      <p>Markets trend, they range, they snap back. Run one algo or combine them into an all-weather portfolio that adapts as conditions change.</p>
     </div>
 
     <div class="bot-grid">
@@ -56,7 +56,7 @@ const bots = [
               <li><span class="v">{s.v}</span><span class="k">{s.k}</span></li>
             ))}
           </ul>
-          <a href="/bots" class="bot-link">View {b.name} <span class="arrow" aria-hidden="true">→</span></a>
+          <a href="/algos" class="bot-link">View {b.name} <span class="arrow" aria-hidden="true">→</span></a>
         </article>
       ))}
     </div>

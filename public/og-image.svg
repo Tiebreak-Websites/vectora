@@ -25,7 +25,7 @@
   <text x="84" y="318" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="76" font-weight="800" fill="#FFFFFF" letter-spacing="-2">The future of</text>
   <text x="84" y="406" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="76" font-weight="800" letter-spacing="-2"><tspan fill="#11C57C">high-velocity</tspan><tspan fill="#FFFFFF"> trading.</tspan></text>
 
-  <text x="86" y="476" font-family="Arial, sans-serif" font-size="30" fill="#A7B4BC">Institutional-grade AI trading bots. Built for speed, precision and trust.</text>
+  <text x="86" y="476" font-family="Arial, sans-serif" font-size="30" fill="#A7B4BC">Institutional-grade AI trading algos. Built for speed, precision and trust.</text>
 
   <!-- chart accent -->
   <path d="M84 566 C 230 548, 340 580, 500 524 C 660 468, 800 502, 1116 432" fill="none" stroke="#11C57C" stroke-width="5" stroke-linecap="round"/>
