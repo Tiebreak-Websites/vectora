@@ -1,98 +1,72 @@
-# Vectora
+# Vectora — launch placeholder
 
-Marketing site for **Vectora** — institutional-grade AI trading algos. Built with
-[Astro](https://astro.build) and plain CSS/JS (no UI framework).
+**This branch is the Coming Soon page and nothing else.** One page, no header,
+no footer, no links out. The real marketing site lives on
+[`website`](https://github.com/chr1srusevv/vectora/tree/website).
 
-## Design system
+## Branches
 
-Brand tokens live in [`src/styles/global.css`](src/styles/global.css) (`:root`).
+The two branches share **no page or component files** and are not meant to be
+merged into each other.
 
-| Token            | Value     | Use                      |
-| ---------------- | --------- | ------------------------ |
-| `--c-bg`         | `#1E262C` | Page background          |
-| `--c-accent`     | `#09A165` | CTAs, important accents  |
-| `--c-text`       | `#FFFFFF` | Headings / primary text  |
+| Branch    | Purpose                                                            |
+| --------- | ------------------------------------------------------------------ |
+| `live`    | **This branch.** Placeholder only. Deploy branch — what the public gets |
+| `website` | The real marketing site. Build it there.                           |
+| `dev`     | Active development (predates the split)                            |
+| `preview` | Staging (reserved)                                                 |
+| `prod`    | Production (reserved)                                              |
 
-- **Type:** Plus Jakarta Sans (display) + Inter (body)
-- **Style:** dark theme, glassmorphism cards, green glow, bold two-tone headlines
+`git merge website` would drag the whole site back in here. To launch, reset
+this branch to `website` instead:
+
+```bash
+git switch live && git reset --hard website && git push --force-with-lease
+```
 
 ## Project structure
 
 ```text
-public/                 static assets (logo, favicon, og image)
+public/                 brand assets (logo, favicon, og image)
 src/
-  layouts/Layout.astro  HTML shell, meta, fonts, global scripts
-  styles/global.css     design tokens + base styles
-  components/           Header, Hero, Pillars, Strategy, Bots, Features,
-                        Results, GlobalReach, Pricing, TrustBar, Contact, Footer
-  pages/index.astro     homepage (composes the sections)
-  pages/coming-soon.astro  standalone launch placeholder (no Header/Footer)
-  middleware.ts         Coming Soon gate for `astro dev` (skipped at build)
-functions/_middleware.js  Cloudflare Pages gates: Coming Soon, then Basic Auth
+  styles/global.css     brand tokens + reset (component rules live on `website`)
+  pages/index.astro     the placeholder — self-contained page, inline canvas script
+functions/_middleware.js  serves the placeholder for every path except its assets
 ```
+
+The page carries the wordmark, a headline, one supporting line, a calibration
+rail and a rotating strapline over an animated backdrop. Every moving part
+loops, and all of it collapses to a static frame under
+`prefers-reduced-motion`.
 
 ## Commands
 
-| Command           | Action                                  |
-| ----------------- | --------------------------------------- |
-| `npm install`     | Install dependencies                    |
-| `npm run dev`     | Dev server at `localhost:4321`          |
-| `npm run build`   | Build to `./dist/`                      |
-| `npm run preview` | Preview the production build locally     |
+| Command           | Action                              |
+| ----------------- | ----------------------------------- |
+| `npm install`     | Install dependencies                |
+| `npm run dev`     | Dev server at `localhost:4321`      |
+| `npm run build`   | Build to `./dist/`                  |
+| `npm run preview` | Preview the production build        |
 
-## Branches
+`astro dev` does not run Pages Functions, so locally only `/` serves the page —
+other paths 404. To exercise the real routing, build and run the Pages runtime:
 
-| Branch    | Purpose                                                |
-| --------- | ------------------------------------------------------ |
-| `dev`     | Active development                                     |
-| `preview` | Staging (reserved)                                     |
-| `prod`    | Production (reserved)                                  |
-| `live`    | Deploy branch — pushing here deploys to Cloudflare     |
+```bash
+npm run build && npx wrangler@4 pages dev dist
+```
 
 ## Deployment (Cloudflare Pages)
 
 **Live site:** https://vectora-7tw.pages.dev
 
-Pushing to **`live`** triggers [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml),
-which builds the site and deploys it to Cloudflare Pages (project `vectora`).
+[`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) builds and
+deploys to Cloudflare Pages (project `vectora`). It is **manual-dispatch only**
+— Actions tab → "Run workflow". The `push` trigger is commented out because the
+Cloudflare API token is IP-restricted and gets rejected from GitHub runners
+(error 9109).
 
-[`functions/_middleware.js`](functions/_middleware.js) applies two gates, in order:
-
-**1. Coming Soon — on by default.** Every route serves
-[`src/pages/coming-soon.astro`](src/pages/coming-soon.astro), publicly and with
-no password. The real pages are still in the build but unreachable.
-
-| Env var        | Default | Effect                                          |
-| -------------- | ------- | ----------------------------------------------- |
-| `COMING_SOON`  | on      | `false` / `0` / `off` / `no` lifts the gate      |
-
-**2. Basic Auth** — takes over once `COMING_SOON` is off, keeping the real site
-off the public web. Credentials default to `parola` / `parola` and can be
-overridden with `BASIC_AUTH_USER` / `BASIC_AUTH_PASS`.
-
-### Locally
-
-`astro dev` never runs Pages Functions, so [`src/middleware.ts`](src/middleware.ts)
-mirrors the Coming Soon gate for the dev server — **`npm run dev` shows the
-placeholder on every route**, same as the deployment. It is skipped during
-`astro build`, so the real pages still prerender into `dist/` as normal.
-
-To work on the real site, drop a `.env` in the project root (gitignored) and
-restart the dev server:
-
-```bash
-COMING_SOON=false
-```
-
-On Windows, write that file **without a BOM** — a BOM makes the key parse as
-`﻿COMING_SOON` and the flag is silently ignored. A real shell variable
-(`$env:COMING_SOON='false'`) takes precedence over the file.
-
-To exercise the production gates instead, build and run the Pages runtime:
-
-```bash
-npm run build && npx wrangler@4 pages dev dist
-```
+There is no Basic Auth on this branch: the placeholder is public by design, and
+there is nothing else deployed to protect. The auth gate lives on `website`.
 
 Required GitHub Actions secrets:
 
