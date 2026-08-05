@@ -27,6 +27,7 @@ src/
                         Results, GlobalReach, Pricing, TrustBar, Contact, Footer
   pages/index.astro     homepage (composes the sections)
   pages/coming-soon.astro  standalone launch placeholder (no Header/Footer)
+  middleware.ts         Coming Soon gate for `astro dev` (skipped at build)
 functions/_middleware.js  Cloudflare Pages gates: Coming Soon, then Basic Auth
 ```
 
@@ -69,9 +70,25 @@ no password. The real pages are still in the build but unreachable.
 off the public web. Credentials default to `parola` / `parola` and can be
 overridden with `BASIC_AUTH_USER` / `BASIC_AUTH_PASS`.
 
-`astro dev` does not run Pages Functions, so **local development always shows
-the real site**; the placeholder is at `/coming-soon`. To exercise the gates
-locally, build first and run the Pages runtime:
+### Locally
+
+`astro dev` never runs Pages Functions, so [`src/middleware.ts`](src/middleware.ts)
+mirrors the Coming Soon gate for the dev server — **`npm run dev` shows the
+placeholder on every route**, same as the deployment. It is skipped during
+`astro build`, so the real pages still prerender into `dist/` as normal.
+
+To work on the real site, drop a `.env` in the project root (gitignored) and
+restart the dev server:
+
+```bash
+COMING_SOON=false
+```
+
+On Windows, write that file **without a BOM** — a BOM makes the key parse as
+`﻿COMING_SOON` and the flag is silently ignored. A real shell variable
+(`$env:COMING_SOON='false'`) takes precedence over the file.
+
+To exercise the production gates instead, build and run the Pages runtime:
 
 ```bash
 npm run build && npx wrangler@4 pages dev dist

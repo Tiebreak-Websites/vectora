@@ -8,8 +8,6 @@
  */
 import '../styles/global.css';
 
-const year = new Date().getFullYear();
-
 // Calibration rail — a green pulse travels left→right through these ticks.
 const TICKS = 44;
 
@@ -18,7 +16,7 @@ const TICKS = 44;
 const phrases = ['Risk-first by design', 'Rules, not reflexes', 'You stay in control'];
 const rotator = [...phrases, phrases[0]];
 
-const title = 'Vectora — Launching soon';
+const title = 'Vectora';
 const description =
   'Vectora is a guardian layer for clearer market decisions. The full site opens soon.';
 ---
@@ -61,8 +59,6 @@ const description =
     <!-- ---------- Content ---------- -->
     <main class="cs-main">
       <div class="cs-inner">
-        <p class="cs-status"><span class="dot" aria-hidden="true"></span>Launching soon</p>
-
         <div class="cs-logo">
           <img src="/vectora-logo-white.svg" alt="Vectora" width="1782" height="472" />
           <span class="cs-sweep" aria-hidden="true"></span>
@@ -88,11 +84,6 @@ const description =
         <p class="sr-only">{phrases.join('. ')}.</p>
       </div>
     </main>
-
-    <footer class="cs-foot">
-      <p>© {year} Vectora</p>
-      <p>Trading involves risk and can result in loss of capital.</p>
-    </footer>
 
     <style>
       /* ---------------- Shell ---------------- */
@@ -236,48 +227,9 @@ const description =
         to   { opacity: 1; transform: none; }
       }
 
-      /* Status pill */
-      .cs-status {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.65rem;
-        font-family: var(--font-mono);
-        font-size: 0.72rem;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: var(--text-2);
-        padding: 0.5rem 1rem 0.5rem 0.85rem;
-        border: 1px solid var(--line);
-        border-radius: 999px;
-        background: rgba(255, 255, 255, 0.03);
-        backdrop-filter: blur(6px);
-        animation: rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
-      }
-      .cs-status .dot {
-        position: relative;
-        width: 7px;
-        height: 7px;
-        border-radius: 50%;
-        background: var(--green-bright);
-        box-shadow: 0 0 10px var(--green-glow);
-      }
-      .cs-status .dot::after {
-        content: '';
-        position: absolute;
-        inset: -4px;
-        border-radius: 50%;
-        border: 1px solid var(--green-line);
-        animation: ping 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
-      }
-      @keyframes ping {
-        0%        { transform: scale(0.6); opacity: 0.9; }
-        70%, 100% { transform: scale(2); opacity: 0; }
-      }
-
       /* Logo — breathing glow + a shine masked to the wordmark silhouette */
       .cs-logo {
         position: relative;
-        margin-top: clamp(1.75rem, 4vh, 2.75rem);
         width: clamp(210px, 34vw, 330px);
         animation: rise 1s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both;
       }
@@ -403,41 +355,18 @@ const description =
         75%, 100% { transform: translateY(-75%); }
       }
 
-      /* ---------------- Footer ---------------- */
-      .cs-foot {
-        position: relative;
-        z-index: 1;
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: space-between;
-        gap: 0.5rem 1.5rem;
-        padding: 1.4rem var(--gutter) clamp(1.4rem, 4vh, 2.25rem);
-        border-top: 1px solid var(--line);
-        font-size: 0.78rem;
-        color: var(--text-4);
-        /* Fade only — a translate here would briefly push the page taller. */
-        animation: fade 1s ease 0.7s both;
-      }
-      @keyframes fade {
-        from { opacity: 0; }
-        to   { opacity: 1; }
-      }
+      /* Keep the ticks wider than the gaps on narrow screens. */
       @media (max-width: 560px) {
-        .cs-foot { justify-content: center; text-align: center; }
-        /* Keep the ticks wider than the gaps on narrow screens. */
         .cs-rail { gap: 3px; }
       }
 
       /* ---------------- Reduced motion ---------------- */
       @media (prefers-reduced-motion: reduce) {
-        .cs-status,
         .cs-logo,
         .cs-title,
         .cs-lede,
         .cs-rail,
-        .cs-rotator,
-        .cs-foot {
+        .cs-rotator {
           animation: none;
           opacity: 1;
           transform: none;
