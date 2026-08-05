@@ -1,0 +1,677 @@
+---
+/**
+ * Coming Soon — the only page the deployment serves while the launch gate is
+ * on (see functions/_middleware.js). Deliberately standalone: no Header,
+ * Footer or ClientRouter, so nothing links back into the unreleased site.
+ *
+ * Brand only — no CTA, no email capture. Everything that moves here loops.
+ */
+import '../styles/global.css';
+
+const year = new Date().getFullYear();
+
+// Calibration rail — a green pulse travels left→right through these ticks.
+const TICKS = 44;
+
+// Looping status line. The first phrase repeats at the end so the vertical
+// track wraps without a visible jump.
+const phrases = ['Risk-first by design', 'Rules, not reflexes', 'You stay in control'];
+const rotator = [...phrases, phrases[0]];
+
+const title = 'Vectora — Launching soon';
+const description =
+  'Vectora is a guardian layer for clearer market decisions. The full site opens soon.';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0E1512" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content="/og-image.svg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Space+Grotesk:wght@500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body class="cs">
+    <!-- ---------- Backdrop ---------- -->
+    <canvas id="cs-canvas" class="cs-canvas" aria-hidden="true"></canvas>
+    <div class="cs-aurora" aria-hidden="true"><span class="a1"></span><span class="a2"></span></div>
+    <div class="cs-vignette" aria-hidden="true"></div>
+    <div class="cs-beam" aria-hidden="true"></div>
+
+    <!-- ---------- Content ---------- -->
+    <main class="cs-main">
+      <div class="cs-inner">
+        <p class="cs-status"><span class="dot" aria-hidden="true"></span>Launching soon</p>
+
+        <div class="cs-logo">
+          <img src="/vectora-logo-white.svg" alt="Vectora" width="1782" height="472" />
+          <span class="cs-sweep" aria-hidden="true"></span>
+        </div>
+
+        <h1 class="cs-title">Something precise<br /><span class="grad">is coming.</span></h1>
+
+        <p class="cs-lede">
+          Vectora is a guardian layer for clearer market decisions — watching selected
+          market conditions and checking risk around each setup. We're finishing the
+          last checks before the full site opens.
+        </p>
+
+        <div class="cs-rail" aria-hidden="true">
+          {Array.from({ length: TICKS }, (_, i) => <span class="tick" style={`--i:${i}`}></span>)}
+        </div>
+
+        <div class="cs-rotator" aria-hidden="true">
+          <div class="rot-track">
+            {rotator.map((p) => <span class="rot-item">{p}</span>)}
+          </div>
+        </div>
+        <p class="sr-only">{phrases.join('. ')}.</p>
+      </div>
+    </main>
+
+    <footer class="cs-foot">
+      <p>© {year} Vectora</p>
+      <p>Trading involves risk and can result in loss of capital.</p>
+    </footer>
+
+    <style>
+      /* ---------------- Shell ---------------- */
+      body.cs {
+        min-height: 100vh;
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        background: var(--bg);
+      }
+
+      /* ---------------- Backdrop layers ---------------- */
+      .cs-canvas {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        opacity: 0.5;
+        pointer-events: none;
+      }
+
+      /* Two slow-drifting green blooms. --px/--py come from pointer parallax. */
+      .cs-aurora {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        overflow: hidden;
+        pointer-events: none;
+        transform: translate3d(var(--px, 0px), var(--py, 0px), 0);
+        transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .cs-aurora span {
+        position: absolute;
+        display: block;
+        border-radius: 50%;
+        filter: blur(70px);
+      }
+      .cs-aurora .a1 {
+        width: 46vw;
+        height: 46vw;
+        min-width: 380px;
+        min-height: 380px;
+        top: -14vh;
+        right: -7vw;
+        background: radial-gradient(circle, rgba(23, 212, 139, 0.2), transparent 70%);
+        animation: aurora-a 26s ease-in-out infinite;
+      }
+      .cs-aurora .a2 {
+        width: 42vw;
+        height: 42vw;
+        min-width: 320px;
+        min-height: 320px;
+        bottom: -18vh;
+        left: -9vw;
+        background: radial-gradient(circle, rgba(9, 161, 101, 0.17), transparent 70%);
+        animation: aurora-b 34s ease-in-out infinite;
+      }
+      @keyframes aurora-a {
+        0%, 100% { transform: translate(0, 0) scale(1); }
+        50%      { transform: translate(-6vw, 5vh) scale(1.18); }
+      }
+      @keyframes aurora-b {
+        0%, 100% { transform: translate(0, 0) scale(1.08); }
+        50%      { transform: translate(7vw, -6vh) scale(0.92); }
+      }
+
+      /* Darkens the middle so the copy stays readable over the moving line. */
+      .cs-vignette {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        background: radial-gradient(
+          72rem 46rem at 50% 46%,
+          rgba(14, 21, 18, 0.88) 0%,
+          rgba(14, 21, 18, 0.55) 42%,
+          transparent 74%
+        );
+      }
+      /* Slow scan pass across the whole viewport. */
+      .cs-vignette::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, transparent 42%, rgba(23, 212, 139, 0.055) 50%, transparent 58%);
+        animation: scan 9s linear infinite;
+      }
+      @keyframes scan {
+        0%   { transform: translateY(-100%); }
+        100% { transform: translateY(100%); }
+      }
+
+      /* Hairline "still working" beam pinned to the top edge. */
+      .cs-beam {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        z-index: 2;
+        background: var(--line);
+        overflow: hidden;
+        pointer-events: none;
+      }
+      .cs-beam::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 22%;
+        background: linear-gradient(90deg, transparent, var(--green-bright), transparent);
+        animation: beam 4.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+      }
+      @keyframes beam {
+        0%   { transform: translateX(-120%); }
+        100% { transform: translateX(560%); }
+      }
+
+      /* ---------------- Content ---------------- */
+      .cs-main {
+        flex: 1;
+        display: grid;
+        place-items: center;
+        padding: clamp(3rem, 8vh, 5.5rem) var(--gutter) 2rem;
+        position: relative;
+        z-index: 1;
+      }
+      .cs-inner {
+        width: 100%;
+        max-width: 760px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      @keyframes rise {
+        from { opacity: 0; transform: translateY(16px); }
+        to   { opacity: 1; transform: none; }
+      }
+
+      /* Status pill */
+      .cs-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.65rem;
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--text-2);
+        padding: 0.5rem 1rem 0.5rem 0.85rem;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(6px);
+        animation: rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
+      .cs-status .dot {
+        position: relative;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--green-bright);
+        box-shadow: 0 0 10px var(--green-glow);
+      }
+      .cs-status .dot::after {
+        content: '';
+        position: absolute;
+        inset: -4px;
+        border-radius: 50%;
+        border: 1px solid var(--green-line);
+        animation: ping 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+      }
+      @keyframes ping {
+        0%        { transform: scale(0.6); opacity: 0.9; }
+        70%, 100% { transform: scale(2); opacity: 0; }
+      }
+
+      /* Logo — breathing glow + a shine masked to the wordmark silhouette */
+      .cs-logo {
+        position: relative;
+        margin-top: clamp(1.75rem, 4vh, 2.75rem);
+        width: clamp(210px, 34vw, 330px);
+        animation: rise 1s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both;
+      }
+      .cs-logo img {
+        width: 100%;
+        height: auto;
+        animation: breathe 5.5s ease-in-out infinite;
+      }
+      @keyframes breathe {
+        0%, 100% { filter: drop-shadow(0 0 18px rgba(9, 161, 101, 0.2)); }
+        50%      { filter: drop-shadow(0 0 40px rgba(23, 212, 139, 0.42)); }
+      }
+
+      @supports ((mask-image: url('/vectora-logo-white.svg')) or (-webkit-mask-image: url('/vectora-logo-white.svg'))) {
+        .cs-sweep {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          pointer-events: none;
+          -webkit-mask: url('/vectora-logo-white.svg') center / contain no-repeat;
+          mask: url('/vectora-logo-white.svg') center / contain no-repeat;
+        }
+        .cs-sweep::before {
+          content: '';
+          position: absolute;
+          top: -20%;
+          bottom: -20%;
+          left: 0;
+          width: 42%;
+          background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.85), transparent);
+          filter: blur(3px);
+          animation: sweep 6.5s ease-in-out infinite;
+        }
+        @keyframes sweep {
+          0%, 16%   { transform: translateX(-130%); }
+          62%, 100% { transform: translateX(350%); }
+        }
+      }
+
+      /* Headline */
+      .cs-title {
+        margin-top: clamp(1.5rem, 3.5vh, 2.25rem);
+        font-size: clamp(2.25rem, 6.2vw, 4.15rem);
+        letter-spacing: -0.03em;
+        line-height: 1.04;
+        animation: rise 1s cubic-bezier(0.16, 1, 0.3, 1) 0.24s both;
+      }
+      .cs-title .grad {
+        background: linear-gradient(115deg, #ffffff 8%, #17d48b 45%, #ffffff 92%);
+        background-size: 220% 100%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        animation: shift 9s ease-in-out infinite;
+      }
+      @keyframes shift {
+        0%, 100% { background-position: 0% 50%; }
+        50%      { background-position: 100% 50%; }
+      }
+
+      .cs-lede {
+        margin-top: 1.35rem;
+        max-width: 56ch;
+        color: var(--text-3);
+        font-size: clamp(1rem, 1.6vw, 1.1rem);
+        animation: rise 1s cubic-bezier(0.16, 1, 0.3, 1) 0.34s both;
+      }
+
+      /* Calibration rail — pulse sweeps through the ticks, then rests */
+      .cs-rail {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        width: min(100%, 460px);
+        margin-top: clamp(2.25rem, 5vh, 3.25rem);
+        animation: rise 1s cubic-bezier(0.16, 1, 0.3, 1) 0.44s both;
+      }
+      .cs-rail .tick {
+        flex: 1;
+        height: 14px;
+        border-radius: 2px;
+        background-color: rgba(255, 255, 255, 0.18);
+        transform: scaleY(0.5);
+        opacity: 0.22;
+        animation: tickwave 3.2s ease-in-out infinite;
+        animation-delay: calc(var(--i) * 40ms);
+      }
+      @keyframes tickwave {
+        0%, 22%, 100% {
+          opacity: 0.22;
+          transform: scaleY(0.5);
+          background-color: rgba(255, 255, 255, 0.18);
+        }
+        8% {
+          opacity: 1;
+          transform: scaleY(1);
+          background-color: #17d48b;
+        }
+      }
+
+      /* Rotating strapline — 4 items (last repeats the first) in a 6em track */
+      .cs-rotator {
+        margin-top: 1.6rem;
+        height: 1.5em;
+        overflow: hidden;
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--text-3);
+        animation: rise 1s cubic-bezier(0.16, 1, 0.3, 1) 0.54s both;
+      }
+      .rot-track { animation: rot 12s cubic-bezier(0.76, 0, 0.24, 1) infinite; }
+      .rot-item {
+        display: block;
+        height: 1.5em;
+        line-height: 1.5em;
+      }
+      @keyframes rot {
+        0%, 19%   { transform: translateY(0); }
+        25%, 44%  { transform: translateY(-25%); }
+        50%, 69%  { transform: translateY(-50%); }
+        75%, 100% { transform: translateY(-75%); }
+      }
+
+      /* ---------------- Footer ---------------- */
+      .cs-foot {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem 1.5rem;
+        padding: 1.4rem var(--gutter) clamp(1.4rem, 4vh, 2.25rem);
+        border-top: 1px solid var(--line);
+        font-size: 0.78rem;
+        color: var(--text-4);
+        /* Fade only — a translate here would briefly push the page taller. */
+        animation: fade 1s ease 0.7s both;
+      }
+      @keyframes fade {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+      }
+      @media (max-width: 560px) {
+        .cs-foot { justify-content: center; text-align: center; }
+        /* Keep the ticks wider than the gaps on narrow screens. */
+        .cs-rail { gap: 3px; }
+      }
+
+      /* ---------------- Reduced motion ---------------- */
+      @media (prefers-reduced-motion: reduce) {
+        .cs-status,
+        .cs-logo,
+        .cs-title,
+        .cs-lede,
+        .cs-rail,
+        .cs-rotator,
+        .cs-foot {
+          animation: none;
+          opacity: 1;
+          transform: none;
+        }
+        .cs-aurora span,
+        .cs-vignette::after,
+        .cs-beam::after,
+        .cs-logo img,
+        .cs-title .grad,
+        .rot-track {
+          animation: none;
+        }
+        .cs-sweep { display: none; }
+        .cs-logo img { filter: drop-shadow(0 0 24px rgba(9, 161, 101, 0.28)); }
+        .cs-rail .tick { animation: none; opacity: 0.35; transform: none; }
+      }
+    </style>
+
+    <script is:inline>
+      // Ambient market backdrop: two scrolling equity curves, a drifting grid,
+      // a pulsing "current" node and slow rising motes. Deterministic, so the
+      // page looks identical on every load. Draws one static frame and stops
+      // when the visitor prefers reduced motion.
+      (function () {
+        var canvas = document.getElementById('cs-canvas');
+        if (!canvas) return;
+        var ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var w = 0;
+        var h = 0;
+
+        function resize() {
+          var dpr = Math.min(window.devicePixelRatio || 1, 2);
+          var rect = canvas.getBoundingClientRect();
+          w = Math.max(1, rect.width);
+          h = Math.max(1, rect.height);
+          canvas.width = Math.round(w * dpr);
+          canvas.height = Math.round(h * dpr);
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+
+        // Seeded Lehmer RNG — same backdrop for everyone, every visit.
+        function rng(seed) {
+          var s = seed;
+          return function () {
+            s = (s * 16807) % 2147483647;
+            return (s - 1) / 2147483646;
+          };
+        }
+
+        function walk(seed, n, drift, lo, hi) {
+          var rand = rng(seed);
+          var out = [];
+          var v = 0.5;
+          for (var i = 0; i < n; i++) {
+            v = Math.min(hi, Math.max(lo, v + (rand() - 0.48) * drift));
+            out.push(v);
+          }
+          return out;
+        }
+
+        var N = 240;
+        var front = walk(7, N, 0.055, 0.16, 0.84);
+        var back = walk(91, N, 0.032, 0.32, 0.68);
+
+        var moteRand = rng(1337);
+        var motes = [];
+        for (var m = 0; m < 24; m++) {
+          motes.push({
+            x: moteRand(),
+            y: moteRand(),
+            r: 0.6 + moteRand() * 1.5,
+            speed: 0.006 + moteRand() * 0.016,
+            phase: moteRand() * Math.PI * 2,
+          });
+        }
+
+        var SEGMENTS = 90;
+
+        function valueAt(arr, i) {
+          var n = arr.length;
+          return arr[((i % n) + n) % n];
+        }
+
+        // Smoothed polyline through the walk, scrolled by `speed` px/second.
+        function tracePath(arr, speed, top, span, t) {
+          var step = w / SEGMENTS;
+          var shift = (t * speed) / step;
+          var i0 = Math.floor(shift);
+          var off = (shift - i0) * step;
+          var px = 0;
+          var py = 0;
+          ctx.beginPath();
+          for (var i = 0; i <= SEGMENTS + 2; i++) {
+            var x = i * step - off;
+            var y = h * (top + valueAt(arr, i + i0) * span);
+            if (i === 0) {
+              ctx.moveTo(x, y);
+            } else {
+              ctx.quadraticCurveTo(px, py, (px + x) / 2, (py + y) / 2);
+            }
+            px = x;
+            py = y;
+          }
+          ctx.lineTo(px, py);
+        }
+
+        function yAtFraction(arr, speed, top, span, t, fraction) {
+          var step = w / SEGMENTS;
+          var shift = (t * speed) / step;
+          var idx = shift + fraction * SEGMENTS;
+          var i = Math.floor(idx);
+          var f = idx - i;
+          var a = valueAt(arr, i);
+          var b = valueAt(arr, i + 1);
+          return h * (top + (a + (b - a) * f) * span);
+        }
+
+        function draw(t) {
+          ctx.clearRect(0, 0, w, h);
+
+          // Drifting grid
+          ctx.strokeStyle = 'rgba(255,255,255,0.045)';
+          ctx.lineWidth = 1;
+          var gs = 64;
+          for (var x = -((t * 10) % gs); x < w; x += gs) {
+            ctx.beginPath();
+            ctx.moveTo(x, 0);
+            ctx.lineTo(x, h);
+            ctx.stroke();
+          }
+          for (var y = 0; y < h; y += gs) {
+            ctx.beginPath();
+            ctx.moveTo(0, y);
+            ctx.lineTo(w, y);
+            ctx.stroke();
+          }
+
+          // Back curve — slower parallax layer
+          tracePath(back, 11, 0.3, 0.4, t);
+          ctx.strokeStyle = 'rgba(23,212,139,0.14)';
+          ctx.lineWidth = 1;
+          ctx.stroke();
+
+          // Front curve — area fill
+          tracePath(front, 26, 0.18, 0.64, t);
+          ctx.save();
+          ctx.lineTo(w + 40, h + 40);
+          ctx.lineTo(-40, h + 40);
+          ctx.closePath();
+          var grad = ctx.createLinearGradient(0, h * 0.1, 0, h);
+          grad.addColorStop(0, 'rgba(9,161,101,0.16)');
+          grad.addColorStop(1, 'rgba(9,161,101,0)');
+          ctx.fillStyle = grad;
+          ctx.fill();
+          ctx.restore();
+
+          // Front curve — glowing stroke
+          tracePath(front, 26, 0.18, 0.64, t);
+          ctx.strokeStyle = 'rgba(23,212,139,0.48)';
+          ctx.lineWidth = 1.6;
+          ctx.shadowColor = 'rgba(23,212,139,0.5)';
+          ctx.shadowBlur = 12;
+          ctx.stroke();
+          ctx.shadowBlur = 0;
+
+          // Pulsing node on the front curve
+          var nx = w * 0.76;
+          var ny = yAtFraction(front, 26, 0.18, 0.64, t, 0.76);
+          var pulse = 0.5 + 0.5 * Math.sin(t * 2.1);
+          ctx.beginPath();
+          ctx.arc(nx, ny, 5 + pulse * 7, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(23,212,139,' + (0.16 - pulse * 0.1) + ')';
+          ctx.fill();
+          ctx.beginPath();
+          ctx.arc(nx, ny, 3, 0, Math.PI * 2);
+          ctx.fillStyle = '#17D48B';
+          ctx.shadowColor = 'rgba(23,212,139,0.8)';
+          ctx.shadowBlur = 14;
+          ctx.fill();
+          ctx.shadowBlur = 0;
+
+          // Rising motes
+          for (var k = 0; k < motes.length; k++) {
+            var p = motes[k];
+            var my = ((p.y - t * p.speed) % 1 + 1) % 1;
+            var alpha = 0.1 + 0.22 * (0.5 + 0.5 * Math.sin(t * 0.9 + p.phase));
+            ctx.beginPath();
+            ctx.arc(p.x * w, my * h, p.r, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(23,212,139,' + alpha.toFixed(3) + ')';
+            ctx.fill();
+          }
+        }
+
+        var start = 0;
+        var lastT = 0;
+
+        function frame(now) {
+          if (!start) start = now;
+          lastT = (now - start) / 1000;
+          draw(lastT);
+          requestAnimationFrame(frame);
+        }
+
+        // Paint one frame straight away so the backdrop is there on first
+        // paint, and repaint on resize even when the loop isn't running.
+        resize();
+        draw(0);
+
+        var onResize = function () { resize(); draw(lastT); };
+        // ResizeObserver also catches the mobile URL bar collapsing, which
+        // changes the fixed canvas's height without a window resize event.
+        if (window.ResizeObserver) new ResizeObserver(onResize).observe(canvas);
+        else window.addEventListener('resize', onResize, { passive: true });
+
+        if (!reduced) requestAnimationFrame(frame);
+
+        // Gentle pointer parallax on the aurora layer (fine pointers only).
+        var aurora = document.querySelector('.cs-aurora');
+        if (aurora && !reduced && window.matchMedia('(pointer: fine)').matches) {
+          window.addEventListener(
+            'mousemove',
+            function (e) {
+              var dx = (e.clientX / window.innerWidth - 0.5) * 26;
+              var dy = (e.clientY / window.innerHeight - 0.5) * 20;
+              aurora.style.setProperty('--px', dx.toFixed(1) + 'px');
+              aurora.style.setProperty('--py', dy.toFixed(1) + 'px');
+            },
+            { passive: true }
+          );
+        }
+      })();
+    </script>
+  </body>
+</html>
