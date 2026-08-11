@@ -31,18 +31,18 @@
 
   <!-- headline (official copy) -->
   <text x="84" y="312" font-family="'Space Grotesk', Arial, sans-serif" font-size="66" font-weight="600" fill="#FFFFFF" letter-spacing="-1.5">Your guardian layer for</text>
-  <text x="84" y="392" font-family="'Space Grotesk', Arial, sans-serif" font-size="66" font-weight="600" fill="url(#txt)" letter-spacing="-1.5">clearer market decisions.</text>
+  <text x="84" y="392" font-family="'Space Grotesk', Arial, sans-serif" font-size="66" font-weight="600" fill="url(#txt)" letter-spacing="-1.5">disciplined algo trading.</text>
 
-  <text x="86" y="458" font-family="Arial, sans-serif" font-size="28" fill="#8C9891">Guardian Bot packages for Gold, Bitcoin, and USD/JPY.</text>
+  <text x="86" y="458" font-family="Arial, sans-serif" font-size="28" fill="#8C9891">Guardian Algo packages for Gold, Bitcoin, and Nasdaq.</text>
 
   <!-- metric chips (official stats strip) -->
   <g font-family="'IBM Plex Mono', 'Courier New', monospace" font-size="22" fill="#F2F5F3">
-    <rect x="84" y="508" width="286" height="58" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)"/>
-    <text x="108" y="544">25–32% yearly ROI</text>
-    <rect x="390" y="508" width="230" height="58" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)"/>
-    <text x="414" y="544">4,000+ clients</text>
-    <rect x="640" y="508" width="200" height="58" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)"/>
-    <text x="664" y="544">548 days</text>
+    <rect x="84" y="508" width="248" height="58" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)"/>
+    <text x="108" y="544">up to 32% ROI*</text>
+    <rect x="352" y="508" width="330" height="58" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)"/>
+    <text x="376" y="544">1,000+ active clients</text>
+    <rect x="702" y="508" width="156" height="58" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)"/>
+    <text x="726" y="544">548 days</text>
   </g>
 
   <!-- chart accent -->

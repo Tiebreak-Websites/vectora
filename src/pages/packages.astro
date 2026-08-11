@@ -17,7 +17,7 @@ const tiers = [
     chip: '1 algo',
     sub: 'Any one algo of your choice',
     price: '$3,000',
-    deposit: '$5,000',
+    margin: '$5,000',
     limit: 1,
     locked: false,
     featured: false,
@@ -25,42 +25,42 @@ const tiers = [
     defaults: ['MIRA'],
     pickLabel: 'Choose your algo',
     desc: 'Choose any one trading algo based on your preferred market and trading style. Full access to a single algo of your choice.',
-    includes: 'Full access to one algo of your choice for 1 year, guardian risk check, basic setup support, private client onboarding.',
+    includes: 'Full access to one algo of your choice for 1 year, guardian risk check, technical setup assistance, private client account setup.',
   },
   {
     name: 'Advanced',
     chip: '2 algos',
     sub: 'Any two algos of your choice',
     price: '$5,000',
-    deposit: '$10,000',
+    margin: '$10,000',
     limit: 2,
     locked: false,
     featured: true,
     defaults: ['MIRA', 'AXON'],
     pickLabel: 'Choose any two algos',
     desc: 'Combine any two trading algos to diversify your trading strategy across multiple markets. Select any two and gain access to both.',
-    includes: 'Full access to two algos of your choice for 1 year, expanded risk context, priority setup support, private client onboarding.',
+    includes: 'Full access to two algos of your choice for 1 year, expanded risk context, priority technical setup assistance, private client account setup.',
   },
   {
     name: 'Elite',
     chip: '3 algos',
     sub: 'All three algos included',
     price: '$7,000',
-    deposit: '$15,000',
+    margin: '$15,000',
     limit: 3,
     locked: true,
     featured: false,
     defaults: ['MIRA', 'AXON', 'KAIRO'],
     pickLabel: 'All algos included',
     desc: 'Unlock all three trading algos in one complete package — maximum market exposure, greater diversification, and every available strategy.',
-    includes: 'Full access to all three algos for 1 year, pro guardian logic, advanced setup support, private client onboarding.',
+    includes: 'Full access to all three algos for 1 year, pro guardian logic, advanced technical setup assistance, private client account setup.',
   },
 ];
 
 const selection = (names) => bots.filter((b) => names.includes(b.name));
 const roiFor = (names) => {
   const sel = selection(names);
-  return `${Math.min(...sel.map((b) => b.min))}–${Math.max(...sel.map((b) => b.max))}%`;
+  return `up to ${Math.max(...sel.map((b) => b.max))}%*`;
 };
 const marketsFor = (names) => selection(names).map((b) => b.market).join(' + ');
 
@@ -68,16 +68,16 @@ const compare = [
   { feature: 'Algos included', foundation: 'Any 1 of 3', advance: 'Any 2 of 3', elite: 'All 3 algos' },
   { feature: 'Algo selection', foundation: 'Your choice', advance: 'Your choice', elite: 'MIRA + AXON + KAIRO' },
   { feature: 'Package Price', foundation: '$3,000', advance: '$5,000', elite: '$7,000' },
-  { feature: 'Minimum deposit', foundation: '$5,000', advance: '$10,000', elite: '$15,000' },
+  { feature: 'Minimum margin', foundation: '$5,000', advance: '$10,000', elite: '$15,000' },
   { feature: 'Algo access', foundation: '1 year', advance: '1 year', elite: '1 year' },
   { feature: 'Risk Check', foundation: 'Core guardian check', advance: 'Expanded guardian check', elite: 'Pro guardian check' },
-  { feature: 'Client Support', foundation: 'Setup support', advance: 'Priority setup support', elite: 'Pro setup support' },
-  { feature: 'Refund', foundation: '90-day refund', advance: '90-day refund', elite: '90-day refund' },
+  { feature: 'Technical setup', foundation: 'Setup assistance', advance: 'Priority setup assistance', elite: 'Pro setup assistance' },
+  { feature: 'Refund', foundation: '60-day refund', advance: '60-day refund', elite: '60-day refund' },
   { feature: 'Availability', foundation: 'Available now', advance: 'Coming soon', elite: 'Coming soon' },
 ];
 ---
 
-<Layout title="Vectora — Packages" description="Choose your Guardian Algo package. Foundation unlocks any one algo, Advanced any two, and Elite includes all three. Every package comes with a 90-day refund guarantee.">
+<Layout title="Vectora — Packages" description="Choose your Guardian Algo package. Foundation unlocks any one algo, Advanced any two, and Elite includes all three. Every package comes with a 60-day refund period.">
   <section class="section page-hero">
     <div class="container">
       <h1 class="reveal">Choose your <span class="grad-text">Guardian Algo package.</span></h1>
@@ -85,7 +85,7 @@ const compare = [
         Pick your package, then choose which algos power it — Foundation
         unlocks any one algo, Advanced any two, and Elite includes all three.
         Foundation is available now; Advanced and Elite are coming soon and
-        will be activated through our supported broker setup.
+        will be activated through technically compatible broker platforms.
       </p>
     </div>
   </section>
@@ -123,7 +123,6 @@ const compare = [
                     class="pick"
                     aria-pressed={t.defaults.includes(b.name) ? 'true' : 'false'}
                     disabled={t.locked}
-                    data-min={b.min}
                     data-max={b.max}
                     data-market={b.market}
                   >
@@ -134,18 +133,18 @@ const compare = [
                       <span class="pick-name">{b.name}</span>
                       <span class="pick-market">{b.instrument}</span>
                     </span>
-                    <span class="pick-roi">{b.min}–{b.max}%</span>
+                    <span class="pick-roi">up to {b.max}%*</span>
                   </button>
                 ))}
               </div>
             </div>
 
             <dl class="t-rows">
-              <div><dt>Monthly Average ROI</dt><dd class="accent js-roi">{roiFor(t.defaults)}</dd></div>
+              <div><dt>Approx. monthly ROI</dt><dd class="accent js-roi">{roiFor(t.defaults)}</dd></div>
               <div><dt>Markets</dt><dd class="js-markets">{marketsFor(t.defaults)}</dd></div>
-              <div><dt>Minimum deposit</dt><dd>{t.deposit}</dd></div>
+              <div><dt>Minimum margin</dt><dd>{t.margin}</dd></div>
               <div><dt>Algo access</dt><dd>1 year</dd></div>
-              <div><dt>Refund</dt><dd>90-day refund</dd></div>
+              <div><dt>Refund</dt><dd>60-day refund</dd></div>
             </dl>
 
             <div class="includes">
@@ -165,10 +164,10 @@ const compare = [
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v4h4"/><path d="M9.5 12.2l1.8 1.8 3.7-3.7"/></svg>
         </span>
         <div class="refund-copy">
-          <strong>90-day refund guarantee</strong>
-          <p>Every package comes with a 90-day refund and 1 year of algo access from the date of purchase — if it's not the right fit, you get your money back.</p>
+          <strong>60-day refund period</strong>
+          <p>Every package comes with a 60-day refund period and 1 year of algo access from the date of purchase. If the algo has been used, the refund may be reduced proportionally to usage — all refunds are handled under our Terms of Service.</p>
         </div>
-        <span class="refund-chip">90 days</span>
+        <span class="refund-chip">60 days</span>
       </aside>
     </div>
   </section>
@@ -201,8 +200,8 @@ const compare = [
 
   <ClosingCta
     title='Ready to add a guardian layer?'
-    body="Our team can help you pick the right package and combination of Mira, Axon, and Kairo for your goals. You will join through one of our supported brokers."
-    primary={{ label: 'Schedule consultation', href: '/support' }}
+    body="Pick your package and combination of Mira, Axon, and Kairo, and our team will assist with the technical setup. You will connect through a technically compatible broker platform."
+    primary={{ label: 'Talk to our team', href: '/support' }}
     secondary={{ label: 'View algo packages', href: '/algos' }}
   />
 </Layout>
@@ -220,9 +219,8 @@ const compare = [
 
     const render = () => {
       picks.forEach((p) => p.setAttribute('aria-pressed', selected.includes(p) ? 'true' : 'false'));
-      const mins = selected.map((p) => Number(p.getAttribute('data-min')));
       const maxs = selected.map((p) => Number(p.getAttribute('data-max')));
-      if (roiEl) roiEl.textContent = `${Math.min(...mins)}–${Math.max(...maxs)}%`;
+      if (roiEl) roiEl.textContent = `up to ${Math.max(...maxs)}%*`;
       if (marketsEl) marketsEl.textContent = selected.map((p) => p.getAttribute('data-market')).join(' + ');
       if (countEl) countEl.textContent = `${selected.length} of ${limit} selected`;
     };
