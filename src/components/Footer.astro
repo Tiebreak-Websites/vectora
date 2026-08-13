@@ -38,7 +38,7 @@ const cols = [
     <div class="foot-top">
       <div class="foot-brand">
         <a href="/" aria-label="Vectora home"><Logo height={34} /></a>
-        <a href="/support" class="btn btn-outline foot-cta">Get a call from our team</a>
+        <a href="/support" class="btn btn-outline foot-cta">Request a call</a>
       </div>
 
       <div class="foot-cols">
@@ -54,11 +54,16 @@ const cols = [
     <hr class="foot-divider" />
 
     <p class="disclaimer">
-      Vectora algos are decision-support and algo-assisted trading tools offered
-      through supported broker setup. ROI figures are historical, backtested,
-      or tracked performance ranges and are not guaranteed. Trading involves
-      risk and can result in loss of capital. Clients remain responsible for
-      their account decisions.
+      Vectora algos are automated trading tools offered through technically
+      compatible broker platforms. Clients choose a package and algo
+      selection; once activated, algos execute their strategies independently.
+      Our team provides technical setup assistance, not investment advice.
+    </p>
+    <p class="disclaimer">
+      *ROI and performance figures are approximate "up to" values based on
+      historical, backtested, or tracked results. Past performance is not
+      indicative of future results and returns are not guaranteed. Trading
+      involves risk and can result in loss of capital.
     </p>
 
     <div class="foot-bottom">
@@ -125,6 +130,7 @@ const cols = [
     line-height: 1.7;
     color: var(--text-4);
   }
+  .disclaimer + .disclaimer { margin-top: 0.6rem; }
 
   .foot-bottom {
     display: flex; justify-content: space-between; align-items: center;

@@ -7,7 +7,7 @@ const isLogin = mode === 'login';
 const perks = [
   'Three specialist algos — gold, Bitcoin, Nasdaq',
   'Every trade visible in your own account',
-  '90-day refund guarantee',
+  '60-day refund period',
   '1 year of algo access with every package',
 ];
 ---
@@ -24,8 +24,8 @@ const perks = [
           ))}
         </ul>
         <div class="side-stats">
-          <div><span class="ss-v">92%</span><span class="ss-k">Win rate</span></div>
-          <div><span class="ss-v">1–2%</span><span class="ss-k">Drawdown</span></div>
+          <div><span class="ss-v">92%*</span><span class="ss-k">Win rate</span></div>
+          <div><span class="ss-v">1–2%*</span><span class="ss-k">Drawdown</span></div>
           <div><span class="ss-v">24/7</span><span class="ss-k">Execution</span></div>
         </div>
       </aside>
@@ -37,7 +37,7 @@ const perks = [
         </div>
 
         <h1>{isLogin ? 'Welcome back' : 'Create your account'}</h1>
-        <p class="sub">{isLogin ? 'Log in to your Vectora dashboard.' : 'Sign up in minutes — every package comes with a 90-day refund.'}</p>
+        <p class="sub">{isLogin ? 'Log in to your Vectora dashboard.' : 'Sign up in minutes — every package comes with a 60-day refund period.'}</p>
 
         <form id="auth-form" class="auth-form" novalidate data-mode={mode}>
           {!isLogin && (
@@ -66,7 +66,7 @@ const perks = [
               <a href="#" class="link-sm">Forgot password?</a>
             </div>
           ) : (
-            <label class="check terms"><input type="checkbox" name="terms" /> <span>I agree to the Terms &amp; Risk Disclosure</span></label>
+            <label class="check terms"><input type="checkbox" name="terms" required /> <span>I agree to the Terms of Service, Privacy Policy &amp; Risk Disclosure</span></label>
           )}
 
           <button type="submit" class="btn btn-primary btn-lg auth-submit">{isLogin ? 'Log in' : 'Create account'} <span class="arrow" aria-hidden="true">→</span></button>
@@ -231,7 +231,7 @@ const perks = [
         const terms = form.querySelector('[name="terms"]');
         if (terms && !terms.checked) {
           ok = false;
-          statusEl.textContent = 'Please accept the Terms to continue.';
+          statusEl.textContent = 'Please accept the Terms, Privacy Policy & Risk Disclosure to continue.';
           statusEl.className = 'form-status bad';
         }
       }

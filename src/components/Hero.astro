@@ -1,28 +1,29 @@
 ---
-// Bot facts from the official copy: instruments, Monthly Average ROI, Live status.
+// Bot facts from the official copy: instruments, approximate monthly ROI
+// ("up to" figures per compliance review), Live status.
 // Sparklines are hand-drawn equity-style curves ranked by performance:
 // AXON strongest climb, KAIRO second, MIRA modest and steady.
 const bots = [
   {
-    name: 'MIRA', instrument: 'Gold (XAU)', roi: '3–5%',
+    name: 'MIRA', instrument: 'Gold (XAU)', roi: 'up to 5%*',
     spark: 'M2 31 L9 29.5 L16 30.5 L23 28 L30 26.5 L37 28.5 L44 30 L51 29 L58 26 L65 27 L72 24.5 L79 25.5 L86 22.5 L93 23.5 L100 21 L107 22.5 L114 18 L121 19.5 L128 15.5',
   },
   {
-    name: 'AXON', instrument: 'Bitcoin (BTC)', roi: '5–7%',
+    name: 'AXON', instrument: 'Bitcoin (BTC)', roi: 'up to 7%*',
     spark: 'M2 32 L8 28 L13 30 L19 23 L25 26 L30 18.5 L36 22 L42 27 L48 25 L53 26.5 L59 17 L64 20.5 L70 12 L76 15.5 L82 8 L88 13 L94 11 L100 5.5 L106 9 L113 7 L120 10.5 L128 3',
   },
   {
-    name: 'KAIRO', instrument: 'Nasdaq (NDX)', roi: '4–6%',
+    name: 'KAIRO', instrument: 'Nasdaq (NDX)', roi: 'up to 6%*',
     spark: 'M2 29 L8 26 L14 30.5 L20 31.5 L26 27.5 L32 29.5 L38 24 L44 26.5 L50 21.5 L56 25 L62 23.5 L68 18.5 L74 21.5 L80 20 L86 15.5 L92 18.5 L98 17 L104 13 L110 15.5 L116 14 L122 10.5 L128 8',
   },
 ];
 
 const ticker = [
-  { a: 'MIRA', b: 'GOLD (XAU)', c: '3–5% / mo' },
-  { a: 'AXON', b: 'BITCOIN (BTC)', c: '5–7% / mo' },
-  { a: 'KAIRO', b: 'NASDAQ (NDX)', c: '4–6% / mo' },
-  { a: 'ALL ALGOS', b: 'OVERALL WIN RATE', c: '92%' },
-  { a: 'ALL ALGOS', b: 'OVERALL DRAWDOWN', c: '1–2%' },
+  { a: 'MIRA', b: 'GOLD (XAU)', c: 'up to 5% / mo*' },
+  { a: 'AXON', b: 'BITCOIN (BTC)', c: 'up to 7% / mo*' },
+  { a: 'KAIRO', b: 'NASDAQ (NDX)', c: 'up to 6% / mo*' },
+  { a: 'ALL ALGOS', b: 'OVERALL WIN RATE', c: '92%*' },
+  { a: 'ALL ALGOS', b: 'OVERALL DRAWDOWN', c: '1–2%*' },
   { a: 'ENGINE', b: 'STATUS', c: '24/7' },
 ];
 ---
@@ -33,19 +34,19 @@ const ticker = [
 
   <div class="container hero-copy">
     <h1 id="hero-title" class="reveal">
-      Your guardian layer for<br /><span class="grad-text">clearer market decisions.</span>
+      Your guardian layer for<br /><span class="grad-text">disciplined algo trading.</span>
     </h1>
 
     <p class="lede reveal" style="--reveal-delay:160ms">
       Vectora watches selected market conditions, checks risk around each
-      setup, and helps you see the trade more clearly before you commit.
-      You choose the broker setup, you choose the package, and the final
-      decision stays yours.
+      setup, and executes its strategy automatically. You choose the broker
+      setup and the package — once activated, the algo operates
+      independently within its rules.
     </p>
 
     <div class="hero-cta reveal" style="--reveal-delay:240ms">
       <a href="/packages" class="btn btn-primary btn-lg">View packages <span class="arrow" aria-hidden="true">→</span></a>
-      <a href="/support" class="btn btn-outline btn-lg">Get a call from our team</a>
+      <a href="/support" class="btn btn-outline btn-lg">Request a call</a>
     </div>
   </div>
 
@@ -63,7 +64,7 @@ const ticker = [
           <div class="hb-foot">
             <div class="hb-roi-row">
               <span class="hb-roi">{b.roi}</span>
-              <span class="hb-roi-k figure-label">Monthly Average ROI</span>
+              <span class="hb-roi-k figure-label">Approx. monthly ROI</span>
             </div>
             <span class="hb-arrow" aria-hidden="true">→</span>
           </div>
