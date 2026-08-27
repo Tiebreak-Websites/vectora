@@ -1,8 +1,17 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import AuthForm from '../components/AuthForm.astro';
+let loginUrl = import.meta.env.LOGIN_URL;
 ---
 
-<Layout title="Vectora — Log in" description="Log in to your Vectora dashboard.">
-  <AuthForm mode="login" />
-</Layout>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirecting…</title>
+    <meta name="robots" content="noindex" />
+    <script is:inline define:vars={{ loginUrl }}>
+      const url = new URL(loginUrl);
+      window.location.replace(url.toString());
+    </script>
+  </head>
+  <body> Redirecting… </body>
+</html>
