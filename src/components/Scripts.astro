@@ -1,0 +1,44 @@
+---
+const { isRegister = false } = Astro.props;
+
+const siteEnv = import.meta.env.SITE_ENV;
+
+// This should be included on all pages
+// For the  PlexopAPI.sendVisit()
+const plexopScripts = [
+  `/js/jquery-3.min.js`,
+  `/js/helper_002.js`,
+  `/js/plexop_api_2.0.js`,
+];
+
+// This should be included only on the signup page
+// For the nxReg form
+const registerScripts = [
+  `/js/jquery-3.min.js`,
+  `/js/legal_data.js`,
+  `/js/helper_002.js`,
+  `/js/plexop_api_2.0.js`,
+  `/js/handlebars.min.js`,
+  `/js/intlTelInput-jquery.min.js`,
+  `/js/nxreg.js`,
+  `/js/register.js`,
+];
+---
+
+{
+  !isRegister
+    ? plexopScripts.map((script) => <script is:inline src={script} />)
+    : registerScripts.map((script) => <script is:inline src={script} />)
+}
+
+{
+  !isRegister ? <script is:inline define:vars={{ siteEnv: siteEnv }}>
+  $(document).ready(function () {
+    PlexopAPI.setAdvertiser(window.legalData?._PAdvertiser ?? null);
+    PlexopAPI.setUnknown(window.legalData?._PUnknown ?? null);
+    PlexopAPI.setBdomain(window.legalData?._PBDomain ?? null);
+    PlexopAPI.setA(window.legalData?._PA ?? null);
+    if (siteEnv === "prod") PlexopAPI.sendVisit();
+  });
+</script> : null
+}

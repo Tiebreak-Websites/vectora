@@ -1,0 +1,18 @@
+<script id="nxreg-sign-up-activation-template" type="text/x-handlebars-template">
+  <div class="nx-thankyou-mail">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <p class="text-center mb-4"><img src="<?php echo BW_URI_ASSETS; ?>images/emailSent.png"></p>
+          <p class="text-center font-weight-bold mb-4">{{strings.nxReg_i18n_SignUp_Activation_Message1}}</p>
+          <p class="text-center">{{SignUp_Activation_Message2}}</p>
+          <p class="text-center">{{strings.nxReg_i18n_SignUp_Activation_Message3}}</p>
+          <p class="text-center">{{strings.nxReg_i18n_SignUp_Activation_Message4}}</p>
+          <p class="text-center"><a class="resendLink nxreg-sign-up-activation-resend-button"
+              href="#">{{strings.nxReg_i18n_SignUp_Activation_ResendButton}}</a></p>
+          <p class="nxreg-server-error-wrapper text-center text-danger"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</script>

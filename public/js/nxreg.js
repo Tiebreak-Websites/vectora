@@ -1,0 +1,8808 @@
+"use strict";
+
+if (typeof window.nxEnv === 'undefined') {
+	// If nxEnv is 'undefined' and nxreg.js loads from /qa/nxreg make nxEnv to be 'qa' else set to be 'prod'.
+	window.nxEnv = /\/qa\/nxreg\/nxreg\.js/gm.test(document.currentScript.src) ? 'qa' : 'prod';
+} else {
+	window.nxEnv.toLowerCase();
+}
+// window.nxEnvPath = (typeof window.nxEnvPath === 'undefined') ? ((window.nxEnv == "local" || window.nxEnv == "dev") ? "/dev" : (window.nxEnv == "qa") ? "/qa" : "") : window.nxEnv.toLowerCase().replace(/\/+$/, "");
+// window.nxStaticUrl = (typeof window.nxStaticUrl === 'undefined') ? ((window.nxEnv == "dev" || window.nxEnv == "qa") ? "//static-dev-plexop.s3.amazonaws.com" : "//static-plexop.s3.amazonaws.com") : window.nxStaticUrl.toLowerCase().replace(/\/+$/, "");
+// TEST TODOXdd
+
+//profit platform
+var profitStep2;
+
+if (typeof window.nxEnvPath === 'undefined') {
+	switch (window.nxEnv) {
+		case "dev":
+		case "development":
+			window.nxEnvPath = "/dev";
+			break;
+		case "qa":
+		case "qualityassurance":
+			window.nxEnvPath = "/qa";
+			break;
+		case "local":
+		case "localhost":
+		case "prod":
+		case "production":
+		default:
+			window.nxEnvPath = "";
+			break;
+	}
+} else {
+	window.nxEnvPath = window.nxEnv.toLowerCase().replace(/\/+$/, "");
+}
+
+if (typeof window.nxStaticUrl === 'undefined') {
+	switch (window.nxEnv) {
+		case "dev":
+		case "development":
+		case "qa":
+		case "qualityassurance":
+			window.nxStaticUrl = "//static-dev-plexop.s3.amazonaws.com";
+			break;
+		case "local":
+		case "localhost":
+			window.nxStaticUrl = "//localhost";
+			break;
+		case "prod":
+		case "production":
+		default:
+			// window.nxStaticUrl = "//serving.visionsage.com";
+
+			if (!window.nxStaticUrl) {
+				const allowedSubdomains = ['preg', "areg", "breg", "creg"];
+				const hostnameArray = window.location.hostname.split(".");
+				const subdomain = hostnameArray[0];
+				const mainDomain = hostnameArray[1];
+				const tld = hostnameArray[2];
+				if (allowedSubdomains.includes(subdomain)) {
+					window.nxStaticUrl = "https://" + subdomain + "." + mainDomain + "." + tld;
+				} else {
+					window.nxStaticUrl = "https://serving.visionsage.com";
+				}
+			}
+	}
+} else {
+	window.nxStaticUrl = window.nxStaticUrl.toLowerCase().replace(/\/+$/, "");
+}
+
+if (typeof window.nxLoadScript === "undefined") {
+	window.nxLoadScript = function (url, callback) {
+		var scriptTag = document.createElement('script');
+		scriptTag.src = url;
+
+		if (callback !== undefined) {
+			scriptTag.onload = callback;
+			scriptTag.onreadystatechange = callback;
+		}
+
+		document.head.appendChild(scriptTag);
+	};
+}
+
+// if (typeof window.jQuery === "undefined") { window.nxLoadScript(window.nxStaticUrl + "/scripts/external/jquery-3.4.1.min.js"); }
+// if (typeof window.Handlebars === "undefined") { window.nxLoadScript(window.nxStaticUrl + "/scripts/external/handlebars-4.1.2.min.js"); }
+
+(function (a) { (jQuery.browser = jQuery.browser || {}).mobile = /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(a) || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0, 4)); })(navigator.userAgent || navigator.vendor || window.opera);
+
+
+(function ($) {
+	window.nxReg_i18n = {
+		"en": {
+			"nxReg_i18n_SignUp_SignUp": "Sign up",
+			"nxReg_i18n_SignUp_Email": "Email",
+			"nxReg_i18n_SignUp_Password": " Password (8+ characters)",
+			"nxReg_i18n_SignUp_Password_5": " Password (5+ characters)",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx1": "At least 1 lowercase letter",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx2": "At least 1 capital letter",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx3": "At least 1 number",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx4": "Spaces are not allowed",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx5": "At least 8 characters",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx6": "At most 24 characters",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx_loose": "Your pasword should be no less then 5 character long",
+			"nxReg_i18n_SignUp_CreateAccountButton": "Create an Account",
+			"nxReg_i18n_SignUp_SignIn": "Already registered? Login",
+			"nxReg_i18n_SignUp_SignInText": "Already have an account?",
+			"nxReg_i18n_SignUp_LogIn": "Log in",
+			"nxReg_i18n_SignUp_RiskWaring": "Risk Warning: Trading Forex and CFDs could lead to the loss of all of your invested capital.",
+
+			"nxReg_i18n_SignUp_PrivacyNoticeNotAcceptedError": "Accept the Privacy Notice to continue",
+			"nxReg_i18n_SignUp_CountryBlockedError": "You can't register from the country you are in.",
+			"nxReg_i18n_SignUp_ReCaptchaMandatoryError": "ReCaptcha is mandatory!",
+			"nxReg_i18n_SignUp_EmailWrongFormatError": "Did you type the email correctly? Try again.",
+			"nxReg_i18n_SignUp_EmailAlreadyExistsError": "This email has already been used. <a href=\"%%SignInUrl%%\">Log in</a>",
+			"nxReg_i18n_SignUp_EmailNonExistentError": "The provided email does not exist. Please check and enter it again.",
+			"nxReg_i18n_SignUp_ServerUnreachableError": "Problem connecting to server. Please try again later.",
+			"nxReg_i18n_SignUp_PasswordWrongError": "The password must comply with the password policy",
+
+			"nxReg_i18n_SignUp_FullName": "Full name",
+			"nxReg_i18n_SignUp_FullNameError": "Full name is required",
+
+			"nxReg_i18n_SignUp_CountryCode": "Country code",
+
+			"nxReg_i18n_SignUp_PhoneNumber": "Phone number",
+			"nxReg_i18n_SignUp_PhoneNumberErrors": [
+				"Phone number is required",
+				"Provide a valid country code.",
+				"Please provide a longer number",
+				"Please provide a shorter number",
+				"Don't forget to provide a valid phone number."
+			],
+
+			"nxReg_i18n_SignUp_Country": "Country",
+			"nxReg_i18n_SignUp_CountryError": "Please select a country",
+			"nxReg_i18n_SignUp_CountryList": {
+				"AD": "Andorra",
+				"AE": "United Arab Emirates",
+				"AF": "Afghanistan",
+				"AG": "Antigua and Barbuda",
+				"AI": "Anguilla",
+				"AL": "Albania",
+				"AM": "Armenia",
+				"AO": "Angola",
+				"AQ": "Antarctica",
+				"AR": "Argentina",
+				"AS": "American Samoa",
+				"AT": "Austria",
+				"AU": "Australia",
+				"AW": "Aruba",
+				"AX": "Aland Islands",
+				"AZ": "Azerbaijan",
+				"BA": "Bosnia and Herzegovina",
+				"BB": "Barbados",
+				"BD": "Bangladesh",
+				"BE": "Belgium",
+				"BF": "Burkina Faso",
+				"BG": "Bulgaria",
+				"BH": "Bahrain",
+				"BI": "Burundi",
+				"BJ": "Benin",
+				"BL": "Saint Barthelemy",
+				"BM": "Bermuda",
+				"BN": "Brunei",
+				"BO": "Bolivia",
+				"BQ": "Bonaire, Saint Eustatius and Saba ",
+				"BR": "Brazil",
+				"BS": "Bahamas",
+				"BT": "Bhutan",
+				"BV": "Bouvet Island",
+				"BW": "Botswana",
+				"BY": "Belarus",
+				"BZ": "Belize",
+				"CA": "Canada",
+				"CC": "Cocos Islands",
+				"CD": "Democratic Republic of the Congo",
+				"CF": "Central African Republic",
+				"CG": "Republic of the Congo",
+				"CH": "Switzerland",
+				"CI": "Ivory Coast",
+				"CK": "Cook Islands",
+				"CL": "Chile",
+				"CM": "Cameroon",
+				"CN": "China",
+				"CO": "Colombia",
+				"CR": "Costa Rica",
+				"CU": "Cuba",
+				"CV": "Cape Verde",
+				"CW": "Curacao",
+				"CX": "Christmas Island",
+				"CY": "Cyprus",
+				"CZ": "Czech Republic",
+				"DE": "Germany",
+				"DJ": "Djibouti",
+				"DK": "Denmark",
+				"DM": "Dominica",
+				"DO": "Dominican Republic",
+				"DZ": "Algeria",
+				"EC": "Ecuador",
+				"EE": "Estonia",
+				"EG": "Egypt",
+				"EH": "Western Sahara",
+				"ER": "Eritrea",
+				"ES": "Spain",
+				"ET": "Ethiopia",
+				"FI": "Finland",
+				"FJ": "Fiji",
+				"FK": "Falkland Islands",
+				"FM": "Micronesia",
+				"FO": "Faroe Islands",
+				"FR": "France",
+				"GA": "Gabon",
+				"GB": "United Kingdom",
+				"GD": "Grenada",
+				"GE": "Georgia",
+				"GF": "French Guiana",
+				"GG": "Guernsey",
+				"GH": "Ghana",
+				"GI": "Gibraltar",
+				"GL": "Greenland",
+				"GM": "Gambia",
+				"GN": "Guinea",
+				"GP": "Guadeloupe",
+				"GQ": "Equatorial Guinea",
+				"GR": "Greece",
+				"GS": "South Georgia and the South Sandwich Islands",
+				"GT": "Guatemala",
+				"GU": "Guam",
+				"GW": "Guinea-Bissau",
+				"GY": "Guyana",
+				"HK": "Hong Kong",
+				"HM": "Heard Island and McDonald Islands",
+				"HN": "Honduras",
+				"HR": "Croatia",
+				"HT": "Haiti",
+				"HU": "Hungary",
+				"ID": "Indonesia",
+				"IE": "Ireland",
+				"IL": "Israel",
+				"IM": "Isle of Man",
+				"IN": "India",
+				"IO": "British Indian Ocean Territory",
+				"IQ": "Iraq",
+				"IR": "Iran",
+				"IS": "Iceland",
+				"IT": "Italy",
+				"JE": "Jersey",
+				"JM": "Jamaica",
+				"JO": "Jordan",
+				"JP": "Japan",
+				"KE": "Kenya",
+				"KG": "Kyrgyzstan",
+				"KH": "Cambodia",
+				"KI": "Kiribati",
+				"KM": "Comoros",
+				"KN": "Saint Kitts and Nevis",
+				"KP": "North Korea",
+				"KR": "South Korea",
+				"KW": "Kuwait",
+				"KY": "Cayman Islands",
+				"KZ": "Kazakhstan",
+				"LA": "Laos",
+				"LB": "Lebanon",
+				"LC": "Saint Lucia",
+				"LI": "Liechtenstein",
+				"LK": "Sri Lanka",
+				"LR": "Liberia",
+				"LS": "Lesotho",
+				"LT": "Lithuania",
+				"LU": "Luxembourg",
+				"LV": "Latvia",
+				"LY": "Libya",
+				"MA": "Morocco",
+				"MC": "Monaco",
+				"MD": "Moldova",
+				"ME": "Montenegro",
+				"MF": "Saint Martin",
+				"MG": "Madagascar",
+				"MH": "Marshall Islands",
+				"MK": "Macedonia",
+				"ML": "Mali",
+				"MM": "Myanmar",
+				"MN": "Mongolia",
+				"MO": "Macao",
+				"MP": "Northern Mariana Islands",
+				"MQ": "Martinique",
+				"MR": "Mauritania",
+				"MS": "Montserrat",
+				"MT": "Malta",
+				"MU": "Mauritius",
+				"MV": "Maldives",
+				"MW": "Malawi",
+				"MX": "Mexico",
+				"MY": "Malaysia",
+				"MZ": "Mozambique",
+				"NA": "Namibia",
+				"NC": "New Caledonia",
+				"NE": "Niger",
+				"NF": "Norfolk Island",
+				"NG": "Nigeria",
+				"NI": "Nicaragua",
+				"NL": "Netherlands",
+				"NO": "Norway",
+				"NP": "Nepal",
+				"NR": "Nauru",
+				"NU": "Niue",
+				"NZ": "New Zealand",
+				"OM": "Oman",
+				"PA": "Panama",
+				"PE": "Peru",
+				"PF": "French Polynesia",
+				"PG": "Papua New Guinea",
+				"PH": "Philippines",
+				"PK": "Pakistan",
+				"PL": "Poland",
+				"PM": "Saint Pierre and Miquelon",
+				"PN": "Pitcairn",
+				"PR": "Puerto Rico",
+				"PS": "Palestinian Territory",
+				"PT": "Portugal",
+				"PW": "Palau",
+				"PY": "Paraguay",
+				"QA": "Qatar",
+				"RE": "Reunion",
+				"RO": "Romania",
+				"RS": "Serbia",
+				"RU": "Russia",
+				"RW": "Rwanda",
+				"SA": "Saudi Arabia",
+				"SB": "Solomon Islands",
+				"SC": "Seychelles",
+				"SD": "Sudan",
+				"SE": "Sweden",
+				"SG": "Singapore",
+				"SH": "Saint Helena",
+				"SI": "Slovenia",
+				"SJ": "Svalbard and Jan Mayen",
+				"SK": "Slovakia",
+				"SL": "Sierra Leone",
+				"SM": "San Marino",
+				"SN": "Senegal",
+				"SO": "Somalia",
+				"SR": "Suriname",
+				"SS": "South Sudan",
+				"ST": "Sao Tome and Principe",
+				"SV": "El Salvador",
+				"SX": "Sint Maarten",
+				"SY": "Syria",
+				"SZ": "Swaziland",
+				"TC": "Turks and Caicos Islands",
+				"TD": "Chad",
+				"TF": "French Southern Territories",
+				"TG": "Togo",
+				"TH": "Thailand",
+				"TJ": "Tajikistan",
+				"TK": "Tokelau",
+				"TL": "East Timor",
+				"TM": "Turkmenistan",
+				"TN": "Tunisia",
+				"TO": "Tonga",
+				"TR": "Turkey",
+				"TT": "Trinidad and Tobago",
+				"TV": "Tuvalu",
+				"TW": "Taiwan",
+				"TZ": "Tanzania",
+				"UA": "Ukraine",
+				"UG": "Uganda",
+				"UM": "United States Minor Outlying Islands",
+				"US": "United States",
+				"UY": "Uruguay",
+				"UZ": "Uzbekistan",
+				"VA": "Vatican",
+				"VC": "Saint Vincent and the Grenadines",
+				"VE": "Venezuela",
+				"VG": "British Virgin Islands",
+				"VI": "U.S. Virgin Islands",
+				"VN": "Vietnam",
+				"VU": "Vanuatu",
+				"WF": "Wallis and Futuna",
+				"WS": "Samoa",
+				"XK": "Kosovo",
+				"YE": "Yemen",
+				"YT": "Mayotte",
+				"ZA": "South Africa",
+				"ZM": "Zambia",
+				"ZW": "Zimbabwe"
+			},
+			"nxReg_i18n_SignUp_VerificationCodeToggle": "Add Verification Code",
+			"nxReg_i18n_SignUp_VerificationCode": "Verification Code",
+			"nxReg_i18n_SignUp_VerificationCodeError": "Check the verification code and try again",
+
+			"nxReg_i18n_SignUp_Password_Title": "Thank you for registering with us<br>Below you can find your registration data",
+			"nxReg_i18n_SignUp_Password_SubTitle": "Be sure to save the data",
+			"nxReg_i18n_SignUp_Password_Button": "Continue",
+
+			"nxReg_i18n_SignUp_Social_BoxMessage1": "OR Sign-up with:",
+			"nxReg_i18n_SignUp_Social_BoxMessage2": "We will never post without your permission.",
+			"nxReg_i18n_SignUp_Social_Google": "Sign up with Google",
+			"nxReg_i18n_SignUp_Social_Facebook": "Sign up with Facebook",
+			"nxReg_i18n_SignUp_Social_FacebookError": "Authorize our application to sign up with Facebook.",
+			"nxReg_i18n_SignUp_Social_GoogleError": "Authorize our application to sign up with Google",
+			"nxReg_i18n_SignUp_Social_FacebookFailedError": "Please check your Facebook account or try another registration option",
+			"nxReg_i18n_SignUp_Social_GoogleFailedError": "Please check your Google account or try another registration option",
+			"nxReg_i18n_SignUp_Social_GoogleJWTExpired": "Session expired. Please sign up again.",
+
+			"nxReg_i18n_SignUp_Social_Text": "Accept our Privacy Notice to enter the trading platform",
+
+			"nxReg_i18n_SignUp_Activation_Message1": "Check your inbox",
+			"nxReg_i18n_SignUp_Activation_Message2": "Check  %%Email%%  for an account activation email.",
+			"nxReg_i18n_SignUp_Activation_Message3": "Can't find it? Maybe it's in Spam.",
+			"nxReg_i18n_SignUp_Activation_Message4": "Still can't find that email?",
+			"nxReg_i18n_SignUp_Activation_ResendButton": "Resend it",
+			"nxReg_i18n_SignUp_Activation_ResendLimitReachedError": "The email resend limit has been reached. Register again.",
+
+			"nxReg_i18n_Activation_AccountActivated": "Your account has been activated. We will redirect you to <a href=\"%%SignInUrl%%\">Log in</a>.",
+			"nxReg_i18n_Activation_LinkExpiredError": "The account activation link has expired. You have to <a href=\"%%SignUpUrl%%\">register again</a>.",
+
+			"nxReg_i18n_UnknownError": "An unknown error has occurred. Please try again."
+		},
+		"my": {
+			"nxReg_i18n_SignUp_SignUp": "Daftar",
+			"nxReg_i18n_SignUp_Email": "Emel",
+			"nxReg_i18n_SignUp_Password": " Kata Laluan (8+ aksara)",
+			"nxReg_i18n_SignUp_Password_5": " Kata Laluan (5+ aksara)",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx1": "Sekurang-kurangnya 1 huruf kecil",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx2": "Sekurang-kurangnya 1 huruf besar",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx3": "Sekurang-kurangnya 1 nombor",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx4": "Ruang kosong tidak dibenarkan",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx5": "Sekurang-kurangnya 8 aksara",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx6": "Tidak melebihi 24 aksara",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx_loose": "Kata laluan anda mestilah sekurang-kurangnya 5 aksara",
+			"nxReg_i18n_SignUp_CreateAccountButton": "Cipta Akaun",
+			"nxReg_i18n_SignUp_SignIn": "Sudah berdaftar? Log masuk",
+			"nxReg_i18n_SignUp_SignInText": "Sudah mempunyai akaun?",
+			"nxReg_i18n_SignUp_LogIn": "Log masuk",
+			"nxReg_i18n_SignUp_RiskWaring": "Amaran Risiko: Berdagang Forex dan CFD boleh menyebabkan kehilangan keseluruhan modal yang anda laburkan.",
+
+			"nxReg_i18n_SignUp_PrivacyNoticeNotAcceptedError": "Terima Notis Privasi untuk meneruskan",
+			"nxReg_i18n_SignUp_CountryBlockedError": "Anda tidak boleh mendaftar dari negara tempat anda berada.",
+			"nxReg_i18n_SignUp_ReCaptchaMandatoryError": "ReCaptcha adalah wajib!",
+			"nxReg_i18n_SignUp_EmailWrongFormatError": "Adakah anda menaip emel dengan betul? Cuba lagi.",
+			"nxReg_i18n_SignUp_EmailAlreadyExistsError": "Emel ini telah pun digunakan. <a href=\"%%SignInUrl%%\">Log masuk</a>",
+			"nxReg_i18n_SignUp_EmailNonExistentError": "Emel yang diberikan tidak wujud. Sila semak dan masukkan semula.",
+			"nxReg_i18n_SignUp_ServerUnreachableError": "Masalah menyambung ke pelayan. Sila cuba lagi kemudian.",
+			"nxReg_i18n_SignUp_PasswordWrongError": "Kata laluan mesti mematuhi dasar kata laluan",
+
+			"nxReg_i18n_SignUp_FullName": "Nama penuh",
+			"nxReg_i18n_SignUp_FullNameError": "Nama penuh diperlukan",
+
+			"nxReg_i18n_SignUp_CountryCode": "Kod negara",
+
+			"nxReg_i18n_SignUp_PhoneNumber": "Nombor telefon",
+			"nxReg_i18n_SignUp_PhoneNumberErrors": [
+				"Nombor telefon diperlukan",
+				"Berikan kod negara yang sah.",
+				"Sila berikan nombor yang lebih panjang",
+				"Sila berikan nombor yang lebih pendek",
+				"Jangan lupa berikan nombor telefon yang sah."
+			],
+
+			"nxReg_i18n_SignUp_Country": "Negara",
+			"nxReg_i18n_SignUp_CountryError": "Sila pilih negara",
+			"nxReg_i18n_SignUp_CountryList": {
+				"AD": "Andorra",
+				"AE": "United Arab Emirates",
+				"AF": "Afghanistan",
+				"AG": "Antigua and Barbuda",
+				"AI": "Anguilla",
+				"AL": "Albania",
+				"AM": "Armenia",
+				"AO": "Angola",
+				"AQ": "Antarctica",
+				"AR": "Argentina",
+				"AS": "American Samoa",
+				"AT": "Austria",
+				"AU": "Australia",
+				"AW": "Aruba",
+				"AX": "Aland Islands",
+				"AZ": "Azerbaijan",
+				"BA": "Bosnia and Herzegovina",
+				"BB": "Barbados",
+				"BD": "Bangladesh",
+				"BE": "Belgium",
+				"BF": "Burkina Faso",
+				"BG": "Bulgaria",
+				"BH": "Bahrain",
+				"BI": "Burundi",
+				"BJ": "Benin",
+				"BL": "Saint Barthelemy",
+				"BM": "Bermuda",
+				"BN": "Brunei",
+				"BO": "Bolivia",
+				"BQ": "Bonaire, Saint Eustatius and Saba ",
+				"BR": "Brazil",
+				"BS": "Bahamas",
+				"BT": "Bhutan",
+				"BV": "Bouvet Island",
+				"BW": "Botswana",
+				"BY": "Belarus",
+				"BZ": "Belize",
+				"CA": "Canada",
+				"CC": "Cocos Islands",
+				"CD": "Democratic Republic of the Congo",
+				"CF": "Central African Republic",
+				"CG": "Republic of the Congo",
+				"CH": "Switzerland",
+				"CI": "Ivory Coast",
+				"CK": "Cook Islands",
+				"CL": "Chile",
+				"CM": "Cameroon",
+				"CN": "China",
+				"CO": "Colombia",
+				"CR": "Costa Rica",
+				"CU": "Cuba",
+				"CV": "Cape Verde",
+				"CW": "Curacao",
+				"CX": "Christmas Island",
+				"CY": "Cyprus",
+				"CZ": "Czech Republic",
+				"DE": "Germany",
+				"DJ": "Djibouti",
+				"DK": "Denmark",
+				"DM": "Dominica",
+				"DO": "Dominican Republic",
+				"DZ": "Algeria",
+				"EC": "Ecuador",
+				"EE": "Estonia",
+				"EG": "Egypt",
+				"EH": "Western Sahara",
+				"ER": "Eritrea",
+				"ES": "Spain",
+				"ET": "Ethiopia",
+				"FI": "Finland",
+				"FJ": "Fiji",
+				"FK": "Falkland Islands",
+				"FM": "Micronesia",
+				"FO": "Faroe Islands",
+				"FR": "France",
+				"GA": "Gabon",
+				"GB": "United Kingdom",
+				"GD": "Grenada",
+				"GE": "Georgia",
+				"GF": "French Guiana",
+				"GG": "Guernsey",
+				"GH": "Ghana",
+				"GI": "Gibraltar",
+				"GL": "Greenland",
+				"GM": "Gambia",
+				"GN": "Guinea",
+				"GP": "Guadeloupe",
+				"GQ": "Equatorial Guinea",
+				"GR": "Greece",
+				"GS": "South Georgia and the South Sandwich Islands",
+				"GT": "Guatemala",
+				"GU": "Guam",
+				"GW": "Guinea-Bissau",
+				"GY": "Guyana",
+				"HK": "Hong Kong",
+				"HM": "Heard Island and McDonald Islands",
+				"HN": "Honduras",
+				"HR": "Croatia",
+				"HT": "Haiti",
+				"HU": "Hungary",
+				"ID": "Indonesia",
+				"IE": "Ireland",
+				"IL": "Israel",
+				"IM": "Isle of Man",
+				"IN": "India",
+				"IO": "British Indian Ocean Territory",
+				"IQ": "Iraq",
+				"IR": "Iran",
+				"IS": "Iceland",
+				"IT": "Italy",
+				"JE": "Jersey",
+				"JM": "Jamaica",
+				"JO": "Jordan",
+				"JP": "Japan",
+				"KE": "Kenya",
+				"KG": "Kyrgyzstan",
+				"KH": "Cambodia",
+				"KI": "Kiribati",
+				"KM": "Comoros",
+				"KN": "Saint Kitts and Nevis",
+				"KP": "North Korea",
+				"KR": "South Korea",
+				"KW": "Kuwait",
+				"KY": "Cayman Islands",
+				"KZ": "Kazakhstan",
+				"LA": "Laos",
+				"LB": "Lebanon",
+				"LC": "Saint Lucia",
+				"LI": "Liechtenstein",
+				"LK": "Sri Lanka",
+				"LR": "Liberia",
+				"LS": "Lesotho",
+				"LT": "Lithuania",
+				"LU": "Luxembourg",
+				"LV": "Latvia",
+				"LY": "Libya",
+				"MA": "Morocco",
+				"MC": "Monaco",
+				"MD": "Moldova",
+				"ME": "Montenegro",
+				"MF": "Saint Martin",
+				"MG": "Madagascar",
+				"MH": "Marshall Islands",
+				"MK": "Macedonia",
+				"ML": "Mali",
+				"MM": "Myanmar",
+				"MN": "Mongolia",
+				"MO": "Macao",
+				"MP": "Northern Mariana Islands",
+				"MQ": "Martinique",
+				"MR": "Mauritania",
+				"MS": "Montserrat",
+				"MT": "Malta",
+				"MU": "Mauritius",
+				"MV": "Maldives",
+				"MW": "Malawi",
+				"MX": "Mexico",
+				"MY": "Malaysia",
+				"MZ": "Mozambique",
+				"NA": "Namibia",
+				"NC": "New Caledonia",
+				"NE": "Niger",
+				"NF": "Norfolk Island",
+				"NG": "Nigeria",
+				"NI": "Nicaragua",
+				"NL": "Netherlands",
+				"NO": "Norway",
+				"NP": "Nepal",
+				"NR": "Nauru",
+				"NU": "Niue",
+				"NZ": "New Zealand",
+				"OM": "Oman",
+				"PA": "Panama",
+				"PE": "Peru",
+				"PF": "French Polynesia",
+				"PG": "Papua New Guinea",
+				"PH": "Philippines",
+				"PK": "Pakistan",
+				"PL": "Poland",
+				"PM": "Saint Pierre and Miquelon",
+				"PN": "Pitcairn",
+				"PR": "Puerto Rico",
+				"PS": "Palestinian Territory",
+				"PT": "Portugal",
+				"PW": "Palau",
+				"PY": "Paraguay",
+				"QA": "Qatar",
+				"RE": "Reunion",
+				"RO": "Romania",
+				"RS": "Serbia",
+				"RU": "Russia",
+				"RW": "Rwanda",
+				"SA": "Saudi Arabia",
+				"SB": "Solomon Islands",
+				"SC": "Seychelles",
+				"SD": "Sudan",
+				"SE": "Sweden",
+				"SG": "Singapore",
+				"SH": "Saint Helena",
+				"SI": "Slovenia",
+				"SJ": "Svalbard and Jan Mayen",
+				"SK": "Slovakia",
+				"SL": "Sierra Leone",
+				"SM": "San Marino",
+				"SN": "Senegal",
+				"SO": "Somalia",
+				"SR": "Suriname",
+				"SS": "South Sudan",
+				"ST": "Sao Tome and Principe",
+				"SV": "El Salvador",
+				"SX": "Sint Maarten",
+				"SY": "Syria",
+				"SZ": "Swaziland",
+				"TC": "Turks and Caicos Islands",
+				"TD": "Chad",
+				"TF": "French Southern Territories",
+				"TG": "Togo",
+				"TH": "Thailand",
+				"TJ": "Tajikistan",
+				"TK": "Tokelau",
+				"TL": "East Timor",
+				"TM": "Turkmenistan",
+				"TN": "Tunisia",
+				"TO": "Tonga",
+				"TR": "Turkey",
+				"TT": "Trinidad and Tobago",
+				"TV": "Tuvalu",
+				"TW": "Taiwan",
+				"TZ": "Tanzania",
+				"UA": "Ukraine",
+				"UG": "Uganda",
+				"UM": "United States Minor Outlying Islands",
+				"US": "United States",
+				"UY": "Uruguay",
+				"UZ": "Uzbekistan",
+				"VA": "Vatican",
+				"VC": "Saint Vincent and the Grenadines",
+				"VE": "Venezuela",
+				"VG": "British Virgin Islands",
+				"VI": "U.S. Virgin Islands",
+				"VN": "Vietnam",
+				"VU": "Vanuatu",
+				"WF": "Wallis and Futuna",
+				"WS": "Samoa",
+				"XK": "Kosovo",
+				"YE": "Yemen",
+				"YT": "Mayotte",
+				"ZA": "South Africa",
+				"ZM": "Zambia",
+				"ZW": "Zimbabwe"
+			},
+			"nxReg_i18n_SignUp_VerificationCodeToggle": "Tambah Kod Pengesahan",
+			"nxReg_i18n_SignUp_VerificationCode": "Kod Pengesahan",
+			"nxReg_i18n_SignUp_VerificationCodeError": "Semak kod pengesahan dan cuba lagi",
+
+			"nxReg_i18n_SignUp_Password_Title": "Terima kasih kerana mendaftar dengan kami <br> Di bawah anda boleh menemui data pendaftaran anda",
+			"nxReg_i18n_SignUp_Password_SubTitle": "Pastikan anda menyimpan data tersebut",
+			"nxReg_i18n_SignUp_Password_Button": "Teruskan",
+
+			"nxReg_i18n_SignUp_Social_BoxMessage1": "ATAU Daftar dengan:",
+			"nxReg_i18n_SignUp_Social_BoxMessage2": "Kami tidak akan sesekali menyiarkan tanpa kebenaran anda.",
+			"nxReg_i18n_SignUp_Social_Google": "Daftar dengan Google",
+			"nxReg_i18n_SignUp_Social_Facebook": "Daftar dengan Facebook",
+			"nxReg_i18n_SignUp_Social_FacebookError": "Benarkan aplikasi kami untuk mendaftar dengan Facebook.",
+			"nxReg_i18n_SignUp_Social_GoogleError": "Benarkan aplikasi kami untuk mendaftar dengan Google",
+			"nxReg_i18n_SignUp_Social_FacebookFailedError": "Sila semak akaun Facebook anda atau cuba pilihan pendaftaran lain",
+			"nxReg_i18n_SignUp_Social_GoogleFailedError": "Sila semak akaun Google anda atau cuba pilihan pendaftaran lain",
+			"nxReg_i18n_SignUp_Social_GoogleJWTExpired": "Sesi telah tamat. Sila daftar semula.",
+
+			"nxReg_i18n_SignUp_Social_Text": "Terima Notis Privasi kami untuk memasuki platform dagangan",
+
+			"nxReg_i18n_SignUp_Activation_Message1": "Semak peti masuk anda",
+			"nxReg_i18n_SignUp_Activation_Message2": "Semak  %%Email%% untuk emel pengaktifan akaun",
+			"nxReg_i18n_SignUp_Activation_Message3": "Tidak menjumpainya? Mungkin ia berada dalam Spam.",
+			"nxReg_i18n_SignUp_Activation_Message4": "Masih tidak menjumpai emel itu?",
+			"nxReg_i18n_SignUp_Activation_ResendButton": "Hantar semula",
+			"nxReg_i18n_SignUp_Activation_ResendLimitReachedError": "Had penghantaran semula emel telah dicapai. Daftar semula.",
+
+			"nxReg_i18n_Activation_AccountActivated": "Akaun anda telah diaktifkan. Kami akan mengalihkan anda ke <a href=\"%%SignInUrl%%\">Log masuk</a>.",
+			"nxReg_i18n_Activation_LinkExpiredError": "Pautan pengaktifan akaun telah tamat tempoh. Anda perlu <a href=\"%%SignUpUrl%%\">daftar semula</a>.",
+
+			"nxReg_i18n_UnknownError": "Ralat tidak diketahui telah berlaku. Sila cuba lagi."
+		},
+		"fi": {
+			"nxReg_i18n_SignUp_SignUp": "Rekisteröidy",
+			"nxReg_i18n_SignUp_Email": "Sähköpostiosoite",
+			"nxReg_i18n_SignUp_Password": "Salasana (8+ merkkiä)",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx1": "Vähintään 1 pieni kirjain",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx2": "Vähintään 1 iso kirjain",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx3": "Vähintään 1 numero",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx4": "Erikoismerkkejä ei sallita",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx5": "Vähintään 8 merkkiä",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx6": "Korkeintaan 24 merkkiä",
+			"nxReg_i18n_SignUp_CreateAccountButton": "Luo tili",
+			"nxReg_i18n_SignUp_SignIn": "Oletko jo rekisteröitynyt? Kirjaudu sisään",
+			"nxReg_i18n_SignUp_SignInText": "Onko sinulla jo tili?",
+			"nxReg_i18n_SignUp_LogIn": "Kirjaudu sisään",
+
+			"nxReg_i18n_SignUp_PrivacyNoticeNotAcceptedError": "Hyväksy tietosuojailmoitus jatkaaksesi",
+			"nxReg_i18n_SignUp_CountryBlockedError": "Et voi rekisteröityä tästä maasta.",
+			"nxReg_i18n_SignUp_ReCaptchaMandatoryError": "ReCaptcha on pakollinen!",
+			"nxReg_i18n_SignUp_EmailWrongFormatError": "Kirjoititko sähköpostiosoitteen oikein? Yritä uudelleen",
+			"nxReg_i18n_SignUp_EmailAlreadyExistsError": "Tämä sähköpostiosoite on jo käytössä. <a href=\"%%SignInUrl%%\">Kirjaudu sisään</a>",
+			"nxReg_i18n_SignUp_EmailNonExistentError": "Syötettyä sähköpostiosoitetta ei ole olemassa. Tarkista se ja syötä se uudelleen.",
+			"nxReg_i18n_SignUp_ServerUnreachableError": "Ongelma yhteyden muodostamisessa palvelimeen. Yritä myöhemmin uudelleen.",
+			"nxReg_i18n_SignUp_PasswordWrongError": "Salasanan tulee vastata sille asetettuja vaatimuksia",
+
+			"nxReg_i18n_SignUp_FullName": "Koko nimi",
+			"nxReg_i18n_SignUp_FullNameError": "Täysi nimi vaaditaan",
+
+			"nxReg_i18n_SignUp_CountryCode": "Maakoodi",
+
+			"nxReg_i18n_SignUp_PhoneNumber": "Puhelinnumero",
+			"nxReg_i18n_SignUp_PhoneNumberErrors": [
+				"Puhelinnumero vaaditaan",
+				"Anna voimassa oleva maakoodi.",
+				"Syötä pidempi numero",
+				"Syötä lyhyempi numero",
+				"Muistathan antaa voimassa olevan puhelinnumeron. "
+			],
+
+			"nxReg_i18n_SignUp_Country": "Country",
+			"nxReg_i18n_SignUp_CountryError": "Valitse maa",
+			"nxReg_i18n_SignUp_CountryList": {
+				"AD": "Andorra",
+				"AE": "United Arab Emirates",
+				"AF": "Afghanistan",
+				"AG": "Antigua and Barbuda",
+				"AI": "Anguilla",
+				"AL": "Albania",
+				"AM": "Armenia",
+				"AO": "Angola",
+				"AQ": "Antarctica",
+				"AR": "Argentina",
+				"AS": "American Samoa",
+				"AT": "Austria",
+				"AU": "Australia",
+				"AW": "Aruba",
+				"AX": "Aland Islands",
+				"AZ": "Azerbaijan",
+				"BA": "Bosnia and Herzegovina",
+				"BB": "Barbados",
+				"BD": "Bangladesh",
+				"BE": "Belgium",
+				"BF": "Burkina Faso",
+				"BG": "Bulgaria",
+				"BH": "Bahrain",
+				"BI": "Burundi",
+				"BJ": "Benin",
+				"BL": "Saint Barthelemy",
+				"BM": "Bermuda",
+				"BN": "Brunei",
+				"BO": "Bolivia",
+				"BQ": "Bonaire, Saint Eustatius and Saba ",
+				"BR": "Brazil",
+				"BS": "Bahamas",
+				"BT": "Bhutan",
+				"BV": "Bouvet Island",
+				"BW": "Botswana",
+				"BY": "Belarus",
+				"BZ": "Belize",
+				"CA": "Canada",
+				"CC": "Cocos Islands",
+				"CD": "Democratic Republic of the Congo",
+				"CF": "Central African Republic",
+				"CG": "Republic of the Congo",
+				"CH": "Switzerland",
+				"CI": "Ivory Coast",
+				"CK": "Cook Islands",
+				"CL": "Chile",
+				"CM": "Cameroon",
+				"CN": "China",
+				"CO": "Colombia",
+				"CR": "Costa Rica",
+				"CU": "Cuba",
+				"CV": "Cape Verde",
+				"CW": "Curacao",
+				"CX": "Christmas Island",
+				"CY": "Cyprus",
+				"CZ": "Czech Republic",
+				"DE": "Germany",
+				"DJ": "Djibouti",
+				"DK": "Denmark",
+				"DM": "Dominica",
+				"DO": "Dominican Republic",
+				"DZ": "Algeria",
+				"EC": "Ecuador",
+				"EE": "Estonia",
+				"EG": "Egypt",
+				"EH": "Western Sahara",
+				"ER": "Eritrea",
+				"ES": "Spain",
+				"ET": "Ethiopia",
+				"FI": "Finland",
+				"FJ": "Fiji",
+				"FK": "Falkland Islands",
+				"FM": "Micronesia",
+				"FO": "Faroe Islands",
+				"FR": "France",
+				"GA": "Gabon",
+				"GB": "United Kingdom",
+				"GD": "Grenada",
+				"GE": "Georgia",
+				"GF": "French Guiana",
+				"GG": "Guernsey",
+				"GH": "Ghana",
+				"GI": "Gibraltar",
+				"GL": "Greenland",
+				"GM": "Gambia",
+				"GN": "Guinea",
+				"GP": "Guadeloupe",
+				"GQ": "Equatorial Guinea",
+				"GR": "Greece",
+				"GS": "South Georgia and the South Sandwich Islands",
+				"GT": "Guatemala",
+				"GU": "Guam",
+				"GW": "Guinea-Bissau",
+				"GY": "Guyana",
+				"HK": "Hong Kong",
+				"HM": "Heard Island and McDonald Islands",
+				"HN": "Honduras",
+				"HR": "Croatia",
+				"HT": "Haiti",
+				"HU": "Hungary",
+				"ID": "Indonesia",
+				"IE": "Ireland",
+				"IL": "Israel",
+				"IM": "Isle of Man",
+				"IN": "India",
+				"IO": "British Indian Ocean Territory",
+				"IQ": "Iraq",
+				"IR": "Iran",
+				"IS": "Iceland",
+				"IT": "Italy",
+				"JE": "Jersey",
+				"JM": "Jamaica",
+				"JO": "Jordan",
+				"JP": "Japan",
+				"KE": "Kenya",
+				"KG": "Kyrgyzstan",
+				"KH": "Cambodia",
+				"KI": "Kiribati",
+				"KM": "Comoros",
+				"KN": "Saint Kitts and Nevis",
+				"KP": "North Korea",
+				"KR": "South Korea",
+				"KW": "Kuwait",
+				"KY": "Cayman Islands",
+				"KZ": "Kazakhstan",
+				"LA": "Laos",
+				"LB": "Lebanon",
+				"LC": "Saint Lucia",
+				"LI": "Liechtenstein",
+				"LK": "Sri Lanka",
+				"LR": "Liberia",
+				"LS": "Lesotho",
+				"LT": "Lithuania",
+				"LU": "Luxembourg",
+				"LV": "Latvia",
+				"LY": "Libya",
+				"MA": "Morocco",
+				"MC": "Monaco",
+				"MD": "Moldova",
+				"ME": "Montenegro",
+				"MF": "Saint Martin",
+				"MG": "Madagascar",
+				"MH": "Marshall Islands",
+				"MK": "Macedonia",
+				"ML": "Mali",
+				"MM": "Myanmar",
+				"MN": "Mongolia",
+				"MO": "Macao",
+				"MP": "Northern Mariana Islands",
+				"MQ": "Martinique",
+				"MR": "Mauritania",
+				"MS": "Montserrat",
+				"MT": "Malta",
+				"MU": "Mauritius",
+				"MV": "Maldives",
+				"MW": "Malawi",
+				"MX": "Mexico",
+				"MY": "Malaysia",
+				"MZ": "Mozambique",
+				"NA": "Namibia",
+				"NC": "New Caledonia",
+				"NE": "Niger",
+				"NF": "Norfolk Island",
+				"NG": "Nigeria",
+				"NI": "Nicaragua",
+				"NL": "Netherlands",
+				"NO": "Norway",
+				"NP": "Nepal",
+				"NR": "Nauru",
+				"NU": "Niue",
+				"NZ": "New Zealand",
+				"OM": "Oman",
+				"PA": "Panama",
+				"PE": "Peru",
+				"PF": "French Polynesia",
+				"PG": "Papua New Guinea",
+				"PH": "Philippines",
+				"PK": "Pakistan",
+				"PL": "Poland",
+				"PM": "Saint Pierre and Miquelon",
+				"PN": "Pitcairn",
+				"PR": "Puerto Rico",
+				"PS": "Palestinian Territory",
+				"PT": "Portugal",
+				"PW": "Palau",
+				"PY": "Paraguay",
+				"QA": "Qatar",
+				"RE": "Reunion",
+				"RO": "Romania",
+				"RS": "Serbia",
+				"RU": "Russia",
+				"RW": "Rwanda",
+				"SA": "Saudi Arabia",
+				"SB": "Solomon Islands",
+				"SC": "Seychelles",
+				"SD": "Sudan",
+				"SE": "Sweden",
+				"SG": "Singapore",
+				"SH": "Saint Helena",
+				"SI": "Slovenia",
+				"SJ": "Svalbard and Jan Mayen",
+				"SK": "Slovakia",
+				"SL": "Sierra Leone",
+				"SM": "San Marino",
+				"SN": "Senegal",
+				"SO": "Somalia",
+				"SR": "Suriname",
+				"SS": "South Sudan",
+				"ST": "Sao Tome and Principe",
+				"SV": "El Salvador",
+				"SX": "Sint Maarten",
+				"SY": "Syria",
+				"SZ": "Swaziland",
+				"TC": "Turks and Caicos Islands",
+				"TD": "Chad",
+				"TF": "French Southern Territories",
+				"TG": "Togo",
+				"TH": "Thailand",
+				"TJ": "Tajikistan",
+				"TK": "Tokelau",
+				"TL": "East Timor",
+				"TM": "Turkmenistan",
+				"TN": "Tunisia",
+				"TO": "Tonga",
+				"TR": "Turkey",
+				"TT": "Trinidad and Tobago",
+				"TV": "Tuvalu",
+				"TW": "Taiwan",
+				"TZ": "Tanzania",
+				"UA": "Ukraine",
+				"UG": "Uganda",
+				"UM": "United States Minor Outlying Islands",
+				"US": "United States",
+				"UY": "Uruguay",
+				"UZ": "Uzbekistan",
+				"VA": "Vatican",
+				"VC": "Saint Vincent and the Grenadines",
+				"VE": "Venezuela",
+				"VG": "British Virgin Islands",
+				"VI": "U.S. Virgin Islands",
+				"VN": "Vietnam",
+				"VU": "Vanuatu",
+				"WF": "Wallis and Futuna",
+				"WS": "Samoa",
+				"XK": "Kosovo",
+				"YE": "Yemen",
+				"YT": "Mayotte",
+				"ZA": "South Africa",
+				"ZM": "Zambia",
+				"ZW": "Zimbabwe"
+			},
+			"nxReg_i18n_SignUp_VerificationCodeToggle": "Anna varmennuskoodi",
+			"nxReg_i18n_SignUp_VerificationCode": "Varmennuskoodi",
+			"nxReg_i18n_SignUp_VerificationCodeError": "Tarkista varmennuskoodi ja yritä uudelleen",
+
+			"nxReg_i18n_SignUp_Password_Title": "Kiitos, että rekisteröidyit luonamme<br>Alla näet rekisteröitymistietosi",
+			"nxReg_i18n_SignUp_Password_SubTitle": "Muistathan tallentaa tiedot",
+			"nxReg_i18n_SignUp_Password_Button": "Jatka",
+
+			"nxReg_i18n_SignUp_Social_BoxMessage1": "TAI rekisteröidy käyttämällä:",
+			"nxReg_i18n_SignUp_Social_BoxMessage2": "Emme koskaan postaa ilman suostumustasi.",
+			"nxReg_i18n_SignUp_Social_Google": "Rekisteröidy käyttäen Google",
+			"nxReg_i18n_SignUp_Social_Facebook": "Rekisteröidy käyttäen Facebook",
+			"nxReg_i18n_SignUp_Social_FacebookError": "Valtuuta sovellukseen rekisteröityminen Facebookin kautta",
+			"nxReg_i18n_SignUp_Social_GoogleError": "Valtuuta sovellukseen rekisteröityminen Googlen kautta",
+			"nxReg_i18n_SignUp_Social_FacebookFailedError": "Tarkista Facebook-tilisi tai kokeile toista rekisteröintivaihtoehtoa",
+			"nxReg_i18n_SignUp_Social_GoogleFailedError": "Tarkista Google-tilisi tai kokeile toista rekisteröintivaihtoehtoa",
+			"nxReg_i18n_SignUp_Social_GoogleJWTExpired": "Session expired. Please sign up again.",
+
+			"nxReg_i18n_SignUp_Social_Text": "Hyväksy tietosuojailmoituksemme aloittaaksesi kaupankäyntialustan käytön",
+
+			"nxReg_i18n_SignUp_Activation_Message1": "Tarkista saapuneet viestisi",
+			"nxReg_i18n_SignUp_Activation_Message2": "Tarkista %%Email%% löytääksesi tilin aktivointisähköpostin.",
+			"nxReg_i18n_SignUp_Activation_Message3": "Etkö löydä sitä? Kenties se on roskapostissa.",
+			"nxReg_i18n_SignUp_Activation_Message4": "Eikö sähköpostiamme vieläkään löydy?",
+			"nxReg_i18n_SignUp_Activation_ResendButton": "Lähetä uudelleen",
+			"nxReg_i18n_SignUp_Activation_ResendLimitReachedError": "Sähköpostin uudelleenlähetysten raja saavutettu. Rekisteröidy uudelleen.",
+
+			"nxReg_i18n_Activation_AccountActivated": "Tilisi on aktivoitu. Ohjaamme sinut sisäänkirjautumiseen. <a href=\"%%SignInUrl%%\">Kirjaudu sisään</a>.",
+			"nxReg_i18n_Activation_LinkExpiredError": "Tilin aktivointilinkki on vanhentunut. Sinun on <a href=\"%%SignUpUrl%%\">rekisteröidyttävä uudelleen</a>",
+
+			"nxReg_i18n_UnknownError": "On tapahtunut tuntematon virhe. Ole hyvä ja yritä uudelleen."
+		},
+		"it": {
+			"nxReg_i18n_SignUp_SignUp": "Registrati",
+			"nxReg_i18n_SignUp_Email": "E-mail",
+			"nxReg_i18n_SignUp_Password": "Password (8+ caratteri)",
+			"nxReg_i18n_SignUp_Password_5": "Password (5+ caratteri)",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx1": "Almeno 1 lettera minuscola",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx2": "Almeno 1 lettera maiuscola",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx3": "Almeno 1 numero",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx4": "I caratteri speciali non sono ammessi",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx5": "Minimo 8 caratteri",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx6": "Massimo 24 caratteri",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx_loose": "La tua password non può essere più corta di 5 caratteri",
+			"nxReg_i18n_SignUp_CreateAccountButton": "Crea un Account",
+			"nxReg_i18n_SignUp_SignIn": "Già registrato? Accedi",
+			"nxReg_i18n_SignUp_SignInText": "Già registrato?",
+			"nxReg_i18n_SignUp_LogIn": "Accedi",
+			"nxReg_i18n_SignUp_RiskWaring": "I CFD sono prodotti a leva finanziaria che comportano elevati rischi; potresti perdere tutto il tuo capitale.",
+
+
+			"nxReg_i18n_SignUp_CountryCode": "Codice paese",
+
+			"nxReg_i18n_SignUp_PrivacyNoticeNotAcceptedError": "Accetta l'informativa sulla privacy per continuare",
+			"nxReg_i18n_SignUp_CountryBlockedError": "Non è possibile registrarsi dal paese in cui ci si trova.",
+			"nxReg_i18n_SignUp_ReCaptchaMandatoryError": "ReCaptcha è obbligatorio!",
+			"nxReg_i18n_SignUp_EmailWrongFormatError": "Hai scritto correttamente l'e-mail? Riprova.",
+			"nxReg_i18n_SignUp_EmailAlreadyExistsError": "Questa e-mail è già stata utilizzata.  <a href=\"%%SignInUrl%%\"> Accedi</a>",
+			"nxReg_i18n_SignUp_EmailNonExistentError": "L'e-mail fornita non esiste. Si prega di controllare e inserirla di nuovo.",
+			"nxReg_i18n_SignUp_ServerUnreachableError": "Problema di connessione al server. Si prega di riprovare più tardi.",
+			"nxReg_i18n_SignUp_PasswordWrongError": "La password deve essere conforme alla politica sulle password",
+
+			"nxReg_i18n_SignUp_FullName": "Nome e cognome",
+			"nxReg_i18n_SignUp_FullNameError": "Il nome completo è richiesto",
+
+			"nxReg_i18n_SignUp_PhoneNumber": "Numero di telefono",
+			"nxReg_i18n_SignUp_PhoneNumberErrors": [
+				"Il numero di telefono è obbligatorio",
+				"Inserisci un codice Paese valido.",
+				"Si prega di fornire un numero più lungo.",
+				"Si prega di fornire un numero più breve",
+				"Non dimenticare di inserire un numero di telefono valido."
+			],
+
+			"nxReg_i18n_SignUp_Country": "Paese",
+			"nxReg_i18n_SignUp_CountryError": "Si prega di selezionare un paese",
+			"nxReg_i18n_SignUp_CountryList": {
+				"AD": "Andorra",
+				"AE": "United Arab Emirates",
+				"AF": "Afghanistan",
+				"AG": "Antigua and Barbuda",
+				"AI": "Anguilla",
+				"AL": "Albania",
+				"AM": "Armenia",
+				"AO": "Angola",
+				"AQ": "Antarctica",
+				"AR": "Argentina",
+				"AS": "American Samoa",
+				"AT": "Austria",
+				"AU": "Australia",
+				"AW": "Aruba",
+				"AX": "Aland Islands",
+				"AZ": "Azerbaijan",
+				"BA": "Bosnia and Herzegovina",
+				"BB": "Barbados",
+				"BD": "Bangladesh",
+				"BE": "Belgium",
+				"BF": "Burkina Faso",
+				"BG": "Bulgaria",
+				"BH": "Bahrain",
+				"BI": "Burundi",
+				"BJ": "Benin",
+				"BL": "Saint Barthelemy",
+				"BM": "Bermuda",
+				"BN": "Brunei",
+				"BO": "Bolivia",
+				"BQ": "Bonaire, Saint Eustatius and Saba ",
+				"BR": "Brazil",
+				"BS": "Bahamas",
+				"BT": "Bhutan",
+				"BV": "Bouvet Island",
+				"BW": "Botswana",
+				"BY": "Belarus",
+				"BZ": "Belize",
+				"CA": "Canada",
+				"CC": "Cocos Islands",
+				"CD": "Democratic Republic of the Congo",
+				"CF": "Central African Republic",
+				"CG": "Republic of the Congo",
+				"CH": "Switzerland",
+				"CI": "Ivory Coast",
+				"CK": "Cook Islands",
+				"CL": "Chile",
+				"CM": "Cameroon",
+				"CN": "China",
+				"CO": "Colombia",
+				"CR": "Costa Rica",
+				"CU": "Cuba",
+				"CV": "Cape Verde",
+				"CW": "Curacao",
+				"CX": "Christmas Island",
+				"CY": "Cyprus",
+				"CZ": "Czech Republic",
+				"DE": "Germany",
+				"DJ": "Djibouti",
+				"DK": "Denmark",
+				"DM": "Dominica",
+				"DO": "Dominican Republic",
+				"DZ": "Algeria",
+				"EC": "Ecuador",
+				"EE": "Estonia",
+				"EG": "Egypt",
+				"EH": "Western Sahara",
+				"ER": "Eritrea",
+				"ES": "Spain",
+				"ET": "Ethiopia",
+				"FI": "Finland",
+				"FJ": "Fiji",
+				"FK": "Falkland Islands",
+				"FM": "Micronesia",
+				"FO": "Faroe Islands",
+				"FR": "France",
+				"GA": "Gabon",
+				"GB": "United Kingdom",
+				"GD": "Grenada",
+				"GE": "Georgia",
+				"GF": "French Guiana",
+				"GG": "Guernsey",
+				"GH": "Ghana",
+				"GI": "Gibraltar",
+				"GL": "Greenland",
+				"GM": "Gambia",
+				"GN": "Guinea",
+				"GP": "Guadeloupe",
+				"GQ": "Equatorial Guinea",
+				"GR": "Greece",
+				"GS": "South Georgia and the South Sandwich Islands",
+				"GT": "Guatemala",
+				"GU": "Guam",
+				"GW": "Guinea-Bissau",
+				"GY": "Guyana",
+				"HK": "Hong Kong",
+				"HM": "Heard Island and McDonald Islands",
+				"HN": "Honduras",
+				"HR": "Croatia",
+				"HT": "Haiti",
+				"HU": "Hungary",
+				"ID": "Indonesia",
+				"IE": "Ireland",
+				"IL": "Israel",
+				"IM": "Isle of Man",
+				"IN": "India",
+				"IO": "British Indian Ocean Territory",
+				"IQ": "Iraq",
+				"IR": "Iran",
+				"IS": "Iceland",
+				"IT": "Italy",
+				"JE": "Jersey",
+				"JM": "Jamaica",
+				"JO": "Jordan",
+				"JP": "Japan",
+				"KE": "Kenya",
+				"KG": "Kyrgyzstan",
+				"KH": "Cambodia",
+				"KI": "Kiribati",
+				"KM": "Comoros",
+				"KN": "Saint Kitts and Nevis",
+				"KP": "North Korea",
+				"KR": "South Korea",
+				"KW": "Kuwait",
+				"KY": "Cayman Islands",
+				"KZ": "Kazakhstan",
+				"LA": "Laos",
+				"LB": "Lebanon",
+				"LC": "Saint Lucia",
+				"LI": "Liechtenstein",
+				"LK": "Sri Lanka",
+				"LR": "Liberia",
+				"LS": "Lesotho",
+				"LT": "Lithuania",
+				"LU": "Luxembourg",
+				"LV": "Latvia",
+				"LY": "Libya",
+				"MA": "Morocco",
+				"MC": "Monaco",
+				"MD": "Moldova",
+				"ME": "Montenegro",
+				"MF": "Saint Martin",
+				"MG": "Madagascar",
+				"MH": "Marshall Islands",
+				"MK": "Macedonia",
+				"ML": "Mali",
+				"MM": "Myanmar",
+				"MN": "Mongolia",
+				"MO": "Macao",
+				"MP": "Northern Mariana Islands",
+				"MQ": "Martinique",
+				"MR": "Mauritania",
+				"MS": "Montserrat",
+				"MT": "Malta",
+				"MU": "Mauritius",
+				"MV": "Maldives",
+				"MW": "Malawi",
+				"MX": "Mexico",
+				"MY": "Malaysia",
+				"MZ": "Mozambique",
+				"NA": "Namibia",
+				"NC": "New Caledonia",
+				"NE": "Niger",
+				"NF": "Norfolk Island",
+				"NG": "Nigeria",
+				"NI": "Nicaragua",
+				"NL": "Netherlands",
+				"NO": "Norway",
+				"NP": "Nepal",
+				"NR": "Nauru",
+				"NU": "Niue",
+				"NZ": "New Zealand",
+				"OM": "Oman",
+				"PA": "Panama",
+				"PE": "Peru",
+				"PF": "French Polynesia",
+				"PG": "Papua New Guinea",
+				"PH": "Philippines",
+				"PK": "Pakistan",
+				"PL": "Poland",
+				"PM": "Saint Pierre and Miquelon",
+				"PN": "Pitcairn",
+				"PR": "Puerto Rico",
+				"PS": "Palestinian Territory",
+				"PT": "Portugal",
+				"PW": "Palau",
+				"PY": "Paraguay",
+				"QA": "Qatar",
+				"RE": "Reunion",
+				"RO": "Romania",
+				"RS": "Serbia",
+				"RU": "Russia",
+				"RW": "Rwanda",
+				"SA": "Saudi Arabia",
+				"SB": "Solomon Islands",
+				"SC": "Seychelles",
+				"SD": "Sudan",
+				"SE": "Sweden",
+				"SG": "Singapore",
+				"SH": "Saint Helena",
+				"SI": "Slovenia",
+				"SJ": "Svalbard and Jan Mayen",
+				"SK": "Slovakia",
+				"SL": "Sierra Leone",
+				"SM": "San Marino",
+				"SN": "Senegal",
+				"SO": "Somalia",
+				"SR": "Suriname",
+				"SS": "South Sudan",
+				"ST": "Sao Tome and Principe",
+				"SV": "El Salvador",
+				"SX": "Sint Maarten",
+				"SY": "Syria",
+				"SZ": "Swaziland",
+				"TC": "Turks and Caicos Islands",
+				"TD": "Chad",
+				"TF": "French Southern Territories",
+				"TG": "Togo",
+				"TH": "Thailand",
+				"TJ": "Tajikistan",
+				"TK": "Tokelau",
+				"TL": "East Timor",
+				"TM": "Turkmenistan",
+				"TN": "Tunisia",
+				"TO": "Tonga",
+				"TR": "Turkey",
+				"TT": "Trinidad and Tobago",
+				"TV": "Tuvalu",
+				"TW": "Taiwan",
+				"TZ": "Tanzania",
+				"UA": "Ukraine",
+				"UG": "Uganda",
+				"UM": "United States Minor Outlying Islands",
+				"US": "United States",
+				"UY": "Uruguay",
+				"UZ": "Uzbekistan",
+				"VA": "Vatican",
+				"VC": "Saint Vincent and the Grenadines",
+				"VE": "Venezuela",
+				"VG": "British Virgin Islands",
+				"VI": "U.S. Virgin Islands",
+				"VN": "Vietnam",
+				"VU": "Vanuatu",
+				"WF": "Wallis and Futuna",
+				"WS": "Samoa",
+				"XK": "Kosovo",
+				"YE": "Yemen",
+				"YT": "Mayotte",
+				"ZA": "South Africa",
+				"ZM": "Zambia",
+				"ZW": "Zimbabwe"
+			},
+
+			"nxReg_i18n_SignUp_VerificationCodeToggle": "Aggiungi codice di verifica",
+			"nxReg_i18n_SignUp_VerificationCode": "Codice di verifica",
+			"nxReg_i18n_SignUp_VerificationCodeError": "Controllare il codice di verifica e riprovare",
+
+			"nxReg_i18n_SignUp_Password_Title": "Grazie per esserti registrato con noi<br>Di seguito puoi trovare i tuoi dati di registrazione",
+			"nxReg_i18n_SignUp_Password_SubTitle": "Assicurati di salvare i dati",
+			"nxReg_i18n_SignUp_Password_Button": "Continua",
+
+			"nxReg_i18n_SignUp_Social_BoxMessage1": "O registrati con:",
+			"nxReg_i18n_SignUp_Social_BoxMessage2": "Non pubblicheremo mai senza il tuo permesso.",
+			"nxReg_i18n_SignUp_Social_Google": "Registrati con Google",
+			"nxReg_i18n_SignUp_Social_Facebook": "Registrati con Facebook",
+			"nxReg_i18n_SignUp_Social_FacebookError": "Autorizza la nostra applicazione ad iscriversi con Facebook",
+			"nxReg_i18n_SignUp_Social_GoogleError": "Autorizzare la nostra applicazione ad iscriversi con Google",
+			"nxReg_i18n_SignUp_Social_FacebookFailedError": "Controlla il tuo account Facebook o prova un'altra opzione di registrazione",
+			"nxReg_i18n_SignUp_Social_GoogleFailedError": "Controlla il tuo account Google o prova un'altra opzione di registrazione",
+			"nxReg_i18n_SignUp_Social_GoogleJWTExpired": "Sessione scaduta. Si prega di registrarsi nuovamente.",
+
+			"nxReg_i18n_SignUp_Social_Text": "Accetta la nostra Informativa sulla privacy per entrare nella piattaforma di trading",
+
+			"nxReg_i18n_SignUp_Activation_Message1": "Controlla la tua casella di posta",
+			"nxReg_i18n_SignUp_Activation_Message2": "Controlla %%Email%% per un'e-mail di attivazione del conto.",
+			"nxReg_i18n_SignUp_Activation_Message3": "Non riesci a trovarla? Forse è in Spam.",
+			"nxReg_i18n_SignUp_Activation_Message4": "Non riesci ancora a trovare l'e-mail?",
+			"nxReg_i18n_SignUp_Activation_ResendButton": "Reinviala",
+			"nxReg_i18n_SignUp_Activation_ResendLimitReachedError": "Il limite di invio e-mail è stato raggiunto. Registrati di nuovo.",
+
+			"nxReg_i18n_Activation_AccountActivated": "Il tuo account è stato attivato. Ti reindirizzeremo al <a href=\"%%SignInUrl%%\">Login</a>.",
+			"nxReg_i18n_Activation_LinkExpiredError": "Il link di attivazione dell'account è scaduto. Devi <a href=\"%%SignUpUrl%%\">registrarti di nuovo</a>.",
+
+			"nxReg_i18n_UnknownError": "Si è verificato un errore sconosciuto. Si prega di riprovare."
+		},
+		"pl": {
+			"nxReg_i18n_SignUp_SignUp": "Zarejestruj się",
+			"nxReg_i18n_SignUp_Email": "Email",
+			"nxReg_i18n_SignUp_Password": "Hasło (8+ znaków)",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx1": "Przynajmniej 1 mała litera",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx2": "Przynajmniej 1 wielka litera",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx3": "Przynajmniej 1 cyfra",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx4": "Nie można używać znaków specjalnych",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx5": "Przynajmniej 8 znaków",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx6": "Maksymalnie 24 znaków",
+			"nxReg_i18n_SignUp_CreateAccountButton": "Utwórz konto",
+			"nxReg_i18n_SignUp_SignIn": "Posiadasz już konto? Zaloguj się",
+			"nxReg_i18n_SignUp_SignInText": "Posiadasz już konto?",
+			"nxReg_i18n_SignUp_LogIn": "Zaloguj się",
+
+			"nxReg_i18n_SignUp_CountryCode": "Kod kraju",
+
+			"nxReg_i18n_SignUp_PrivacyNoticeNotAcceptedError": "Aby kontynuować, należy zaakceptować informację o ochronie prywatności",
+			"nxReg_i18n_SignUp_CountryBlockedError": "Rejestracja z kraju, w którym się znajdujesz jest niedozwolona.",
+			"nxReg_i18n_SignUp_ReCaptchaMandatoryError": "Użycie zabezpieczenia ReCaptcha jest obowiązkowe!",
+			"nxReg_i18n_SignUp_EmailWrongFormatError": "Czy wpisany przez Ciebie adres email jest poprawny? Spróbuj jeszcze raz.",
+			"nxReg_i18n_SignUp_EmailAlreadyExistsError": "Wprowadzony adres e-mail został już użyty. <a href=\"%%SignInUrl%%\"> Zaloguj się</a> ",
+			"nxReg_i18n_SignUp_EmailNonExistentError": "Podany adres e-mail nie istnieje. Proszę sprawdzić i wprowadzić go ponownie.",
+			"nxReg_i18n_SignUp_ServerUnreachableError": "Problem z połączeniem z serwerem. Proszę spróbować ponownie później.",
+			"nxReg_i18n_SignUp_PasswordWrongError": "Hasło musi być zgodne z polityką haseł",
+
+			"nxReg_i18n_SignUp_FullName": "Imię i nazwisko",
+			"nxReg_i18n_SignUp_FullNameError": "Wprowadzenie pełnego imienia i nazwiska jest wymagane.",
+
+			"nxReg_i18n_SignUp_PhoneNumber": "Numer telefonu",
+			"nxReg_i18n_SignUp_PhoneNumberErrors": [
+				"Wprowadzenie numeru telefonu jest wymagane",
+				"Wpisz poprawny numer kierunkowy.",
+				"Proszę podać dłuższy numer.",
+				"Proszę podać krótszy numer",
+				"Pamiętaj o podaniu poprawnego numeru telefonu."
+			],
+
+			"nxReg_i18n_SignUp_Country": "Kraj",
+			"nxReg_i18n_SignUp_CountryError": "Wybierz kraj",
+			"nxReg_i18n_SignUp_CountryList": {
+				"AD": "Andorra",
+				"AE": "United Arab Emirates",
+				"AF": "Afghanistan",
+				"AG": "Antigua and Barbuda",
+				"AI": "Anguilla",
+				"AL": "Albania",
+				"AM": "Armenia",
+				"AO": "Angola",
+				"AQ": "Antarctica",
+				"AR": "Argentina",
+				"AS": "American Samoa",
+				"AT": "Austria",
+				"AU": "Australia",
+				"AW": "Aruba",
+				"AX": "Aland Islands",
+				"AZ": "Azerbaijan",
+				"BA": "Bosnia and Herzegovina",
+				"BB": "Barbados",
+				"BD": "Bangladesh",
+				"BE": "Belgium",
+				"BF": "Burkina Faso",
+				"BG": "Bulgaria",
+				"BH": "Bahrain",
+				"BI": "Burundi",
+				"BJ": "Benin",
+				"BL": "Saint Barthelemy",
+				"BM": "Bermuda",
+				"BN": "Brunei",
+				"BO": "Bolivia",
+				"BQ": "Bonaire, Saint Eustatius and Saba ",
+				"BR": "Brazil",
+				"BS": "Bahamas",
+				"BT": "Bhutan",
+				"BV": "Bouvet Island",
+				"BW": "Botswana",
+				"BY": "Belarus",
+				"BZ": "Belize",
+				"CA": "Canada",
+				"CC": "Cocos Islands",
+				"CD": "Democratic Republic of the Congo",
+				"CF": "Central African Republic",
+				"CG": "Republic of the Congo",
+				"CH": "Switzerland",
+				"CI": "Ivory Coast",
+				"CK": "Cook Islands",
+				"CL": "Chile",
+				"CM": "Cameroon",
+				"CN": "China",
+				"CO": "Colombia",
+				"CR": "Costa Rica",
+				"CU": "Cuba",
+				"CV": "Cape Verde",
+				"CW": "Curacao",
+				"CX": "Christmas Island",
+				"CY": "Cyprus",
+				"CZ": "Czech Republic",
+				"DE": "Germany",
+				"DJ": "Djibouti",
+				"DK": "Denmark",
+				"DM": "Dominica",
+				"DO": "Dominican Republic",
+				"DZ": "Algeria",
+				"EC": "Ecuador",
+				"EE": "Estonia",
+				"EG": "Egypt",
+				"EH": "Western Sahara",
+				"ER": "Eritrea",
+				"ES": "Spain",
+				"ET": "Ethiopia",
+				"FI": "Finland",
+				"FJ": "Fiji",
+				"FK": "Falkland Islands",
+				"FM": "Micronesia",
+				"FO": "Faroe Islands",
+				"FR": "France",
+				"GA": "Gabon",
+				"GB": "United Kingdom",
+				"GD": "Grenada",
+				"GE": "Georgia",
+				"GF": "French Guiana",
+				"GG": "Guernsey",
+				"GH": "Ghana",
+				"GI": "Gibraltar",
+				"GL": "Greenland",
+				"GM": "Gambia",
+				"GN": "Guinea",
+				"GP": "Guadeloupe",
+				"GQ": "Equatorial Guinea",
+				"GR": "Greece",
+				"GS": "South Georgia and the South Sandwich Islands",
+				"GT": "Guatemala",
+				"GU": "Guam",
+				"GW": "Guinea-Bissau",
+				"GY": "Guyana",
+				"HK": "Hong Kong",
+				"HM": "Heard Island and McDonald Islands",
+				"HN": "Honduras",
+				"HR": "Croatia",
+				"HT": "Haiti",
+				"HU": "Hungary",
+				"ID": "Indonesia",
+				"IE": "Ireland",
+				"IL": "Israel",
+				"IM": "Isle of Man",
+				"IN": "India",
+				"IO": "British Indian Ocean Territory",
+				"IQ": "Iraq",
+				"IR": "Iran",
+				"IS": "Iceland",
+				"IT": "Italy",
+				"JE": "Jersey",
+				"JM": "Jamaica",
+				"JO": "Jordan",
+				"JP": "Japan",
+				"KE": "Kenya",
+				"KG": "Kyrgyzstan",
+				"KH": "Cambodia",
+				"KI": "Kiribati",
+				"KM": "Comoros",
+				"KN": "Saint Kitts and Nevis",
+				"KP": "North Korea",
+				"KR": "South Korea",
+				"KW": "Kuwait",
+				"KY": "Cayman Islands",
+				"KZ": "Kazakhstan",
+				"LA": "Laos",
+				"LB": "Lebanon",
+				"LC": "Saint Lucia",
+				"LI": "Liechtenstein",
+				"LK": "Sri Lanka",
+				"LR": "Liberia",
+				"LS": "Lesotho",
+				"LT": "Lithuania",
+				"LU": "Luxembourg",
+				"LV": "Latvia",
+				"LY": "Libya",
+				"MA": "Morocco",
+				"MC": "Monaco",
+				"MD": "Moldova",
+				"ME": "Montenegro",
+				"MF": "Saint Martin",
+				"MG": "Madagascar",
+				"MH": "Marshall Islands",
+				"MK": "Macedonia",
+				"ML": "Mali",
+				"MM": "Myanmar",
+				"MN": "Mongolia",
+				"MO": "Macao",
+				"MP": "Northern Mariana Islands",
+				"MQ": "Martinique",
+				"MR": "Mauritania",
+				"MS": "Montserrat",
+				"MT": "Malta",
+				"MU": "Mauritius",
+				"MV": "Maldives",
+				"MW": "Malawi",
+				"MX": "Mexico",
+				"MY": "Malaysia",
+				"MZ": "Mozambique",
+				"NA": "Namibia",
+				"NC": "New Caledonia",
+				"NE": "Niger",
+				"NF": "Norfolk Island",
+				"NG": "Nigeria",
+				"NI": "Nicaragua",
+				"NL": "Netherlands",
+				"NO": "Norway",
+				"NP": "Nepal",
+				"NR": "Nauru",
+				"NU": "Niue",
+				"NZ": "New Zealand",
+				"OM": "Oman",
+				"PA": "Panama",
+				"PE": "Peru",
+				"PF": "French Polynesia",
+				"PG": "Papua New Guinea",
+				"PH": "Philippines",
+				"PK": "Pakistan",
+				"PL": "Poland",
+				"PM": "Saint Pierre and Miquelon",
+				"PN": "Pitcairn",
+				"PR": "Puerto Rico",
+				"PS": "Palestinian Territory",
+				"PT": "Portugal",
+				"PW": "Palau",
+				"PY": "Paraguay",
+				"QA": "Qatar",
+				"RE": "Reunion",
+				"RO": "Romania",
+				"RS": "Serbia",
+				"RU": "Russia",
+				"RW": "Rwanda",
+				"SA": "Saudi Arabia",
+				"SB": "Solomon Islands",
+				"SC": "Seychelles",
+				"SD": "Sudan",
+				"SE": "Sweden",
+				"SG": "Singapore",
+				"SH": "Saint Helena",
+				"SI": "Slovenia",
+				"SJ": "Svalbard and Jan Mayen",
+				"SK": "Slovakia",
+				"SL": "Sierra Leone",
+				"SM": "San Marino",
+				"SN": "Senegal",
+				"SO": "Somalia",
+				"SR": "Suriname",
+				"SS": "South Sudan",
+				"ST": "Sao Tome and Principe",
+				"SV": "El Salvador",
+				"SX": "Sint Maarten",
+				"SY": "Syria",
+				"SZ": "Swaziland",
+				"TC": "Turks and Caicos Islands",
+				"TD": "Chad",
+				"TF": "French Southern Territories",
+				"TG": "Togo",
+				"TH": "Thailand",
+				"TJ": "Tajikistan",
+				"TK": "Tokelau",
+				"TL": "East Timor",
+				"TM": "Turkmenistan",
+				"TN": "Tunisia",
+				"TO": "Tonga",
+				"TR": "Turkey",
+				"TT": "Trinidad and Tobago",
+				"TV": "Tuvalu",
+				"TW": "Taiwan",
+				"TZ": "Tanzania",
+				"UA": "Ukraine",
+				"UG": "Uganda",
+				"UM": "United States Minor Outlying Islands",
+				"US": "United States",
+				"UY": "Uruguay",
+				"UZ": "Uzbekistan",
+				"VA": "Vatican",
+				"VC": "Saint Vincent and the Grenadines",
+				"VE": "Venezuela",
+				"VG": "British Virgin Islands",
+				"VI": "U.S. Virgin Islands",
+				"VN": "Vietnam",
+				"VU": "Vanuatu",
+				"WF": "Wallis and Futuna",
+				"WS": "Samoa",
+				"XK": "Kosovo",
+				"YE": "Yemen",
+				"YT": "Mayotte",
+				"ZA": "South Africa",
+				"ZM": "Zambia",
+				"ZW": "Zimbabwe"
+			},
+
+			"nxReg_i18n_SignUp_VerificationCodeToggle": "Dodaj kod weryfikacyjny",
+			"nxReg_i18n_SignUp_VerificationCode": "Kod weryfikacyjny",
+			"nxReg_i18n_SignUp_VerificationCodeError": "Sprawdź kod weryfikacyjny i spróbuj ponownie",
+
+			"nxReg_i18n_SignUp_Password_Title": "Dziękujemy za zarejestrowanie się<br>Poniżej znajdziesz dane logowania",
+			"nxReg_i18n_SignUp_Password_SubTitle": "Pamiętaj, aby zapisać te dane",
+			"nxReg_i18n_SignUp_Password_Button": "Kontynuuj",
+
+			"nxReg_i18n_SignUp_Social_BoxMessage1": "LUB zarejestruj się z:",
+			"nxReg_i18n_SignUp_Social_BoxMessage2": "Nigdy nie będziemy pisać bez Twojego pozwolenia..",
+			"nxReg_i18n_SignUp_Social_Google": "Zarejestruj się z Google",
+			"nxReg_i18n_SignUp_Social_Facebook": "Zarejestruj się z Facebook",
+			"nxReg_i18n_SignUp_Social_FacebookError": "Aby zarejestrować się za pomocą Facebooka, należy autoryzować naszą aplikację",
+			"nxReg_i18n_SignUp_Social_GoogleError": "Aby zarejestrować się za pomocą Google, należy autoryzować naszą aplikację",
+			"nxReg_i18n_SignUp_Social_FacebookFailedError": "Sprawdź konto Facebook lub spróbuj innej opcji rejestracji",
+			"nxReg_i18n_SignUp_Social_GoogleFailedError": "Sprawdź konto Google lub spróbuj innej opcji rejestracji",
+			"nxReg_i18n_SignUp_Social_GoogleJWTExpired": "Sesja wygasła. Proszę zalogować się ponownie.",
+
+			"nxReg_i18n_SignUp_Social_Text": "Aby wejść na platformę handlową, należy zaakceptować informację o ochronie prywatności",
+
+			"nxReg_i18n_SignUp_Activation_Message1": "Sprawdź skrzynkę odbiorczą",
+			"nxReg_i18n_SignUp_Activation_Message2": "Sprawdź czy na skrzynce %%Email%% nie znajduje się wiadomość e-mail z aktywacją konta.",
+			"nxReg_i18n_SignUp_Activation_Message3": "Nie możesz znaleźć wiadomość? Sprawdź folder ze spamem.",
+			"nxReg_i18n_SignUp_Activation_Message4": "Wciąż nie możesz znaleźć naszego emaila?",
+			"nxReg_i18n_SignUp_Activation_ResendButton": "Wyślij jeszcze raz",
+			"nxReg_i18n_SignUp_Activation_ResendLimitReachedError": "Osiągnięto limit ponownego wysłania wiadomości e-mail. Zarejestruj się ponownie.",
+
+			"nxReg_i18n_Activation_AccountActivated": "Twoje konto zostało aktywowane. Przekierujemy cię do strony <a href=\"%%SignInUrl%%\">logowania</a>.",
+			"nxReg_i18n_Activation_LinkExpiredError": "Wygasła ważność linku aktywacyjnego. Musisz <a href=\"%%SignUpUrl%%\">zarejestrować się ponownie</a>.",
+
+			"nxReg_i18n_UnknownError": "Pojawił się nieznany błąd. Spróbuj jeszcze raz."
+		},
+		"el": {
+			"nxReg_i18n_SignUp_SignUp": "Εγγραφή",
+			"nxReg_i18n_SignUp_Email": "Email",
+			"nxReg_i18n_SignUp_Password": "Κωδικός πρόσβασης (8+ χαρακτήρες)",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx1": "Τουλάχιστον 1 μικρό γράμμα",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx2": "Τουλάχιστον 1 κεφαλαίο γράμμα",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx3": "Τουλάχιστον 1 αριθμό",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx4": "Δεν επιτρέπονται ειδικοί χαρακτήρες",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx5": "Τουλάχιστο 8 χαρακτήρες",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx6": "Το πολύ 24 χαρακτήρες",
+			"nxReg_i18n_SignUp_CreateAccountButton": "Δημιουργήστε έναν λογαριασμό",
+			"nxReg_i18n_SignUp_SignIn": "Εχετε  ήδη εγγραφεί? Σύνδεση",
+			"nxReg_i18n_SignUp_SignInText": "Εχετε  ήδη εγγραφεί?",
+			"nxReg_i18n_SignUp_LogIn": "Σύνδεση",
+			"nxReg_i18n_SignUp_RiskWaring": "Προειδοποίηση Ρίσκου: Το εμπόριο Forex και CFD ενδέχεται να οδηγήσει σε απώλεια ολόκληρου του επενδυμένου κεφαλαίου σας.",
+
+			"nxReg_i18n_SignUp_CountryCode": "Κωδικός χώρας",
+
+			"nxReg_i18n_SignUp_PrivacyNoticeNotAcceptedError": "Αποδεχτείτε τη Δήλωση Απορρήτου για να συνεχίσετε",
+			"nxReg_i18n_SignUp_CountryBlockedError": "Δεν μπορείτε να εγγραφείτε από τη χώρα στην οποία βρίσκεστε.",
+			"nxReg_i18n_SignUp_ReCaptchaMandatoryError": "Το ReCaptcha είναι υποχρεωτικό!",
+			"nxReg_i18n_SignUp_EmailWrongFormatError": "Πληκτρολογήσατε σωστά το email σας; Δοκιμάστε ξανά.",
+			"nxReg_i18n_SignUp_Social_Google": "Εγγράψου με Google",
+			"nxReg_i18n_SignUp_Social_Facebook": "Εγγράψου με Facebook",
+			"nxReg_i18n_SignUp_EmailAlreadyExistsError": "Αυτή η διεύθυνση ηλεκτρονικού ταχυδρομείου έχει ήδη χρησιμοποιηθεί.  <a href=\"%%SignInUrl%%\">Σύνδεση</a> ",
+			"nxReg_i18n_SignUp_EmailNonExistentError": "Η παρεχόμενη διεύθυνση ηλεκτρονικού ταχυδρομείου δεν υπάρχει. Παρακαλώ ελέγξτε το και εισαγάγετέ το ξανά.",
+			"nxReg_i18n_SignUp_ServerUnreachableError": "Πρόβλημα σύνδεσης στο διακομιστή. Προσπαθήστε ξανά αργότερα.",
+			"nxReg_i18n_SignUp_PasswordWrongError": "Ο κωδικός πρόσβασης πρέπει να συμμορφώνεται με την πολιτική κωδικών πρόσβασης",
+
+			"nxReg_i18n_SignUp_FullName": "Πλήρες όνομα",
+			"nxReg_i18n_SignUp_FullNameError": "Απαιτείται πλήρες όνομα",
+
+			"nxReg_i18n_SignUp_PhoneNumber": "Αριθμός τηλεφώνου",
+			"nxReg_i18n_SignUp_PhoneNumberErrors": [
+				"Απαιτείται αριθμός τηλεφώνου",
+				"Χρειάζεται να παρέχετε έναν έγκυρο κωδικό χώρας",
+				"Παρακαλώ καταχωρίστε έναν μεγαλύτερο αριθμό.",
+				"Παρακαλώ καταχωρίστε έναν μικρότερο αριθμό",
+				"Μην ξεχάσετε να παρέχετε έναν έγκυρο αριθμό τηλεφώνου."
+			],
+
+			"nxReg_i18n_SignUp_Country": "Χώρα",
+			"nxReg_i18n_SignUp_CountryError": "Παρακαλώ επιλέξτε χώρα",
+			"nxReg_i18n_SignUp_CountryList": {
+				"AD": "Andorra",
+				"AE": "United Arab Emirates",
+				"AF": "Afghanistan",
+				"AG": "Antigua and Barbuda",
+				"AI": "Anguilla",
+				"AL": "Albania",
+				"AM": "Armenia",
+				"AO": "Angola",
+				"AQ": "Antarctica",
+				"AR": "Argentina",
+				"AS": "American Samoa",
+				"AT": "Austria",
+				"AU": "Australia",
+				"AW": "Aruba",
+				"AX": "Aland Islands",
+				"AZ": "Azerbaijan",
+				"BA": "Bosnia and Herzegovina",
+				"BB": "Barbados",
+				"BD": "Bangladesh",
+				"BE": "Belgium",
+				"BF": "Burkina Faso",
+				"BG": "Bulgaria",
+				"BH": "Bahrain",
+				"BI": "Burundi",
+				"BJ": "Benin",
+				"BL": "Saint Barthelemy",
+				"BM": "Bermuda",
+				"BN": "Brunei",
+				"BO": "Bolivia",
+				"BQ": "Bonaire, Saint Eustatius and Saba ",
+				"BR": "Brazil",
+				"BS": "Bahamas",
+				"BT": "Bhutan",
+				"BV": "Bouvet Island",
+				"BW": "Botswana",
+				"BY": "Belarus",
+				"BZ": "Belize",
+				"CA": "Canada",
+				"CC": "Cocos Islands",
+				"CD": "Democratic Republic of the Congo",
+				"CF": "Central African Republic",
+				"CG": "Republic of the Congo",
+				"CH": "Switzerland",
+				"CI": "Ivory Coast",
+				"CK": "Cook Islands",
+				"CL": "Chile",
+				"CM": "Cameroon",
+				"CN": "China",
+				"CO": "Colombia",
+				"CR": "Costa Rica",
+				"CU": "Cuba",
+				"CV": "Cape Verde",
+				"CW": "Curacao",
+				"CX": "Christmas Island",
+				"CY": "Cyprus",
+				"CZ": "Czech Republic",
+				"DE": "Germany",
+				"DJ": "Djibouti",
+				"DK": "Denmark",
+				"DM": "Dominica",
+				"DO": "Dominican Republic",
+				"DZ": "Algeria",
+				"EC": "Ecuador",
+				"EE": "Estonia",
+				"EG": "Egypt",
+				"EH": "Western Sahara",
+				"ER": "Eritrea",
+				"ES": "Spain",
+				"ET": "Ethiopia",
+				"FI": "Finland",
+				"FJ": "Fiji",
+				"FK": "Falkland Islands",
+				"FM": "Micronesia",
+				"FO": "Faroe Islands",
+				"FR": "France",
+				"GA": "Gabon",
+				"GB": "United Kingdom",
+				"GD": "Grenada",
+				"GE": "Georgia",
+				"GF": "French Guiana",
+				"GG": "Guernsey",
+				"GH": "Ghana",
+				"GI": "Gibraltar",
+				"GL": "Greenland",
+				"GM": "Gambia",
+				"GN": "Guinea",
+				"GP": "Guadeloupe",
+				"GQ": "Equatorial Guinea",
+				"GR": "Greece",
+				"GS": "South Georgia and the South Sandwich Islands",
+				"GT": "Guatemala",
+				"GU": "Guam",
+				"GW": "Guinea-Bissau",
+				"GY": "Guyana",
+				"HK": "Hong Kong",
+				"HM": "Heard Island and McDonald Islands",
+				"HN": "Honduras",
+				"HR": "Croatia",
+				"HT": "Haiti",
+				"HU": "Hungary",
+				"ID": "Indonesia",
+				"IE": "Ireland",
+				"IL": "Israel",
+				"IM": "Isle of Man",
+				"IN": "India",
+				"IO": "British Indian Ocean Territory",
+				"IQ": "Iraq",
+				"IR": "Iran",
+				"IS": "Iceland",
+				"IT": "Italy",
+				"JE": "Jersey",
+				"JM": "Jamaica",
+				"JO": "Jordan",
+				"JP": "Japan",
+				"KE": "Kenya",
+				"KG": "Kyrgyzstan",
+				"KH": "Cambodia",
+				"KI": "Kiribati",
+				"KM": "Comoros",
+				"KN": "Saint Kitts and Nevis",
+				"KP": "North Korea",
+				"KR": "South Korea",
+				"KW": "Kuwait",
+				"KY": "Cayman Islands",
+				"KZ": "Kazakhstan",
+				"LA": "Laos",
+				"LB": "Lebanon",
+				"LC": "Saint Lucia",
+				"LI": "Liechtenstein",
+				"LK": "Sri Lanka",
+				"LR": "Liberia",
+				"LS": "Lesotho",
+				"LT": "Lithuania",
+				"LU": "Luxembourg",
+				"LV": "Latvia",
+				"LY": "Libya",
+				"MA": "Morocco",
+				"MC": "Monaco",
+				"MD": "Moldova",
+				"ME": "Montenegro",
+				"MF": "Saint Martin",
+				"MG": "Madagascar",
+				"MH": "Marshall Islands",
+				"MK": "Macedonia",
+				"ML": "Mali",
+				"MM": "Myanmar",
+				"MN": "Mongolia",
+				"MO": "Macao",
+				"MP": "Northern Mariana Islands",
+				"MQ": "Martinique",
+				"MR": "Mauritania",
+				"MS": "Montserrat",
+				"MT": "Malta",
+				"MU": "Mauritius",
+				"MV": "Maldives",
+				"MW": "Malawi",
+				"MX": "Mexico",
+				"MY": "Malaysia",
+				"MZ": "Mozambique",
+				"NA": "Namibia",
+				"NC": "New Caledonia",
+				"NE": "Niger",
+				"NF": "Norfolk Island",
+				"NG": "Nigeria",
+				"NI": "Nicaragua",
+				"NL": "Netherlands",
+				"NO": "Norway",
+				"NP": "Nepal",
+				"NR": "Nauru",
+				"NU": "Niue",
+				"NZ": "New Zealand",
+				"OM": "Oman",
+				"PA": "Panama",
+				"PE": "Peru",
+				"PF": "French Polynesia",
+				"PG": "Papua New Guinea",
+				"PH": "Philippines",
+				"PK": "Pakistan",
+				"PL": "Poland",
+				"PM": "Saint Pierre and Miquelon",
+				"PN": "Pitcairn",
+				"PR": "Puerto Rico",
+				"PS": "Palestinian Territory",
+				"PT": "Portugal",
+				"PW": "Palau",
+				"PY": "Paraguay",
+				"QA": "Qatar",
+				"RE": "Reunion",
+				"RO": "Romania",
+				"RS": "Serbia",
+				"RU": "Russia",
+				"RW": "Rwanda",
+				"SA": "Saudi Arabia",
+				"SB": "Solomon Islands",
+				"SC": "Seychelles",
+				"SD": "Sudan",
+				"SE": "Sweden",
+				"SG": "Singapore",
+				"SH": "Saint Helena",
+				"SI": "Slovenia",
+				"SJ": "Svalbard and Jan Mayen",
+				"SK": "Slovakia",
+				"SL": "Sierra Leone",
+				"SM": "San Marino",
+				"SN": "Senegal",
+				"SO": "Somalia",
+				"SR": "Suriname",
+				"SS": "South Sudan",
+				"ST": "Sao Tome and Principe",
+				"SV": "El Salvador",
+				"SX": "Sint Maarten",
+				"SY": "Syria",
+				"SZ": "Swaziland",
+				"TC": "Turks and Caicos Islands",
+				"TD": "Chad",
+				"TF": "French Southern Territories",
+				"TG": "Togo",
+				"TH": "Thailand",
+				"TJ": "Tajikistan",
+				"TK": "Tokelau",
+				"TL": "East Timor",
+				"TM": "Turkmenistan",
+				"TN": "Tunisia",
+				"TO": "Tonga",
+				"TR": "Turkey",
+				"TT": "Trinidad and Tobago",
+				"TV": "Tuvalu",
+				"TW": "Taiwan",
+				"TZ": "Tanzania",
+				"UA": "Ukraine",
+				"UG": "Uganda",
+				"UM": "United States Minor Outlying Islands",
+				"US": "United States",
+				"UY": "Uruguay",
+				"UZ": "Uzbekistan",
+				"VA": "Vatican",
+				"VC": "Saint Vincent and the Grenadines",
+				"VE": "Venezuela",
+				"VG": "British Virgin Islands",
+				"VI": "U.S. Virgin Islands",
+				"VN": "Vietnam",
+				"VU": "Vanuatu",
+				"WF": "Wallis and Futuna",
+				"WS": "Samoa",
+				"XK": "Kosovo",
+				"YE": "Yemen",
+				"YT": "Mayotte",
+				"ZA": "South Africa",
+				"ZM": "Zambia",
+				"ZW": "Zimbabwe"
+			},
+
+			"nxReg_i18n_SignUp_VerificationCodeToggle": "Προσθήκη Κωδικού Επαλήθευσης",
+			"nxReg_i18n_SignUp_VerificationCode": "Κωδικός Επαλήθευσης",
+			"nxReg_i18n_SignUp_VerificationCodeError": "Ελέγξτε τον κωδικό επαλήθευσης και δοκιμάστε ξανά",
+
+			"nxReg_i18n_SignUp_Password_Title": "Σας ευχαριστούμε για την εγγραφή σας<br>Πιο κάτω μπορείτε να βρείτε τα στοιχεία εγγραφής σας",
+			"nxReg_i18n_SignUp_Password_SubTitle": "Μην αμελήσετε να αποθηκεύσετε τα στοιχεία",
+			"nxReg_i18n_SignUp_Password_Button": "Συνέχεια",
+
+			"nxReg_i18n_SignUp_Social_BoxMessage1": "Ή κάντε εγγραφή με:",
+			"nxReg_i18n_SignUp_Social_BoxMessage2": "Ποτέ δεν θα δημοσιεύσουμε χωρίς την άδεια σας.",
+			"nxReg_i18n_SignUp_Social_FacebookError": "Εξουσιοδοτήστε την αίτησή μας για εγγραφή στο Facebook",
+			"nxReg_i18n_SignUp_Social_GoogleError": "Εξουσιοδοτήστε την αίτησή μας για εγγραφή στο Google",
+			"nxReg_i18n_SignUp_Social_FacebookFailedError": "Ελέγξτε τον λογαριασμό σας στο Facebook ή δοκιμάστε μια άλλη επιλογή εγγραφής",
+			"nxReg_i18n_SignUp_Social_GoogleFailedError": "Ελέγξτε τον λογαριασμό σας Google ή δοκιμάστε μια άλλη επιλογή εγγραφής",
+			"nxReg_i18n_SignUp_Social_GoogleJWTExpired": "Η συνεδρία σας έχει λήξει. Παρακαλούμε εγγραφείτε ξανά.",
+
+			"nxReg_i18n_SignUp_Social_Text": "Αποδεχτείτε τη Δήλωση Απορρήτου για να μπείτε στην πλατφόρμα συναλλαγών",
+
+			"nxReg_i18n_SignUp_Activation_Message1": "Ελέγξτε τα εισερχόμενα σας",
+			"nxReg_i18n_SignUp_Activation_Message2": "Ελέγξτε το %% Email %% για ένα email ενεργοποίησης λογαριασμού.",
+			"nxReg_i18n_SignUp_Activation_Message3": "Δεν μπορείτε να το βρείτε; Ίσως καταχωρήθηκε στα Ανεπιθύμητα.",
+			"nxReg_i18n_SignUp_Activation_Message4": "Ακόμη δεν μπορείτε να βρείτε το μήνυμα email;",
+			"nxReg_i18n_SignUp_Activation_ResendButton": "Επανάληψη αποστολής",
+			"nxReg_i18n_SignUp_Activation_ResendLimitReachedError": "Το όριο επαναποστολής διεύθυνσης ηλεκτρονικού ταχυδρομείου έχει συμπληρωθεί. Εγγραφείτε ξανά.",
+
+			"nxReg_i18n_Activation_AccountActivated": "Ο λογαριασμός σας έχει ενεργοποιηθεί. Θα σας ανακατευθύνουμε στη <a href=\"%%SignInUrl%%\">Σύνδεση</a>.",
+			"nxReg_i18n_Activation_LinkExpiredError": "Ο σύνδεσμος ενεργοποίησης λογαριασμού έχει λήξει. <a href=\"%%SignUpUrl%%\">Χρειάζεται να επαναλάβετε την εγγραφή σας</a>.",
+
+			"nxReg_i18n_UnknownError": "Έχει προκύψει άγνωστο σφάλμα. Παρακαλούμε δοκιμάστε ξανά."
+		},
+		"es": {
+			"nxReg_i18n_SignUp_SignUp": "Registrarse",
+			"nxReg_i18n_SignUp_Email": "Correo electrónico",
+			"nxReg_i18n_SignUp_Password": "Contraseña (8+ caracteres)",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx1": "Como mínimo 1 letra minúscula",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx2": "Como mínimo 1 letra mayúscula",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx3": "Como mínimo 1 número",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx4": "No se permiten caracteres especiales",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx5": "Como mínimo 8 caracteres",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx6": "Como máximo 24 caracteress",
+			"nxReg_i18n_SignUp_CreateAccountButton": "Crear una cuenta",
+			"nxReg_i18n_SignUp_SignIn": "¿Ya está registrado? Acceda",
+			"nxReg_i18n_SignUp_SignInText": "Ya está registrado?",
+			"nxReg_i18n_SignUp_LogIn": "Acceda",
+
+			"nxReg_i18n_SignUp_CountryCode": "Código de país",
+
+			"nxReg_i18n_SignUp_PrivacyNoticeNotAcceptedError": "Acepte el Aviso de Privacidad para continuar",
+			"nxReg_i18n_SignUp_CountryBlockedError": "No puede registrarse desde el país en el que se encuentra.",
+			"nxReg_i18n_SignUp_ReCaptchaMandatoryError": "¡El campo ReCaptcha es obligatorio!",
+			"nxReg_i18n_SignUp_EmailWrongFormatError": "¿Ha introducido el email correctamente? Inténtelo de nuevo.",
+			"nxReg_i18n_SignUp_EmailAlreadyExistsError": "Este correo electrónico ya ha sido utilizado. <a href=\"%%SignInUrl%%\">Inicie sesión</a> ",
+			"nxReg_i18n_SignUp_EmailNonExistentError": "El correo electrónico indicado no existe. Por favor, compruébelo e introdúzcalo de nuevo.",
+			"nxReg_i18n_SignUp_ServerUnreachableError": "Problema de conexión con el servidor. Por favor, inténtelo más tarde.",
+			"nxReg_i18n_SignUp_PasswordWrongError": "La contraseña debe cumplir con la política de contraseñas",
+
+			"nxReg_i18n_SignUp_FullName": "Nombre completo",
+			"nxReg_i18n_SignUp_FullNameError": "Se requiere el nombre completo",
+
+			"nxReg_i18n_SignUp_PhoneNumber": "Número de teléfono",
+			"nxReg_i18n_SignUp_PhoneNumberErrors": [
+				"Se requiere un número de teléfono",
+				"Proporciona un código de país válido.",
+				"Por favor, introduzca un número más largo.",
+				"Por favor, introduzca un número más corto",
+				"No te olvides de proporcionar un número de teléfono válido."
+			],
+
+			"nxReg_i18n_SignUp_Country": "País",
+			"nxReg_i18n_SignUp_CountryError": "Por favor, seleccione un país",
+			"nxReg_i18n_SignUp_CountryList": {
+				"AD": "Andorra",
+				"AE": "United Arab Emirates",
+				"AF": "Afghanistan",
+				"AG": "Antigua and Barbuda",
+				"AI": "Anguilla",
+				"AL": "Albania",
+				"AM": "Armenia",
+				"AO": "Angola",
+				"AQ": "Antarctica",
+				"AR": "Argentina",
+				"AS": "American Samoa",
+				"AT": "Austria",
+				"AU": "Australia",
+				"AW": "Aruba",
+				"AX": "Aland Islands",
+				"AZ": "Azerbaijan",
+				"BA": "Bosnia and Herzegovina",
+				"BB": "Barbados",
+				"BD": "Bangladesh",
+				"BE": "Belgium",
+				"BF": "Burkina Faso",
+				"BG": "Bulgaria",
+				"BH": "Bahrain",
+				"BI": "Burundi",
+				"BJ": "Benin",
+				"BL": "Saint Barthelemy",
+				"BM": "Bermuda",
+				"BN": "Brunei",
+				"BO": "Bolivia",
+				"BQ": "Bonaire, Saint Eustatius and Saba ",
+				"BR": "Brazil",
+				"BS": "Bahamas",
+				"BT": "Bhutan",
+				"BV": "Bouvet Island",
+				"BW": "Botswana",
+				"BY": "Belarus",
+				"BZ": "Belize",
+				"CA": "Canada",
+				"CC": "Cocos Islands",
+				"CD": "Democratic Republic of the Congo",
+				"CF": "Central African Republic",
+				"CG": "Republic of the Congo",
+				"CH": "Switzerland",
+				"CI": "Ivory Coast",
+				"CK": "Cook Islands",
+				"CL": "Chile",
+				"CM": "Cameroon",
+				"CN": "China",
+				"CO": "Colombia",
+				"CR": "Costa Rica",
+				"CU": "Cuba",
+				"CV": "Cape Verde",
+				"CW": "Curacao",
+				"CX": "Christmas Island",
+				"CY": "Cyprus",
+				"CZ": "Czech Republic",
+				"DE": "Germany",
+				"DJ": "Djibouti",
+				"DK": "Denmark",
+				"DM": "Dominica",
+				"DO": "Dominican Republic",
+				"DZ": "Algeria",
+				"EC": "Ecuador",
+				"EE": "Estonia",
+				"EG": "Egypt",
+				"EH": "Western Sahara",
+				"ER": "Eritrea",
+				"ES": "Spain",
+				"ET": "Ethiopia",
+				"FI": "Finland",
+				"FJ": "Fiji",
+				"FK": "Falkland Islands",
+				"FM": "Micronesia",
+				"FO": "Faroe Islands",
+				"FR": "France",
+				"GA": "Gabon",
+				"GB": "United Kingdom",
+				"GD": "Grenada",
+				"GE": "Georgia",
+				"GF": "French Guiana",
+				"GG": "Guernsey",
+				"GH": "Ghana",
+				"GI": "Gibraltar",
+				"GL": "Greenland",
+				"GM": "Gambia",
+				"GN": "Guinea",
+				"GP": "Guadeloupe",
+				"GQ": "Equatorial Guinea",
+				"GR": "Greece",
+				"GS": "South Georgia and the South Sandwich Islands",
+				"GT": "Guatemala",
+				"GU": "Guam",
+				"GW": "Guinea-Bissau",
+				"GY": "Guyana",
+				"HK": "Hong Kong",
+				"HM": "Heard Island and McDonald Islands",
+				"HN": "Honduras",
+				"HR": "Croatia",
+				"HT": "Haiti",
+				"HU": "Hungary",
+				"ID": "Indonesia",
+				"IE": "Ireland",
+				"IL": "Israel",
+				"IM": "Isle of Man",
+				"IN": "India",
+				"IO": "British Indian Ocean Territory",
+				"IQ": "Iraq",
+				"IR": "Iran",
+				"IS": "Iceland",
+				"IT": "Italy",
+				"JE": "Jersey",
+				"JM": "Jamaica",
+				"JO": "Jordan",
+				"JP": "Japan",
+				"KE": "Kenya",
+				"KG": "Kyrgyzstan",
+				"KH": "Cambodia",
+				"KI": "Kiribati",
+				"KM": "Comoros",
+				"KN": "Saint Kitts and Nevis",
+				"KP": "North Korea",
+				"KR": "South Korea",
+				"KW": "Kuwait",
+				"KY": "Cayman Islands",
+				"KZ": "Kazakhstan",
+				"LA": "Laos",
+				"LB": "Lebanon",
+				"LC": "Saint Lucia",
+				"LI": "Liechtenstein",
+				"LK": "Sri Lanka",
+				"LR": "Liberia",
+				"LS": "Lesotho",
+				"LT": "Lithuania",
+				"LU": "Luxembourg",
+				"LV": "Latvia",
+				"LY": "Libya",
+				"MA": "Morocco",
+				"MC": "Monaco",
+				"MD": "Moldova",
+				"ME": "Montenegro",
+				"MF": "Saint Martin",
+				"MG": "Madagascar",
+				"MH": "Marshall Islands",
+				"MK": "Macedonia",
+				"ML": "Mali",
+				"MM": "Myanmar",
+				"MN": "Mongolia",
+				"MO": "Macao",
+				"MP": "Northern Mariana Islands",
+				"MQ": "Martinique",
+				"MR": "Mauritania",
+				"MS": "Montserrat",
+				"MT": "Malta",
+				"MU": "Mauritius",
+				"MV": "Maldives",
+				"MW": "Malawi",
+				"MX": "Mexico",
+				"MY": "Malaysia",
+				"MZ": "Mozambique",
+				"NA": "Namibia",
+				"NC": "New Caledonia",
+				"NE": "Niger",
+				"NF": "Norfolk Island",
+				"NG": "Nigeria",
+				"NI": "Nicaragua",
+				"NL": "Netherlands",
+				"NO": "Norway",
+				"NP": "Nepal",
+				"NR": "Nauru",
+				"NU": "Niue",
+				"NZ": "New Zealand",
+				"OM": "Oman",
+				"PA": "Panama",
+				"PE": "Peru",
+				"PF": "French Polynesia",
+				"PG": "Papua New Guinea",
+				"PH": "Philippines",
+				"PK": "Pakistan",
+				"PL": "Poland",
+				"PM": "Saint Pierre and Miquelon",
+				"PN": "Pitcairn",
+				"PR": "Puerto Rico",
+				"PS": "Palestinian Territory",
+				"PT": "Portugal",
+				"PW": "Palau",
+				"PY": "Paraguay",
+				"QA": "Qatar",
+				"RE": "Reunion",
+				"RO": "Romania",
+				"RS": "Serbia",
+				"RU": "Russia",
+				"RW": "Rwanda",
+				"SA": "Saudi Arabia",
+				"SB": "Solomon Islands",
+				"SC": "Seychelles",
+				"SD": "Sudan",
+				"SE": "Sweden",
+				"SG": "Singapore",
+				"SH": "Saint Helena",
+				"SI": "Slovenia",
+				"SJ": "Svalbard and Jan Mayen",
+				"SK": "Slovakia",
+				"SL": "Sierra Leone",
+				"SM": "San Marino",
+				"SN": "Senegal",
+				"SO": "Somalia",
+				"SR": "Suriname",
+				"SS": "South Sudan",
+				"ST": "Sao Tome and Principe",
+				"SV": "El Salvador",
+				"SX": "Sint Maarten",
+				"SY": "Syria",
+				"SZ": "Swaziland",
+				"TC": "Turks and Caicos Islands",
+				"TD": "Chad",
+				"TF": "French Southern Territories",
+				"TG": "Togo",
+				"TH": "Thailand",
+				"TJ": "Tajikistan",
+				"TK": "Tokelau",
+				"TL": "East Timor",
+				"TM": "Turkmenistan",
+				"TN": "Tunisia",
+				"TO": "Tonga",
+				"TR": "Turkey",
+				"TT": "Trinidad and Tobago",
+				"TV": "Tuvalu",
+				"TW": "Taiwan",
+				"TZ": "Tanzania",
+				"UA": "Ukraine",
+				"UG": "Uganda",
+				"UM": "United States Minor Outlying Islands",
+				"US": "United States",
+				"UY": "Uruguay",
+				"UZ": "Uzbekistan",
+				"VA": "Vatican",
+				"VC": "Saint Vincent and the Grenadines",
+				"VE": "Venezuela",
+				"VG": "British Virgin Islands",
+				"VI": "U.S. Virgin Islands",
+				"VN": "Vietnam",
+				"VU": "Vanuatu",
+				"WF": "Wallis and Futuna",
+				"WS": "Samoa",
+				"XK": "Kosovo",
+				"YE": "Yemen",
+				"YT": "Mayotte",
+				"ZA": "South Africa",
+				"ZM": "Zambia",
+				"ZW": "Zimbabwe"
+			},
+
+			"nxReg_i18n_SignUp_VerificationCodeToggle": "Añadir Código de Verificación",
+			"nxReg_i18n_SignUp_VerificationCode": "Código de Verificación",
+			"nxReg_i18n_SignUp_VerificationCodeError": "Revise el código de verificación e inténtelo de nuevo",
+
+			"nxReg_i18n_SignUp_Password_Title": "Gracias por registrarse con nosotros<br>A continuación puede encontrar sus datos de registro",
+			"nxReg_i18n_SignUp_Password_SubTitle": "Asegúrese de guardar los datos.",
+			"nxReg_i18n_SignUp_Password_Button": "Continuar",
+
+			"nxReg_i18n_SignUp_Social_BoxMessage1": "O regístrese con:",
+			"nxReg_i18n_SignUp_Social_BoxMessage2": "Nunca publicaremos sin su permiso.",
+			"nxReg_i18n_SignUp_Social_Google": "Regístrese con Google",
+			"nxReg_i18n_SignUp_Social_Facebook": "Regístrese con Facebook",
+			"nxReg_i18n_SignUp_Social_FacebookError": "Autorice a nuestra aplicación a registrarse con Facebook",
+			"nxReg_i18n_SignUp_Social_GoogleError": "Autorice a nuestra aplicación a registrarse con Google",
+			"nxReg_i18n_SignUp_Social_FacebookFailedError": "Compruebe su cuenta de Facebook o intente otra forma de registro",
+			"nxReg_i18n_SignUp_Social_GoogleFailedError": "Compruebe su cuenta de Google o intente otra forma de registro",
+			"nxReg_i18n_SignUp_Social_GoogleJWTExpired": "Su sesión ha expirado. Por favor inicie sesión nuevamente.",
+
+			"nxReg_i18n_SignUp_Social_Text": "Acepte nuestro Aviso de Privacidad para entrar en la plataforma de operaciones",
+
+			"nxReg_i18n_SignUp_Activation_Message1": "Compruebe su bandeja de entrada",
+			"nxReg_i18n_SignUp_Activation_Message2": "Compruebe %%Email%% para encontrar un correo electrónico de activación de la cuenta.",
+			"nxReg_i18n_SignUp_Activation_Message3": "¿No lo encuentra? Es posible que esté entre el correo no deseado.",
+			"nxReg_i18n_SignUp_Activation_Message4": "¿Sigue sin poder encontrar el email?",
+			"nxReg_i18n_SignUp_Activation_ResendButton": "Reenviar",
+			"nxReg_i18n_SignUp_Activation_ResendLimitReachedError": "Se ha alcanzado el límite de reenvío de correos electrónicos. Regístrese de nuevo.",
+
+			"nxReg_i18n_Activation_AccountActivated": "Su cuenta ha sido activada. La redirigiremos a la pantalla de inicio de sesión. <a href=\"%%SignInUrl%%\">Por favor, inicie sesión.</a>",
+			"nxReg_i18n_Activation_LinkExpiredError": "El enlace de activación de la cuenta ha caducado. Debe  <a href=\"%%SignUpUrl%%\">registrarse de nuevo</a>",
+
+			"nxReg_i18n_UnknownError": "Se ha producido un error desconocido. Por favor, inténtelo de nuevo."
+		},
+		"de": {
+			"nxReg_i18n_SignUp_SignUp": "Registrieren",
+			"nxReg_i18n_SignUp_Email": "Email",
+			"nxReg_i18n_SignUp_Password": "Passwort (8+ Zeichen)",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx1": "Mindestens einen Kleinbuchstaben",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx2": "Mindestens ein Großbuchstabe",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx3": "Mindestens eine Nummer",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx4": "Sonderzeichen nicht erlaubt",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx5": "Mindestens 8 Zeichen",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx6": "Mindestens 24 Zeichen",
+			"nxReg_i18n_SignUp_CreateAccountButton": "Erstelle ein Konto",
+			"nxReg_i18n_SignUp_SignIn": "Bereits registriert? Login",
+			"nxReg_i18n_SignUp_SignInText": "Bereits registriert?",
+			"nxReg_i18n_SignUp_LogIn": "Login",
+
+			"nxReg_i18n_SignUp_CountryCode": "Ländercode",
+
+			"nxReg_i18n_SignUp_PrivacyNoticeNotAcceptedError": "Akzeptieren Sie den Datenschutzhinweis, um fortzufahren",
+			"nxReg_i18n_SignUp_CountryBlockedError": "Sie können sich nicht von dem Land aus registrieren, in dem Sie sich befinden.",
+			"nxReg_i18n_SignUp_ReCaptchaMandatoryError": "ReCaptcha ist obligatorisch!",
+			"nxReg_i18n_SignUp_EmailWrongFormatError": "Haben Sie die E-Mail-Adresse korrekt eingegeben? Versuchen Sie es erneut.",
+			"nxReg_i18n_SignUp_EmailAlreadyExistsError": "Diese E-Mail wurde bereits verwendet. <a href=\"%%SignInUrl%%\"> Anmelden</a>",
+			"nxReg_i18n_SignUp_EmailNonExistentError": "Die angegebene E-Mail existiert nicht. Bitte überprüfen Sie sie und geben Sie sie erneut ein.",
+			"nxReg_i18n_SignUp_ServerUnreachableError": "Problem bei der Verbindung zum Server. Bitte versuchen Sie es später noch einmal.",
+			"nxReg_i18n_SignUp_PasswordWrongError": "Das Passwort muss mit der Passwortrichtlinie übereinstimmen",
+
+			"nxReg_i18n_SignUp_FullName": "Vollständiger Name",
+			"nxReg_i18n_SignUp_FullNameError": "Vollständiger Name ist erforderlich",
+
+			"nxReg_i18n_SignUp_PhoneNumber": "Telefonnummer",
+			"nxReg_i18n_SignUp_PhoneNumberErrors": [
+				"Telefonnummer ist erforderlich",
+				"Geben Sie eine gültige Ländervorwahl an.",
+				"Bitte geben Sie eine längere Nummer an",
+				"Bitte geben Sie eine kürzere Nummer an",
+				"Vergessen Sie nicht, eine gültige Telefonnummer anzugeben."
+			],
+
+			"nxReg_i18n_SignUp_Country": "Land",
+			"nxReg_i18n_SignUp_CountryError": "Bitte wählen Sie ein Land aus",
+			"nxReg_i18n_SignUp_CountryList": {
+				"AD": "Andorra",
+				"AE": "United Arab Emirates",
+				"AF": "Afghanistan",
+				"AG": "Antigua and Barbuda",
+				"AI": "Anguilla",
+				"AL": "Albania",
+				"AM": "Armenia",
+				"AO": "Angola",
+				"AQ": "Antarctica",
+				"AR": "Argentina",
+				"AS": "American Samoa",
+				"AT": "Austria",
+				"AU": "Australia",
+				"AW": "Aruba",
+				"AX": "Aland Islands",
+				"AZ": "Azerbaijan",
+				"BA": "Bosnia and Herzegovina",
+				"BB": "Barbados",
+				"BD": "Bangladesh",
+				"BE": "Belgium",
+				"BF": "Burkina Faso",
+				"BG": "Bulgaria",
+				"BH": "Bahrain",
+				"BI": "Burundi",
+				"BJ": "Benin",
+				"BL": "Saint Barthelemy",
+				"BM": "Bermuda",
+				"BN": "Brunei",
+				"BO": "Bolivia",
+				"BQ": "Bonaire, Saint Eustatius and Saba ",
+				"BR": "Brazil",
+				"BS": "Bahamas",
+				"BT": "Bhutan",
+				"BV": "Bouvet Island",
+				"BW": "Botswana",
+				"BY": "Belarus",
+				"BZ": "Belize",
+				"CA": "Canada",
+				"CC": "Cocos Islands",
+				"CD": "Democratic Republic of the Congo",
+				"CF": "Central African Republic",
+				"CG": "Republic of the Congo",
+				"CH": "Switzerland",
+				"CI": "Ivory Coast",
+				"CK": "Cook Islands",
+				"CL": "Chile",
+				"CM": "Cameroon",
+				"CN": "China",
+				"CO": "Colombia",
+				"CR": "Costa Rica",
+				"CU": "Cuba",
+				"CV": "Cape Verde",
+				"CW": "Curacao",
+				"CX": "Christmas Island",
+				"CY": "Cyprus",
+				"CZ": "Czech Republic",
+				"DE": "Germany",
+				"DJ": "Djibouti",
+				"DK": "Denmark",
+				"DM": "Dominica",
+				"DO": "Dominican Republic",
+				"DZ": "Algeria",
+				"EC": "Ecuador",
+				"EE": "Estonia",
+				"EG": "Egypt",
+				"EH": "Western Sahara",
+				"ER": "Eritrea",
+				"ES": "Spain",
+				"ET": "Ethiopia",
+				"FI": "Finland",
+				"FJ": "Fiji",
+				"FK": "Falkland Islands",
+				"FM": "Micronesia",
+				"FO": "Faroe Islands",
+				"FR": "France",
+				"GA": "Gabon",
+				"GB": "United Kingdom",
+				"GD": "Grenada",
+				"GE": "Georgia",
+				"GF": "French Guiana",
+				"GG": "Guernsey",
+				"GH": "Ghana",
+				"GI": "Gibraltar",
+				"GL": "Greenland",
+				"GM": "Gambia",
+				"GN": "Guinea",
+				"GP": "Guadeloupe",
+				"GQ": "Equatorial Guinea",
+				"GR": "Greece",
+				"GS": "South Georgia and the South Sandwich Islands",
+				"GT": "Guatemala",
+				"GU": "Guam",
+				"GW": "Guinea-Bissau",
+				"GY": "Guyana",
+				"HK": "Hong Kong",
+				"HM": "Heard Island and McDonald Islands",
+				"HN": "Honduras",
+				"HR": "Croatia",
+				"HT": "Haiti",
+				"HU": "Hungary",
+				"ID": "Indonesia",
+				"IE": "Ireland",
+				"IL": "Israel",
+				"IM": "Isle of Man",
+				"IN": "India",
+				"IO": "British Indian Ocean Territory",
+				"IQ": "Iraq",
+				"IR": "Iran",
+				"IS": "Iceland",
+				"IT": "Italy",
+				"JE": "Jersey",
+				"JM": "Jamaica",
+				"JO": "Jordan",
+				"JP": "Japan",
+				"KE": "Kenya",
+				"KG": "Kyrgyzstan",
+				"KH": "Cambodia",
+				"KI": "Kiribati",
+				"KM": "Comoros",
+				"KN": "Saint Kitts and Nevis",
+				"KP": "North Korea",
+				"KR": "South Korea",
+				"KW": "Kuwait",
+				"KY": "Cayman Islands",
+				"KZ": "Kazakhstan",
+				"LA": "Laos",
+				"LB": "Lebanon",
+				"LC": "Saint Lucia",
+				"LI": "Liechtenstein",
+				"LK": "Sri Lanka",
+				"LR": "Liberia",
+				"LS": "Lesotho",
+				"LT": "Lithuania",
+				"LU": "Luxembourg",
+				"LV": "Latvia",
+				"LY": "Libya",
+				"MA": "Morocco",
+				"MC": "Monaco",
+				"MD": "Moldova",
+				"ME": "Montenegro",
+				"MF": "Saint Martin",
+				"MG": "Madagascar",
+				"MH": "Marshall Islands",
+				"MK": "Macedonia",
+				"ML": "Mali",
+				"MM": "Myanmar",
+				"MN": "Mongolia",
+				"MO": "Macao",
+				"MP": "Northern Mariana Islands",
+				"MQ": "Martinique",
+				"MR": "Mauritania",
+				"MS": "Montserrat",
+				"MT": "Malta",
+				"MU": "Mauritius",
+				"MV": "Maldives",
+				"MW": "Malawi",
+				"MX": "Mexico",
+				"MY": "Malaysia",
+				"MZ": "Mozambique",
+				"NA": "Namibia",
+				"NC": "New Caledonia",
+				"NE": "Niger",
+				"NF": "Norfolk Island",
+				"NG": "Nigeria",
+				"NI": "Nicaragua",
+				"NL": "Netherlands",
+				"NO": "Norway",
+				"NP": "Nepal",
+				"NR": "Nauru",
+				"NU": "Niue",
+				"NZ": "New Zealand",
+				"OM": "Oman",
+				"PA": "Panama",
+				"PE": "Peru",
+				"PF": "French Polynesia",
+				"PG": "Papua New Guinea",
+				"PH": "Philippines",
+				"PK": "Pakistan",
+				"PL": "Poland",
+				"PM": "Saint Pierre and Miquelon",
+				"PN": "Pitcairn",
+				"PR": "Puerto Rico",
+				"PS": "Palestinian Territory",
+				"PT": "Portugal",
+				"PW": "Palau",
+				"PY": "Paraguay",
+				"QA": "Qatar",
+				"RE": "Reunion",
+				"RO": "Romania",
+				"RS": "Serbia",
+				"RU": "Russia",
+				"RW": "Rwanda",
+				"SA": "Saudi Arabia",
+				"SB": "Solomon Islands",
+				"SC": "Seychelles",
+				"SD": "Sudan",
+				"SE": "Sweden",
+				"SG": "Singapore",
+				"SH": "Saint Helena",
+				"SI": "Slovenia",
+				"SJ": "Svalbard and Jan Mayen",
+				"SK": "Slovakia",
+				"SL": "Sierra Leone",
+				"SM": "San Marino",
+				"SN": "Senegal",
+				"SO": "Somalia",
+				"SR": "Suriname",
+				"SS": "South Sudan",
+				"ST": "Sao Tome and Principe",
+				"SV": "El Salvador",
+				"SX": "Sint Maarten",
+				"SY": "Syria",
+				"SZ": "Swaziland",
+				"TC": "Turks and Caicos Islands",
+				"TD": "Chad",
+				"TF": "French Southern Territories",
+				"TG": "Togo",
+				"TH": "Thailand",
+				"TJ": "Tajikistan",
+				"TK": "Tokelau",
+				"TL": "East Timor",
+				"TM": "Turkmenistan",
+				"TN": "Tunisia",
+				"TO": "Tonga",
+				"TR": "Turkey",
+				"TT": "Trinidad and Tobago",
+				"TV": "Tuvalu",
+				"TW": "Taiwan",
+				"TZ": "Tanzania",
+				"UA": "Ukraine",
+				"UG": "Uganda",
+				"UM": "United States Minor Outlying Islands",
+				"US": "United States",
+				"UY": "Uruguay",
+				"UZ": "Uzbekistan",
+				"VA": "Vatican",
+				"VC": "Saint Vincent and the Grenadines",
+				"VE": "Venezuela",
+				"VG": "British Virgin Islands",
+				"VI": "U.S. Virgin Islands",
+				"VN": "Vietnam",
+				"VU": "Vanuatu",
+				"WF": "Wallis and Futuna",
+				"WS": "Samoa",
+				"XK": "Kosovo",
+				"YE": "Yemen",
+				"YT": "Mayotte",
+				"ZA": "South Africa",
+				"ZM": "Zambia",
+				"ZW": "Zimbabwe"
+			},
+
+			"nxReg_i18n_SignUp_VerificationCodeToggle": "Verifizierungscode hinzufügen",
+			"nxReg_i18n_SignUp_VerificationCode": "Verifizierungscode",
+			"nxReg_i18n_SignUp_VerificationCodeError": "Überprüfen Sie den Verifizierungscode und versuchen Sie es erneut",
+
+			"nxReg_i18n_SignUp_Password_Title": "Vielen Dank, dass Sie sich bei uns registriert haben<br>Nachfolgend finden Sie Ihre Registrierungsdaten",
+			"nxReg_i18n_SignUp_Password_SubTitle": "Achten Sie darauf, dass Sie die Daten speichern",
+			"nxReg_i18n_SignUp_Password_Button": "Weiter",
+
+			"nxReg_i18n_SignUp_Social_BoxMessage1": "ODER Anmeldung mit:",
+			"nxReg_i18n_SignUp_Social_BoxMessage2": "Wir werden niemals ohne Ihre Erlaubnis etwas posten.",
+			"nxReg_i18n_SignUp_Social_Google": "Anmeldung mit Google",
+			"nxReg_i18n_SignUp_Social_Facebook": "Anmeldung mit Facebook",
+			"nxReg_i18n_SignUp_Social_FacebookError": "Autorisieren Sie unsere Anwendung, sich bei Facebook zu registrieren",
+			"nxReg_i18n_SignUp_Social_GoogleError": "Autorisieren Sie unsere Anwendung, sich bei Google zu registrieren",
+			"nxReg_i18n_SignUp_Social_FacebookFailedError": "Bitte überprüfen Sie Ihr Facebook-Konto oder versuchen Sie eine andere Registrierungsoption",
+			"nxReg_i18n_SignUp_Social_GoogleFailedError": "Bitte überprüfen Sie Ihr Google-Konto oder versuchen Sie eine andere Registrierungsoption",
+			"nxReg_i18n_SignUp_Social_GoogleJWTExpired": "Die Session ist abgelaufen. Bitte melden Sie sich erneut an.",
+
+			"nxReg_i18n_SignUp_Social_Text": "Akzeptieren Sie unsere Datenschutzhinweise, um die Handelsplattform zu betreten",
+
+			"nxReg_i18n_SignUp_Activation_Message1": "Überprüfen Sie Ihren Posteingang",
+			"nxReg_i18n_SignUp_Activation_Message2": "Prüfen Sie %%Email%%% für eine E-Mail zur Kontoaktivierung.",
+			"nxReg_i18n_SignUp_Activation_Message3": "Sie können sie nicht finden? Vielleicht ist sie im Spam-Ordner.",
+			"nxReg_i18n_SignUp_Activation_Message4": "Sie können diese E-Mail immer noch nicht finden?",
+			"nxReg_i18n_SignUp_Activation_ResendButton": "Erneut senden",
+			"nxReg_i18n_SignUp_Activation_ResendLimitReachedError": "Das E-Mail-Wiederversendungslimit wurde erreicht. Registrieren Sie sich erneut.",
+
+			"nxReg_i18n_Activation_AccountActivated": "Ihr Konto wurde aktiviert. Wir werden Sie zum Login weiterleiten. <a href=\"%%SignInUrl%%\">Log in</a>.",
+			"nxReg_i18n_Activation_LinkExpiredError": "Der Link zur Kontoaktivierung ist abgelaufen. Sie müssen sich <a href=\"%%SignUpUrl%%\">neu registrieren</a>.",
+
+			"nxReg_i18n_UnknownError": "Ein unbekannter Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
+		},
+		"sv": {
+			"nxReg_i18n_SignUp_SignUp": "Registrera dig",
+			"nxReg_i18n_SignUp_Email": "E-post",
+			"nxReg_i18n_SignUp_Password": "Lösenord (8+tecken)",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx1": "Minst 1 liten bokstav",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx2": "Minst 1 stor bokstav",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx3": "Minst 1 siffra",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx4": "Specialtecken är inte tillåtna",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx5": "Minst 8 tecken",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx6": "Max 24 tecken",
+			"nxReg_i18n_SignUp_CreateAccountButton": "Skapa ett konto",
+			"nxReg_i18n_SignUp_SignIn": "Redan registrerad? Logga in",
+			"nxReg_i18n_SignUp_SignInText": "Redan registrerad?",
+			"nxReg_i18n_SignUp_LogIn": "Logga in",
+			"nxReg_i18n_SignUp_RiskWaring": "Riskvarning: Handel med Forex och CFD:er kan leda till förlust av allt ditt investerade kapital",
+
+			"nxReg_i18n_SignUp_CountryCode": "Landsnummer",
+
+			"nxReg_i18n_SignUp_PrivacyNoticeNotAcceptedError": "Acceptera sekretessmeddelandet för att fortsätta",
+			"nxReg_i18n_SignUp_CountryBlockedError": "Du kan inte registrera dig från det land du befinner dig i.",
+			"nxReg_i18n_SignUp_ReCaptchaMandatoryError": "ReCaptcha krävs!",
+			"nxReg_i18n_SignUp_EmailWrongFormatError": "Skrev du rätt e-postadress? Försök igen.",
+			"nxReg_i18n_SignUp_EmailAlreadyExistsError": "Denna epostadressen har redan används. <a href=\"%%SignInUrl%%\"> Logga in</a>",
+			"nxReg_i18n_SignUp_EmailNonExistentError": "Den angivna e-postadressen finns inte. Kontrollera och ange igen",
+			"nxReg_i18n_SignUp_ServerUnreachableError": "Problem med att ansluta till servern. Försök igen senare.",
+			"nxReg_i18n_SignUp_PasswordWrongError": "Lösenordet måste följa lösenordspolicyn",
+
+			"nxReg_i18n_SignUp_FullName": "Fullständigt namn",
+			"nxReg_i18n_SignUp_FullNameError": "Fullständigt namn krävs",
+
+			"nxReg_i18n_SignUp_PhoneNumber": "Telefonnummer",
+			"nxReg_i18n_SignUp_PhoneNumberErrors": [
+				"Telefonnummer krävs",
+				"Ange en giltig landskod",
+				"Fyll i ett nummer",
+				"Fyll i ett nummer",
+				"Glöm inte att uppge ett giltigt telefonnummer."
+			],
+
+			"nxReg_i18n_SignUp_Country": "Land",
+			"nxReg_i18n_SignUp_CountryError": "Vänligen välj et land",
+			"nxReg_i18n_SignUp_CountryList": {
+				"AD": "Andorra",
+				"AE": "United Arab Emirates",
+				"AF": "Afghanistan",
+				"AG": "Antigua and Barbuda",
+				"AI": "Anguilla",
+				"AL": "Albania",
+				"AM": "Armenia",
+				"AO": "Angola",
+				"AQ": "Antarctica",
+				"AR": "Argentina",
+				"AS": "American Samoa",
+				"AT": "Austria",
+				"AU": "Australia",
+				"AW": "Aruba",
+				"AX": "Aland Islands",
+				"AZ": "Azerbaijan",
+				"BA": "Bosnia and Herzegovina",
+				"BB": "Barbados",
+				"BD": "Bangladesh",
+				"BE": "Belgium",
+				"BF": "Burkina Faso",
+				"BG": "Bulgaria",
+				"BH": "Bahrain",
+				"BI": "Burundi",
+				"BJ": "Benin",
+				"BL": "Saint Barthelemy",
+				"BM": "Bermuda",
+				"BN": "Brunei",
+				"BO": "Bolivia",
+				"BQ": "Bonaire, Saint Eustatius and Saba ",
+				"BR": "Brazil",
+				"BS": "Bahamas",
+				"BT": "Bhutan",
+				"BV": "Bouvet Island",
+				"BW": "Botswana",
+				"BY": "Belarus",
+				"BZ": "Belize",
+				"CA": "Canada",
+				"CC": "Cocos Islands",
+				"CD": "Democratic Republic of the Congo",
+				"CF": "Central African Republic",
+				"CG": "Republic of the Congo",
+				"CH": "Switzerland",
+				"CI": "Ivory Coast",
+				"CK": "Cook Islands",
+				"CL": "Chile",
+				"CM": "Cameroon",
+				"CN": "China",
+				"CO": "Colombia",
+				"CR": "Costa Rica",
+				"CU": "Cuba",
+				"CV": "Cape Verde",
+				"CW": "Curacao",
+				"CX": "Christmas Island",
+				"CY": "Cyprus",
+				"CZ": "Czech Republic",
+				"DE": "Germany",
+				"DJ": "Djibouti",
+				"DK": "Denmark",
+				"DM": "Dominica",
+				"DO": "Dominican Republic",
+				"DZ": "Algeria",
+				"EC": "Ecuador",
+				"EE": "Estonia",
+				"EG": "Egypt",
+				"EH": "Western Sahara",
+				"ER": "Eritrea",
+				"ES": "Spain",
+				"ET": "Ethiopia",
+				"FI": "Finland",
+				"FJ": "Fiji",
+				"FK": "Falkland Islands",
+				"FM": "Micronesia",
+				"FO": "Faroe Islands",
+				"FR": "France",
+				"GA": "Gabon",
+				"GB": "United Kingdom",
+				"GD": "Grenada",
+				"GE": "Georgia",
+				"GF": "French Guiana",
+				"GG": "Guernsey",
+				"GH": "Ghana",
+				"GI": "Gibraltar",
+				"GL": "Greenland",
+				"GM": "Gambia",
+				"GN": "Guinea",
+				"GP": "Guadeloupe",
+				"GQ": "Equatorial Guinea",
+				"GR": "Greece",
+				"GS": "South Georgia and the South Sandwich Islands",
+				"GT": "Guatemala",
+				"GU": "Guam",
+				"GW": "Guinea-Bissau",
+				"GY": "Guyana",
+				"HK": "Hong Kong",
+				"HM": "Heard Island and McDonald Islands",
+				"HN": "Honduras",
+				"HR": "Croatia",
+				"HT": "Haiti",
+				"HU": "Hungary",
+				"ID": "Indonesia",
+				"IE": "Ireland",
+				"IL": "Israel",
+				"IM": "Isle of Man",
+				"IN": "India",
+				"IO": "British Indian Ocean Territory",
+				"IQ": "Iraq",
+				"IR": "Iran",
+				"IS": "Iceland",
+				"IT": "Italy",
+				"JE": "Jersey",
+				"JM": "Jamaica",
+				"JO": "Jordan",
+				"JP": "Japan",
+				"KE": "Kenya",
+				"KG": "Kyrgyzstan",
+				"KH": "Cambodia",
+				"KI": "Kiribati",
+				"KM": "Comoros",
+				"KN": "Saint Kitts and Nevis",
+				"KP": "North Korea",
+				"KR": "South Korea",
+				"KW": "Kuwait",
+				"KY": "Cayman Islands",
+				"KZ": "Kazakhstan",
+				"LA": "Laos",
+				"LB": "Lebanon",
+				"LC": "Saint Lucia",
+				"LI": "Liechtenstein",
+				"LK": "Sri Lanka",
+				"LR": "Liberia",
+				"LS": "Lesotho",
+				"LT": "Lithuania",
+				"LU": "Luxembourg",
+				"LV": "Latvia",
+				"LY": "Libya",
+				"MA": "Morocco",
+				"MC": "Monaco",
+				"MD": "Moldova",
+				"ME": "Montenegro",
+				"MF": "Saint Martin",
+				"MG": "Madagascar",
+				"MH": "Marshall Islands",
+				"MK": "Macedonia",
+				"ML": "Mali",
+				"MM": "Myanmar",
+				"MN": "Mongolia",
+				"MO": "Macao",
+				"MP": "Northern Mariana Islands",
+				"MQ": "Martinique",
+				"MR": "Mauritania",
+				"MS": "Montserrat",
+				"MT": "Malta",
+				"MU": "Mauritius",
+				"MV": "Maldives",
+				"MW": "Malawi",
+				"MX": "Mexico",
+				"MY": "Malaysia",
+				"MZ": "Mozambique",
+				"NA": "Namibia",
+				"NC": "New Caledonia",
+				"NE": "Niger",
+				"NF": "Norfolk Island",
+				"NG": "Nigeria",
+				"NI": "Nicaragua",
+				"NL": "Netherlands",
+				"NO": "Norway",
+				"NP": "Nepal",
+				"NR": "Nauru",
+				"NU": "Niue",
+				"NZ": "New Zealand",
+				"OM": "Oman",
+				"PA": "Panama",
+				"PE": "Peru",
+				"PF": "French Polynesia",
+				"PG": "Papua New Guinea",
+				"PH": "Philippines",
+				"PK": "Pakistan",
+				"PL": "Poland",
+				"PM": "Saint Pierre and Miquelon",
+				"PN": "Pitcairn",
+				"PR": "Puerto Rico",
+				"PS": "Palestinian Territory",
+				"PT": "Portugal",
+				"PW": "Palau",
+				"PY": "Paraguay",
+				"QA": "Qatar",
+				"RE": "Reunion",
+				"RO": "Romania",
+				"RS": "Serbia",
+				"RU": "Russia",
+				"RW": "Rwanda",
+				"SA": "Saudi Arabia",
+				"SB": "Solomon Islands",
+				"SC": "Seychelles",
+				"SD": "Sudan",
+				"SE": "Sweden",
+				"SG": "Singapore",
+				"SH": "Saint Helena",
+				"SI": "Slovenia",
+				"SJ": "Svalbard and Jan Mayen",
+				"SK": "Slovakia",
+				"SL": "Sierra Leone",
+				"SM": "San Marino",
+				"SN": "Senegal",
+				"SO": "Somalia",
+				"SR": "Suriname",
+				"SS": "South Sudan",
+				"ST": "Sao Tome and Principe",
+				"SV": "El Salvador",
+				"SX": "Sint Maarten",
+				"SY": "Syria",
+				"SZ": "Swaziland",
+				"TC": "Turks and Caicos Islands",
+				"TD": "Chad",
+				"TF": "French Southern Territories",
+				"TG": "Togo",
+				"TH": "Thailand",
+				"TJ": "Tajikistan",
+				"TK": "Tokelau",
+				"TL": "East Timor",
+				"TM": "Turkmenistan",
+				"TN": "Tunisia",
+				"TO": "Tonga",
+				"TR": "Turkey",
+				"TT": "Trinidad and Tobago",
+				"TV": "Tuvalu",
+				"TW": "Taiwan",
+				"TZ": "Tanzania",
+				"UA": "Ukraine",
+				"UG": "Uganda",
+				"UM": "United States Minor Outlying Islands",
+				"US": "United States",
+				"UY": "Uruguay",
+				"UZ": "Uzbekistan",
+				"VA": "Vatican",
+				"VC": "Saint Vincent and the Grenadines",
+				"VE": "Venezuela",
+				"VG": "British Virgin Islands",
+				"VI": "U.S. Virgin Islands",
+				"VN": "Vietnam",
+				"VU": "Vanuatu",
+				"WF": "Wallis and Futuna",
+				"WS": "Samoa",
+				"XK": "Kosovo",
+				"YE": "Yemen",
+				"YT": "Mayotte",
+				"ZA": "South Africa",
+				"ZM": "Zambia",
+				"ZW": "Zimbabwe"
+			},
+
+			"nxReg_i18n_SignUp_VerificationCodeToggle": "Lägg till verifikationskod",
+			"nxReg_i18n_SignUp_VerificationCode": "Verifikationskod",
+			"nxReg_i18n_SignUp_VerificationCodeError": "Kontrollera verifieringskoden och försök igen",
+
+			"nxReg_i18n_SignUp_Password_Title": "Tack för att du registrerat dig hos oss<br>Nedan hittar du dina registreringsuppgifter",
+			"nxReg_i18n_SignUp_Password_SubTitle": "Se till att spara uppgifterna",
+			"nxReg_i18n_SignUp_Password_Button": "Fortsätta",
+
+			"nxReg_i18n_SignUp_Social_BoxMessage1": "ELLER Registrera dig med:",
+			"nxReg_i18n_SignUp_Social_BoxMessage2": "Vi kommer aldrig skicka något utan ditt godkännande.",
+			"nxReg_i18n_SignUp_Social_Google": "Registrera dig med Google",
+			"nxReg_i18n_SignUp_Social_Facebook": "Registrera dig med Facebook",
+			"nxReg_i18n_SignUp_Social_FacebookError": "Auktorisera vår ansökan att registrera dig med Facebook",
+			"nxReg_i18n_SignUp_Social_GoogleError": "Auktorisera vår ansökan att registrera dig hos Google",
+			"nxReg_i18n_SignUp_Social_FacebookFailedError": "Kontrollera ditt Facebook-konto eller prova ett annat registreringsalternativ",
+			"nxReg_i18n_SignUp_Social_GoogleFailedError": "Kontrollera ditt Google-konto eller prova ett annat registreringsalternativ",
+			"nxReg_i18n_SignUp_Social_GoogleJWTExpired": "Sessionen har gått ut. Vänligen registrera dig igen.",
+
+			"nxReg_i18n_SignUp_Social_Text": "Acceptera vårt integritetsmeddelande för att komma in på handelsplattformen",
+
+			"nxReg_i18n_SignUp_Activation_Message1": "Kolla din inbox",
+			"nxReg_i18n_SignUp_Activation_Message2": "Kontrollera  %%E-post%%  för ett kontoaktiverings-e-postmeddelande.",
+			"nxReg_i18n_SignUp_Activation_Message3": "Hittar du det inte? Titta i Skräppost",
+			"nxReg_i18n_SignUp_Activation_Message4": "Hittar du det fortfarande inte?",
+			"nxReg_i18n_SignUp_Activation_ResendButton": "Skicka igen",
+			"nxReg_i18n_SignUp_Activation_ResendLimitReachedError": "Gränsen för att skicka e-post har nåtts. Registrera dig igen.",
+
+			"nxReg_i18n_Activation_AccountActivated": "Ditt konto har nu aktiverats. Vi skickar dig direkt till inloggningen. <a href=\"%%SignInUrl%%\">Logga in</a>.",
+			"nxReg_i18n_Activation_LinkExpiredError": "Aktiveringslänken har gått ut. Du måste <a href=\"%%SignUpUrl%%\">registrera dig igen</a>.",
+
+			"nxReg_i18n_UnknownError": "Ett okänt fel har uppstått. Vänligen försök igen."
+		},
+		"fr": {
+			"nxReg_i18n_SignUp_SignUp": "S'inscrire",
+			"nxReg_i18n_SignUp_Email": "Email",
+			"nxReg_i18n_SignUp_Password": "Mot de passe (8 caractères et plus)",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx1": "Au moins une lettre minuscule",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx2": "Au moins une lettre majuscule",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx3": "Au moins un chiffre",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx4": "Les caractères spéciaux ne sont pas autorisés",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx5": "Au moins 8 caractères",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx6": "Maximum 24 caractères",
+			"nxReg_i18n_SignUp_CreateAccountButton": "Créer un compte",
+			"nxReg_i18n_SignUp_SignIn": "Déjà inscrit? Connectez-vous",
+			"nxReg_i18n_SignUp_SignInText": "Déjà inscrit?",
+			"nxReg_i18n_SignUp_LogIn": "Connectez-vous",
+
+
+			"nxReg_i18n_SignUp_CountryCode": "Code postal",
+
+			"nxReg_i18n_SignUp_PrivacyNoticeNotAcceptedError": "Acceptez l'avis de confidentialité pour continuer",
+			"nxReg_i18n_SignUp_CountryBlockedError": "Vous ne pouvez pas vous inscrire à partir du pays dans lequel vous vous trouvez.",
+			"nxReg_i18n_SignUp_ReCaptchaMandatoryError": "Le ReCaptcha est obligatoire!",
+			"nxReg_i18n_SignUp_EmailWrongFormatError": "Avez-vous bien entré l'adresse email ? Réessayez.",
+			"nxReg_i18n_SignUp_EmailAlreadyExistsError": "Cet e-mail a déjà été utilisé.  <a href=\"%%SignInUrl%%\">S'identifier</a>",
+			"nxReg_i18n_SignUp_EmailNonExistentError": "L'e-mail fourni n'existe pas. Veuillez le vérifier et le saisir à nouveau.",
+			"nxReg_i18n_SignUp_ServerUnreachableError": "Problème de connexion au serveur. Veuillez réessayer plus tard.",
+			"nxReg_i18n_SignUp_PasswordWrongError": "Le mot de passe doit être conforme à la politique de mot de passe",
+
+			"nxReg_i18n_SignUp_FullName": "Nom complet",
+			"nxReg_i18n_SignUp_FullNameError": "Le nom complet est requis",
+
+			"nxReg_i18n_SignUp_PhoneNumber": "Téléphone",
+			"nxReg_i18n_SignUp_PhoneNumberErrors": [
+				"Le numéro de téléphone est requis",
+				"Veuillez fournir un indicatif téléphonique valide.",
+				"Veuillez fournir un nombre plus long",
+				"Veuillez fournir un nombre plus court",
+				"N'oubliez pas d'entrer un numéro de téléphone valide."
+			],
+
+			"nxReg_i18n_SignUp_Country": "Pays",
+			"nxReg_i18n_SignUp_CountryError": "Veuillez sélectionner un pays",
+			"nxReg_i18n_SignUp_CountryList": {
+				"AD": "Andorra",
+				"AE": "United Arab Emirates",
+				"AF": "Afghanistan",
+				"AG": "Antigua and Barbuda",
+				"AI": "Anguilla",
+				"AL": "Albania",
+				"AM": "Armenia",
+				"AO": "Angola",
+				"AQ": "Antarctica",
+				"AR": "Argentina",
+				"AS": "American Samoa",
+				"AT": "Austria",
+				"AU": "Australia",
+				"AW": "Aruba",
+				"AX": "Aland Islands",
+				"AZ": "Azerbaijan",
+				"BA": "Bosnia and Herzegovina",
+				"BB": "Barbados",
+				"BD": "Bangladesh",
+				"BE": "Belgium",
+				"BF": "Burkina Faso",
+				"BG": "Bulgaria",
+				"BH": "Bahrain",
+				"BI": "Burundi",
+				"BJ": "Benin",
+				"BL": "Saint Barthelemy",
+				"BM": "Bermuda",
+				"BN": "Brunei",
+				"BO": "Bolivia",
+				"BQ": "Bonaire, Saint Eustatius and Saba ",
+				"BR": "Brazil",
+				"BS": "Bahamas",
+				"BT": "Bhutan",
+				"BV": "Bouvet Island",
+				"BW": "Botswana",
+				"BY": "Belarus",
+				"BZ": "Belize",
+				"CA": "Canada",
+				"CC": "Cocos Islands",
+				"CD": "Democratic Republic of the Congo",
+				"CF": "Central African Republic",
+				"CG": "Republic of the Congo",
+				"CH": "Switzerland",
+				"CI": "Ivory Coast",
+				"CK": "Cook Islands",
+				"CL": "Chile",
+				"CM": "Cameroon",
+				"CN": "China",
+				"CO": "Colombia",
+				"CR": "Costa Rica",
+				"CU": "Cuba",
+				"CV": "Cape Verde",
+				"CW": "Curacao",
+				"CX": "Christmas Island",
+				"CY": "Cyprus",
+				"CZ": "Czech Republic",
+				"DE": "Germany",
+				"DJ": "Djibouti",
+				"DK": "Denmark",
+				"DM": "Dominica",
+				"DO": "Dominican Republic",
+				"DZ": "Algeria",
+				"EC": "Ecuador",
+				"EE": "Estonia",
+				"EG": "Egypt",
+				"EH": "Western Sahara",
+				"ER": "Eritrea",
+				"ES": "Spain",
+				"ET": "Ethiopia",
+				"FI": "Finland",
+				"FJ": "Fiji",
+				"FK": "Falkland Islands",
+				"FM": "Micronesia",
+				"FO": "Faroe Islands",
+				"FR": "France",
+				"GA": "Gabon",
+				"GB": "United Kingdom",
+				"GD": "Grenada",
+				"GE": "Georgia",
+				"GF": "French Guiana",
+				"GG": "Guernsey",
+				"GH": "Ghana",
+				"GI": "Gibraltar",
+				"GL": "Greenland",
+				"GM": "Gambia",
+				"GN": "Guinea",
+				"GP": "Guadeloupe",
+				"GQ": "Equatorial Guinea",
+				"GR": "Greece",
+				"GS": "South Georgia and the South Sandwich Islands",
+				"GT": "Guatemala",
+				"GU": "Guam",
+				"GW": "Guinea-Bissau",
+				"GY": "Guyana",
+				"HK": "Hong Kong",
+				"HM": "Heard Island and McDonald Islands",
+				"HN": "Honduras",
+				"HR": "Croatia",
+				"HT": "Haiti",
+				"HU": "Hungary",
+				"ID": "Indonesia",
+				"IE": "Ireland",
+				"IL": "Israel",
+				"IM": "Isle of Man",
+				"IN": "India",
+				"IO": "British Indian Ocean Territory",
+				"IQ": "Iraq",
+				"IR": "Iran",
+				"IS": "Iceland",
+				"IT": "Italy",
+				"JE": "Jersey",
+				"JM": "Jamaica",
+				"JO": "Jordan",
+				"JP": "Japan",
+				"KE": "Kenya",
+				"KG": "Kyrgyzstan",
+				"KH": "Cambodia",
+				"KI": "Kiribati",
+				"KM": "Comoros",
+				"KN": "Saint Kitts and Nevis",
+				"KP": "North Korea",
+				"KR": "South Korea",
+				"KW": "Kuwait",
+				"KY": "Cayman Islands",
+				"KZ": "Kazakhstan",
+				"LA": "Laos",
+				"LB": "Lebanon",
+				"LC": "Saint Lucia",
+				"LI": "Liechtenstein",
+				"LK": "Sri Lanka",
+				"LR": "Liberia",
+				"LS": "Lesotho",
+				"LT": "Lithuania",
+				"LU": "Luxembourg",
+				"LV": "Latvia",
+				"LY": "Libya",
+				"MA": "Morocco",
+				"MC": "Monaco",
+				"MD": "Moldova",
+				"ME": "Montenegro",
+				"MF": "Saint Martin",
+				"MG": "Madagascar",
+				"MH": "Marshall Islands",
+				"MK": "Macedonia",
+				"ML": "Mali",
+				"MM": "Myanmar",
+				"MN": "Mongolia",
+				"MO": "Macao",
+				"MP": "Northern Mariana Islands",
+				"MQ": "Martinique",
+				"MR": "Mauritania",
+				"MS": "Montserrat",
+				"MT": "Malta",
+				"MU": "Mauritius",
+				"MV": "Maldives",
+				"MW": "Malawi",
+				"MX": "Mexico",
+				"MY": "Malaysia",
+				"MZ": "Mozambique",
+				"NA": "Namibia",
+				"NC": "New Caledonia",
+				"NE": "Niger",
+				"NF": "Norfolk Island",
+				"NG": "Nigeria",
+				"NI": "Nicaragua",
+				"NL": "Netherlands",
+				"NO": "Norway",
+				"NP": "Nepal",
+				"NR": "Nauru",
+				"NU": "Niue",
+				"NZ": "New Zealand",
+				"OM": "Oman",
+				"PA": "Panama",
+				"PE": "Peru",
+				"PF": "French Polynesia",
+				"PG": "Papua New Guinea",
+				"PH": "Philippines",
+				"PK": "Pakistan",
+				"PL": "Poland",
+				"PM": "Saint Pierre and Miquelon",
+				"PN": "Pitcairn",
+				"PR": "Puerto Rico",
+				"PS": "Palestinian Territory",
+				"PT": "Portugal",
+				"PW": "Palau",
+				"PY": "Paraguay",
+				"QA": "Qatar",
+				"RE": "Reunion",
+				"RO": "Romania",
+				"RS": "Serbia",
+				"RU": "Russia",
+				"RW": "Rwanda",
+				"SA": "Saudi Arabia",
+				"SB": "Solomon Islands",
+				"SC": "Seychelles",
+				"SD": "Sudan",
+				"SE": "Sweden",
+				"SG": "Singapore",
+				"SH": "Saint Helena",
+				"SI": "Slovenia",
+				"SJ": "Svalbard and Jan Mayen",
+				"SK": "Slovakia",
+				"SL": "Sierra Leone",
+				"SM": "San Marino",
+				"SN": "Senegal",
+				"SO": "Somalia",
+				"SR": "Suriname",
+				"SS": "South Sudan",
+				"ST": "Sao Tome and Principe",
+				"SV": "El Salvador",
+				"SX": "Sint Maarten",
+				"SY": "Syria",
+				"SZ": "Swaziland",
+				"TC": "Turks and Caicos Islands",
+				"TD": "Chad",
+				"TF": "French Southern Territories",
+				"TG": "Togo",
+				"TH": "Thailand",
+				"TJ": "Tajikistan",
+				"TK": "Tokelau",
+				"TL": "East Timor",
+				"TM": "Turkmenistan",
+				"TN": "Tunisia",
+				"TO": "Tonga",
+				"TR": "Turkey",
+				"TT": "Trinidad and Tobago",
+				"TV": "Tuvalu",
+				"TW": "Taiwan",
+				"TZ": "Tanzania",
+				"UA": "Ukraine",
+				"UG": "Uganda",
+				"UM": "United States Minor Outlying Islands",
+				"US": "United States",
+				"UY": "Uruguay",
+				"UZ": "Uzbekistan",
+				"VA": "Vatican",
+				"VC": "Saint Vincent and the Grenadines",
+				"VE": "Venezuela",
+				"VG": "British Virgin Islands",
+				"VI": "U.S. Virgin Islands",
+				"VN": "Vietnam",
+				"VU": "Vanuatu",
+				"WF": "Wallis and Futuna",
+				"WS": "Samoa",
+				"XK": "Kosovo",
+				"YE": "Yemen",
+				"YT": "Mayotte",
+				"ZA": "South Africa",
+				"ZM": "Zambia",
+				"ZW": "Zimbabwe"
+			},
+
+			"nxReg_i18n_SignUp_VerificationCodeToggle": "Ajouter le code de vérification. ",
+			"nxReg_i18n_SignUp_VerificationCode": "Code de vérification. ",
+			"nxReg_i18n_SignUp_VerificationCodeError": "Vérifiez le code de vérification et réessayez",
+
+			"nxReg_i18n_SignUp_Password_Title": "Merci pour votre inscription sur notre site<br>Vous trouverez ci-dessous vos données d'inscription.",
+			"nxReg_i18n_SignUp_Password_SubTitle": "Assurez-vous de sauvegarder les données.",
+			"nxReg_i18n_SignUp_Password_Button": "Continuer",
+
+			"nxReg_i18n_SignUp_Social_BoxMessage1": "OU inscrivez-vous avec:",
+			"nxReg_i18n_SignUp_Social_BoxMessage2": "Nous ne posterons jamais rien sans votre permission.",
+			"nxReg_i18n_SignUp_Social_Google": "S'inscrire avec Google",
+			"nxReg_i18n_SignUp_Social_Facebook": "S'inscrire avec Facebook",
+			"nxReg_i18n_SignUp_Social_FacebookError": "Autorisez notre application à s'inscrire sur Facebook",
+			"nxReg_i18n_SignUp_Social_GoogleError": "Autorisez notre application à s'inscrire auprès de Google",
+			"nxReg_i18n_SignUp_Social_FacebookFailedError": "Veuillez vérifier votre compte Facebook ou essayer une autre option d'inscription",
+			"nxReg_i18n_SignUp_Social_GoogleFailedError": "Veuillez vérifier votre compte Google ou essayer une autre option d'inscription",
+			"nxReg_i18n_SignUp_Social_GoogleJWTExpired": "La session a expiré. Veuillez vous reconnecter.",
+
+			"nxReg_i18n_SignUp_Social_Text": "Acceptez notre avis de confidentialité pour accéder à la plateforme de trading",
+
+			"nxReg_i18n_SignUp_Activation_Message1": "Check your inbox",
+			"nxReg_i18n_SignUp_Activation_Message2": "Recherchez dans %% Email %% un e-mail d'activation de compte.",
+			"nxReg_i18n_SignUp_Activation_Message3": "Vous ne le trouvez pas ? Il est peut-être dans vos Spams.",
+			"nxReg_i18n_SignUp_Activation_Message4": "Vous ne trouvez toujours pas cet email?",
+			"nxReg_i18n_SignUp_Activation_ResendButton": "Le renvoyer",
+			"nxReg_i18n_SignUp_Activation_ResendLimitReachedError": "La limite de renvoi des e-mails a été atteinte. Inscrivez-vous à nouveau.",
+
+			"nxReg_i18n_Activation_AccountActivated": "Votre compte a été activé. Nous allons vous rediriger vers la page de Connexion. <a href=\"%%SignInUrl%%\">Se connecter</a>.",
+			"nxReg_i18n_Activation_LinkExpiredError": "Le lien d'activation du compte a expiré. <a href=\"%%SignUpUrl%%\">Vous devez vous réinscrire</a>.",
+
+			"nxReg_i18n_UnknownError": "Une erreur est survenue. Veuillez réessayer."
+		},
+		"ar": {
+			"nxReg_i18n_SignUp_SignUp": "سجل",
+			"nxReg_i18n_SignUp_Email": "البريد الإلكتروني",
+			"nxReg_i18n_SignUp_Password": "كلمة المرور (أكثر من 8 أحرف)",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx1": "على الأقل حرف واحد صغير",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx2": "على الأقل حرف واحد كبير",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx3": "رقم واحد على الأقل",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx4": "يمنع استعمال الرموز",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx5": "8 أحرف على الأقل",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx6": "بحد أقصى 24 حرفًا",
+			"nxReg_i18n_SignUp_CreateAccountButton": "انشئ حساب",
+			"nxReg_i18n_SignUp_SignIn": "مسجل سابقا؟ تسجيل الدخول",
+			"nxReg_i18n_SignUp_SignInText": "هل لديك حساب؟",
+			"nxReg_i18n_SignUp_LogIn": "تسجيل الدخول",
+
+			"nxReg_i18n_SignUp_CountryCode": "الرقم الدولي",
+
+			"nxReg_i18n_SignUp_PrivacyNoticeNotAcceptedError": "اقبل إشعار الخصوصية للمتابعة",
+			"nxReg_i18n_SignUp_CountryBlockedError": "لا يمكنك التسجيل من البلد الذي تتواجد فيه.",
+			"nxReg_i18n_SignUp_ReCaptchaMandatoryError": "الزامية ReCaptcha ",
+			"nxReg_i18n_SignUp_EmailWrongFormatError": "هل قمت بكتابة البريد الإلكتروني بشكل صحيح؟ حاول مرة أخري",
+			"nxReg_i18n_SignUp_EmailAlreadyExistsError": "قد تم  استخدام هذا البريد الإلكتروني بالفعل.<a href=\"%%SignInUrl%%\">تسجيل الدخول</a> خول</a>",
+			"nxReg_i18n_SignUp_EmailNonExistentError": "البريد الإلكتروني المقدم غير موجود. يرجى التحقق وإدخاله مرة أخرى. مرة أخرى",
+			"nxReg_i18n_SignUp_ServerUnreachableError": "مشكلة في الاتصال بالخادم. الرجاء معاودة المحاولة في وقت لاحق",
+			"nxReg_i18n_SignUp_PasswordWrongError": "يجب أن تتوافق كلمة المرور مع سياسة كلمة المرور",
+
+			"nxReg_i18n_SignUp_FullName": "الاسم بالكامل",
+			"nxReg_i18n_SignUp_FullNameError": "مطلوب الاسم الكامل",
+
+			"nxReg_i18n_SignUp_PhoneNumber": "رقم الهاتف",
+			"nxReg_i18n_SignUp_PhoneNumberErrors": [
+				"مطلوب رقم الهاتف",
+				"توفير رمز بلد صحيح.",
+				"يرجى تقديم رقم أطول",
+				"الرجاء إدخال رقم أقصر",
+				"لا تنس تقديم رقم هاتف صحيح."
+			],
+
+			"nxReg_i18n_SignUp_Country": "البلد",
+			"nxReg_i18n_SignUp_CountryError": "رجاء قم بإختيار دوله",
+			"nxReg_i18n_SignUp_CountryList": {
+				"AD": "Andorra",
+				"AE": "United Arab Emirates",
+				"AF": "Afghanistan",
+				"AG": "Antigua and Barbuda",
+				"AI": "Anguilla",
+				"AL": "Albania",
+				"AM": "Armenia",
+				"AO": "Angola",
+				"AQ": "Antarctica",
+				"AR": "Argentina",
+				"AS": "American Samoa",
+				"AT": "Austria",
+				"AU": "Australia",
+				"AW": "Aruba",
+				"AX": "Aland Islands",
+				"AZ": "Azerbaijan",
+				"BA": "Bosnia and Herzegovina",
+				"BB": "Barbados",
+				"BD": "Bangladesh",
+				"BE": "Belgium",
+				"BF": "Burkina Faso",
+				"BG": "Bulgaria",
+				"BH": "Bahrain",
+				"BI": "Burundi",
+				"BJ": "Benin",
+				"BL": "Saint Barthelemy",
+				"BM": "Bermuda",
+				"BN": "Brunei",
+				"BO": "Bolivia",
+				"BQ": "Bonaire, Saint Eustatius and Saba ",
+				"BR": "Brazil",
+				"BS": "Bahamas",
+				"BT": "Bhutan",
+				"BV": "Bouvet Island",
+				"BW": "Botswana",
+				"BY": "Belarus",
+				"BZ": "Belize",
+				"CA": "Canada",
+				"CC": "Cocos Islands",
+				"CD": "Democratic Republic of the Congo",
+				"CF": "Central African Republic",
+				"CG": "Republic of the Congo",
+				"CH": "Switzerland",
+				"CI": "Ivory Coast",
+				"CK": "Cook Islands",
+				"CL": "Chile",
+				"CM": "Cameroon",
+				"CN": "China",
+				"CO": "Colombia",
+				"CR": "Costa Rica",
+				"CU": "Cuba",
+				"CV": "Cape Verde",
+				"CW": "Curacao",
+				"CX": "Christmas Island",
+				"CY": "Cyprus",
+				"CZ": "Czech Republic",
+				"DE": "Germany",
+				"DJ": "Djibouti",
+				"DK": "Denmark",
+				"DM": "Dominica",
+				"DO": "Dominican Republic",
+				"DZ": "Algeria",
+				"EC": "Ecuador",
+				"EE": "Estonia",
+				"EG": "Egypt",
+				"EH": "Western Sahara",
+				"ER": "Eritrea",
+				"ES": "Spain",
+				"ET": "Ethiopia",
+				"FI": "Finland",
+				"FJ": "Fiji",
+				"FK": "Falkland Islands",
+				"FM": "Micronesia",
+				"FO": "Faroe Islands",
+				"FR": "France",
+				"GA": "Gabon",
+				"GB": "United Kingdom",
+				"GD": "Grenada",
+				"GE": "Georgia",
+				"GF": "French Guiana",
+				"GG": "Guernsey",
+				"GH": "Ghana",
+				"GI": "Gibraltar",
+				"GL": "Greenland",
+				"GM": "Gambia",
+				"GN": "Guinea",
+				"GP": "Guadeloupe",
+				"GQ": "Equatorial Guinea",
+				"GR": "Greece",
+				"GS": "South Georgia and the South Sandwich Islands",
+				"GT": "Guatemala",
+				"GU": "Guam",
+				"GW": "Guinea-Bissau",
+				"GY": "Guyana",
+				"HK": "Hong Kong",
+				"HM": "Heard Island and McDonald Islands",
+				"HN": "Honduras",
+				"HR": "Croatia",
+				"HT": "Haiti",
+				"HU": "Hungary",
+				"ID": "Indonesia",
+				"IE": "Ireland",
+				"IL": "Israel",
+				"IM": "Isle of Man",
+				"IN": "India",
+				"IO": "British Indian Ocean Territory",
+				"IQ": "Iraq",
+				"IR": "Iran",
+				"IS": "Iceland",
+				"IT": "Italy",
+				"JE": "Jersey",
+				"JM": "Jamaica",
+				"JO": "Jordan",
+				"JP": "Japan",
+				"KE": "Kenya",
+				"KG": "Kyrgyzstan",
+				"KH": "Cambodia",
+				"KI": "Kiribati",
+				"KM": "Comoros",
+				"KN": "Saint Kitts and Nevis",
+				"KP": "North Korea",
+				"KR": "South Korea",
+				"KW": "Kuwait",
+				"KY": "Cayman Islands",
+				"KZ": "Kazakhstan",
+				"LA": "Laos",
+				"LB": "Lebanon",
+				"LC": "Saint Lucia",
+				"LI": "Liechtenstein",
+				"LK": "Sri Lanka",
+				"LR": "Liberia",
+				"LS": "Lesotho",
+				"LT": "Lithuania",
+				"LU": "Luxembourg",
+				"LV": "Latvia",
+				"LY": "Libya",
+				"MA": "Morocco",
+				"MC": "Monaco",
+				"MD": "Moldova",
+				"ME": "Montenegro",
+				"MF": "Saint Martin",
+				"MG": "Madagascar",
+				"MH": "Marshall Islands",
+				"MK": "Macedonia",
+				"ML": "Mali",
+				"MM": "Myanmar",
+				"MN": "Mongolia",
+				"MO": "Macao",
+				"MP": "Northern Mariana Islands",
+				"MQ": "Martinique",
+				"MR": "Mauritania",
+				"MS": "Montserrat",
+				"MT": "Malta",
+				"MU": "Mauritius",
+				"MV": "Maldives",
+				"MW": "Malawi",
+				"MX": "Mexico",
+				"MY": "Malaysia",
+				"MZ": "Mozambique",
+				"NA": "Namibia",
+				"NC": "New Caledonia",
+				"NE": "Niger",
+				"NF": "Norfolk Island",
+				"NG": "Nigeria",
+				"NI": "Nicaragua",
+				"NL": "Netherlands",
+				"NO": "Norway",
+				"NP": "Nepal",
+				"NR": "Nauru",
+				"NU": "Niue",
+				"NZ": "New Zealand",
+				"OM": "Oman",
+				"PA": "Panama",
+				"PE": "Peru",
+				"PF": "French Polynesia",
+				"PG": "Papua New Guinea",
+				"PH": "Philippines",
+				"PK": "Pakistan",
+				"PL": "Poland",
+				"PM": "Saint Pierre and Miquelon",
+				"PN": "Pitcairn",
+				"PR": "Puerto Rico",
+				"PS": "Palestinian Territory",
+				"PT": "Portugal",
+				"PW": "Palau",
+				"PY": "Paraguay",
+				"QA": "Qatar",
+				"RE": "Reunion",
+				"RO": "Romania",
+				"RS": "Serbia",
+				"RU": "Russia",
+				"RW": "Rwanda",
+				"SA": "Saudi Arabia",
+				"SB": "Solomon Islands",
+				"SC": "Seychelles",
+				"SD": "Sudan",
+				"SE": "Sweden",
+				"SG": "Singapore",
+				"SH": "Saint Helena",
+				"SI": "Slovenia",
+				"SJ": "Svalbard and Jan Mayen",
+				"SK": "Slovakia",
+				"SL": "Sierra Leone",
+				"SM": "San Marino",
+				"SN": "Senegal",
+				"SO": "Somalia",
+				"SR": "Suriname",
+				"SS": "South Sudan",
+				"ST": "Sao Tome and Principe",
+				"SV": "El Salvador",
+				"SX": "Sint Maarten",
+				"SY": "Syria",
+				"SZ": "Swaziland",
+				"TC": "Turks and Caicos Islands",
+				"TD": "Chad",
+				"TF": "French Southern Territories",
+				"TG": "Togo",
+				"TH": "Thailand",
+				"TJ": "Tajikistan",
+				"TK": "Tokelau",
+				"TL": "East Timor",
+				"TM": "Turkmenistan",
+				"TN": "Tunisia",
+				"TO": "Tonga",
+				"TR": "Turkey",
+				"TT": "Trinidad and Tobago",
+				"TV": "Tuvalu",
+				"TW": "Taiwan",
+				"TZ": "Tanzania",
+				"UA": "Ukraine",
+				"UG": "Uganda",
+				"UM": "United States Minor Outlying Islands",
+				"US": "United States",
+				"UY": "Uruguay",
+				"UZ": "Uzbekistan",
+				"VA": "Vatican",
+				"VC": "Saint Vincent and the Grenadines",
+				"VE": "Venezuela",
+				"VG": "British Virgin Islands",
+				"VI": "U.S. Virgin Islands",
+				"VN": "Vietnam",
+				"VU": "Vanuatu",
+				"WF": "Wallis and Futuna",
+				"WS": "Samoa",
+				"XK": "Kosovo",
+				"YE": "Yemen",
+				"YT": "Mayotte",
+				"ZA": "South Africa",
+				"ZM": "Zambia",
+				"ZW": "Zimbabwe"
+			},
+
+			"nxReg_i18n_SignUp_VerificationCodeToggle": "إضافة رمز التحقق",
+			"nxReg_i18n_SignUp_VerificationCode": "رمز التحقق",
+			"nxReg_i18n_SignUp_VerificationCodeError": "تحقق من رمز التحقق وحاول مرة أخرى",
+
+			"nxReg_i18n_SignUp_Password_Title": "شكرا لتسجيلك معنا <br>اسفل يمكنك ان تجد بيانات تسجيلك",
+			"nxReg_i18n_SignUp_Password_SubTitle": "تاكد من حفظ البيانات ",
+			"nxReg_i18n_SignUp_Password_Button": "استمر",
+
+			"nxReg_i18n_SignUp_Social_BoxMessage1": "أو الاشتراك مع:",
+			"nxReg_i18n_SignUp_Social_BoxMessage2": "لن ننشر اي شيء بدون اذنك.",
+			"nxReg_i18n_SignUp_Social_Google": "الاشتراك مع Google",
+			"nxReg_i18n_SignUp_Social_Facebook": "الاشتراك مع Facebook",
+			"nxReg_i18n_SignUp_Social_FacebookError": "قم بتفويض تطبيقنا للتسجيل في Facebook",
+			"nxReg_i18n_SignUp_Social_GoogleError": "تفويض تطبيقنا للاشتراك في Google.",
+			"nxReg_i18n_SignUp_Social_FacebookFailedError": "يرجى التحقق من حساب Facebook الخاص بك أو تجربة خيار تسجيل آخر",
+			"nxReg_i18n_SignUp_Social_GoogleFailedError": "يرجى التحقق من حساب Google الخاص بك أو تجربة خيار تسجيل آخر",
+			"nxReg_i18n_SignUp_Social_GoogleJWTExpired": "انتهت الجلسة. الرجاء التسجيل مرة اخرى",
+
+			"nxReg_i18n_SignUp_Social_Text": "اقبل إشعار الخصوصية الخاص بنا للدخول إلى منصة التداول",
+
+			"nxReg_i18n_SignUp_Activation_Message1": "تحقق من بريدك الوارد",
+			"nxReg_i18n_SignUp_Activation_Message2": "تحقق من %% Email %% للحصول على بريد إلكتروني لتنشيط الحساب.",
+			"nxReg_i18n_SignUp_Activation_Message3": "لا يمكن العثور عليه؟ ربما يكون في البريد الغير المرغوب فيه (SPAM).",
+			"nxReg_i18n_SignUp_Activation_Message4": "لا يزال لا يمكن العثور على هذا البريد الإلكتروني؟",
+			"nxReg_i18n_SignUp_Activation_ResendButton": "اعد الارسال",
+			"nxReg_i18n_SignUp_Activation_ResendLimitReachedError": "تم الوصول إلى الحد الأقصى لإعادة إرسال البريد الإلكتروني. سجل مرة أخرى.",
+
+			"nxReg_i18n_Activation_AccountActivated": "تم تنشيط حسابك. سنقوم بإعادة توجيهك إلى تسجيل الدخول.<a href=\"%%SignInUrl%%\">تسجيل الدخول</a>.",
+			"nxReg_i18n_Activation_LinkExpiredError": "انتهت صلاحية رابط تفعيل الحساب.<a href=\"%%SignUpUrl%%\">يجب عليك التسجيل مرة أخرى</a>",
+
+			"nxReg_i18n_UnknownError": "حدث خطأ غير معروف. حاول مرة اخرى."
+		},
+		"pt": {
+			"nxReg_i18n_SignUp_SignUp": "Inscreva-se",
+			"nxReg_i18n_SignUp_Email": "Email",
+			"nxReg_i18n_SignUp_Password": "Senha (8+ caracteres)",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx1": "Pelo menos 1 letra minúscula",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx2": "Pelo menos 1 letra maiúscula",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx3": "Pelo menos 1 número",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx4": "Não são permitidos caracteres especiais",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx5": "Pelo menos 8 caracteres",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx6": "No máximo 24 caracteres",
+			"nxReg_i18n_SignUp_CreateAccountButton": "Criar uma conta",
+			"nxReg_i18n_SignUp_SignIn": "Já é registrado? Faça login",
+			"nxReg_i18n_SignUp_SignInText": "Já é registrado?",
+			"nxReg_i18n_SignUp_LogIn": "Faça login",
+
+			"nxReg_i18n_SignUp_Social_Google": "Inscreva-se com Google",
+			"nxReg_i18n_SignUp_Social_Facebook": "Inscreva-se com Facebook",
+
+			"nxReg_i18n_SignUp_PrivacyNoticeNotAcceptedError": "Aceite o Aviso de Privacidade para continuar",
+			"nxReg_i18n_SignUp_CountryBlockedError": "Você não consegue se registrar do país onde você está localizado.",
+			"nxReg_i18n_SignUp_ReCaptchaMandatoryError": "ReCaptcha é obrigatório!",
+			"nxReg_i18n_SignUp_EmailWrongFormatError": "Você digitou o e-mail corretamente? Tente novamente",
+			"nxReg_i18n_SignUp_EmailAlreadyExistsError": "Este e-mail já está sendo usado. <a href=\"%%SignInUrl%%\">Acessar</a>",
+			"nxReg_i18n_SignUp_EmailNonExistentError": "O e-mail fornecido não existe. Por favor, verifique e insira um e-mail válido.",
+			"nxReg_i18n_SignUp_ServerUnreachableError": "Problema de conexão com o servidor. Por favor, tente novamente mais tarde.",
+			"nxReg_i18n_SignUp_PasswordWrongError": "A senha deve estar de acordo com a política de senhas",
+
+			"nxReg_i18n_SignUp_FullName": "Nome completo",
+			"nxReg_i18n_SignUp_FullNameError": "O nome completo é obrigatório.",
+
+			"nxReg_i18n_SignUp_PhoneNumber": "Telefone",
+			"nxReg_i18n_SignUp_PhoneNumberErrors": [
+				"Número de telefone é obrigatório.",
+				"Forneça um código de país válido.",
+				"Por favor, forneça um número mais longo",
+				"Por favor, forneça um número mais curto",
+				"Não se esqueça de fornecer um número de telefone válido."
+			],
+
+			"nxReg_i18n_SignUp_Country": "País",
+			"nxReg_i18n_SignUp_CountryError": "Por favor, selecione o país.",
+			"nxReg_i18n_SignUp_CountryList": {
+				"AD": "Andorra",
+				"AE": "United Arab Emirates",
+				"AF": "Afghanistan",
+				"AG": "Antigua and Barbuda",
+				"AI": "Anguilla",
+				"AL": "Albania",
+				"AM": "Armenia",
+				"AO": "Angola",
+				"AQ": "Antarctica",
+				"AR": "Argentina",
+				"AS": "American Samoa",
+				"AT": "Austria",
+				"AU": "Australia",
+				"AW": "Aruba",
+				"AX": "Aland Islands",
+				"AZ": "Azerbaijan",
+				"BA": "Bosnia and Herzegovina",
+				"BB": "Barbados",
+				"BD": "Bangladesh",
+				"BE": "Belgium",
+				"BF": "Burkina Faso",
+				"BG": "Bulgaria",
+				"BH": "Bahrain",
+				"BI": "Burundi",
+				"BJ": "Benin",
+				"BL": "Saint Barthelemy",
+				"BM": "Bermuda",
+				"BN": "Brunei",
+				"BO": "Bolivia",
+				"BQ": "Bonaire, Saint Eustatius and Saba ",
+				"BR": "Brazil",
+				"BS": "Bahamas",
+				"BT": "Bhutan",
+				"BV": "Bouvet Island",
+				"BW": "Botswana",
+				"BY": "Belarus",
+				"BZ": "Belize",
+				"CA": "Canada",
+				"CC": "Cocos Islands",
+				"CD": "Democratic Republic of the Congo",
+				"CF": "Central African Republic",
+				"CG": "Republic of the Congo",
+				"CH": "Switzerland",
+				"CI": "Ivory Coast",
+				"CK": "Cook Islands",
+				"CL": "Chile",
+				"CM": "Cameroon",
+				"CN": "China",
+				"CO": "Colombia",
+				"CR": "Costa Rica",
+				"CU": "Cuba",
+				"CV": "Cape Verde",
+				"CW": "Curacao",
+				"CX": "Christmas Island",
+				"CY": "Cyprus",
+				"CZ": "Czech Republic",
+				"DE": "Germany",
+				"DJ": "Djibouti",
+				"DK": "Denmark",
+				"DM": "Dominica",
+				"DO": "Dominican Republic",
+				"DZ": "Algeria",
+				"EC": "Ecuador",
+				"EE": "Estonia",
+				"EG": "Egypt",
+				"EH": "Western Sahara",
+				"ER": "Eritrea",
+				"ES": "Spain",
+				"ET": "Ethiopia",
+				"FI": "Finland",
+				"FJ": "Fiji",
+				"FK": "Falkland Islands",
+				"FM": "Micronesia",
+				"FO": "Faroe Islands",
+				"FR": "France",
+				"GA": "Gabon",
+				"GB": "United Kingdom",
+				"GD": "Grenada",
+				"GE": "Georgia",
+				"GF": "French Guiana",
+				"GG": "Guernsey",
+				"GH": "Ghana",
+				"GI": "Gibraltar",
+				"GL": "Greenland",
+				"GM": "Gambia",
+				"GN": "Guinea",
+				"GP": "Guadeloupe",
+				"GQ": "Equatorial Guinea",
+				"GR": "Greece",
+				"GS": "South Georgia and the South Sandwich Islands",
+				"GT": "Guatemala",
+				"GU": "Guam",
+				"GW": "Guinea-Bissau",
+				"GY": "Guyana",
+				"HK": "Hong Kong",
+				"HM": "Heard Island and McDonald Islands",
+				"HN": "Honduras",
+				"HR": "Croatia",
+				"HT": "Haiti",
+				"HU": "Hungary",
+				"ID": "Indonesia",
+				"IE": "Ireland",
+				"IL": "Israel",
+				"IM": "Isle of Man",
+				"IN": "India",
+				"IO": "British Indian Ocean Territory",
+				"IQ": "Iraq",
+				"IR": "Iran",
+				"IS": "Iceland",
+				"IT": "Italy",
+				"JE": "Jersey",
+				"JM": "Jamaica",
+				"JO": "Jordan",
+				"JP": "Japan",
+				"KE": "Kenya",
+				"KG": "Kyrgyzstan",
+				"KH": "Cambodia",
+				"KI": "Kiribati",
+				"KM": "Comoros",
+				"KN": "Saint Kitts and Nevis",
+				"KP": "North Korea",
+				"KR": "South Korea",
+				"KW": "Kuwait",
+				"KY": "Cayman Islands",
+				"KZ": "Kazakhstan",
+				"LA": "Laos",
+				"LB": "Lebanon",
+				"LC": "Saint Lucia",
+				"LI": "Liechtenstein",
+				"LK": "Sri Lanka",
+				"LR": "Liberia",
+				"LS": "Lesotho",
+				"LT": "Lithuania",
+				"LU": "Luxembourg",
+				"LV": "Latvia",
+				"LY": "Libya",
+				"MA": "Morocco",
+				"MC": "Monaco",
+				"MD": "Moldova",
+				"ME": "Montenegro",
+				"MF": "Saint Martin",
+				"MG": "Madagascar",
+				"MH": "Marshall Islands",
+				"MK": "Macedonia",
+				"ML": "Mali",
+				"MM": "Myanmar",
+				"MN": "Mongolia",
+				"MO": "Macao",
+				"MP": "Northern Mariana Islands",
+				"MQ": "Martinique",
+				"MR": "Mauritania",
+				"MS": "Montserrat",
+				"MT": "Malta",
+				"MU": "Mauritius",
+				"MV": "Maldives",
+				"MW": "Malawi",
+				"MX": "Mexico",
+				"MY": "Malaysia",
+				"MZ": "Mozambique",
+				"NA": "Namibia",
+				"NC": "New Caledonia",
+				"NE": "Niger",
+				"NF": "Norfolk Island",
+				"NG": "Nigeria",
+				"NI": "Nicaragua",
+				"NL": "Netherlands",
+				"NO": "Norway",
+				"NP": "Nepal",
+				"NR": "Nauru",
+				"NU": "Niue",
+				"NZ": "New Zealand",
+				"OM": "Oman",
+				"PA": "Panama",
+				"PE": "Peru",
+				"PF": "French Polynesia",
+				"PG": "Papua New Guinea",
+				"PH": "Philippines",
+				"PK": "Pakistan",
+				"PL": "Poland",
+				"PM": "Saint Pierre and Miquelon",
+				"PN": "Pitcairn",
+				"PR": "Puerto Rico",
+				"PS": "Palestinian Territory",
+				"PT": "Portugal",
+				"PW": "Palau",
+				"PY": "Paraguay",
+				"QA": "Qatar",
+				"RE": "Reunion",
+				"RO": "Romania",
+				"RS": "Serbia",
+				"RU": "Russia",
+				"RW": "Rwanda",
+				"SA": "Saudi Arabia",
+				"SB": "Solomon Islands",
+				"SC": "Seychelles",
+				"SD": "Sudan",
+				"SE": "Sweden",
+				"SG": "Singapore",
+				"SH": "Saint Helena",
+				"SI": "Slovenia",
+				"SJ": "Svalbard and Jan Mayen",
+				"SK": "Slovakia",
+				"SL": "Sierra Leone",
+				"SM": "San Marino",
+				"SN": "Senegal",
+				"SO": "Somalia",
+				"SR": "Suriname",
+				"SS": "South Sudan",
+				"ST": "Sao Tome and Principe",
+				"SV": "El Salvador",
+				"SX": "Sint Maarten",
+				"SY": "Syria",
+				"SZ": "Swaziland",
+				"TC": "Turks and Caicos Islands",
+				"TD": "Chad",
+				"TF": "French Southern Territories",
+				"TG": "Togo",
+				"TH": "Thailand",
+				"TJ": "Tajikistan",
+				"TK": "Tokelau",
+				"TL": "East Timor",
+				"TM": "Turkmenistan",
+				"TN": "Tunisia",
+				"TO": "Tonga",
+				"TR": "Turkey",
+				"TT": "Trinidad and Tobago",
+				"TV": "Tuvalu",
+				"TW": "Taiwan",
+				"TZ": "Tanzania",
+				"UA": "Ukraine",
+				"UG": "Uganda",
+				"UM": "United States Minor Outlying Islands",
+				"US": "United States",
+				"UY": "Uruguay",
+				"UZ": "Uzbekistan",
+				"VA": "Vatican",
+				"VC": "Saint Vincent and the Grenadines",
+				"VE": "Venezuela",
+				"VG": "British Virgin Islands",
+				"VI": "U.S. Virgin Islands",
+				"VN": "Vietnam",
+				"VU": "Vanuatu",
+				"WF": "Wallis and Futuna",
+				"WS": "Samoa",
+				"XK": "Kosovo",
+				"YE": "Yemen",
+				"YT": "Mayotte",
+				"ZA": "South Africa",
+				"ZM": "Zambia",
+				"ZW": "Zimbabwe"
+			},
+
+			"nxReg_i18n_SignUp_VerificationCodeToggle": "Adicionar código de verificação",
+			"nxReg_i18n_SignUp_VerificationCode": "Código de verificação",
+			"nxReg_i18n_SignUp_VerificationCodeError": "Verifique o código de verificação e tente novamente",
+
+			"nxReg_i18n_SignUp_Password_Title": "Obrigado por se registar conosco<br>Abaixo você pode encontrar os seus dados de cadastro",
+			"nxReg_i18n_SignUp_Password_SubTitle": "Certifique-se de salvar os dados",
+			"nxReg_i18n_SignUp_Password_Button": "Continue",
+
+			"nxReg_i18n_SignUp_Social_BoxMessage1": "OU inscreva-se com:",
+			"nxReg_i18n_SignUp_Social_BoxMessage2": "Nunca iremos postar sem a sua permissão.",
+			"nxReg_i18n_SignUp_Social_FacebookError": "Autorize nossa aplicação a autorizar via Facebook",
+			"nxReg_i18n_SignUp_Social_GoogleError": "Autorize nossa aplicação a autorizar via conta Google",
+			"nxReg_i18n_SignUp_Social_FacebookFailedError": "Por favor, verifique sua conta Facebook e tente outra forma de registro",
+			"nxReg_i18n_SignUp_Social_GoogleFailedError": "Por favor, verifique sua conta Google e tente outra forma de registro",
+			"nxReg_i18n_SignUp_Social_GoogleJWTExpired": "A sessão expirou. Por favor, inscreva-se novamente.",
+
+			"nxReg_i18n_SignUp_Social_Text": "Aceite nosso Aviso de Privacidade para entrar na plataforma de negócios",
+
+			"nxReg_i18n_SignUp_Activation_Message1": "Verifique a sua caixa de entrada",
+			"nxReg_i18n_SignUp_Activation_Message2": "Cheque o %%Email%%  por um e-mail de ativação.",
+			"nxReg_i18n_SignUp_Activation_Message3": "Não consegue encontrá-lo? Talvez esteja na caixa de spam.",
+			"nxReg_i18n_SignUp_Activation_Message4": "Ainda não conseguiu encontrar aquele e-mail?",
+			"nxReg_i18n_SignUp_Activation_ResendButton": "Enviar novamente",
+			"nxReg_i18n_SignUp_Activation_ResendLimitReachedError": "O limite do reenvio do e-mail foi atingido. Se registre novamente.",
+
+			"nxReg_i18n_Activation_AccountActivated": "A sua conta foi ativada. Iremos redirecioná-lo para login. <a href=\"%%SignInUrl%%\">Login</a>",
+			"nxReg_i18n_Activation_LinkExpiredError": "O link de ativação da conta expirou. Você deve <a href=\"%%SignUpUrl%%\">cadastrar-se novamente</a>",
+
+			"nxReg_i18n_UnknownError": "Ocorreu um erro desconhecido. Por favor tente novamente."
+		},
+		"ru": {
+			"nxReg_i18n_SignUp_SignUp": "Регистрация",
+			"nxReg_i18n_SignUp_Email": "E-mail",
+			"nxReg_i18n_SignUp_Password": "Пароль (8+ символов)",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx1": "Как минимум 1 строчная буква",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx2": "Как минимум 1 заглавная буква",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx3": "Как минимум 1 цифра",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx4": "Специальные символы не допускаются",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx5": "Минимум 8 символов",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx6": "Не больше 24 символов",
+			"nxReg_i18n_SignUp_CreateAccountButton": "Создать аккаунт",
+			"nxReg_i18n_SignUp_SignIn": "Уже зарегистрированы? Войти",
+
+			// TO DO
+			//"nxReg_i18n_SignUp_SignInText": "Já é registrado?",
+			//"nxReg_i18n_SignUp_LogIn": "Faça login",
+
+			"nxReg_i18n_SignUp_PrivacyNoticeNotAcceptedError": "Чтобы продолжить работу, вы должны принять Уведомление о конфиденциальности.",
+			"nxReg_i18n_SignUp_CountryBlockedError": "Мы всегда сожалеем о том, что подобное происходит, но вы не можете зарегистрироваться из своей страны.",
+			"nxReg_i18n_SignUp_ReCaptchaMandatoryError": "ReCaptcha обязательна!",
+			"nxReg_i18n_SignUp_EmailWrongFormatError": "Вы правильно указали e-mail? Попробуйте еще раз",
+			"nxReg_i18n_SignUp_EmailAlreadyExistsError": "Хей, введенный вами e-mail уже зарегистрирован в нашей базе данных! Уже зарегистрированы? <a href=\"%%SignInUrl%%\">Войдите</a>",
+			"nxReg_i18n_SignUp_EmailNonExistentError": "Хей, введенного вами e-mail-адреса не существует. Вы уверены, что правильно указали e-mail? Введите его снова",
+			"nxReg_i18n_SignUp_ServerUnreachableError": "Проблема с подключением к серверу. Вам необходимо попробовать снова.",
+			"nxReg_i18n_SignUp_PasswordWrongError": "Неверный пароль",
+
+			"nxReg_i18n_SignUp_FullName": "Полное имя",
+			"nxReg_i18n_SignUp_FullNameError": "Вы уверены, что правильно указали имя? Попробуйте еще раз.",
+
+			"nxReg_i18n_SignUp_PhoneNumber": "Номер телефона",
+			"nxReg_i18n_SignUp_PhoneNumberErrors": [
+				"Вы уверены, что правильно указали телефон? Попробуйте еще раз.",
+				"Введите действительный код страны.",
+				"Номер телефона должен быть длиннее. Попробуйте еще раз.",
+				"Номер телефона должен быть короче. Попробуйте еще раз. Просто укоротите его.",
+				"Не забудьте указать действительный номер телефона."
+			],
+
+			"nxReg_i18n_SignUp_Country": "Страна",
+			"nxReg_i18n_SignUp_CountryError": "Вы выбрали свою страну? Попробуйте еще раз.",
+			"nxReg_i18n_SignUp_CountryList": {
+				"AD": "Andorra",
+				"AE": "United Arab Emirates",
+				"AF": "Afghanistan",
+				"AG": "Antigua and Barbuda",
+				"AI": "Anguilla",
+				"AL": "Albania",
+				"AM": "Armenia",
+				"AO": "Angola",
+				"AQ": "Antarctica",
+				"AR": "Argentina",
+				"AS": "American Samoa",
+				"AT": "Austria",
+				"AU": "Australia",
+				"AW": "Aruba",
+				"AX": "Aland Islands",
+				"AZ": "Azerbaijan",
+				"BA": "Bosnia and Herzegovina",
+				"BB": "Barbados",
+				"BD": "Bangladesh",
+				"BE": "Belgium",
+				"BF": "Burkina Faso",
+				"BG": "Bulgaria",
+				"BH": "Bahrain",
+				"BI": "Burundi",
+				"BJ": "Benin",
+				"BL": "Saint Barthelemy",
+				"BM": "Bermuda",
+				"BN": "Brunei",
+				"BO": "Bolivia",
+				"BQ": "Bonaire, Saint Eustatius and Saba ",
+				"BR": "Brazil",
+				"BS": "Bahamas",
+				"BT": "Bhutan",
+				"BV": "Bouvet Island",
+				"BW": "Botswana",
+				"BY": "Belarus",
+				"BZ": "Belize",
+				"CA": "Canada",
+				"CC": "Cocos Islands",
+				"CD": "Democratic Republic of the Congo",
+				"CF": "Central African Republic",
+				"CG": "Republic of the Congo",
+				"CH": "Switzerland",
+				"CI": "Ivory Coast",
+				"CK": "Cook Islands",
+				"CL": "Chile",
+				"CM": "Cameroon",
+				"CN": "China",
+				"CO": "Colombia",
+				"CR": "Costa Rica",
+				"CU": "Cuba",
+				"CV": "Cape Verde",
+				"CW": "Curacao",
+				"CX": "Christmas Island",
+				"CY": "Cyprus",
+				"CZ": "Czech Republic",
+				"DE": "Germany",
+				"DJ": "Djibouti",
+				"DK": "Denmark",
+				"DM": "Dominica",
+				"DO": "Dominican Republic",
+				"DZ": "Algeria",
+				"EC": "Ecuador",
+				"EE": "Estonia",
+				"EG": "Egypt",
+				"EH": "Western Sahara",
+				"ER": "Eritrea",
+				"ES": "Spain",
+				"ET": "Ethiopia",
+				"FI": "Finland",
+				"FJ": "Fiji",
+				"FK": "Falkland Islands",
+				"FM": "Micronesia",
+				"FO": "Faroe Islands",
+				"FR": "France",
+				"GA": "Gabon",
+				"GB": "United Kingdom",
+				"GD": "Grenada",
+				"GE": "Georgia",
+				"GF": "French Guiana",
+				"GG": "Guernsey",
+				"GH": "Ghana",
+				"GI": "Gibraltar",
+				"GL": "Greenland",
+				"GM": "Gambia",
+				"GN": "Guinea",
+				"GP": "Guadeloupe",
+				"GQ": "Equatorial Guinea",
+				"GR": "Greece",
+				"GS": "South Georgia and the South Sandwich Islands",
+				"GT": "Guatemala",
+				"GU": "Guam",
+				"GW": "Guinea-Bissau",
+				"GY": "Guyana",
+				"HK": "Hong Kong",
+				"HM": "Heard Island and McDonald Islands",
+				"HN": "Honduras",
+				"HR": "Croatia",
+				"HT": "Haiti",
+				"HU": "Hungary",
+				"ID": "Indonesia",
+				"IE": "Ireland",
+				"IL": "Israel",
+				"IM": "Isle of Man",
+				"IN": "India",
+				"IO": "British Indian Ocean Territory",
+				"IQ": "Iraq",
+				"IR": "Iran",
+				"IS": "Iceland",
+				"IT": "Italy",
+				"JE": "Jersey",
+				"JM": "Jamaica",
+				"JO": "Jordan",
+				"JP": "Japan",
+				"KE": "Kenya",
+				"KG": "Kyrgyzstan",
+				"KH": "Cambodia",
+				"KI": "Kiribati",
+				"KM": "Comoros",
+				"KN": "Saint Kitts and Nevis",
+				"KP": "North Korea",
+				"KR": "South Korea",
+				"KW": "Kuwait",
+				"KY": "Cayman Islands",
+				"KZ": "Kazakhstan",
+				"LA": "Laos",
+				"LB": "Lebanon",
+				"LC": "Saint Lucia",
+				"LI": "Liechtenstein",
+				"LK": "Sri Lanka",
+				"LR": "Liberia",
+				"LS": "Lesotho",
+				"LT": "Lithuania",
+				"LU": "Luxembourg",
+				"LV": "Latvia",
+				"LY": "Libya",
+				"MA": "Morocco",
+				"MC": "Monaco",
+				"MD": "Moldova",
+				"ME": "Montenegro",
+				"MF": "Saint Martin",
+				"MG": "Madagascar",
+				"MH": "Marshall Islands",
+				"MK": "Macedonia",
+				"ML": "Mali",
+				"MM": "Myanmar",
+				"MN": "Mongolia",
+				"MO": "Macao",
+				"MP": "Northern Mariana Islands",
+				"MQ": "Martinique",
+				"MR": "Mauritania",
+				"MS": "Montserrat",
+				"MT": "Malta",
+				"MU": "Mauritius",
+				"MV": "Maldives",
+				"MW": "Malawi",
+				"MX": "Mexico",
+				"MY": "Malaysia",
+				"MZ": "Mozambique",
+				"NA": "Namibia",
+				"NC": "New Caledonia",
+				"NE": "Niger",
+				"NF": "Norfolk Island",
+				"NG": "Nigeria",
+				"NI": "Nicaragua",
+				"NL": "Netherlands",
+				"NO": "Norway",
+				"NP": "Nepal",
+				"NR": "Nauru",
+				"NU": "Niue",
+				"NZ": "New Zealand",
+				"OM": "Oman",
+				"PA": "Panama",
+				"PE": "Peru",
+				"PF": "French Polynesia",
+				"PG": "Papua New Guinea",
+				"PH": "Philippines",
+				"PK": "Pakistan",
+				"PL": "Poland",
+				"PM": "Saint Pierre and Miquelon",
+				"PN": "Pitcairn",
+				"PR": "Puerto Rico",
+				"PS": "Palestinian Territory",
+				"PT": "Portugal",
+				"PW": "Palau",
+				"PY": "Paraguay",
+				"QA": "Qatar",
+				"RE": "Reunion",
+				"RO": "Romania",
+				"RS": "Serbia",
+				"RU": "Russia",
+				"RW": "Rwanda",
+				"SA": "Saudi Arabia",
+				"SB": "Solomon Islands",
+				"SC": "Seychelles",
+				"SD": "Sudan",
+				"SE": "Sweden",
+				"SG": "Singapore",
+				"SH": "Saint Helena",
+				"SI": "Slovenia",
+				"SJ": "Svalbard and Jan Mayen",
+				"SK": "Slovakia",
+				"SL": "Sierra Leone",
+				"SM": "San Marino",
+				"SN": "Senegal",
+				"SO": "Somalia",
+				"SR": "Suriname",
+				"SS": "South Sudan",
+				"ST": "Sao Tome and Principe",
+				"SV": "El Salvador",
+				"SX": "Sint Maarten",
+				"SY": "Syria",
+				"SZ": "Swaziland",
+				"TC": "Turks and Caicos Islands",
+				"TD": "Chad",
+				"TF": "French Southern Territories",
+				"TG": "Togo",
+				"TH": "Thailand",
+				"TJ": "Tajikistan",
+				"TK": "Tokelau",
+				"TL": "East Timor",
+				"TM": "Turkmenistan",
+				"TN": "Tunisia",
+				"TO": "Tonga",
+				"TR": "Turkey",
+				"TT": "Trinidad and Tobago",
+				"TV": "Tuvalu",
+				"TW": "Taiwan",
+				"TZ": "Tanzania",
+				"UA": "Ukraine",
+				"UG": "Uganda",
+				"UM": "United States Minor Outlying Islands",
+				"US": "United States",
+				"UY": "Uruguay",
+				"UZ": "Uzbekistan",
+				"VA": "Vatican",
+				"VC": "Saint Vincent and the Grenadines",
+				"VE": "Venezuela",
+				"VG": "British Virgin Islands",
+				"VI": "U.S. Virgin Islands",
+				"VN": "Vietnam",
+				"VU": "Vanuatu",
+				"WF": "Wallis and Futuna",
+				"WS": "Samoa",
+				"XK": "Kosovo",
+				"YE": "Yemen",
+				"YT": "Mayotte",
+				"ZA": "South Africa",
+				"ZM": "Zambia",
+				"ZW": "Zimbabwe"
+			},
+
+			"nxReg_i18n_SignUp_VerificationCodeToggle": "Добавить проверочный код",
+			"nxReg_i18n_SignUp_VerificationCode": "Код подтверждения",
+			"nxReg_i18n_SignUp_VerificationCodeError": "Вы уверены, что правильно ввели проверочный код? Попробуйте еще раз.",
+
+			"nxReg_i18n_SignUp_Password_Title": "Благодарим вас за регистрацию<br>Ниже вы можете найти свои регистрационные данные",
+			"nxReg_i18n_SignUp_Password_SubTitle": "Обязательно сохраните эти данные",
+			"nxReg_i18n_SignUp_Password_Button": "Продолжить",
+
+			"nxReg_i18n_SignUp_Social_BoxMessage1": "Или зарегистрируйтесь при помощи:",
+			"nxReg_i18n_SignUp_Social_BoxMessage2": "Мы не будем публиковать это без вашего разрешения.",
+			"nxReg_i18n_SignUp_Social_FacebookError": "Для регистрации посредством Facebook требуется авторизация нашего приложения.",
+			"nxReg_i18n_SignUp_Social_GoogleError": "Для регистрации посредством Google требуется авторизация нашего приложения.",
+			"nxReg_i18n_SignUp_Social_FacebookFailedError": "Мы не смогли зарегистрировать вас при помощи вашего аккаунта в Facebook. Попробуйте другие способы регистрации.",
+			"nxReg_i18n_SignUp_Social_GoogleFailedError": "Мы не смогли зарегистрировать вас при помощи вашего аккаунта в Google. Попробуйте другие способы регистрации.",
+			"nxReg_i18n_SignUp_Social_GoogleJWTExpired": "Session expired. Please sign up again.",
+
+			"nxReg_i18n_SignUp_Social_Text": "Прежде чем перейти на торговую платформу, пожалуйста, согласитесь с нашим Уведомлением о конфиденциальности.",
+
+			"nxReg_i18n_SignUp_Activation_Message1": "Проверьте входящие",
+			"nxReg_i18n_SignUp_Activation_Message2": "Письмо для активации учетной записи было отправлено на %%Email%% — проверьте свой почтовый ящик.",
+			"nxReg_i18n_SignUp_Activation_Message3": "Не видите его? Может быть, оно в спаме.",
+			"nxReg_i18n_SignUp_Activation_Message4": "Все еще не можете найти письмо?",
+			"nxReg_i18n_SignUp_Activation_ResendButton": "Давайте отправим его повторно.",
+			"nxReg_i18n_SignUp_Activation_ResendLimitReachedError": "Достигнут лимит повторной отправки письма. Все еще не нашли письмо? <a href=\"%%SignUpUrl%%\">Зарегистрируйтесь снова</a>.",
+
+			"nxReg_i18n_Activation_AccountActivated": "Ваш аккаунт успешно активирован. Мы перенаправим вас на страницу Авторизации. <a href=\"%%SignInUrl%%\">Войти</a>.",
+			"nxReg_i18n_Activation_LinkExpiredError": "Срок действия ссылки активации учетной записи истек. Вам необходимо <a href=\"%%SignUpUrl%%\">зарегистрироваться еще раз</a>",
+
+			"nxReg_i18n_UnknownError": "Произошла неизвестная ошибка. Пожалуйста, попробуйте ещё раз."
+		},
+		"tr": {
+			"nxReg_i18n_SignUp_SignUp": "Kaydol",
+			"nxReg_i18n_SignUp_Email": "E-posta",
+			"nxReg_i18n_SignUp_Password": "Şifre (8+ karakter)",
+			"nxReg_i18n_SignUp_Password_5": "Şifre (5+ karakter)",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx1": "En az 1 küçük harf",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx2": "En az 1 büyük harf",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx3": "En az 1 rakam",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx4": "Özel karakterlere izin verilmiyor",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx5": "En az 8 karakter",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx6": "En fazla 24 karakter",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx_loose": "Your pasword should be no less then 5 character long",
+			"nxReg_i18n_SignUp_CreateAccountButton": "Hesap oluştur",
+			"nxReg_i18n_SignUp_SignIn": "Zaten kayıtlı mısınız? Giriş yap",
+			"nxReg_i18n_SignUp_SignInText": "Zaten bir hesabınız var mı?",
+			"nxReg_i18n_SignUp_LogIn": "Giriş yap",
+			"nxReg_i18n_SignUp_RiskWaring": "Risk Warning: Trading Forex and CFDs could lead to the loss of all of your invested capital.",
+
+			"nxReg_i18n_SignUp_PrivacyNoticeNotAcceptedError": "Devam etmek için Gizlilik Bildirimini kabul edin",
+			"nxReg_i18n_SignUp_CountryBlockedError": "Bulunduğunuz ülkeden kaydolamazsınız. ",
+			"nxReg_i18n_SignUp_ReCaptchaMandatoryError": "ReCaptcha zorunludur!",
+			"nxReg_i18n_SignUp_EmailWrongFormatError": "E-postayı doğru yazdınız mı? Tekrar deneyin",
+			"nxReg_i18n_SignUp_EmailAlreadyExistsError": "Bu e-posta zaten kullanılmış. <a href=\"%%SignInUrl%%\">Giriş yap</a>",
+			"nxReg_i18n_SignUp_EmailNonExistentError": "Sağlanan e-posta mevcut değil. Lütfen kontrol edip tekrar girin.",
+			"nxReg_i18n_SignUp_ServerUnreachableError": "Sunucu ile bağlantı sorunu. Lütfen daha sonra tekrar deneyin.",
+			"nxReg_i18n_SignUp_PasswordWrongError": "Şifreniz, şifre politikasına uygun olmalıdır.",
+
+			"nxReg_i18n_SignUp_FullName": "Tam adınız",
+			"nxReg_i18n_SignUp_FullNameError": "Tam adınız gerekli",
+
+			"nxReg_i18n_SignUp_MinAges": "En az 18 yaşında olduğumu onaylıyorum.",
+			"nxReg_i18n_SignUp_MinAgesError": "Online yatırım yapmak için en az 18 yaşında olmalısınız",
+
+			"nxReg_i18n_SignUp_MinInvestAmount": "Minimum gerekli sermayenin 200 dolar olduğunun farkındayım.",
+			"nxReg_i18n_SignUp_ConfirmationRequiredError": "Devam etmek istiyorsanız lütfen bu kutuyu işaretleyin",
+
+			"nxReg_i18n_SignUp_CountryCode": "Ülke kodu",
+
+			"nxReg_i18n_SignUp_PhoneNumber": "Telefon numarası",
+			"nxReg_i18n_SignUp_PhoneNumberErrors": [
+				"Telefon numarası gereklidir",
+				"Geçerli bir ülke kodu sağlayın.",
+				"Lütfen daha uzun bir numara sağlayın",
+				"Lütfen daha kısa bir numara sağlayın",
+				"Geçerli bir telefon numarası sağlamayı unutmayın."
+			],
+
+			"nxReg_i18n_SignUp_Country": "Ülke",
+			"nxReg_i18n_SignUp_CountryError": "Lütfen bir ülke seçin.",
+			"nxReg_i18n_SignUp_CountryList": {
+				"AD": "Andorra",
+				"AE": "United Arab Emirates",
+				"AF": "Afghanistan",
+				"AG": "Antigua and Barbuda",
+				"AI": "Anguilla",
+				"AL": "Albania",
+				"AM": "Armenia",
+				"AO": "Angola",
+				"AQ": "Antarctica",
+				"AR": "Argentina",
+				"AS": "American Samoa",
+				"AT": "Austria",
+				"AU": "Australia",
+				"AW": "Aruba",
+				"AX": "Aland Islands",
+				"AZ": "Azerbaijan",
+				"BA": "Bosnia and Herzegovina",
+				"BB": "Barbados",
+				"BD": "Bangladesh",
+				"BE": "Belgium",
+				"BF": "Burkina Faso",
+				"BG": "Bulgaria",
+				"BH": "Bahrain",
+				"BI": "Burundi",
+				"BJ": "Benin",
+				"BL": "Saint Barthelemy",
+				"BM": "Bermuda",
+				"BN": "Brunei",
+				"BO": "Bolivia",
+				"BQ": "Bonaire, Saint Eustatius and Saba ",
+				"BR": "Brazil",
+				"BS": "Bahamas",
+				"BT": "Bhutan",
+				"BV": "Bouvet Island",
+				"BW": "Botswana",
+				"BY": "Belarus",
+				"BZ": "Belize",
+				"CA": "Canada",
+				"CC": "Cocos Islands",
+				"CD": "Democratic Republic of the Congo",
+				"CF": "Central African Republic",
+				"CG": "Republic of the Congo",
+				"CH": "Switzerland",
+				"CI": "Ivory Coast",
+				"CK": "Cook Islands",
+				"CL": "Chile",
+				"CM": "Cameroon",
+				"CN": "China",
+				"CO": "Colombia",
+				"CR": "Costa Rica",
+				"CU": "Cuba",
+				"CV": "Cape Verde",
+				"CW": "Curacao",
+				"CX": "Christmas Island",
+				"CY": "Cyprus",
+				"CZ": "Czech Republic",
+				"DE": "Germany",
+				"DJ": "Djibouti",
+				"DK": "Denmark",
+				"DM": "Dominica",
+				"DO": "Dominican Republic",
+				"DZ": "Algeria",
+				"EC": "Ecuador",
+				"EE": "Estonia",
+				"EG": "Egypt",
+				"EH": "Western Sahara",
+				"ER": "Eritrea",
+				"ES": "Spain",
+				"ET": "Ethiopia",
+				"FI": "Finland",
+				"FJ": "Fiji",
+				"FK": "Falkland Islands",
+				"FM": "Micronesia",
+				"FO": "Faroe Islands",
+				"FR": "France",
+				"GA": "Gabon",
+				"GB": "United Kingdom",
+				"GD": "Grenada",
+				"GE": "Georgia",
+				"GF": "French Guiana",
+				"GG": "Guernsey",
+				"GH": "Ghana",
+				"GI": "Gibraltar",
+				"GL": "Greenland",
+				"GM": "Gambia",
+				"GN": "Guinea",
+				"GP": "Guadeloupe",
+				"GQ": "Equatorial Guinea",
+				"GR": "Greece",
+				"GS": "South Georgia and the South Sandwich Islands",
+				"GT": "Guatemala",
+				"GU": "Guam",
+				"GW": "Guinea-Bissau",
+				"GY": "Guyana",
+				"HK": "Hong Kong",
+				"HM": "Heard Island and McDonald Islands",
+				"HN": "Honduras",
+				"HR": "Croatia",
+				"HT": "Haiti",
+				"HU": "Hungary",
+				"ID": "Indonesia",
+				"IE": "Ireland",
+				"IL": "Israel",
+				"IM": "Isle of Man",
+				"IN": "India",
+				"IO": "British Indian Ocean Territory",
+				"IQ": "Iraq",
+				"IR": "Iran",
+				"IS": "Iceland",
+				"IT": "Italy",
+				"JE": "Jersey",
+				"JM": "Jamaica",
+				"JO": "Jordan",
+				"JP": "Japan",
+				"KE": "Kenya",
+				"KG": "Kyrgyzstan",
+				"KH": "Cambodia",
+				"KI": "Kiribati",
+				"KM": "Comoros",
+				"KN": "Saint Kitts and Nevis",
+				"KP": "North Korea",
+				"KR": "South Korea",
+				"KW": "Kuwait",
+				"KY": "Cayman Islands",
+				"KZ": "Kazakhstan",
+				"LA": "Laos",
+				"LB": "Lebanon",
+				"LC": "Saint Lucia",
+				"LI": "Liechtenstein",
+				"LK": "Sri Lanka",
+				"LR": "Liberia",
+				"LS": "Lesotho",
+				"LT": "Lithuania",
+				"LU": "Luxembourg",
+				"LV": "Latvia",
+				"LY": "Libya",
+				"MA": "Morocco",
+				"MC": "Monaco",
+				"MD": "Moldova",
+				"ME": "Montenegro",
+				"MF": "Saint Martin",
+				"MG": "Madagascar",
+				"MH": "Marshall Islands",
+				"MK": "Macedonia",
+				"ML": "Mali",
+				"MM": "Myanmar",
+				"MN": "Mongolia",
+				"MO": "Macao",
+				"MP": "Northern Mariana Islands",
+				"MQ": "Martinique",
+				"MR": "Mauritania",
+				"MS": "Montserrat",
+				"MT": "Malta",
+				"MU": "Mauritius",
+				"MV": "Maldives",
+				"MW": "Malawi",
+				"MX": "Mexico",
+				"MY": "Malaysia",
+				"MZ": "Mozambique",
+				"NA": "Namibia",
+				"NC": "New Caledonia",
+				"NE": "Niger",
+				"NF": "Norfolk Island",
+				"NG": "Nigeria",
+				"NI": "Nicaragua",
+				"NL": "Netherlands",
+				"NO": "Norway",
+				"NP": "Nepal",
+				"NR": "Nauru",
+				"NU": "Niue",
+				"NZ": "New Zealand",
+				"OM": "Oman",
+				"PA": "Panama",
+				"PE": "Peru",
+				"PF": "French Polynesia",
+				"PG": "Papua New Guinea",
+				"PH": "Philippines",
+				"PK": "Pakistan",
+				"PL": "Poland",
+				"PM": "Saint Pierre and Miquelon",
+				"PN": "Pitcairn",
+				"PR": "Puerto Rico",
+				"PS": "Palestinian Territory",
+				"PT": "Portugal",
+				"PW": "Palau",
+				"PY": "Paraguay",
+				"QA": "Qatar",
+				"RE": "Reunion",
+				"RO": "Romania",
+				"RS": "Serbia",
+				"RU": "Russia",
+				"RW": "Rwanda",
+				"SA": "Saudi Arabia",
+				"SB": "Solomon Islands",
+				"SC": "Seychelles",
+				"SD": "Sudan",
+				"SE": "Sweden",
+				"SG": "Singapore",
+				"SH": "Saint Helena",
+				"SI": "Slovenia",
+				"SJ": "Svalbard and Jan Mayen",
+				"SK": "Slovakia",
+				"SL": "Sierra Leone",
+				"SM": "San Marino",
+				"SN": "Senegal",
+				"SO": "Somalia",
+				"SR": "Suriname",
+				"SS": "South Sudan",
+				"ST": "Sao Tome and Principe",
+				"SV": "El Salvador",
+				"SX": "Sint Maarten",
+				"SY": "Syria",
+				"SZ": "Swaziland",
+				"TC": "Turks and Caicos Islands",
+				"TD": "Chad",
+				"TF": "French Southern Territories",
+				"TG": "Togo",
+				"TH": "Thailand",
+				"TJ": "Tajikistan",
+				"TK": "Tokelau",
+				"TL": "East Timor",
+				"TM": "Turkmenistan",
+				"TN": "Tunisia",
+				"TO": "Tonga",
+				"TR": "Turkey",
+				"TT": "Trinidad and Tobago",
+				"TV": "Tuvalu",
+				"TW": "Taiwan",
+				"TZ": "Tanzania",
+				"UA": "Ukraine",
+				"UG": "Uganda",
+				"UM": "United States Minor Outlying Islands",
+				"US": "United States",
+				"UY": "Uruguay",
+				"UZ": "Uzbekistan",
+				"VA": "Vatican",
+				"VC": "Saint Vincent and the Grenadines",
+				"VE": "Venezuela",
+				"VG": "British Virgin Islands",
+				"VI": "U.S. Virgin Islands",
+				"VN": "Vietnam",
+				"VU": "Vanuatu",
+				"WF": "Wallis and Futuna",
+				"WS": "Samoa",
+				"XK": "Kosovo",
+				"YE": "Yemen",
+				"YT": "Mayotte",
+				"ZA": "South Africa",
+				"ZM": "Zambia",
+				"ZW": "Zimbabwe"
+			},
+			"nxReg_i18n_SignUp_VerificationCodeToggle": "Doğrulama Kodu Ekle",
+			"nxReg_i18n_SignUp_VerificationCode": "Doğrulama Kodu",
+			"nxReg_i18n_SignUp_VerificationCodeError": "Doğrulama kodunu kontrol edin ve tekrar deneyin.",
+
+			"nxReg_i18n_SignUp_Password_Title": "Bize kaydolduğunuz için teşekkür ederiz.<br> Aşağıda kayıt bilgilerinizi bulabilirsiniz.",
+			"nxReg_i18n_SignUp_Password_SubTitle": "Bilgilerinizi kaydetmeyi unutmayın.",
+			"nxReg_i18n_SignUp_Password_Button": "Devam",
+
+			"nxReg_i18n_SignUp_Social_BoxMessage1": "YA DA Şununla kaydolun:",
+			"nxReg_i18n_SignUp_Social_BoxMessage2": "İzinsiz paylaşmayacağız.",
+			"nxReg_i18n_SignUp_Social_Google": "Google ile kaydol",
+			"nxReg_i18n_SignUp_Social_Facebook": "Facebook ile kaydol",
+			"nxReg_i18n_SignUp_Social_FacebookError": "Facebook ile kaydolmak için uygulamamızı yetkilendirin.",
+			"nxReg_i18n_SignUp_Social_GoogleError": "Google ile kaydolmak için uygulamamızı yetkilendirin.",
+			"nxReg_i18n_SignUp_Social_FacebookFailedError": "Lütfen Facebook hesabınızı kontrol edin veya başka bir kayıt seçeneği deneyin.",
+			"nxReg_i18n_SignUp_Social_GoogleFailedError": "Lütfen Google hesabınızı kontrol edin veya başka bir kayıt seçeneği deneyin.",
+			"nxReg_i18n_SignUp_Social_GoogleJWTExpired": "Session expired. Please sign up again.",
+
+			"nxReg_i18n_SignUp_Social_Text": "Ticaret platformuna girebilmek için Gizlilik Bildirimimizi kabul edin.",
+
+			"nxReg_i18n_SignUp_Activation_Message1": "Gelen Kutunuzu Kontrol Edin",
+			"nxReg_i18n_SignUp_Activation_Message2": "Hesap etkinleştirme e-postası için %%Email%% adresini kontrol edin.",
+			"nxReg_i18n_SignUp_Activation_Message3": "Bulamıyor musunuz? Belki Spam klasöründedir.",
+			"nxReg_i18n_SignUp_Activation_Message4": "Hala o e-postayı bulamıyor musunuz?",
+			"nxReg_i18n_SignUp_Activation_ResendButton": "Yeniden Gönder",
+			"nxReg_i18n_SignUp_Activation_ResendLimitReachedError": "E-posta yeniden gönderme sınırına ulaşıldı. Yeniden kaydolun.",
+
+			"nxReg_i18n_Activation_AccountActivated": "Hesabınız etkinleştirildi. Sizi Giriş yap sayfasına yönlendireceğiz. <a href=\"%%SignInUrl%%\">Giriş yap</a>.",
+			"nxReg_i18n_Activation_LinkExpiredError": "Hesap etkinleştirme bağlantısı süresi doldu. Yeniden <a href=\"%%SignUpUrl%%\">kaydolmanız</a> gerekiyor.",
+
+			"nxReg_i18n_UnknownError": "Bilinmeyen bir hata oluştu. Lütfen tekrar deneyin"
+		},
+		"th": {
+			"nxReg_i18n_SignUp_SignUp": "ลงทะเบียน",
+			"nxReg_i18n_SignUp_Email": "อีเมล",
+			"nxReg_i18n_SignUp_Password": "รหัสผ่าน (8 ตัวอักษรขึ้นไป)",
+			"nxReg_i18n_SignUp_Password_5": "รหัสผ่าน (5 ตัวอักษรขึ้นไป)",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx1": "ต้องมีตัวอักษรพิมพ์เล็กอย่างน้อย 1 ตัว",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx2": "ต้องมีตัวอักษรพิมพ์ใหญ่อย่างน้อย 1 ตัว",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx3": "ต้องมีตัวเลขอย่างน้อย 1 ตัว",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx4": "ไม่อนุญาตให้ใช้อักขระพิเศษ",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx5": "ต้องมีอย่างน้อย 8 ตัวอักษร",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx6": "ต้องมีไม่เกิน 24 ตัวอักษร",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx_loose": "รหัสผ่านของคุณควรมีความยาวไม่น้อยกว่า 5 ตัวอักษร",
+			"nxReg_i18n_SignUp_CreateAccountButton": "สร้างบัญชี",
+			"nxReg_i18n_SignUp_SignIn": "เคยลงทะเบียนแล้ว? เข้าสู่ระบบ",
+			"nxReg_i18n_SignUp_SignInText": "มีบัญชีอยู่แล้วหรือไม่?",
+			"nxReg_i18n_SignUp_LogIn": "เข้าสู่ระบบ",
+			"nxReg_i18n_SignUp_RiskWaring": "คำเตือนความเสี่ยง: การซื้อขายฟอเร็กซ์และ CFD อาจส่งผลให้สูญเสียเงินทุนที่คุณลงทุนทั้งหมด",
+			"nxReg_i18n_SignUp_PrivacyNoticeNotAcceptedError": "โปรดยอมรับนโยบายความเป็นส่วนตัวเพื่อดำเนินการต่อ",
+			"nxReg_i18n_SignUp_CountryBlockedError": "คุณไม่สามารถลงทะเบียนจากประเทศที่คุณอยู่ได้",
+			"nxReg_i18n_SignUp_ReCaptchaMandatoryError": "จำเป็นต้องมี ReCaptcha!",
+			"nxReg_i18n_SignUp_EmailWrongFormatError": "คุณพิมพ์อีเมลถูกต้องหรือไม่? ลองอีกครั้ง",
+			"nxReg_i18n_SignUp_EmailAlreadyExistsError": "อีเมลนี้ถูกใช้ไปแล้ว <a href=\"%%SignInUrl%%\">เข้าสู่ระบบ</a>",
+			"nxReg_i18n_SignUp_EmailNonExistentError": "อีเมลที่ระบุไม่มีอยู่ในระบบ โปรดตรวจสอบและป้อนใหม่อีกครั้ง",
+			"nxReg_i18n_SignUp_ServerUnreachableError": "พบปัญหาในการเชื่อมต่อกับเซิร์ฟเวอร์ กรุณาลองอีกครั้งภายหลัง",
+			"nxReg_i18n_SignUp_PasswordWrongError": "รหัสผ่านต้องเป็นไปตามนโยบายรหัสผ่าน",
+			"nxReg_i18n_SignUp_FullName": "ชื่อนามสกุล",
+			"nxReg_i18n_SignUp_FullNameError": "จำเป็นต้องใส่ชื่อเต็ม",
+			"nxReg_i18n_SignUp_CountryCode": "รหัสประเทศ",
+			"nxReg_i18n_SignUp_PhoneNumber": "หมายเลขโทรศัพท์",
+			"nxReg_i18n_SignUp_PhoneNumberErrors": [
+				"ต้องระบุหมายเลขโทรศัพท์",
+				"โปรดระบุรหัสประเทศที่ถูกต้อง",
+				"โปรดระบุหมายเลขที่ยาวกว่านี้",
+				"โปรดระบุหมายเลขที่สั้นกว่านี้",
+				"อย่าลืมใส่หมายเลขโทรศัพท์ที่ถูกต้อง"
+			],
+			"nxReg_i18n_SignUp_Country": "ประเทศ",
+			"nxReg_i18n_SignUp_CountryError": "โปรดเลือกประเทศ",
+			"nxReg_i18n_SignUp_CountryList": {
+				"AD": "อันดอร์รา",
+				"AE": "สหรัฐอาหรับเอมิเรตส์",
+				"AF": "อัฟกานิสถาน",
+				"AG": "แอนติกาและบาร์บูดา",
+				"AI": "แองกวิลลา",
+				"AL": "แอลเบเนีย",
+				"AM": "อาร์เมเนีย",
+				"AO": "แองโกลา",
+				"AQ": "แอนตาร์กติกา",
+				"AR": "อาร์เจนตินา",
+				"AS": "อเมริกันซามัว",
+				"AT": "ออสเตรีย",
+				"AU": "ออสเตรเลีย",
+				"AW": "อารูบา",
+				"AX": "หมู่เกาะโอลันด์",
+				"AZ": "อาเซอร์ไบจาน",
+				"BA": "บอสเนียและเฮอร์เซโกวีนา",
+				"BB": "บาร์เบโดส",
+				"BD": "บังกลาเทศ",
+				"BE": "เบลเยียม",
+				"BF": "บูร์กินาฟาโซ",
+				"BG": "บัลแกเรีย",
+				"BH": "บาห์เรน",
+				"BI": "บุรุนดี",
+				"BJ": "เบนิน",
+				"BL": "เซนต์บาร์เธเลมี",
+				"BM": "เบอร์มิวดา",
+				"BN": "บรูไน",
+				"BO": "โบลิเวีย",
+				"BQ": "โบแนร์, เซนต์ยูสตาเทียส และซาบา",
+				"BR": "บราซิล",
+				"BS": "บาฮามาส",
+				"BT": "ภูฏาน",
+				"BV": "เกาะบูเวต",
+				"BW": "บอตสวานา",
+				"BY": "เบลารุส",
+				"BZ": "เบลีซ",
+				"CA": "แคนาดา",
+				"CC": "หมู่เกาะโคโคส",
+				"CD": "สาธารณรัฐประชาธิปไตยคองโก",
+				"CF": "สาธารณรัฐแอฟริกากลาง",
+				"CG": "สาธารณรัฐคองโก",
+				"CH": "สวิตเซอร์แลนด์",
+				"CI": "โกตดิวัวร์",
+				"CK": "หมู่เกาะคุก",
+				"CL": "ชิลี",
+				"CM": "แคเมอรูน",
+				"CN": "จีน",
+				"CO": "โคลอมเบีย",
+				"CR": "คอสตาริกา",
+				"CU": "คิวบา",
+				"CV": "เคปเวิร์ด",
+				"CW": "คูราเซา",
+				"CX": "เกาะคริสต์มาส",
+				"CY": "ไซปรัส",
+				"CZ": "สาธารณรัฐเช็ก",
+				"DE": "เยอรมนี",
+				"DJ": "จิบูตี",
+				"DK": "เดนมาร์ก",
+				"DM": "โดมินิกา",
+				"DO": "สาธารณรัฐโดมินิกัน",
+				"DZ": "แอลจีเรีย",
+				"EC": "เอกวาดอร์",
+				"EE": "เอสโตเนีย",
+				"EG": "อียิปต์",
+				"EH": "ซาฮาราตะวันตก",
+				"ER": "เอริเทรีย",
+				"ES": "สเปน",
+				"ET": "เอธิโอเปีย",
+				"FI": "ฟินแลนด์",
+				"FJ": "ฟิจิ",
+				"FK": "หมู่เกาะฟอล์กแลนด์",
+				"FM": "ไมโครนีเซีย",
+				"FO": "หมู่เกาะแฟโร",
+				"FR": "ฝรั่งเศส",
+				"GA": "กาบอง",
+				"GB": "สหราชอาณาจักร",
+				"GD": "เกรนาดา",
+				"GE": "จอร์เจีย",
+				"GF": "เฟรนช์เกียนา",
+				"GG": "เกิร์นซีย์",
+				"GH": "กานา",
+				"GI": "ยิบรอลตาร์",
+				"GL": "กรีนแลนด์",
+				"GM": "แกมเบีย",
+				"GN": "กินี",
+				"GP": "กัวเดอลูป",
+				"GQ": "อิเควทอเรียลกินี",
+				"GR": "กรีซ",
+				"GS": "เซาท์จอร์เจียและหมู่เกาะเซาท์แซนด์วิช",
+				"GT": "กัวเตมาลา",
+				"GU": "กวม",
+				"GW": "กินี-บิสเซา",
+				"GY": "กายอานา",
+				"HK": "ฮ่องกง",
+				"HM": "เกาะเฮิร์ดและหมู่เกาะแมกดอนัลด์",
+				"HN": "ฮอนดูรัส",
+				"HR": "โครเอเชีย",
+				"HT": "เฮติ",
+				"HU": "ฮังการี",
+				"ID": "อินโดนีเซีย",
+				"IE": "ไอร์แลนด์",
+				"IL": "อิสราเอล",
+				"IM": "เกาะแมน",
+				"IN": "อินเดีย",
+				"IO": "บริติชอินเดียนโอเชียนเทร์ริทอรี",
+				"IQ": "อิรัก",
+				"IR": "อิหร่าน",
+				"IS": "ไอซ์แลนด์",
+				"IT": "อิตาลี",
+				"JE": "เจอร์ซีย์",
+				"JM": "จาเมกา",
+				"JO": "จอร์แดน",
+				"JP": "ญี่ปุ่น",
+				"KE": "เคนยา",
+				"KG": "คีร์กีซสถาน",
+				"KH": "กัมพูชา",
+				"KI": "คิริบาส",
+				"KM": "คอโมโรส",
+				"KN": "เซนต์คิตส์และเนวิส",
+				"KP": "เกาหลีเหนือ",
+				"KR": "เกาหลีใต้",
+				"KW": "คูเวต",
+				"KY": "หมู่เกาะเคย์แมน",
+				"KZ": "คาซัคสถาน",
+				"LA": "ลาว",
+				"LB": "เลบานอน",
+				"LC": "เซนต์ลูเชีย",
+				"LI": "ลิกเตนสไตน์",
+				"LK": "ศรีลังกา",
+				"LR": "ไลบีเรีย",
+				"LS": "เลโซโท",
+				"LT": "ลิทัวเนีย",
+				"LU": "ลักเซมเบิร์ก",
+				"LV": "ลัตเวีย",
+				"LY": "ลิเบีย",
+				"MA": "โมร็อกโก",
+				"MC": "โมนาโก",
+				"MD": "มอลโดวา",
+				"ME": "มอนเตเนโกร",
+				"MF": "เซนต์มาร์ติน",
+				"MG": "มาดากัสการ์",
+				"MH": "หมู่เกาะมาร์แชลล์",
+				"MK": "มาซิโดเนีย",
+				"ML": "มาลี",
+				"MM": "เมียนมา",
+				"MN": "มองโกเลีย",
+				"MO": "มาเก๊า",
+				"MP": "หมู่เกาะนอร์เทิร์นมาเรียนา",
+				"MQ": "มาร์ตินีก",
+				"MR": "มอริเตเนีย",
+				"MS": "มอนต์เซอร์รัต",
+				"MT": "มอลตา",
+				"MU": "มอริเชียส",
+				"MV": "มัลดีฟส์",
+				"MW": "มาลาวี",
+				"MX": "เม็กซิโก",
+				"MY": "มาเลเซีย",
+				"MZ": "โมซัมบิก",
+				"NA": "นามิเบีย",
+				"NC": "นิวแคลิโดเนีย",
+				"NE": "ไนเจอร์",
+				"NF": "เกาะนอร์ฟอล์ก",
+				"NG": "ไนจีเรีย",
+				"NI": "นิการากัว",
+				"NL": "เนเธอร์แลนด์",
+				"NO": "นอร์เวย์",
+				"NP": "เนปาล",
+				"NR": "นาอูรู",
+				"NU": "นีอูเอ",
+				"NZ": "นิวซีแลนด์",
+				"OM": "โอมาน",
+				"PA": "ปานามา",
+				"PE": "เปรู",
+				"PF": "เฟรนช์โปลินีเซีย",
+				"PG": "ปาปัวนิวกินี",
+				"PH": "ฟิลิปปินส์",
+				"PK": "ปากีสถาน",
+				"PL": "โปแลนด์",
+				"PM": "แซงปีแยร์และมีเกอลง",
+				"PN": "พิตแคร์น",
+				"PR": "เปอร์โตริโก",
+				"PS": "เขตปาเลสไตน์",
+				"PT": "โปรตุเกส",
+				"PW": "ปาเลา",
+				"PY": "ปารากวัย",
+				"QA": "กาตาร์",
+				"RE": "เรอูนียง",
+				"RO": "โรมาเนีย",
+				"RS": "เซอร์เบีย",
+				"RU": "รัสเซีย",
+				"RW": "รวันดา",
+				"SA": "ซาอุดีอาระเบีย",
+				"SB": "หมู่เกาะโซโลมอน",
+				"SC": "เซเชลส์",
+				"SD": "ซูดาน",
+				"SE": "สวีเดน",
+				"SG": "สิงคโปร์",
+				"SH": "เซนต์เฮเลนา",
+				"SI": "สโลวีเนีย",
+				"SJ": "สฟาลบาร์และยานไมเอน",
+				"SK": "สโลวาเกีย",
+				"SL": "เซียร์ราลีโอน",
+				"SM": "ซานมารีโน",
+				"SN": "เซเนกัล",
+				"SO": "โซมาเลีย",
+				"SR": "ซูรินาม",
+				"SS": "ซูดานใต้",
+				"ST": "เซาตูเมและปรินซิปี",
+				"SV": "เอลซัลวาดอร์",
+				"SX": "ซินต์มาร์เติน",
+				"SY": "ซีเรีย",
+				"SZ": "สวาซิแลนด์",
+				"TC": "หมู่เกาะเติร์กและเคคอส",
+				"TD": "ชาด",
+				"TF": "ดินแดนทางใต้ของฝรั่งเศส",
+				"TG": "โตโก",
+				"TH": "ไทย",
+				"TJ": "ทาจิกิสถาน",
+				"TK": "โตเกเลา",
+				"TL": "ติมอร์-เลสเต",
+				"TM": "เติร์กเมนิสถาน",
+				"TN": "ตูนิเซีย",
+				"TO": "ตองกา",
+				"TR": "ตุรกี",
+				"TT": "ตรินิแดดและโตเบโก",
+				"TV": "ตูวาลู",
+				"TW": "ไต้หวัน",
+				"TZ": "แทนซาเนีย",
+				"UA": "ยูเครน",
+				"UG": "ยูกันดา",
+				"UM": "หมู่เกาะรอบนอกของสหรัฐอเมริกา",
+				"US": "สหรัฐอเมริกา",
+				"UY": "อุรุกวัย",
+				"UZ": "อุซเบกิสถาน",
+				"VA": "วาติกัน",
+				"VC": "เซนต์วินเซนต์และเกรนาดีนส์",
+				"VE": "เวเนซุเอลา",
+				"VG": "หมู่เกาะบริติชเวอร์จิน",
+				"VI": "หมู่เกาะเวอร์จินของสหรัฐอเมริกา",
+				"VN": "เวียดนาม",
+				"VU": "วานูอาตู",
+				"WF": "วาลลิสและฟุตูนา",
+				"WS": "ซามัว",
+				"XK": "โคโซโว",
+				"YE": "เยเมน",
+				"YT": "มายอต",
+				"ZA": "แอฟริกาใต้",
+				"ZM": "แซมเบีย",
+				"ZW": "ซิมบับเว"
+			},
+			"nxReg_i18n_SignUp_VerificationCodeToggle": "เพิ่มรหัสยืนยัน",
+			"nxReg_i18n_SignUp_VerificationCode": "รหัสยืนยัน",
+			"nxReg_i18n_SignUp_VerificationCodeError": "โปรดตรวจสอบรหัสยืนยันและลองอีกครั้ง",
+			"nxReg_i18n_SignUp_Password_Title": "ขอบคุณที่ลงทะเบียนกับเรา!<br>ด้านล่างนี้คือข้อมูลการลงทะเบียนของคุณ",
+			"nxReg_i18n_SignUp_Password_SubTitle": "อย่าลืมบันทึกข้อมูลนี้ไว",
+			"nxReg_i18n_SignUp_Password_Button": "ดำเนินการต่อ",
+			"nxReg_i18n_SignUp_Social_BoxMessage1": "หรือ สมัครใช้งานด้วย:",
+			"nxReg_i18n_SignUp_Social_BoxMessage2": "เราจะไม่โพสต์ใดๆ โดยไม่ได้รับอนุญาตจากคุณ",
+			"nxReg_i18n_SignUp_Social_Google": "สมัครใช้งานด้วย Google",
+			"nxReg_i18n_SignUp_Social_Facebook": "สมัครใช้งานด้วย Facebook",
+			"nxReg_i18n_SignUp_Social_FacebookError": "โปรดอนุญาตแอปพลิเคชันของเราเพื่อสมัครใช้งานด้วย Facebook",
+			"nxReg_i18n_SignUp_Social_GoogleError": "โปรดอนุญาตแอปพลิเคชันของเราเพื่อสมัครใช้งานด้วย Google",
+			"nxReg_i18n_SignUp_Social_FacebookFailedError": "โปรดตรวจสอบบัญชี Facebook ของคุณหรือเลือกวิธีลงทะเบียนอื่น",
+			"nxReg_i18n_SignUp_Social_GoogleFailedError": "โปรดตรวจสอบบัญชี Google ของคุณหรือเลือกวิธีลงทะเบียนอื่น",
+			"nxReg_i18n_SignUp_Social_GoogleJWTExpired": "เซสชันหมดอายุ โปรดสมัครใช้งานใหม่อีกครั้ง",
+			"nxReg_i18n_SignUp_Social_Text": "โปรดยอมรับนโยบายความเป็นส่วนตัวเพื่อเข้าสู่แพลตฟอร์มการซื้อขาย",
+			"nxReg_i18n_SignUp_Activation_Message1": "โปรดตรวจสอบกล่องจดหมาย",
+			"nxReg_i18n_SignUp_Activation_Message2": "โปรดตรวจสอบอีเมล %%Email%% สำหรับอีเมลยืนยันการเปิดใช้งานบัญชี",
+			"nxReg_i18n_SignUp_Activation_Message3": "หาไม่เจอ? อาจอยู่ในกล่องอีเมลขยะ",
+			"nxReg_i18n_SignUp_Activation_Message4": "ยังหาอีเมลไม่เจออยู่ใช่ไหม?",
+			"nxReg_i18n_SignUp_Activation_ResendButton": "ส่งอีกครั้ง",
+			"nxReg_i18n_SignUp_Activation_ResendLimitReachedError": "จำนวนครั้งในการส่งอีเมลซ้ำถึงขีดจำกัดแล้ว กรุณาลงทะเบียนใหม่",
+			"nxReg_i18n_Activation_AccountActivated": "บัญชีของคุณได้รับการเปิดใช้งานแล้ว เราจะนำคุณไปยังหน้า <a href=\"%%SignInUrl%%\">เข้าสู่ระบบ</a>",
+			"nxReg_i18n_Activation_LinkExpiredError": "ลิงก์สำหรับเปิดใช้งานบัญชีหมดอายุแล้ว กรุณา <a href=\"%%SignUpUrl%%\">ลงทะเบียนใหม่</a>",
+			"nxReg_i18n_UnknownError": "เกิดข้อผิดพลาดที่ไม่ทราบสาเหตุ กรุณาลองอีกครั้ง"
+		},
+		"ja": {
+			"nxReg_i18n_SignUp_SignUp": "サインアップ",
+			"nxReg_i18n_SignUp_Email": "メールアドレス",
+			"nxReg_i18n_SignUp_Password": "パスワード（8文字以上）",
+			"nxReg_i18n_SignUp_Password_5": "パスワード（5文字以上）",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx1": "少なくとも小文字を1文字以上含める必要があります",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx2": "少なくとも大文字を1文字以上含める必要があります",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx3": "少なくとも数字を1文字以上含める必要があります",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx4": "特殊文字は使用できません",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx5": "8文字以上である必要があります",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx6": "24文字以内である必要があります",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx_loose": "パスワードは5文字以上でなければなりません",
+			"nxReg_i18n_SignUp_CreateAccountButton": "アカウントを作成",
+			"nxReg_i18n_SignUp_SignIn": "すでに登録済みですか？ ログイン",
+			"nxReg_i18n_SignUp_SignInText": "すでにアカウントをお持ちですか？",
+			"nxReg_i18n_SignUp_LogIn": "ログイン",
+			"nxReg_i18n_SignUp_RiskWaring": "リスク警告：外国為替およびCFDの取引は、投資した資本のすべてを失う可能性があります。",
+			"nxReg_i18n_SignUp_PrivacyNoticeNotAcceptedError": "プライバシーノーティスに同意して続行してください",
+			"nxReg_i18n_SignUp_CountryBlockedError": "現在いる国からは登録できません。",
+			"nxReg_i18n_SignUp_ReCaptchaMandatoryError": "ReCaptchaは必須です！",
+			"nxReg_i18n_SignUp_EmailWrongFormatError": "メールアドレスを正しく入力しましたか？ 再試行してください。",
+			"nxReg_i18n_SignUp_EmailAlreadyExistsError": "このメールアドレスはすでに使用されています。 <a href=\"%%SignInUrl%%\">ログイン</a>",
+			"nxReg_i18n_SignUp_EmailNonExistentError": "入力されたメールアドレスは存在しません。確認して再入力してください。",
+			"nxReg_i18n_SignUp_ServerUnreachableError": "サーバーへの接続で問題が発生しました。後でもう一度お試しください。",
+			"nxReg_i18n_SignUp_PasswordWrongError": "パスワードはパスワードポリシーに準拠している必要があります。",
+			"nxReg_i18n_SignUp_FullName": "氏名",
+			"nxReg_i18n_SignUp_FullNameError": "氏名は必須です",
+			"nxReg_i18n_SignUp_CountryCode": "国番号",
+			"nxReg_i18n_SignUp_PhoneNumber": "電話番号",
+			"nxReg_i18n_SignUp_PhoneNumberErrors": [
+				"電話番号は必須です",
+				"有効な国番号を入力してください。",
+				"もっと長い番号を入力してください",
+				"もっと短い番号を入力してください",
+				"有効な電話番号を入力することをお忘れなく。"
+			],
+			"nxReg_i18n_SignUp_Country": "国",
+			"nxReg_i18n_SignUp_CountryError": "国を選択してください",
+			"nxReg_i18n_SignUp_CountryList": {
+				"AD": "アンドラ",
+				"AE": "アラブ首長国連邦",
+				"AF": "アフガニスタン",
+				"AG": "アンティグア・バーブーダ",
+				"AI": "アンギラ",
+				"AL": "アルバニア",
+				"AM": "アルメニア",
+				"AO": "アンゴラ",
+				"AQ": "南極",
+				"AR": "アルゼンチン",
+				"AS": "米領サモア",
+				"AT": "オーストリア",
+				"AU": "オーストラリア",
+				"AW": "アルバ",
+				"AX": "オーランド諸島",
+				"AZ": "アゼルバイジャン",
+				"BA": "ボスニア・ヘルツェゴビナ",
+				"BB": "バルバドス",
+				"BD": "バングラデシュ",
+				"BE": "ベルギー",
+				"BF": "ブルキナファソ",
+				"BG": "ブルガリア",
+				"BH": "バーレーン",
+				"BI": "ブルンジ",
+				"BJ": "ベニン",
+				"BL": "サン・バルテルミー",
+				"BM": "バミューダ",
+				"BN": "ブルネイ",
+				"BO": "ボリビア",
+				"BQ": "ボネール、シント・ユースタティウスおよびサバ",
+				"BR": "ブラジル",
+				"BS": "バハマ",
+				"BT": "ブータン",
+				"BV": "ブーベ島",
+				"BW": "ボツワナ",
+				"BY": "ベラルーシ",
+				"BZ": "ベリーズ",
+				"CA": "カナダ",
+				"CC": "ココス(キーリング)諸島",
+				"CD": "コンゴ民主共和国",
+				"CF": "中央アフリカ共和国",
+				"CG": "コンゴ共和国",
+				"CH": "スイス",
+				"CI": "コートジボワール",
+				"CK": "クック諸島",
+				"CL": "チリ",
+				"CM": "カメルーン",
+				"CN": "中国",
+				"CO": "コロンビア",
+				"CR": "コスタリカ",
+				"CU": "キューバ",
+				"CV": "カーボベルデ",
+				"CW": "キュラソー",
+				"CX": "クリスマス島",
+				"CY": "キプロス",
+				"CZ": "チェコ共和国",
+				"DE": "ドイツ",
+				"DJ": "ジブチ",
+				"DK": "デンマーク",
+				"DM": "ドミニカ国",
+				"DO": "ドミニカ共和国",
+				"DZ": "アルジェリア",
+				"EC": "エクアドル",
+				"EE": "エストニア",
+				"EG": "エジプト",
+				"EH": "西サハラ",
+				"ER": "エリトリア",
+				"ES": "スペイン",
+				"ET": "エチオピア",
+				"FI": "フィンランド",
+				"FJ": "フィジー",
+				"FK": "フォークランド諸島",
+				"FM": "ミクロネシア連邦",
+				"FO": "フェロー諸島",
+				"FR": "フランス",
+				"GA": "ガボン",
+				"GB": "イギリス",
+				"GD": "グレナダ",
+				"GE": "ジョージア",
+				"GF": "仏領ギアナ",
+				"GG": "ガーンジー",
+				"GH": "ガーナ",
+				"GI": "ジブラルタル",
+				"GL": "グリーンランド",
+				"GM": "ガンビア",
+				"GN": "ギニア",
+				"GP": "グアドループ",
+				"GQ": "赤道ギニア",
+				"GR": "ギリシャ",
+				"GS": "サウスジョージア・サウスサンドウィッチ諸島",
+				"GT": "グアテマラ",
+				"GU": "グアム",
+				"GW": "ギニアビサウ",
+				"GY": "ガイアナ",
+				"HK": "香港",
+				"HM": "ハード島とマクドナルド諸島",
+				"HN": "ホンジュラス",
+				"HR": "クロアチア",
+				"HT": "ハイチ",
+				"HU": "ハンガリー",
+				"ID": "インドネシア",
+				"IE": "アイルランド",
+				"IL": "イスラエル",
+				"IM": "マン島",
+				"IN": "インド",
+				"IO": "英領インド洋地域",
+				"IQ": "イラク",
+				"IR": "イラン",
+				"IS": "アイスランド",
+				"IT": "イタリア",
+				"JE": "ジャージー",
+				"JM": "ジャマイカ",
+				"JO": "ヨルダン",
+				"JP": "日本",
+				"KE": "ケニア",
+				"KG": "キルギス",
+				"KH": "カンボジア",
+				"KI": "キリバス",
+				"KM": "コモロ",
+				"KN": "セントクリストファー・ネーヴィス",
+				"KP": "北朝鮮",
+				"KR": "韓国",
+				"KW": "クウェート",
+				"KY": "ケイマン諸島",
+				"KZ": "カザフスタン",
+				"LA": "ラオス",
+				"LB": "レバノン",
+				"LC": "セントルシア",
+				"LI": "リヒテンシュタイン",
+				"LK": "スリランカ",
+				"LR": "リベリア",
+				"LS": "レソト",
+				"LT": "リトアニア",
+				"LU": "ルクセンブルク",
+				"LV": "ラトビア",
+				"LY": "リビア",
+				"MA": "モロッコ",
+				"MC": "モナコ",
+				"MD": "モルドバ",
+				"ME": "モンテネグロ",
+				"MF": "サン・マルタン",
+				"MG": "マダガスカル",
+				"MH": "マーシャル諸島",
+				"MK": "マケドニア",
+				"ML": "マリ",
+				"MM": "ミャンマー",
+				"MN": "モンゴル",
+				"MO": "マカオ",
+				"MP": "北マリアナ諸島",
+				"MQ": "マルティニーク",
+				"MR": "モーリタニア",
+				"MS": "モントセラト",
+				"MT": "マルタ",
+				"MU": "モーリシャス",
+				"MV": "モルディブ",
+				"MW": "マラウイ",
+				"MX": "メキシコ",
+				"MY": "マレーシア",
+				"MZ": "モザンビーク",
+				"NA": "ナミビア",
+				"NC": "ニューカレドニア",
+				"NE": "ニジェール",
+				"NF": "ノーフォーク島",
+				"NG": "ナイジェリア",
+				"NI": "ニカラグア",
+				"NL": "オランダ",
+				"NO": "ノルウェー",
+				"NP": "ネパール",
+				"NR": "ナウル",
+				"NU": "ニウエ",
+				"NZ": "ニュージーランド",
+				"OM": "オマーン",
+				"PA": "パナマ",
+				"PE": "ペルー",
+				"PF": "仏領ポリネシア",
+				"PG": "パプアニューギニア",
+				"PH": "フィリピン",
+				"PK": "パキスタン",
+				"PL": "ポーランド",
+				"PM": "サンピエール島・ミクロン島",
+				"PN": "ピトケアン",
+				"PR": "プエルトリコ",
+				"PS": "パレスチナ領土",
+				"PT": "ポルトガル",
+				"PW": "パラオ",
+				"PY": "パラグアイ",
+				"QA": "カタール",
+				"RE": "レユニオン",
+				"RO": "ルーマニア",
+				"RS": "セルビア",
+				"RU": "ロシア",
+				"RW": "ルワンダ",
+				"SA": "サウジアラビア",
+				"SB": "ソロモン諸島",
+				"SC": "セーシェル",
+				"SD": "スーダン",
+				"SE": "スウェーデン",
+				"SG": "シンガポール",
+				"SH": "セントヘレナ",
+				"SI": "スロベニア",
+				"SJ": "スヴァールバル諸島およびヤンマイエン島",
+				"SK": "スロバキア",
+				"SL": "シエラレオネ",
+				"SM": "サンマリノ",
+				"SN": "セネガル",
+				"SO": "ソマリア",
+				"SR": "スリナム",
+				"SS": "南スーダン",
+				"ST": "サントメ・プリンシペ",
+				"SV": "エルサルバドル",
+				"SX": "シント・マールテン",
+				"SY": "シリア",
+				"SZ": "スワジランド",
+				"TC": "タークス・カイコス諸島",
+				"TD": "チャド",
+				"TF": "仏領極南諸島",
+				"TG": "トーゴ",
+				"TH": "タイ",
+				"TJ": "タジキスタン",
+				"TK": "トケラウ",
+				"TL": "東ティモール",
+				"TM": "トルクメニスタン",
+				"TN": "チュニジア",
+				"TO": "トンガ",
+				"TR": "トルコ",
+				"TT": "トリニダード・トバゴ",
+				"TV": "ツバル",
+				"TW": "台湾",
+				"TZ": "タンザニア",
+				"UA": "ウクライナ",
+				"UG": "ウガンダ",
+				"UM": "合衆国領有小離島",
+				"US": "アメリカ合衆国",
+				"UY": "ウルグアイ",
+				"UZ": "ウズベキスタン",
+				"VA": "バチカン",
+				"VC": "セントビンセントおよびグレナディーン諸島",
+				"VE": "ベネズエラ",
+				"VG": "英領ヴァージン諸島",
+				"VI": "米領ヴァージン諸島",
+				"VN": "ベトナム",
+				"VU": "バヌアツ",
+				"WF": "ウォリス・フツナ",
+				"WS": "サモア",
+				"XK": "コソボ",
+				"YE": "イエメン",
+				"YT": "マヨット",
+				"ZA": "南アフリカ",
+				"ZM": "ザンビア",
+				"ZW": "ジンバブエ"
+			},
+			"nxReg_i18n_SignUp_VerificationCodeToggle": "認証コードを追加",
+			"nxReg_i18n_SignUp_VerificationCode": "認証コード",
+			"nxReg_i18n_SignUp_VerificationCodeError": "認証コードを確認して、もう一度お試しください。",
+			"nxReg_i18n_SignUp_Password_Title": "ご登録ありがとうございます！<br>以下はご登録情報です。",
+			"nxReg_i18n_SignUp_Password_SubTitle": "この情報を必ず保存してください。",
+			"nxReg_i18n_SignUp_Password_Button": "続行",
+			"nxReg_i18n_SignUp_Social_BoxMessage1": "または、以下でサインアップ：",
+			"nxReg_i18n_SignUp_Social_BoxMessage2": "お客様の許可なく投稿することはありません。",
+			"nxReg_i18n_SignUp_Social_Google": "Googleでサインアップ",
+			"nxReg_i18n_SignUp_Social_Facebook": "Facebookでサインアップ",
+			"nxReg_i18n_SignUp_Social_FacebookError": "Facebookでサインアップするには、当アプリケーションを承認してください。",
+			"nxReg_i18n_SignUp_Social_GoogleError": "Googleでサインアップするには、当アプリケーションを承認してください。",
+			"nxReg_i18n_SignUp_Social_FacebookFailedError": "Facebookアカウントを確認するか、別の登録方法をお試しください。",
+			"nxReg_i18n_SignUp_Social_GoogleFailedError": "Googleアカウントを確認するか、別の登録方法をお試しください。",
+			"nxReg_i18n_SignUp_Social_GoogleJWTExpired": "セッションが有効期限切れです。もう一度サインアップしてください。",
+			"nxReg_i18n_SignUp_Social_Text": "プライバシーノーティスに同意して、取引プラットフォームにアクセスしてください。",
+			"nxReg_i18n_SignUp_Activation_Message1": "受信トレイを確認してください",
+			"nxReg_i18n_SignUp_Activation_Message2": "アカウント有効化メールについて、%%Email%% をご確認ください。",
+			"nxReg_i18n_SignUp_Activation_Message3": "見つからない場合は、迷惑メールフォルダを確認してください。",
+			"nxReg_i18n_SignUp_Activation_Message4": "まだメールが見つかりませんか？",
+			"nxReg_i18n_SignUp_Activation_ResendButton": "再送",
+			"nxReg_i18n_SignUp_Activation_ResendLimitReachedError": "メール再送回数の上限に達しました。もう一度登録してください。",
+			"nxReg_i18n_Activation_AccountActivated": "アカウントが有効化されました。<a href=\"%%SignInUrl%%\">ログイン</a> ページへリダイレクトします。",
+			"nxReg_i18n_Activation_LinkExpiredError": "アカウント有効化リンクの有効期限が切れています。<a href=\"%%SignUpUrl%%\">再度登録</a>してください。",
+			"nxReg_i18n_UnknownError": "不明なエラーが発生しました。もう一度お試しください。"
+		},
+		"vi": {
+			"nxReg_i18n_SignUp_SignUp": "Đăng ký",
+			"nxReg_i18n_SignUp_Email": "Thư điện tử",
+			"nxReg_i18n_SignUp_Password": " Mật khẩu (tối thiểu 8 ký tự)",
+			"nxReg_i18n_SignUp_Password_5": " Mật khẩu (tối thiểu 5 ký tự)",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx1": "Tối thiểu 1 chữ cái thường",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx2": "Tối thiểu 1 chữ cái viết hoa",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx3": "Tối thiểu 1 chữ số",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx4": "Không được phép sử dụng ký tự đặc biệt",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx5": "Tối thiểu 8 ký tự",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx6": "Tối đa 24 ký tự",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx_loose": "Mật khẩu của bạn phải có ít nhất 5 ký tự",
+			"nxReg_i18n_SignUp_CreateAccountButton": "Tạo tài khoản",
+			"nxReg_i18n_SignUp_SignIn": "Đã đăng ký? Đăng nhập",
+			"nxReg_i18n_SignUp_SignInText": "Đã có tài khoản?",
+			"nxReg_i18n_SignUp_LogIn": "Đăng nhập",
+			"nxReg_i18n_SignUp_RiskWaring": "Cảnh báo rủi ro: Giao dịch Forex và CFD có thể dẫn đến mất toàn bộ vốn đầu tư của bạn.",
+
+			"nxReg_i18n_SignUp_PrivacyNoticeNotAcceptedError": "Chấp nhận Thông báo Quyền riêng tư để tiếp tục",
+			"nxReg_i18n_SignUp_CountryBlockedError": "Bạn không thể đăng ký từ quốc gia hiện tại.",
+			"nxReg_i18n_SignUp_ReCaptchaMandatoryError": "ReCaptcha là bắt buộc!",
+			"nxReg_i18n_SignUp_EmailWrongFormatError": "Bạn đã nhập địa chỉ email đúng chưa? Vui lòng thử lại.",
+			"nxReg_i18n_SignUp_EmailAlreadyExistsError": "Email này đã được sử dụng. <a href=\"%%SignInUrl%%\">Đăng nhập</a>",
+			"nxReg_i18n_SignUp_EmailNonExistentError": "Email bạn cung cấp không tồn tại. Vui lòng kiểm tra và nhập lại.",
+			"nxReg_i18n_SignUp_ServerUnreachableError": "Gặp sự cố kết nối với máy chủ. Vui lòng thử lại sau.",
+			"nxReg_i18n_SignUp_PasswordWrongError": "Mật khẩu phải tuân thủ chính sách mật khẩu.",
+
+			"nxReg_i18n_SignUp_FullName": "Họ và tên",
+			"nxReg_i18n_SignUp_FullNameError": "Họ và tên là bắt buộc",
+
+			"nxReg_i18n_SignUp_CountryCode": "Mã quốc gia",
+
+			"nxReg_i18n_SignUp_PhoneNumber": "Số điện thoại",
+			"nxReg_i18n_SignUp_PhoneNumberErrors": [
+				"Số điện thoại là bắt buộc",
+				"Vui lòng cung cấp mã quốc gia hợp lệ.",
+				"Vui lòng nhập số dài hơn.",
+				"Vui lòng nhập số ngắn hơn.",
+				"Đừng quên cung cấp số điện thoại hợp lệ."
+			],
+
+			"nxReg_i18n_SignUp_Country": "Quốc gia",
+			"nxReg_i18n_SignUp_CountryError": "Vui lòng chọn một quốc gia",
+			"nxReg_i18n_SignUp_CountryList": {
+				"AD": "Andorra",
+				"AE": "United Arab Emirates",
+				"AF": "Afghanistan",
+				"AG": "Antigua and Barbuda",
+				"AI": "Anguilla",
+				"AL": "Albania",
+				"AM": "Armenia",
+				"AO": "Angola",
+				"AQ": "Antarctica",
+				"AR": "Argentina",
+				"AS": "American Samoa",
+				"AT": "Austria",
+				"AU": "Australia",
+				"AW": "Aruba",
+				"AX": "Aland Islands",
+				"AZ": "Azerbaijan",
+				"BA": "Bosnia and Herzegovina",
+				"BB": "Barbados",
+				"BD": "Bangladesh",
+				"BE": "Belgium",
+				"BF": "Burkina Faso",
+				"BG": "Bulgaria",
+				"BH": "Bahrain",
+				"BI": "Burundi",
+				"BJ": "Benin",
+				"BL": "Saint Barthelemy",
+				"BM": "Bermuda",
+				"BN": "Brunei",
+				"BO": "Bolivia",
+				"BQ": "Bonaire, Saint Eustatius and Saba ",
+				"BR": "Brazil",
+				"BS": "Bahamas",
+				"BT": "Bhutan",
+				"BV": "Bouvet Island",
+				"BW": "Botswana",
+				"BY": "Belarus",
+				"BZ": "Belize",
+				"CA": "Canada",
+				"CC": "Cocos Islands",
+				"CD": "Democratic Republic of the Congo",
+				"CF": "Central African Republic",
+				"CG": "Republic of the Congo",
+				"CH": "Switzerland",
+				"CI": "Ivory Coast",
+				"CK": "Cook Islands",
+				"CL": "Chile",
+				"CM": "Cameroon",
+				"CN": "China",
+				"CO": "Colombia",
+				"CR": "Costa Rica",
+				"CU": "Cuba",
+				"CV": "Cape Verde",
+				"CW": "Curacao",
+				"CX": "Christmas Island",
+				"CY": "Cyprus",
+				"CZ": "Czech Republic",
+				"DE": "Germany",
+				"DJ": "Djibouti",
+				"DK": "Denmark",
+				"DM": "Dominica",
+				"DO": "Dominican Republic",
+				"DZ": "Algeria",
+				"EC": "Ecuador",
+				"EE": "Estonia",
+				"EG": "Egypt",
+				"EH": "Western Sahara",
+				"ER": "Eritrea",
+				"ES": "Spain",
+				"ET": "Ethiopia",
+				"FI": "Finland",
+				"FJ": "Fiji",
+				"FK": "Falkland Islands",
+				"FM": "Micronesia",
+				"FO": "Faroe Islands",
+				"FR": "France",
+				"GA": "Gabon",
+				"GB": "United Kingdom",
+				"GD": "Grenada",
+				"GE": "Georgia",
+				"GF": "French Guiana",
+				"GG": "Guernsey",
+				"GH": "Ghana",
+				"GI": "Gibraltar",
+				"GL": "Greenland",
+				"GM": "Gambia",
+				"GN": "Guinea",
+				"GP": "Guadeloupe",
+				"GQ": "Equatorial Guinea",
+				"GR": "Greece",
+				"GS": "South Georgia and the South Sandwich Islands",
+				"GT": "Guatemala",
+				"GU": "Guam",
+				"GW": "Guinea-Bissau",
+				"GY": "Guyana",
+				"HK": "Hong Kong",
+				"HM": "Heard Island and McDonald Islands",
+				"HN": "Honduras",
+				"HR": "Croatia",
+				"HT": "Haiti",
+				"HU": "Hungary",
+				"ID": "Indonesia",
+				"IE": "Ireland",
+				"IL": "Israel",
+				"IM": "Isle of Man",
+				"IN": "India",
+				"IO": "British Indian Ocean Territory",
+				"IQ": "Iraq",
+				"IR": "Iran",
+				"IS": "Iceland",
+				"IT": "Italy",
+				"JE": "Jersey",
+				"JM": "Jamaica",
+				"JO": "Jordan",
+				"JP": "Japan",
+				"KE": "Kenya",
+				"KG": "Kyrgyzstan",
+				"KH": "Cambodia",
+				"KI": "Kiribati",
+				"KM": "Comoros",
+				"KN": "Saint Kitts and Nevis",
+				"KP": "North Korea",
+				"KR": "South Korea",
+				"KW": "Kuwait",
+				"KY": "Cayman Islands",
+				"KZ": "Kazakhstan",
+				"LA": "Laos",
+				"LB": "Lebanon",
+				"LC": "Saint Lucia",
+				"LI": "Liechtenstein",
+				"LK": "Sri Lanka",
+				"LR": "Liberia",
+				"LS": "Lesotho",
+				"LT": "Lithuania",
+				"LU": "Luxembourg",
+				"LV": "Latvia",
+				"LY": "Libya",
+				"MA": "Morocco",
+				"MC": "Monaco",
+				"MD": "Moldova",
+				"ME": "Montenegro",
+				"MF": "Saint Martin",
+				"MG": "Madagascar",
+				"MH": "Marshall Islands",
+				"MK": "Macedonia",
+				"ML": "Mali",
+				"MM": "Myanmar",
+				"MN": "Mongolia",
+				"MO": "Macao",
+				"MP": "Northern Mariana Islands",
+				"MQ": "Martinique",
+				"MR": "Mauritania",
+				"MS": "Montserrat",
+				"MT": "Malta",
+				"MU": "Mauritius",
+				"MV": "Maldives",
+				"MW": "Malawi",
+				"MX": "Mexico",
+				"MY": "Malaysia",
+				"MZ": "Mozambique",
+				"NA": "Namibia",
+				"NC": "New Caledonia",
+				"NE": "Niger",
+				"NF": "Norfolk Island",
+				"NG": "Nigeria",
+				"NI": "Nicaragua",
+				"NL": "Netherlands",
+				"NO": "Norway",
+				"NP": "Nepal",
+				"NR": "Nauru",
+				"NU": "Niue",
+				"NZ": "New Zealand",
+				"OM": "Oman",
+				"PA": "Panama",
+				"PE": "Peru",
+				"PF": "French Polynesia",
+				"PG": "Papua New Guinea",
+				"PH": "Philippines",
+				"PK": "Pakistan",
+				"PL": "Poland",
+				"PM": "Saint Pierre and Miquelon",
+				"PN": "Pitcairn",
+				"PR": "Puerto Rico",
+				"PS": "Palestinian Territory",
+				"PT": "Portugal",
+				"PW": "Palau",
+				"PY": "Paraguay",
+				"QA": "Qatar",
+				"RE": "Reunion",
+				"RO": "Romania",
+				"RS": "Serbia",
+				"RU": "Russia",
+				"RW": "Rwanda",
+				"SA": "Saudi Arabia",
+				"SB": "Solomon Islands",
+				"SC": "Seychelles",
+				"SD": "Sudan",
+				"SE": "Sweden",
+				"SG": "Singapore",
+				"SH": "Saint Helena",
+				"SI": "Slovenia",
+				"SJ": "Svalbard and Jan Mayen",
+				"SK": "Slovakia",
+				"SL": "Sierra Leone",
+				"SM": "San Marino",
+				"SN": "Senegal",
+				"SO": "Somalia",
+				"SR": "Suriname",
+				"SS": "South Sudan",
+				"ST": "Sao Tome and Principe",
+				"SV": "El Salvador",
+				"SX": "Sint Maarten",
+				"SY": "Syria",
+				"SZ": "Swaziland",
+				"TC": "Turks and Caicos Islands",
+				"TD": "Chad",
+				"TF": "French Southern Territories",
+				"TG": "Togo",
+				"TH": "Thailand",
+				"TJ": "Tajikistan",
+				"TK": "Tokelau",
+				"TL": "East Timor",
+				"TM": "Turkmenistan",
+				"TN": "Tunisia",
+				"TO": "Tonga",
+				"TR": "Turkey",
+				"TT": "Trinidad and Tobago",
+				"TV": "Tuvalu",
+				"TW": "Taiwan",
+				"TZ": "Tanzania",
+				"UA": "Ukraine",
+				"UG": "Uganda",
+				"UM": "United States Minor Outlying Islands",
+				"US": "United States",
+				"UY": "Uruguay",
+				"UZ": "Uzbekistan",
+				"VA": "Vatican",
+				"VC": "Saint Vincent and the Grenadines",
+				"VE": "Venezuela",
+				"VG": "British Virgin Islands",
+				"VI": "U.S. Virgin Islands",
+				"VN": "Vietnam",
+				"VU": "Vanuatu",
+				"WF": "Wallis and Futuna",
+				"WS": "Samoa",
+				"XK": "Kosovo",
+				"YE": "Yemen",
+				"YT": "Mayotte",
+				"ZA": "South Africa",
+				"ZM": "Zambia",
+				"ZW": "Zimbabwe"
+			},
+			"nxReg_i18n_SignUp_VerificationCodeToggle": "Thêm Mã Xác Thực",
+			"nxReg_i18n_SignUp_VerificationCode": "Mã Xác Thực",
+			"nxReg_i18n_SignUp_VerificationCodeError": "Kiểm tra mã xác thực và thử lại",
+
+			"nxReg_i18n_SignUp_Password_Title": "Cảm ơn bạn đã đăng ký với chúng tôi<br>Dưới đây là thông tin đăng ký của bạn",
+			"nxReg_i18n_SignUp_Password_SubTitle": "Hãy chắc chắn lưu lại thông tin này",
+			"nxReg_i18n_SignUp_Password_Button": "Tiếp tục",
+
+			"nxReg_i18n_SignUp_Social_BoxMessage1": "HOẶC Đăng ký bằng:",
+			"nxReg_i18n_SignUp_Social_BoxMessage2": "Chúng tôi sẽ không bao giờ đăng mà không có sự cho phép của bạn.",
+			"nxReg_i18n_SignUp_Social_Google": "Đăng ký bằng Google",
+			"nxReg_i18n_SignUp_Social_Facebook": "Đăng ký bằng Facebook",
+			"nxReg_i18n_SignUp_Social_FacebookError": "Ủy quyền cho ứng dụng của chúng tôi để đăng ký bằng Facebook.",
+			"nxReg_i18n_SignUp_Social_GoogleError": "Ủy quyền cho ứng dụng của chúng tôi để đăng ký bằng Google.",
+			"nxReg_i18n_SignUp_Social_FacebookFailedError": "Vui lòng kiểm tra tài khoản Facebook của bạn hoặc thử một tùy chọn đăng ký khác.",
+			"nxReg_i18n_SignUp_Social_GoogleFailedError": "Vui lòng kiểm tra tài khoản Google của bạn hoặc thử một tùy chọn đăng ký khác.",
+			"nxReg_i18n_SignUp_Social_GoogleJWTExpired": "Phiên đăng nhập đã hết hạn. Vui lòng đăng ký lại.",
+
+			"nxReg_i18n_SignUp_Social_Text": "Chấp nhận Thông báo Quyền riêng tư của chúng tôi để vào nền tảng giao dịch.",
+
+			"nxReg_i18n_SignUp_Activation_Message1": "Kiểm tra hộp thư đến của bạn.",
+			"nxReg_i18n_SignUp_Activation_Message2": "Kiểm tra %%Email%% của bạn để nhận email kích hoạt tài khoản.",
+			"nxReg_i18n_SignUp_Activation_Message3": "Không tìm thấy? Có thể nó nằm trong thư mục Spam.",
+			"nxReg_i18n_SignUp_Activation_Message4": "Vẫn không tìm thấy email đó?",
+			"nxReg_i18n_SignUp_Activation_ResendButton": "Gửi lại email",
+			"nxReg_i18n_SignUp_Activation_ResendLimitReachedError": "Giới hạn gửi lại email đã đạt. Vui lòng đăng ký lại.",
+
+			"nxReg_i18n_Activation_AccountActivated": "Tài khoản của bạn đã được kích hoạt. Chúng tôi sẽ chuyển hướng bạn đến <a href=\"%%SignInUrl%%\">Đăng nhập</a>.",
+			"nxReg_i18n_Activation_LinkExpiredError": "Liên kết kích hoạt tài khoản đã hết hạn. Vui lòng  <a href=\"%%SignUpUrl%%\">đăng ký lại</a>.",
+
+			"nxReg_i18n_UnknownError": "Đã xảy ra lỗi không xác định. Vui lòng thử lại."
+		},
+		"zh": {
+			"nxReg_i18n_SignUp_SignUp": "注册",
+			"nxReg_i18n_SignUp_Email": "电子邮箱",
+			"nxReg_i18n_SignUp_Password": " 密码（至少8个字符）",
+			"nxReg_i18n_SignUp_Password_5": " 密码（至少5个字符）",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx1": "至少包含1个小写字母",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx2": "至少包含1个大写字母",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx3": "至少包含1个数字",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx4": "不允许使用特殊字符",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx5": "至少8个字符",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx6": "最多24个字符",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx_loose": "您的密码长度不得少于5个字符",
+			"nxReg_i18n_SignUp_CreateAccountButton": "创建账户",
+			"nxReg_i18n_SignUp_SignIn": "已经注册？登录",
+			"nxReg_i18n_SignUp_SignInText": "已经有账户？",
+			"nxReg_i18n_SignUp_LogIn": "登录",
+			"nxReg_i18n_SignUp_RiskWaring": "风险警告：外汇和差价合约交易可能导致您损失全部投资资金。",
+
+			"nxReg_i18n_SignUp_PrivacyNoticeNotAcceptedError": "请接受隐私声明以继续",
+			"nxReg_i18n_SignUp_CountryBlockedError": "您所在的国家无法注册。",
+			"nxReg_i18n_SignUp_ReCaptchaMandatoryError": "必须完成 ReCaptcha 验证！",
+			"nxReg_i18n_SignUp_EmailWrongFormatError": "邮箱格式是否正确？请重试。",
+			"nxReg_i18n_SignUp_EmailAlreadyExistsError": "该邮箱已被使用。<a href=\"%%SignInUrl%%\">登录</a>",
+			"nxReg_i18n_SignUp_EmailNonExistentError": "所提供的邮箱不存在。请检查后重新输入。",
+			"nxReg_i18n_SignUp_ServerUnreachableError": "无法连接服务器。请稍后再试。",
+			"nxReg_i18n_SignUp_PasswordWrongError": "密码必须符合密码规则",
+
+			"nxReg_i18n_SignUp_FullName": "全名",
+			"nxReg_i18n_SignUp_FullNameError": "全名为必填项",
+
+			"nxReg_i18n_SignUp_CountryCode": "国家代码",
+
+			"nxReg_i18n_SignUp_PhoneNumber": "电话号码",
+			"nxReg_i18n_SignUp_PhoneNumberErrors": [
+				"电话号码为必填项",
+				"请输入有效的国家代码。",
+				"请输入更长的号码",
+				"请输入更短的号码",
+				"请提供有效的电话号码。"
+			],
+
+			"nxReg_i18n_SignUp_Country": "国家",
+			"nxReg_i18n_SignUp_CountryError": "请选择国家",
+			"nxReg_i18n_SignUp_CountryList": {
+				"AD": "Andorra",
+				"AE": "United Arab Emirates",
+				"AF": "Afghanistan",
+				"AG": "Antigua and Barbuda",
+				"AI": "Anguilla",
+				"AL": "Albania",
+				"AM": "Armenia",
+				"AO": "Angola",
+				"AQ": "Antarctica",
+				"AR": "Argentina",
+				"AS": "American Samoa",
+				"AT": "Austria",
+				"AU": "Australia",
+				"AW": "Aruba",
+				"AX": "Aland Islands",
+				"AZ": "Azerbaijan",
+				"BA": "Bosnia and Herzegovina",
+				"BB": "Barbados",
+				"BD": "Bangladesh",
+				"BE": "Belgium",
+				"BF": "Burkina Faso",
+				"BG": "Bulgaria",
+				"BH": "Bahrain",
+				"BI": "Burundi",
+				"BJ": "Benin",
+				"BL": "Saint Barthelemy",
+				"BM": "Bermuda",
+				"BN": "Brunei",
+				"BO": "Bolivia",
+				"BQ": "Bonaire, Saint Eustatius and Saba ",
+				"BR": "Brazil",
+				"BS": "Bahamas",
+				"BT": "Bhutan",
+				"BV": "Bouvet Island",
+				"BW": "Botswana",
+				"BY": "Belarus",
+				"BZ": "Belize",
+				"CA": "Canada",
+				"CC": "Cocos Islands",
+				"CD": "Democratic Republic of the Congo",
+				"CF": "Central African Republic",
+				"CG": "Republic of the Congo",
+				"CH": "Switzerland",
+				"CI": "Ivory Coast",
+				"CK": "Cook Islands",
+				"CL": "Chile",
+				"CM": "Cameroon",
+				"CN": "China",
+				"CO": "Colombia",
+				"CR": "Costa Rica",
+				"CU": "Cuba",
+				"CV": "Cape Verde",
+				"CW": "Curacao",
+				"CX": "Christmas Island",
+				"CY": "Cyprus",
+				"CZ": "Czech Republic",
+				"DE": "Germany",
+				"DJ": "Djibouti",
+				"DK": "Denmark",
+				"DM": "Dominica",
+				"DO": "Dominican Republic",
+				"DZ": "Algeria",
+				"EC": "Ecuador",
+				"EE": "Estonia",
+				"EG": "Egypt",
+				"EH": "Western Sahara",
+				"ER": "Eritrea",
+				"ES": "Spain",
+				"ET": "Ethiopia",
+				"FI": "Finland",
+				"FJ": "Fiji",
+				"FK": "Falkland Islands",
+				"FM": "Micronesia",
+				"FO": "Faroe Islands",
+				"FR": "France",
+				"GA": "Gabon",
+				"GB": "United Kingdom",
+				"GD": "Grenada",
+				"GE": "Georgia",
+				"GF": "French Guiana",
+				"GG": "Guernsey",
+				"GH": "Ghana",
+				"GI": "Gibraltar",
+				"GL": "Greenland",
+				"GM": "Gambia",
+				"GN": "Guinea",
+				"GP": "Guadeloupe",
+				"GQ": "Equatorial Guinea",
+				"GR": "Greece",
+				"GS": "South Georgia and the South Sandwich Islands",
+				"GT": "Guatemala",
+				"GU": "Guam",
+				"GW": "Guinea-Bissau",
+				"GY": "Guyana",
+				"HK": "Hong Kong",
+				"HM": "Heard Island and McDonald Islands",
+				"HN": "Honduras",
+				"HR": "Croatia",
+				"HT": "Haiti",
+				"HU": "Hungary",
+				"ID": "Indonesia",
+				"IE": "Ireland",
+				"IL": "Israel",
+				"IM": "Isle of Man",
+				"IN": "India",
+				"IO": "British Indian Ocean Territory",
+				"IQ": "Iraq",
+				"IR": "Iran",
+				"IS": "Iceland",
+				"IT": "Italy",
+				"JE": "Jersey",
+				"JM": "Jamaica",
+				"JO": "Jordan",
+				"JP": "Japan",
+				"KE": "Kenya",
+				"KG": "Kyrgyzstan",
+				"KH": "Cambodia",
+				"KI": "Kiribati",
+				"KM": "Comoros",
+				"KN": "Saint Kitts and Nevis",
+				"KP": "North Korea",
+				"KR": "South Korea",
+				"KW": "Kuwait",
+				"KY": "Cayman Islands",
+				"KZ": "Kazakhstan",
+				"LA": "Laos",
+				"LB": "Lebanon",
+				"LC": "Saint Lucia",
+				"LI": "Liechtenstein",
+				"LK": "Sri Lanka",
+				"LR": "Liberia",
+				"LS": "Lesotho",
+				"LT": "Lithuania",
+				"LU": "Luxembourg",
+				"LV": "Latvia",
+				"LY": "Libya",
+				"MA": "Morocco",
+				"MC": "Monaco",
+				"MD": "Moldova",
+				"ME": "Montenegro",
+				"MF": "Saint Martin",
+				"MG": "Madagascar",
+				"MH": "Marshall Islands",
+				"MK": "Macedonia",
+				"ML": "Mali",
+				"MM": "Myanmar",
+				"MN": "Mongolia",
+				"MO": "Macao",
+				"MP": "Northern Mariana Islands",
+				"MQ": "Martinique",
+				"MR": "Mauritania",
+				"MS": "Montserrat",
+				"MT": "Malta",
+				"MU": "Mauritius",
+				"MV": "Maldives",
+				"MW": "Malawi",
+				"MX": "Mexico",
+				"MY": "Malaysia",
+				"MZ": "Mozambique",
+				"NA": "Namibia",
+				"NC": "New Caledonia",
+				"NE": "Niger",
+				"NF": "Norfolk Island",
+				"NG": "Nigeria",
+				"NI": "Nicaragua",
+				"NL": "Netherlands",
+				"NO": "Norway",
+				"NP": "Nepal",
+				"NR": "Nauru",
+				"NU": "Niue",
+				"NZ": "New Zealand",
+				"OM": "Oman",
+				"PA": "Panama",
+				"PE": "Peru",
+				"PF": "French Polynesia",
+				"PG": "Papua New Guinea",
+				"PH": "Philippines",
+				"PK": "Pakistan",
+				"PL": "Poland",
+				"PM": "Saint Pierre and Miquelon",
+				"PN": "Pitcairn",
+				"PR": "Puerto Rico",
+				"PS": "Palestinian Territory",
+				"PT": "Portugal",
+				"PW": "Palau",
+				"PY": "Paraguay",
+				"QA": "Qatar",
+				"RE": "Reunion",
+				"RO": "Romania",
+				"RS": "Serbia",
+				"RU": "Russia",
+				"RW": "Rwanda",
+				"SA": "Saudi Arabia",
+				"SB": "Solomon Islands",
+				"SC": "Seychelles",
+				"SD": "Sudan",
+				"SE": "Sweden",
+				"SG": "Singapore",
+				"SH": "Saint Helena",
+				"SI": "Slovenia",
+				"SJ": "Svalbard and Jan Mayen",
+				"SK": "Slovakia",
+				"SL": "Sierra Leone",
+				"SM": "San Marino",
+				"SN": "Senegal",
+				"SO": "Somalia",
+				"SR": "Suriname",
+				"SS": "South Sudan",
+				"ST": "Sao Tome and Principe",
+				"SV": "El Salvador",
+				"SX": "Sint Maarten",
+				"SY": "Syria",
+				"SZ": "Swaziland",
+				"TC": "Turks and Caicos Islands",
+				"TD": "Chad",
+				"TF": "French Southern Territories",
+				"TG": "Togo",
+				"TH": "Thailand",
+				"TJ": "Tajikistan",
+				"TK": "Tokelau",
+				"TL": "East Timor",
+				"TM": "Turkmenistan",
+				"TN": "Tunisia",
+				"TO": "Tonga",
+				"TR": "Turkey",
+				"TT": "Trinidad and Tobago",
+				"TV": "Tuvalu",
+				"TW": "Taiwan",
+				"TZ": "Tanzania",
+				"UA": "Ukraine",
+				"UG": "Uganda",
+				"UM": "United States Minor Outlying Islands",
+				"US": "United States",
+				"UY": "Uruguay",
+				"UZ": "Uzbekistan",
+				"VA": "Vatican",
+				"VC": "Saint Vincent and the Grenadines",
+				"VE": "Venezuela",
+				"VG": "British Virgin Islands",
+				"VI": "U.S. Virgin Islands",
+				"VN": "Vietnam",
+				"VU": "Vanuatu",
+				"WF": "Wallis and Futuna",
+				"WS": "Samoa",
+				"XK": "Kosovo",
+				"YE": "Yemen",
+				"YT": "Mayotte",
+				"ZA": "South Africa",
+				"ZM": "Zambia",
+				"ZW": "Zimbabwe"
+			},
+			"nxReg_i18n_SignUp_VerificationCodeToggle": "添加验证码",
+			"nxReg_i18n_SignUp_VerificationCode": "验证码",
+			"nxReg_i18n_SignUp_VerificationCodeError": "请检查验证码并重试",
+
+			"nxReg_i18n_SignUp_Password_Title": "感谢您注册\n以下是您的注册信息",
+			"nxReg_i18n_SignUp_Password_SubTitle": "请务必保存这些信息",
+			"nxReg_i18n_SignUp_Password_Button": "继续",
+
+			"nxReg_i18n_SignUp_Social_BoxMessage1": "或使用以下方式注册：",
+			"nxReg_i18n_SignUp_Social_BoxMessage2": "未经您的许可，我们绝不会发布任何内容。",
+			"nxReg_i18n_SignUp_Social_Google": "使用 Google 注册",
+			"nxReg_i18n_SignUp_Social_Facebook": "使用 Facebook 注册",
+			"nxReg_i18n_SignUp_Social_FacebookError": "请授权我们的应用以使用 Facebook 注册。",
+			"nxReg_i18n_SignUp_Social_GoogleError": "请授权我们的应用以使用 Google 注册",
+			"nxReg_i18n_SignUp_Social_FacebookFailedError": "请检查您的 Facebook 账户或选择其他注册方式",
+			"nxReg_i18n_SignUp_Social_GoogleFailedError": "请检查您的 Google 账户或选择其他注册方式",
+			"nxReg_i18n_SignUp_Social_GoogleJWTExpired": "会话已过期。请重新注册。",
+
+			"nxReg_i18n_SignUp_Social_Text": "请接受我们的隐私声明以进入交易平台",
+
+			"nxReg_i18n_SignUp_Activation_Message1": "请检查您的收件箱",
+			"nxReg_i18n_SignUp_Activation_Message2": "请检查 %%Email%% 中的账户激活邮件。",
+			"nxReg_i18n_SignUp_Activation_Message3": "没有找到？请检查垃圾邮件。",
+			"nxReg_i18n_SignUp_Activation_Message4": "仍然没有收到邮件？",
+			"nxReg_i18n_SignUp_Activation_ResendButton": "重新发送",
+			"nxReg_i18n_SignUp_Activation_ResendLimitReachedError": "已达到邮件重发上限。请重新注册。",
+
+			"nxReg_i18n_Activation_AccountActivated": "您的账户已成功激活。我们将为您跳转至 <a href=\"%%SignInUrl%%\">登录</a>。",
+			"nxReg_i18n_Activation_LinkExpiredError": "账户激活链接已过期。您需要 <a href=\"%%SignUpUrl%%\">重新注册</a>。",
+
+			"nxReg_i18n_UnknownError": "发生未知错误。请稍后再试。"
+		},
+		"no": {
+			"nxReg_i18n_SignUp_SignUp": "Registrer deg",
+			"nxReg_i18n_SignUp_Email": " E-post",
+			"nxReg_i18n_SignUp_Password": " Passord (8+ tegn)",
+			"nxReg_i18n_SignUp_Password_5": " Passord (5+ tegn)",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx1": "Minst 1 liten bokstav",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx2": "Minst 1 stor bokstav",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx3": "Minst 1 tall",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx4": "Spesialtegn er ikke tillatt",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx5": "Minst 8 tegn",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx6": "Maksimalt 24 tegn",
+			"nxReg_i18n_SignUp_PasswordValidationRegEx_loose": "Passordet ditt må være minst 5 tegn langt",
+			"nxReg_i18n_SignUp_CreateAccountButton": "Opprett en konto",
+			"nxReg_i18n_SignUp_SignIn": "Allerede registrert? Logg inn",
+			"nxReg_i18n_SignUp_SignInText": "Har du allerede en konto?",
+			"nxReg_i18n_SignUp_LogIn": "Logg inn",
+			"nxReg_i18n_SignUp_RiskWaring": "Risiko-advarsel: Handel med Forex og CFD-er kan føre til tap av hele din investerte kapital.",
+
+			"nxReg_i18n_SignUp_PrivacyNoticeNotAcceptedError": "Godta personvernerklæringen for å fortsette",
+			"nxReg_i18n_SignUp_CountryBlockedError": "Du kan ikke registrere deg fra landet du befinner deg i.",
+			"nxReg_i18n_SignUp_ReCaptchaMandatoryError": "ReCaptcha er obligatorisk!",
+			"nxReg_i18n_SignUp_EmailWrongFormatError": "Skrev du inn riktig e-postadresse? Vennligst prøv igjen",
+			"nxReg_i18n_SignUp_EmailAlreadyExistsError": "Denne e-posten er allerede i bruk. <a href=\"%%SignInUrl%%\">Logg inn</a>",
+			"nxReg_i18n_SignUp_EmailNonExistentError": "TDen oppgitte e-posten eksisterer ikke. Vennligst sjekk og prøv igjen.",
+			"nxReg_i18n_SignUp_ServerUnreachableError": "Problem med å koble til serveren. Vennligst prøv igjen senere.",
+			"nxReg_i18n_SignUp_PasswordWrongError": "Passordet må overholde passordreglene",
+
+			"nxReg_i18n_SignUp_FullName": "Fullt navn",
+			"nxReg_i18n_SignUp_FullNameError": "Fullt navn er påkrevd",
+
+			"nxReg_i18n_SignUp_CountryCode": "Landskode",
+
+			"nxReg_i18n_SignUp_PhoneNumber": "Telefonnummer",
+			"nxReg_i18n_SignUp_PhoneNumberErrors": [
+				"Telefonnummer er påkrevd",
+				"Oppgi en gyldig landskode.",
+				"Vennligst oppgi et lengre nummer",
+				"Vennligst oppgi et kortere nummer",
+				"Ikke glem å oppgi et gyldig telefonnummer."
+			],
+
+			"nxReg_i18n_SignUp_Country": "Land",
+			"nxReg_i18n_SignUp_CountryError": "Vennligst velg et land",
+			"nxReg_i18n_SignUp_CountryList": {
+				"AD": "Andorra",
+				"AE": "United Arab Emirates",
+				"AF": "Afghanistan",
+				"AG": "Antigua and Barbuda",
+				"AI": "Anguilla",
+				"AL": "Albania",
+				"AM": "Armenia",
+				"AO": "Angola",
+				"AQ": "Antarctica",
+				"AR": "Argentina",
+				"AS": "American Samoa",
+				"AT": "Austria",
+				"AU": "Australia",
+				"AW": "Aruba",
+				"AX": "Aland Islands",
+				"AZ": "Azerbaijan",
+				"BA": "Bosnia and Herzegovina",
+				"BB": "Barbados",
+				"BD": "Bangladesh",
+				"BE": "Belgium",
+				"BF": "Burkina Faso",
+				"BG": "Bulgaria",
+				"BH": "Bahrain",
+				"BI": "Burundi",
+				"BJ": "Benin",
+				"BL": "Saint Barthelemy",
+				"BM": "Bermuda",
+				"BN": "Brunei",
+				"BO": "Bolivia",
+				"BQ": "Bonaire, Saint Eustatius and Saba ",
+				"BR": "Brazil",
+				"BS": "Bahamas",
+				"BT": "Bhutan",
+				"BV": "Bouvet Island",
+				"BW": "Botswana",
+				"BY": "Belarus",
+				"BZ": "Belize",
+				"CA": "Canada",
+				"CC": "Cocos Islands",
+				"CD": "Democratic Republic of the Congo",
+				"CF": "Central African Republic",
+				"CG": "Republic of the Congo",
+				"CH": "Switzerland",
+				"CI": "Ivory Coast",
+				"CK": "Cook Islands",
+				"CL": "Chile",
+				"CM": "Cameroon",
+				"CN": "China",
+				"CO": "Colombia",
+				"CR": "Costa Rica",
+				"CU": "Cuba",
+				"CV": "Cape Verde",
+				"CW": "Curacao",
+				"CX": "Christmas Island",
+				"CY": "Cyprus",
+				"CZ": "Czech Republic",
+				"DE": "Germany",
+				"DJ": "Djibouti",
+				"DK": "Denmark",
+				"DM": "Dominica",
+				"DO": "Dominican Republic",
+				"DZ": "Algeria",
+				"EC": "Ecuador",
+				"EE": "Estonia",
+				"EG": "Egypt",
+				"EH": "Western Sahara",
+				"ER": "Eritrea",
+				"ES": "Spain",
+				"ET": "Ethiopia",
+				"FI": "Finland",
+				"FJ": "Fiji",
+				"FK": "Falkland Islands",
+				"FM": "Micronesia",
+				"FO": "Faroe Islands",
+				"FR": "France",
+				"GA": "Gabon",
+				"GB": "United Kingdom",
+				"GD": "Grenada",
+				"GE": "Georgia",
+				"GF": "French Guiana",
+				"GG": "Guernsey",
+				"GH": "Ghana",
+				"GI": "Gibraltar",
+				"GL": "Greenland",
+				"GM": "Gambia",
+				"GN": "Guinea",
+				"GP": "Guadeloupe",
+				"GQ": "Equatorial Guinea",
+				"GR": "Greece",
+				"GS": "South Georgia and the South Sandwich Islands",
+				"GT": "Guatemala",
+				"GU": "Guam",
+				"GW": "Guinea-Bissau",
+				"GY": "Guyana",
+				"HK": "Hong Kong",
+				"HM": "Heard Island and McDonald Islands",
+				"HN": "Honduras",
+				"HR": "Croatia",
+				"HT": "Haiti",
+				"HU": "Hungary",
+				"ID": "Indonesia",
+				"IE": "Ireland",
+				"IL": "Israel",
+				"IM": "Isle of Man",
+				"IN": "India",
+				"IO": "British Indian Ocean Territory",
+				"IQ": "Iraq",
+				"IR": "Iran",
+				"IS": "Iceland",
+				"IT": "Italy",
+				"JE": "Jersey",
+				"JM": "Jamaica",
+				"JO": "Jordan",
+				"JP": "Japan",
+				"KE": "Kenya",
+				"KG": "Kyrgyzstan",
+				"KH": "Cambodia",
+				"KI": "Kiribati",
+				"KM": "Comoros",
+				"KN": "Saint Kitts and Nevis",
+				"KP": "North Korea",
+				"KR": "South Korea",
+				"KW": "Kuwait",
+				"KY": "Cayman Islands",
+				"KZ": "Kazakhstan",
+				"LA": "Laos",
+				"LB": "Lebanon",
+				"LC": "Saint Lucia",
+				"LI": "Liechtenstein",
+				"LK": "Sri Lanka",
+				"LR": "Liberia",
+				"LS": "Lesotho",
+				"LT": "Lithuania",
+				"LU": "Luxembourg",
+				"LV": "Latvia",
+				"LY": "Libya",
+				"MA": "Morocco",
+				"MC": "Monaco",
+				"MD": "Moldova",
+				"ME": "Montenegro",
+				"MF": "Saint Martin",
+				"MG": "Madagascar",
+				"MH": "Marshall Islands",
+				"MK": "Macedonia",
+				"ML": "Mali",
+				"MM": "Myanmar",
+				"MN": "Mongolia",
+				"MO": "Macao",
+				"MP": "Northern Mariana Islands",
+				"MQ": "Martinique",
+				"MR": "Mauritania",
+				"MS": "Montserrat",
+				"MT": "Malta",
+				"MU": "Mauritius",
+				"MV": "Maldives",
+				"MW": "Malawi",
+				"MX": "Mexico",
+				"MY": "Malaysia",
+				"MZ": "Mozambique",
+				"NA": "Namibia",
+				"NC": "New Caledonia",
+				"NE": "Niger",
+				"NF": "Norfolk Island",
+				"NG": "Nigeria",
+				"NI": "Nicaragua",
+				"NL": "Netherlands",
+				"NO": "Norway",
+				"NP": "Nepal",
+				"NR": "Nauru",
+				"NU": "Niue",
+				"NZ": "New Zealand",
+				"OM": "Oman",
+				"PA": "Panama",
+				"PE": "Peru",
+				"PF": "French Polynesia",
+				"PG": "Papua New Guinea",
+				"PH": "Philippines",
+				"PK": "Pakistan",
+				"PL": "Poland",
+				"PM": "Saint Pierre and Miquelon",
+				"PN": "Pitcairn",
+				"PR": "Puerto Rico",
+				"PS": "Palestinian Territory",
+				"PT": "Portugal",
+				"PW": "Palau",
+				"PY": "Paraguay",
+				"QA": "Qatar",
+				"RE": "Reunion",
+				"RO": "Romania",
+				"RS": "Serbia",
+				"RU": "Russia",
+				"RW": "Rwanda",
+				"SA": "Saudi Arabia",
+				"SB": "Solomon Islands",
+				"SC": "Seychelles",
+				"SD": "Sudan",
+				"SE": "Sweden",
+				"SG": "Singapore",
+				"SH": "Saint Helena",
+				"SI": "Slovenia",
+				"SJ": "Svalbard and Jan Mayen",
+				"SK": "Slovakia",
+				"SL": "Sierra Leone",
+				"SM": "San Marino",
+				"SN": "Senegal",
+				"SO": "Somalia",
+				"SR": "Suriname",
+				"SS": "South Sudan",
+				"ST": "Sao Tome and Principe",
+				"SV": "El Salvador",
+				"SX": "Sint Maarten",
+				"SY": "Syria",
+				"SZ": "Swaziland",
+				"TC": "Turks and Caicos Islands",
+				"TD": "Chad",
+				"TF": "French Southern Territories",
+				"TG": "Togo",
+				"TH": "Thailand",
+				"TJ": "Tajikistan",
+				"TK": "Tokelau",
+				"TL": "East Timor",
+				"TM": "Turkmenistan",
+				"TN": "Tunisia",
+				"TO": "Tonga",
+				"TR": "Turkey",
+				"TT": "Trinidad and Tobago",
+				"TV": "Tuvalu",
+				"TW": "Taiwan",
+				"TZ": "Tanzania",
+				"UA": "Ukraine",
+				"UG": "Uganda",
+				"UM": "United States Minor Outlying Islands",
+				"US": "United States",
+				"UY": "Uruguay",
+				"UZ": "Uzbekistan",
+				"VA": "Vatican",
+				"VC": "Saint Vincent and the Grenadines",
+				"VE": "Venezuela",
+				"VG": "British Virgin Islands",
+				"VI": "U.S. Virgin Islands",
+				"VN": "Vietnam",
+				"VU": "Vanuatu",
+				"WF": "Wallis and Futuna",
+				"WS": "Samoa",
+				"XK": "Kosovo",
+				"YE": "Yemen",
+				"YT": "Mayotte",
+				"ZA": "South Africa",
+				"ZM": "Zambia",
+				"ZW": "Zimbabwe"
+			},
+			"nxReg_i18n_SignUp_VerificationCodeToggle": "Legg til bekreftelseskode",
+			"nxReg_i18n_SignUp_VerificationCode": "Bekreftelseskode",
+			"nxReg_i18n_SignUp_VerificationCodeError": "Sjekk bekreftelseskoden og prøv igjen",
+
+			"nxReg_i18n_SignUp_Password_Title": "Akk for at du registrerte deg hos oss. <br> Nedenfor finner du registreringsopplysningene dine",
+			"nxReg_i18n_SignUp_Password_SubTitle": "Husk å lagre opplysningene",
+			"nxReg_i18n_SignUp_Password_Button": "Fortsett",
+
+			"nxReg_i18n_SignUp_Social_BoxMessage1": "ELLER registrer deg med:",
+			"nxReg_i18n_SignUp_Social_BoxMessage2": "Vi vil aldri publisere noe uten din tillatelse.",
+			"nxReg_i18n_SignUp_Social_Google": "Registrer deg med Google",
+			"nxReg_i18n_SignUp_Social_Facebook": "Registrer deg med Facebook",
+			"nxReg_i18n_SignUp_Social_FacebookError": "Godkjenn applikasjonen vår for å registrere deg med Facebook.",
+			"nxReg_i18n_SignUp_Social_GoogleError": "Godkjenn applikasjonen vår for å registrere deg med Google.",
+			"nxReg_i18n_SignUp_Social_FacebookFailedError": "Sjekk Facebook-kontoen din eller prøv en annen registreringsmetode",
+			"nxReg_i18n_SignUp_Social_GoogleFailedError": "Sjekk Google-kontoen din eller prøv en annen registreringsmetode",
+			"nxReg_i18n_SignUp_Social_GoogleJWTExpired": "Økten er utløpt. Vennligst registrer deg på nytt.",
+
+			"nxReg_i18n_SignUp_Social_Text": "Godta vår personvernerklæring for å få tilgang til handelsplattformen",
+
+			"nxReg_i18n_SignUp_Activation_Message1": "Sjekk innboksen din",
+			"nxReg_i18n_SignUp_Activation_Message2": "Sjekk  %%Email%%  for en e-post med aktivering av kontoen.",
+			"nxReg_i18n_SignUp_Activation_Message3": "Finner du den ikke? Kanskje den havnet i søppelposten.",
+			"nxReg_i18n_SignUp_Activation_Message4": "Finner du fortsatt ikke e-posten?",
+			"nxReg_i18n_SignUp_Activation_ResendButton": "Send den på nytt",
+			"nxReg_i18n_SignUp_Activation_ResendLimitReachedError": "Grensen for å sende e-posten på nytt er nådd. Registrer deg på nytt.",
+
+			"nxReg_i18n_Activation_AccountActivated": "Kontoen din er aktivert. Du vil bli omdirigert til <a href=\"%%SignInUrl%%\">Logg inn</a>.",
+			"nxReg_i18n_Activation_LinkExpiredError": "Aktiveringslenken for kontoen er utløpt. Du må <a href=\"%%SignUpUrl%%\">registrere deg på nytt</a>.",
+
+			"nxReg_i18n_UnknownError": "Det har oppstått en ukjent feil. Vennligst prøv igjen."
+		}
+	};
+
+	window.nxReg = function (options, i18n) {
+		var app = this;
+
+		var storage = {
+			social: false,
+			socialWrapped: false,
+			socialCode: ""
+		};
+
+		/**
+		 * nxReg Options
+		 * This are options apssed from LPs and websites
+		 * #ivm
+		 */
+		if (window.top.location.hostname === "localhost") {
+			// set qa endpoint
+			options.nxReg_ApiEndpoint = "https://qa-api.plexop.com/ccsprofitstg";
+			console.log("nxReg_Options", options);
+		}
+
+		var settings = $.extend({
+			"nxReg_Debug": true,
+
+			"nxReg_AutoPassword": "false",
+
+			"nxReg_Ui_TargetBlank": "false",
+
+			"nxReg_Ui_TemplateKey": "nxreg",
+			"nxReg_Ui_WrapperSelector": ".nxreg",
+			"nxReg_Ui_LoaderSelector": ".nxreg-loader",
+			"nxReg_Ui_SignUp_FormSelector": ".nxreg-sign-up-form",
+			"nxReg_Ui_ServerErrorSelector": ".nxreg-server-error-wrapper",
+
+			"nxReg_Ui_FullNameSelector": ".nxreg-sign-up-full-name",
+			"nxReg_Ui_EmailSelector": ".nxreg-sign-up-email",
+
+			"nxReg_Ui_PhoneNumberSelector": ".nxreg-sign-up-phone-number",
+			"nxReg_Ui_PhoneNumberWrapperSelector": ".nxreg-sign-up-phone-number-wrapper",
+			"nxReg_Ui_PhoneNumberErrorSelector": ".nxreg-sign-up-phone-number-error",
+
+			"nxReg_Ui_CountrySelector": ".nxreg-sign-up-country",
+
+			"nxReg_Ui_SignUp_SocialFacebookSelector": ".nxreg-sign-up-facebook",
+			"nxReg_Ui_SignUp_SocialGoogleSelector": ".nxreg-sign-up-google",
+
+			"nxReg_Ui_VerificationCodeToggleSelector": ".nxreg-sign-up-verification-code-toggle",
+			"nxReg_Ui_VerificationCodeWrapperSelector": ".nxreg-sign-up-verification-code-wrapper",
+			"nxReg_Ui_VerificationCodeSelector": ".nxreg-sign-up-verification-code",
+
+			"nxReg_Ui_SignUp_Activation_ResendButtonSelector": ".nxreg-sign-up-activation-resend-button",
+			"nxReg_Ui_SignUp_Activation_ServerErrorSelector": ".nxreg-sign-up-activation-server-error-wrapper",
+
+			// "nxReg_Ui_Activation_MessageSelector": ".nxreg-activation-message-wrapper",
+
+			"nxReg_Validation": "strict", // strict \ loose
+			"nxReg_Validation_password": "strict",
+
+			"nxReg_Validation_EmailRegEx": "(?!.*?[._%+\\-]{2,})(?=[a-zA-Z0-9@._%+\\-]{6,254}$)(^[a-zA-Z0-9])[a-zA-Z0-9._%+\\-]{0,64}([^._%+\\-]{1,})@(?!(gamail\\.com)|(gamail\\.top)|(gamil\\.com)|(gmal\\.com)|(gmail\\.co$)|(gmail\\.con)|(gmai\\.com))(?:[a-zA-Z0-9\\-]{1,63}\\.){1,8}[a-zA-Z]{2,63}",
+			// "nxReg_Validation_PasswordRegEx1": "(?=.*[a-z])",
+			// "nxReg_Validation_PasswordRegEx2": "(?=.*[A-Z])",
+			// "nxReg_Validation_PasswordRegEx3": "(?=.*[0-9])",
+			// "nxReg_Validation_PasswordRegEx4": "[^a-zA-Z0-9]",
+			// // "nxReg_Validation_PasswordRegEx4": "[^a-zA-Z0-9\-\*\!\@\#\$\%\&\^]",
+			// "nxReg_Validation_PasswordRegEx5": ".{8,}",
+			// // Max numbers of chars
+			// "nxReg_Validation_PasswordRegEx6": ".{24,}",
+
+			"nxReg_Validation_PasswordRegEx1": "(?=.*[A-Za-z])",          // At least 1 letter
+			"nxReg_Validation_PasswordRegEx2": "",                        // (unused if uppercase not required)
+			"nxReg_Validation_PasswordRegEx3": "(?=.*\\d)",               // At least 1 digit
+			"nxReg_Validation_PasswordRegEx4": "^[\\x21-\\x7E]+$",        // Only printable ASCII (! to ~)
+			"nxReg_Validation_PasswordRegEx5": "^.{8,}$",                 // Min 8 chars
+			"nxReg_Validation_PasswordRegEx6": "^.{0,24}$",                // Max 24 chars
+
+			"nxReg_Validation_PasswordRegEx_loose": "(^[0-9a-zA-Z-|\"'\\x20|~`&~{}!@#._$%^&*()=+-|α-ωΑ-Ω|àèéìòóù|áéíóúüñ|]{5,64}$)",
+			"nxReg_Validation_FullNameRegEx": "",
+			"nxReg_Validation_FullNameRegEx_Strict": "([\\x20\\-?])*([^0-9\\x00\\x20\\x21\\x22\\x23\\x24\\x25\\x26\\x28\\x29\\x2A\\x2B\\x2C\\x2D\\x2E\\x2F\\x3A\\x3B\\x3C\\x3D\\x3E\\x3F\\x40\\x5B\\x5C\\x5D\\x5E\\x5F\\x60\\x7B\\x7C\\x7D\\x7E]{2,64}([\\x20\\-?])+)+([^0-9\\x00\\x20\\x21\\x22\\x23\\x24\\x25\\x26\\x28\\x29\\x2A\\x2B\\x2C\\x2D\\x2E\\x2F\\x3A\\x3B\\x3C\\x3D\\x3E\\x3F\\x40\\x5B\\x5C\\x5D\\x5E\\x5F\\x60\\x7B\\x7C\\x7D\\x7E]{2,64})([\\x20\\-?])*", // "([a-zA-Z]+(\\s))+[a-zA-Z]+",
+			"nxReg_Validation_FullNameRegEx_Loose": "(^[a-zA-Z-|\\x20|\u0621-\u064A|α-ωΑ-Ω|àèéìòóù|áéíóúüñ|,|'|`|.|\-|\s]{2,64}$)",
+			"nxReg_Validation_VerificationCode": "(^[Tt]{0,1}[0-9]{4}$)"
+		}, options);
+
+		var strings = {};
+
+		if (typeof nxReg_i18n !== "undefined" && nxReg_i18n.hasOwnProperty(settings.nxReg_LanguageCode)) {
+			strings = $.extend(nxReg_i18n[settings.nxReg_LanguageCode], i18n);
+		} else {
+			strings = $.extend(nxReg_i18n["en"], i18n);
+		}
+
+		switch (settings.nxReg_Validation) {
+			case "loose":
+				settings.nxReg_Validation_FullNameRegEx = settings.nxReg_Validation_FullNameRegEx_Loose;
+				break;
+			case "strict":
+			default:
+				settings.nxReg_Validation_FullNameRegEx = settings.nxReg_Validation_FullNameRegEx_Strict;
+				break;
+		}
+
+		if (settings.nxReg_Facebook == "true" || settings.nxReg_Google == "true") {
+			storage.social = true;
+		}
+
+		if (navigator.userAgent.indexOf("TT-WRAPPER") !== -1) {
+			storage.socialWrapped = true;
+		}
+
+
+		// TODO
+		// var setupApp = function(callback) {
+		// 	$.getJSON(nxStaticUrl + "/nx-scripts" + nxEnvPath + "/nxreg/nxreg_locales.json", function(response) {
+
+		// 	});
+		// };
+
+		app.filePath = $('script[src*="nxreg.js"]').attr("src") || $('script[src*="nxreg.min.js"]').attr("src");
+		app.basePath = app.filePath.substring(0, app.filePath.lastIndexOf("/"));
+
+		// HandlebarsJS Helpers
+		Handlebars.registerHelper('ifEquals', function (arg1, arg2, options) {
+			return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
+		});
+
+		// App Utils
+		app.utils = {
+
+			buildRequest: function (infoSource) {
+				infoSource = (typeof infoSource === 'undefined') ? 'manual' : infoSource.toLowerCase();
+
+				let qstr = plexop.read_qs();
+				let tr_url = '';
+
+				if (qstr.hasOwnProperty("tracking_url")) {
+					tr_url = "&tracking_url=" + qstr["tracking_url"];
+				}
+
+				let FunnelId = (PlexopAPI.getFunnel() != "undefined") ? PlexopAPI.getFunnel() : settings.nxReg_FunnelId;  // PlexopAPI.getUnknown() || settings.nxReg_FunnelId,
+
+				if (qstr.hasOwnProperty("f")) {
+					FunnelId = qstr["f"];
+				}
+
+
+				var request = {
+					"Acid": (plexop.get_Cookie("__u") !== false) ? plexop.get_Cookie("__u") : null,
+					"AdvertiserId": settings.nxReg_AdvertiserId || PlexopAPI.getAdvertiser(),
+					"AgencyId": PlexopAPI.getA() || settings.nxReg_AgencyId,
+					"BrandId": settings.nxReg_BrandId,
+					"ContactInfoSource": "MANUAL",
+					"EventId": PlexopAPI.getEID(),
+					"FunnelId": FunnelId,
+					"IsMobile": (typeof $.browser.mobile !== "undefined") ? $.browser.mobile : (($(window).width() <= 768) ? true : false),
+					"QueryString": (PlexopAPI.getLeadPixel() + tr_url + "&" + PlexopAPI.getPlexopFieldsAsUrlParams()).split("?")[1],
+					"ReCaptchaToken": storage.reCaptchaToken,
+					"SegmentId": app.getSid() || settings.nxReg_SegmentId,
+					"SkipEmailValidation": (settings.nxReg_EmailValidation == 'true') ? false : true,
+					"TermsAndConditions": 1,
+					"Referer": settings.nxReg_Referer ? settings.nxReg_Referer : window.location.href // NEW
+				};
+				//ARGO
+				// console.log(settings.nxReg_Platform);
+
+				if (settings.nxReg_CreativeSummary) {
+					request.ExtraData = {};
+					request.ExtraData.creative_summary = settings.nxReg_CreativeSummary;
+				}
+
+				/**
+				 * #ivm 
+				 * If there is VoluumCampaignId in means that the request is coming from a Voluum click
+				 * - remove AdvertiserId and FunnelId
+				 * - add CtId 
+				 * - add VoluumCampaignId if campainid is present in query string or Local Storage, if the campaign is direct
+				*/
+				if (settings.nxReg_VoluumCampaignId || qstr.hasOwnProperty("VoluumCampaignId") || qstr.hasOwnProperty("CampaignId") || qstr.hasOwnProperty("campaignid")) {
+					delete request.AdvertiserId;
+					delete request.FunnelId;
+					let getVoluumCampaignId = qstr.hasOwnProperty("VoluumCampaignId") ? qstr.VoluumCampaignId : null;
+					let getCampaignId = qstr.hasOwnProperty("CampaignId") ? qstr.CampaignId : null;
+					if (!getCampaignId) getCampaignId = qstr.hasOwnProperty("campaignid") ? qstr.campaignid : null;
+					const VoluumCampaignId = getVoluumCampaignId ? getVoluumCampaignId : getCampaignId;
+					// get vl-cid from local storage if exists
+					// this is important for direct campains from voluum that doesn't have ctid in the query string
+					let localCtId = localStorage.getItem("vl-cid") ? localStorage.getItem("vl-cid") : null;
+					// get ctid from query string if exists
+					let getCtId = qstr.hasOwnProperty("ctid") ? qstr.ctid : null;
+					if (!getCtId) getCtId = qstr.hasOwnProperty("CtId") ? qstr.CtId : null;
+					// if ctid doesn't exist in query string use the one from local storage
+					const ctid = getCtId ? getCtId : localCtId;
+					request["CtId"] = ctid ? ctid : null;
+					request["CampaignId"] = VoluumCampaignId ? VoluumCampaignId : settings.nxReg_VoluumCampaignId;
+				}
+
+				if (settings.nxReg_UseDomain) {
+					request["UseDomain"] = settings.nxReg_UseDomain;
+				}
+
+				if (settings.nxReg_Platform !== undefined && settings.nxReg_Platform !== "") {
+					request["Platform"] = settings.nxReg_Platform; // PROFIT
+
+
+
+					// if (settings.nxReg_LabelId !== undefined && settings.nxReg_LabelId !== "" && settings.nxReg_Platform == "PROFIT") {
+					// 	request["LabelId"] = settings.nxReg_LabelId;
+					// }
+
+					var qs = plexop.read_qs();
+					var key, keys = Object.keys(qs);
+					var n = keys.length;
+					var newqs = {};
+					while (n--) {
+						key = keys[n];
+						newqs[key.toLowerCase()] = qs[key];
+					}
+
+					if (newqs.hasOwnProperty("labelid")) {
+						request["LabelId"] = newqs["labelid"];
+					}
+
+					if (settings.nxReg_FormId !== undefined && settings.nxReg_FormId !== "" && settings.nxReg_Platform == "PROFIT") {
+						if (newqs.hasOwnProperty("formid")) {
+							request["FormId"] = newqs["formid"];
+						} else {
+							request["FormId"] = settings.nxReg_FormId;
+						}
+					}
+
+					if (settings.nxReg_Platform == "PROFIT") {
+						delete request["SegmentId"];
+					}
+				} else {
+					var qs = plexop.read_qs();
+				}
+
+				if (settings.nxReg_IsTest !== undefined && settings.nxReg_IsTest == "true") {
+					request["IsTest"] = 1;
+				}
+
+				if (settings.nxReg_IsPageWhiteLabeled !== undefined && settings.nxReg_IsPageWhiteLabeled == "true") {
+					request["IsPageWhiteLabeled"] = true;
+				}
+
+				if (settings.nxReg_IsPageEdutradingFlow !== undefined && settings.nxReg_IsPageEdutradingFlow === "true") {
+					request["Watch"] = 1;
+				}
+
+				if (qs && qs.hasOwnProperty('watch') && qs.hasOwnProperty('etransid') && qs.hasOwnProperty('ctid')) {
+					request["Watch"] = 1;
+				}
+
+				/*
+				if (plexop.get_Cookie("externalParams")) {
+					let externalParams = plexop.get_Cookie("externalParams").split(",");
+					if (externalParams.length == 3) {
+						request["Watch"] = 1;
+					}
+				}
+				*/
+
+				if (plexop.get_Cookie("externalParams")) {
+					const raw = decodeURIComponent(plexop.get_Cookie("externalParams")); // URL-decode
+					const params = raw.split(","); // ["etransid=...", "ctid=...", "Watch=1"]
+
+					let data = {};
+					params.forEach(param => {
+						const [key, value] = param.split("=");
+						data[key] = value;
+					});
+
+					if (data.etransid && data.ctid && data.Watch === "1") {
+						request["Watch"] = 1;
+					}
+				}
+
+				if (settings.nxReg_GeoValidation !== undefined && settings.nxReg_GeoValidation == "true") {
+					request["SkipGeoValidation"] = 1;
+				}
+
+				if (qs.hasOwnProperty('fbclid') && qs['fbclid'] !== null) {
+					request["CtId"] = qs['fbclid'];
+				}
+
+				switch (infoSource) {
+					case "facebook":
+						request["ContactInfoSource"] = "FACEBOOK";
+						request["PrivacyNotice"] = 1;
+						request["SocialRawData"] = storage.socialResponse;
+						request["Token"] = storage.socialToken;
+
+						if (settings.nxReg_PhoneNumber == "true") {
+							// Fix argentina code from (+)54 to +549
+							let argentinaCodeRegex = /^(\+*54)(?!9)/;
+							request["MobilePhone"] = $(settings.nxReg_Ui_PhoneNumberSelector).intlTelInput("getNumber").replace(argentinaCodeRegex, '+549');
+							// request["Country"] = $(settings.nxReg_Ui_PhoneNumberSelector).intlTelInput("getSelectedCountryData").iso2.toUpperCase();
+						}
+
+						if (settings.nxReg_VerificationCode == "true" && $(settings.nxReg_Ui_VerificationCodeSelector).val().trim() != "") {
+							request["VerificationCode"] = $(settings.nxReg_Ui_VerificationCodeSelector).val();
+						}
+
+						break;
+					case "google":
+						request["ContactInfoSource"] = "GOOGLE";
+						request["PrivacyNotice"] = 1;
+						request["SocialRawData"] = storage.socialResponse;
+						request["Token"] = storage.socialToken;
+						request["JWTToken"] = storage.JWTToken;
+
+						if (settings.nxReg_PhoneNumber == "true") {
+							// Fix argentina code from (+)54 to +549
+							let argentinaCodeRegex = /^(\+*54)(?!9)/;
+							request["MobilePhone"] = $(settings.nxReg_Ui_PhoneNumberSelector).intlTelInput("getNumber").replace(argentinaCodeRegex, '+549');
+							// request["Country"] = $(settings.nxReg_Ui_PhoneNumberSelector).intlTelInput("getSelectedCountryData").iso2.toUpperCase();
+						}
+
+						if (settings.nxReg_VerificationCode == "true" && $(settings.nxReg_Ui_VerificationCodeSelector).val().trim() != "") {
+							request["VerificationCode"] = $(settings.nxReg_Ui_VerificationCodeSelector).val();
+						}
+
+						break;
+					case "manual":
+					default:
+						//profit platform flow
+						if (settings.nxReg_IsPageProfitPlatform !== undefined && settings.nxReg_IsPageProfitPlatform == "true" && profitStep2 != "true") {
+							request["RegistrationContext"] = "PLEXOP_LEAD_ONLY";
+						} else if (settings.nxReg_IsPageProfitPlatform !== undefined && settings.nxReg_IsPageProfitPlatform == "true" && profitStep2 == "true") {
+							request["RegistrationContext"] = "CREATE_ACCOUNT_IN_EXTERNAL_SYSTEM";
+							request["EventId"] = plexop.generate_uuid();
+						}
+
+
+						request["Email"] = storage.email;
+						request["Password"] = storage.password;
+
+						if (settings.nxReg_FullName !== undefined && settings.nxReg_FullName == "true") {
+							//get the name from the current form
+							//request["FullName"] = $(settings.nxReg_Ui_FullNameSelector).val().trim().replace(/\s\s+/g, ' ');
+							request["FullName"] = storage.fullName;
+						}
+
+						if (settings.nxReg_Country !== undefined && settings.nxReg_Country == "true") {
+							request["CountryCode"] = storage.countryCode;
+						}
+
+						if (settings.nxReg_PhoneNumber !== undefined && settings.nxReg_PhoneNumber == "true") {
+							// Fix argentina code from (+)54 to +549
+							let argentinaCodeRegex = /^(\+*54)(?!9)/;
+							request["MobilePhone"] = storage.phoneNumber.replace(argentinaCodeRegex, '+549');
+							//request["MobilePhone"] = $(settings.nxReg_Ui_PhoneNumberSelector).intlTelInput("getNumber");
+							// request["Country"] = $(settings.nxReg_Ui_PhoneNumberSelector).intlTelInput("getSelectedCountryData").iso2.toUpperCase();
+						}
+
+						request["PrivacyNotice"] = storage.PrivacyNotice;
+
+						if (settings.nxReg_VerificationCode == "true" && $(settings.nxReg_Ui_VerificationCodeSelector).val().trim() != "") {
+							request["VerificationCode"] = $(settings.nxReg_Ui_VerificationCodeSelector).val();
+						}
+
+						break;
+				}
+
+				if (settings.nxReg_PhoneNumber !== undefined && settings.nxReg_PhoneNumber == "true") {
+					// console.log('current', request["MobilePhone"]);
+					if (typeof request["MobilePhone"] != 'string') {
+						// Fix argentina code from (+)54 to +549
+						let argentinaCodeRegex = /^(\+*54)(?!9)/;
+						request["MobilePhone"] = storage.phoneNumber.trim().replace(argentinaCodeRegex, '+549');
+					}
+				}
+
+				if (settings.nxReg_ExtraFields !== undefined && typeof settings.nxReg_ExtraFields === "object") {
+					if (Object.keys(settings.nxReg_ExtraFields).length > 0) {
+						for (const key in settings.nxReg_ExtraFields) {
+							request[key] = settings.nxReg_ExtraFields[key];
+						}
+					}
+				}
+
+				if (settings.nxReg_RemoveFields !== undefined && typeof settings.nxReg_RemoveFields === "object") {
+					settings.nxReg_RemoveFields.forEach(field => {
+						if (request.hasOwnProperty(field)) {
+							delete request[field];
+						}
+					});
+				}
+
+
+				// Yahoo tracking cookie
+				const yahooTrackingCookie = qstr.hasOwnProperty("_ly_c") ? qstr["_ly_c"] : plexop.get_Cookie("_ly_c");
+				if (yahooTrackingCookie) {
+					request['CtId'] = yahooTrackingCookie;
+					request['ly_c'] = yahooTrackingCookie;
+				}
+
+				storage.builtRequest = request;
+
+				return request;
+
+				// var request = {
+				// 	"Acid": (plexop.get_Cookie("__u") == false) ? plexop.get_Cookie("__u") : null,
+				// 	"AdvertiserId": PlexopAPI.getAdvertiser(),
+				// 	"AgencyId": PlexopAPI.getA(),
+				// 	"BrandId": settings.nxReg_BrandId,
+				// 	"ContactInfoSource": "MANUAL", // TODO FACEBOOK & GOOGLE
+				// 	"Email": storage.email,
+				// 	"EventId": PlexopAPI.getEID(),
+				// 	"FunnelId": PlexopAPI.getUnknown(),
+				// 	"Password": storage.password,
+				// 	"PrivacyNotice": storage.PrivacyNotice,
+				// 	"QueryString": (PlexopAPI.getLeadPixel() + "&" + PlexopAPI.getPlexopFieldsAsUrlParams()).split("?")[1],
+				// 	"ReCaptchaToken": storage.reCaptchaToken,
+				// 	"SegmentId": app.getSid() || settings.nxReg_SegmentId,
+				// 	"SkipEmailValidation": (settings.nxReg_EmailValidation == 'true')? false: true,
+				// 	// "SocialId": null,
+				// 	// "SocialRawData": null,
+				// 	"TermsAndConditions": 1,
+				// }
+			},
+			buildStorage: function (form) {
+
+				storage.email = $(form).find("#email").val(); //email of the current form
+
+				if (settings.nxReg_FullName !== undefined && settings.nxReg_FullName == "true") {
+					storage.fullName = $(form).find(settings.nxReg_Ui_FullNameSelector).val().trim().replace(/\s\s+/g, ' ');
+				}
+
+				if (settings.nxReg_Country !== undefined && settings.nxReg_Country == "true") {
+					storage.countryCode = $(form).find(settings.nxReg_Ui_CountrySelector).val();
+				}
+
+				if (settings.nxReg_PhoneNumber !== undefined && settings.nxReg_PhoneNumber == "true") {
+					// storage.phoneNumber = $(form).find(settings.nxReg_Ui_PhoneNumberSelector).val();
+					// Make always to take number with country code
+					storage.phoneNumber = $(form).find(settings.nxReg_Ui_PhoneNumberSelector).intlTelInput('getNumber');
+				}
+
+				if (settings.nxReg_AutoPassword == "true") {
+					storage.password = app.utils.generatePassword();
+				} else {
+					storage.password = $(form).find('#password').val(); //password of the current form
+				}
+
+				storage.PrivacyNotice = (settings.nxReg_PrivacyNoticeCheckbox == 'false') ? 1 : $(form).find('#privacy-notice').is(':checked') ? 1 : 0;
+			},
+			callApi: function (action, request, callback) {
+				if (request === undefined) {
+					request = {};
+				}
+
+				$.ajax({
+					type: 'post',
+					url: settings.nxReg_ApiEndpoint + "/" + action,
+					data: JSON.stringify(request),
+					success: function (response) {
+						// console.log(action, request, response);
+						if (typeof callback === "function") {
+							callback(response);
+						} else {
+							return response;
+						}
+					},
+					contentType: "application/json",
+					dataType: 'json'
+				}).fail(function () {
+					var response = {
+						"success": false,
+						"message": strings.nxReg_i18n_UnknownError,
+						"error_code": "",
+						"response_type": "UNKNOWN_ERROR"
+					};
+
+					if (typeof callback === "function") {
+						callback(response);
+					} else {
+						return response;
+					}
+				});
+			},
+			generatePassword: function () {
+				var characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+				var length = 8;
+
+				var outputString = Array(length).fill(characters).map(function (x) {
+					return x[Math.floor(Math.random() * x.length)];
+				}).join('');
+
+				var regex1 = RegExp("([A-Z]{1,})");
+				var regex2 = RegExp("([a-z]{1,})");
+				var regex3 = RegExp("([0-9]{1,})");
+				if (!regex1.test(outputString) || !regex2.test(outputString) || !regex3.test(outputString)) {
+					return app.utils.generatePassword();
+				} else {
+					return outputString;
+				}
+			},
+			getTemplate: function (template, data) {
+				if (data === undefined) {
+					data = {};
+				}
+
+				data.storage = storage;
+				data.settings = settings;
+				data.strings = strings;
+
+				if ($("#" + settings.nxReg_Ui_TemplateKey + "-" + template + "-template").length) {
+					var compiledTemplate = Handlebars.compile(
+						$("#" + settings.nxReg_Ui_TemplateKey + "-" + template + "-template").html()
+					);
+					return compiledTemplate(data);
+				}
+				return false;
+			},
+			regenerateReCaptcha: function (callback) {
+				if (settings.nxReg_ReCaptcha == "true") {
+					if (typeof grecaptcha != "undefined" && typeof grecaptcha.execute != "undefined") {
+						grecaptcha.execute().then(function (token) {
+							storage.reCaptchaToken = token;
+							// console.log(token);
+							if (typeof callback === "function") {
+								callback(token);
+							}
+						});
+					} else {
+						setTimeout(function () {
+							app.utils.regenerateReCaptcha(callback);
+						}, 100);
+					}
+				} else {
+					storage.reCaptchaToken = "white_listed_code";
+
+					if (typeof callback === "function") {
+						callback();
+					}
+				}
+			},
+			redirect: function (redirect_url, delay) {
+				if (delay) {
+					setTimeout(function () {
+						app.utils.redirect(redirect_url);
+					}, delay);
+				} else {
+					if (settings.nxReg_Ui_TargetBlank == "true") {
+						window.open(decodeURIComponent(redirect_url), "_top");
+					} else {
+						window.location = decodeURIComponent(redirect_url);
+					}
+				}
+			},
+			restrictions: function (brand, pregUrl) {
+
+				if (typeof brand == "undefined" || typeof brand != "string" || brand.length === 0) {
+					throw new Error("Brand name is required.");
+				}
+
+				var res = this;
+
+				res.brand = brand;
+
+				this._getJson = function (restrictionType, callback) {
+
+					// #ivm: if traducation we dont need resdtrictions
+					if (settings.nxReg_Platform === 'TRADUCATION' || settings.nxReg_Platform === 'EDUTRADING') {
+						return;
+					}
+
+					if (settings.nxReg_IsPageWhiteLabeled !== undefined && settings.nxReg_IsPageWhiteLabeled == "true") {
+						// Exclude WL LPs to search a restrictions.
+						// This prevent console errors on LPs.
+						return;
+					}
+					$.getJSON(((typeof pregUrl != "undefined") ? pregUrl : "") + "/Restrictions/" + res.brand + "/" + restrictionType + ".json", function (data) {
+						callback(data.countries);
+					}).fail(function () {
+						throw new Error("Problem gettings restrictions.");
+					});
+				};
+
+				this.access = function (callback) {
+					res._getJson("access", callback);
+				};
+
+				this.login = function (callback) {
+					res._getJson("login", callback);
+				};
+
+				this.registration = function (callback) {
+					res._getJson("registration", callback);
+				};
+
+			},
+			uniqueUser: {
+				isLocalStorageAvailable: function () {
+					let test = 'test';
+					try {
+						localStorage.setItem(test, test);
+						localStorage.removeItem(test);
+						return true;
+					} catch (e) {
+						console.log(e);
+						return false;
+					}
+				},
+				storeCredentials: function (data) {
+					let currentExistingUserData = this.getCredentials();
+					currentExistingUserData.add(data);
+					localStorage.setItem('_existing_user_data', btoa(JSON.stringify(Array.from(currentExistingUserData))));
+				},
+				getCredentials: function () {
+					try {
+						let existingUserData = localStorage.getItem('_existing_user_data');
+
+						if (null !== existingUserData) {
+							if (existingUserData.length !== 0) {
+								// Return existing credentials
+								return (new Set(JSON.parse(atob(existingUserData))));
+							} else {
+								return new Set();
+							}
+						} else {
+							return new Set();
+						}
+					} catch (err) {
+						console.log(err);
+						localStorage.removeItem('_existing_user_data');
+						return new Set();
+					}
+				},
+				registerAllowed: {
+					disable: function () {
+						let formButton = document.querySelector(settings.nxReg_Ui_SignUp_FormSelector).querySelector('[type="submit"]');
+						formButton.disabled = true;
+						formButton.style.cursor = 'not-allowed';
+					},
+					enable: function () {
+						let formButton = document.querySelector(settings.nxReg_Ui_SignUp_FormSelector).querySelector('[type="submit"]');
+						formButton.disabled = false;
+						formButton.style.cursor = 'pointer';
+					}
+				},
+				attachEventListeners: function () {
+					let emailInput = document.querySelector('#email');
+
+					emailInput.addEventListener('keyup', () => this.validator());
+				},
+				getCurrentCredentials: function () {
+					let email = document.querySelector('#email').value.trim(); // string
+					return email;
+				},
+				validator: function (credentials = this.getCurrentCredentials()) {
+					let blackList = this.getCredentials(); // This is a Set from stringified objects
+					if (blackList.has(credentials)) {
+						this.registerAllowed.disable();
+					} else {
+						this.registerAllowed.enable();
+					}
+				},
+				init: function (credentials = this.getCurrentCredentials()) {
+					if (!this.isLocalStorageAvailable()) {
+						console.log("UU validator can't initialize. LS not available.");
+						return;
+					};
+					this.attachEventListeners();
+					this.storeCredentials(credentials);
+					this.validator(credentials);
+				}
+			}
+		};
+
+		// App Api
+		app.api = {
+			signUp: function (infoSource) {
+				app.utils.callApi("register", app.utils.buildRequest(infoSource), function (response) {
+					// console.log(response);
+
+					/** 
+					 * Override redirect type from LP/website settings
+					 * @param {string} nxReg_redirectType - Redirect type
+					 */
+					if (settings.nxReg_redirectType !== undefined && settings.nxReg_redirectType !== "") {
+						response.redirect_type = settings.nxReg_redirectType;
+					}
+
+					if (response.success) {
+
+						/**
+						 * Custom event for successful registration
+						 * @event nxreg_register_success
+						 * #ivm
+						 */
+						let nxRegRegisterSuccessEvent = new CustomEvent('nxreg_register_success', {
+							detail: {
+								response: response, // plexop response
+								settings: settings, // settings
+								storage: storage, // use submited data
+								qs: plexop.read_qs() // query string
+							}
+						});
+						window.dispatchEvent(nxRegRegisterSuccessEvent);
+
+						/** #ivm : Log response */
+						if (window.top.location.hostname === "localhost") {
+							console.log('Response', response);
+							console.log('Settings', settings);
+							console.log('Storage', storage);
+						}
+
+						if (response.response_type == "ACTIVATION_EMAIL_SENT") {
+							plexop.sendPublishLeadPixel(PlexopAPIclass.a, PlexopAPIclass.adv, plexop.get_current_uuid()); // TODO
+
+							// TODO: AutoPassword
+
+							app.ui.signUp.activation.show();
+							app.ui.loader.hide();
+
+						} else if (response.redirect_type == "client" && settings.nxReg_Platform != "ARGO" && response.platform !== "EDUTRADING" && response.platform !== "MANILA" && response.platform !== "TRADUCATION") {
+							if (response.is_first) {
+								plexop.sendPublishLeadPixel(PlexopAPIclass.a, PlexopAPIclass.adv, plexop.get_current_uuid());
+
+								if (settings.nxReg_AutoPassword == "true" && (typeof storage.socialSource == "undefined" || typeof storage.socialSource == null || storage.socialSource == "")) {
+									app.ui.signUp.password.show(decodeURIComponent(response.redirect_url));
+								} else {
+									if (settings.nxReg_PreventImmediateRedirect !== undefined && settings.nxReg_PreventImmediateRedirect == "true") {
+										const registerWithPass = new CustomEvent("registerWithPass_success", {
+											detail: {
+												default_redirect_url: response.redirect_url,
+												redirect_cb: function (redirect_url = response.redirect_url) {
+													var qs = plexop.read_qs();
+
+													if (typeof qs.regpxl == "undefined" || qs.regpxl == 1) {
+														app.utils.redirect(redirect_url, 3000);
+													} else {
+														app.utils.redirect(redirect_url);
+													}
+												}
+											},
+										});
+										app.ui.loader.hide();
+										document.dispatchEvent(registerWithPass);
+									} else {
+										var qs = plexop.read_qs();
+
+										if (typeof qs.regpxl == "undefined" || qs.regpxl == 1) {
+											app.utils.redirect(response.redirect_url, 3000);
+										} else {
+											app.utils.redirect(response.redirect_url);
+										}
+									}
+								}
+							} else {
+								var obj = {};
+								obj.eid = plexop.generate_uuid();
+								PlexopAPI.addPixelData(obj);
+
+								if (storage.socialSource) {
+									if (settings.nxReg_Ui_TargetBlank == "true") {
+										window.open(decodeURIComponent(response.redirect_url), "_top");
+									} else {
+										window.location = decodeURIComponent(response.redirect_url);
+									}
+								} else {
+									var message = strings.nxReg_i18n_SignUp_EmailAlreadyExistsError;
+									message = message.replace("%%SignInUrl%%", decodeURIComponent(response.redirect_url)); //settings.nxReg_SignInUrl
+									app.ui.showServerError(message);
+									// Initialize uniqueUser validator for non WL LPs.
+									if (!(settings.nxReg_IsPageWhiteLabeled == "true")) {
+										app.utils.uniqueUser.init();
+									}
+									app.ui.loader.hide();
+								}
+
+							}
+							// } else if (response.redirect_type == "profit") {
+							// 	ExternalUrlHandler.buildProfitIframe();
+							// 	ExternalUrlHandler.depositType = "profit";
+							// 	ExternalUrlHandler.startListeningForIframeMessages();
+							// } else if (response.redirect_type == "deposit") {
+							// 	plexop.sendPublishLeadPixel(PlexopAPIclass.a, PlexopAPIclass.adv, plexop.get_current_uuid());
+							// 	ExternalUrlHandler.buildIframe(ExternalUrlHandler.fixUrl(response.redirect_url));
+							// 	ExternalUrlHandler.depositType = "client";
+							// 	ExternalUrlHandler.startListeningForIframeMessages();
+						}
+						else if (response.redirect_type == "thank_you_page") {
+							plexop.sendPublishLeadPixel(PlexopAPIclass.a, PlexopAPIclass.adv, plexop.get_current_uuid());
+							app.ui.signUp.thankYou.show();
+						}
+
+						//ARGO 10-06-2021
+						else if (settings.nxReg_Platform == "ARGO") {
+							plexop.sendPublishLeadPixel(PlexopAPIclass.a, PlexopAPIclass.adv, plexop.get_current_uuid());
+							app.ui.signUp.thankYou.show();
+						}
+						//ARGO END
+
+						else if (response.platform === "EDUTRADING" || response.platform === "TRADUCATION") {
+							plexop.sendPublishLeadPixel(PlexopAPIclass.a, PlexopAPIclass.adv, plexop.get_current_uuid());
+
+							// #ivm : Get redirect link from the response and reconstruct it
+							// append or preserve languange code in the url
+							let redirect_link_og = (response.redirect_url);
+
+							// root url without query string
+							let redirect_link_root = redirect_link_og.split("?")[0];
+
+							// query string
+							let redirect_link_query = redirect_link_og.split("?")[1];
+
+							// split url by / excluding https://
+							let redirect_link_parts = redirect_link_root.replace("https://", "").split("/");
+
+							// remove empty values
+							redirect_link_parts = redirect_link_parts.filter(part => part.trim() !== "");
+
+							// Start new url
+							let redirect_link = "https://";
+
+							// add root url part
+							redirect_link += redirect_link_parts[0] + "/";
+
+							// Add language code if not english
+							let lang = settings.nxReg_LanguageCode;
+							if (lang != "en") redirect_link += lang + "/";
+
+							// Add query string part
+							if (redirect_link_query) redirect_link += "?" + redirect_link_query;
+
+							// Final redirect URL
+							let redirect_link_url = redirect_link;
+
+							if (settings.nxReg_AutoPassword == "true") {
+								app.ui.signUp.password.show(decodeURIComponent(redirect_link_url));
+							} else {
+								app.utils.redirect(redirect_link_url);
+							}
+						}
+
+						else if (response.platform === "MANILA") {
+							plexop.sendPublishLeadPixel(PlexopAPIclass.a, PlexopAPIclass.adv, plexop.get_current_uuid());
+
+							if (settings.nxReg_AutoPassword == "true") {
+								app.ui.signUp.password.show(decodeURIComponent(response.redirect_url));
+							} else {
+								app.utils.redirect(response.redirect_url);
+							}
+						}
+
+						else if (response.redirect_type == "apps_flyer") {
+							// 	plexop.sendPublishLeadPixel(PlexopAPIclass.a, PlexopAPIclass.adv, plexop.get_current_uuid());
+							// 	//var af_sub1 = "a="+PlexopAPI.getA() +"&adv="+ PlexopAPI.getAdvertiser() +"&f="+ PlexopAPI.getFunnel() +"&u="+ plexop.get_current_uuid();
+							// 	setTimeout(function () {
+							// 		ExternalUrlHandler.redirectTo(response.redirect_url, true);
+							// 	}, 1000);
+
+							var af_sub1 = "af_sub1=" + encodeURIComponent("a=" + PlexopAPI.getA() + "&adv=" + PlexopAPI.getAdvertiser() + "&f=" + PlexopAPI.getFunnel() + "&u=" + plexop.get_current_uuid());
+
+							plexop.sendPublishLeadPixel(PlexopAPIclass.a, PlexopAPIclass.adv, plexop.get_current_uuid());
+
+							var qs = plexop.read_qs();
+
+							if (typeof qs.regpxl == "undefined" || qs.regpxl == 1) {
+								app.utils.redirect(response.redirect_url, 3000);
+							} else {
+								app.utils.redirect(response.redirect_url);
+							}
+
+						} else {
+
+							app.ui.showServerError(strings.nxReg_i18n_UnknownError);
+							app.ui.loader.hide();
+						}
+					} else {
+						// TODO
+						var obj = {};
+						obj.eid = plexop.generate_uuid();
+						PlexopAPI.addPixelData(obj);
+
+						if (response.error_code) {
+
+							switch (response.error_code) {
+								case 1: // INVALID_API_KEY
+								case 3: // INVALID_DATA
+								case 4: // INVALID_MESSAGE_FORMAT
+								case 5: // UNEXPECTED_INTERNAL_ERROR
+								case 6: // OTHER
+								case 10: // TAC_NOT_APPROVED
+								case 12: // FUNNEL_NOT_FOUND
+									app.ui.showServerError(strings.nxReg_i18n_SignUp_ServerUnreachableError);
+									break;
+								case 2: // DUPLICATE_LEAD
+								case 7: // DUPLICATE_EID
+									if (storage.socialSource) {
+										if (settings.nxReg_Ui_TargetBlank == "true") {
+											window.open(decodeURIComponent(response.redirect_url), "_top");
+										} else {
+											window.location = decodeURIComponent(response.redirect_url);
+										}
+									} else {
+										var message = strings.nxReg_i18n_SignUp_EmailAlreadyExistsError;
+										message = message.replace("%%SignInUrl%%", decodeURIComponent(response.redirect_url)); // settings.nxReg_SignInUrl
+										app.ui.showServerError(message);
+										// Initialize uniqueUser validator for non WL LPs.
+										if (!(settings.nxReg_IsPageWhiteLabeled == "true")) {
+											app.utils.uniqueUser.init();
+										}
+									}
+									break;
+								case 8: // COUNTRY_NOT_ALLOWED
+									app.ui.showServerError(strings.nxReg_i18n_SignUp_CountryBlockedError);
+									break;
+								case 9: // INVALID_EMAIL
+									app.ui.showServerError(strings.nxReg_i18n_SignUp_EmailWrongFormatError);
+									break;
+								case 11: // PRIVACY_NOTICE_NOT_APPROVED
+									app.ui.showServerError(strings.nxReg_i18n_SignUp_PrivacyNoticeNotAcceptedError);
+									break;
+								case 16: // CAPTCHA_VALIDATION_NOT_PASSED
+									app.ui.showServerError(strings.nxReg_i18n_SignUp_ReCaptchaMandatoryError);
+									break;
+								case 19: // EMAIL_NOT_INCLUDED_IN_SOCIAL_INFO
+									app.ui.showServerError(strings.nxReg_i18n_SignUp_Social_FacebookFailedError);
+									break;
+								case 22: // INVALID_PHONE_NUMBER
+									app.ui.showServerError(strings.nxReg_i18n_SignUp_PhoneNumberErrors[0]);
+									break;
+								case 25: // JWT_EXPIRED
+									if (history.pushState) {
+										let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + `?error=${response.error_message}&error_code=${response.error_code}&source=google`;
+										window.history.pushState({ path: newurl }, '', newurl);
+									}
+									app.ui.signUp.show();
+									app.ui.showServerError(strings.nxReg_i18n_SignUp_Social_GoogleJWTExpired);
+									let social = new CustomEvent('social', {
+										'detail': 'Social reg triggered!'
+									});
+									document.getElementsByTagName('body')[0].dispatchEvent(social);
+									break;
+								case 13: // ACTIVATION_CODE_INVALID
+								case 14: // LEAD_EVENT_FOR_ACTIVATION_NOT_FOUND_OR_EXPIRED
+								case 15: // PLATFORM_NOT_SUPPORTED
+								case 17: // EMAIL_RESEND_ATTEMPS_THRESHOLD_WAS_REACHED
+								default: // UNKNOWN_ERROR
+									app.ui.showServerError(strings.nxReg_i18n_UnknownError);
+									break;
+							}
+							app.ui.loader.hide();
+						} else {
+							if (response.redirect_url) {
+								if (settings.nxReg_Ui_TargetBlank == "true") {
+									window.open(decodeURIComponent(response.redirect_url), "_top");
+								} else {
+									window.location = decodeURIComponent(response.redirect_url);
+								}
+							} else {
+								// app.ui.showServerError(strings.nxReg_i18n_UnknownError);
+
+								plexop.sendPublishLeadPixel(PlexopAPIclass.a, PlexopAPIclass.adv, plexop.get_current_uuid());
+								app.ui.signUp.thankYou.show();
+								app.ui.loader.hide(); //loader original
+							}
+						}
+
+					}
+				});
+			},
+			resendActivationEmail: function () {
+				app.utils.regenerateReCaptcha(function (reCaptchaToken) {
+					// console.log('resend? ', reCaptchaToken);
+					var obj = {};
+					obj.eid = plexop.generate_uuid();
+					PlexopAPI.addPixelData(obj);
+
+					storage.builtRequest["EventId"] = PlexopAPI.getEID();
+					storage.builtRequest["ReCaptchaToken"] = reCaptchaToken;
+
+					app.utils.callApi("register", storage.builtRequest, function (response) {
+
+						if (response.success) {
+							if (response.response_type == "ACTIVATION_EMAIL_SENT") {
+								// app.ui.signUp.activation.show();
+								// app.ui.loader.show();
+								app.ui.loader.hide();
+							} else {
+								app.ui.showServerError(strings.nxReg_i18n_UnknownError);
+								app.ui.loader.hide();
+							}
+						} else {
+							if (response.error_code) {
+								switch (response.error_code) {
+									case 1: // INVALID_API_KEY
+									case 2: // DUPLICATE_LEAD
+									case 3: // INVALID_DATA
+									case 4: // INVALID_MESSAGE_FORMAT
+									case 5: // UNEXPECTED_INTERNAL_ERROR
+									case 6: // OTHER
+									case 7: // DUPLICATE_EID
+									case 8: // COUNTRY_NOT_ALLOWED
+									case 9: // INVALID_EMAIL
+									case 10: // TAC_NOT_APPROVED
+									case 11: // PRIVACY_NOTICE_NOT_APPROVED
+									case 12: // FUNNEL_NOT_FOUND
+									case 16: // CAPTCHA_VALIDATION_NOT_PASSED
+										app.ui.showServerError(strings.nxReg_i18n_SignUp_ServerUnreachableError);
+										break;
+									case 17: // EMAIL_RESEND_ATTEMPS_THRESHOLD_WAS_REACHED
+										var message = nxReg_i18n_SignUp_Activation_ResendLimitReachedError;
+										message = message.replace("%%SignUpUrl%%", settings.nxReg_SignUpUrl);
+
+										app.ui.showServerError(message);
+										break;
+									case 13: // ACTIVATION_CODE_INVALID
+									case 14: // LEAD_EVENT_FOR_ACTIVATION_NOT_FOUND_OR_EXPIRED
+									case 15: // PLATFORM_NOT_SUPPORTED
+									default: // UNKNOWN_ERROR
+										app.ui.showServerError(strings.nxReg_i18n_UnknownError);
+										break;
+								}
+								app.ui.loader.hide();
+							} else {
+								if (response.redirect_url) {
+									if (settings.nxReg_Ui_TargetBlank == "true") {
+										window.open(decodeURIComponent(response.redirect_url), "_top");
+									} else {
+										window.location = decodeURIComponent(response.redirect_url);
+									}
+								} else {
+									app.ui.showServerError(strings.nxReg_i18n_UnknownError);
+									app.ui.loader.hide();
+								}
+							}
+
+						}
+					});
+				});
+			},
+			activate: function (data) {
+				app.utils.callApi("activate", data, function (response) {
+
+					if (response.success) {
+						if (response.redirect_type == "client") {
+							var message = strings.nxReg_i18n_Activation_AccountActivated;
+							message = message.replace("%%SignInUrl%%", decodeURIComponent(response.redirect_url));
+							app.ui.showServerError(message);
+
+							app.ui.loader.hide();
+
+							setTimeout(function () {
+								if (settings.nxReg_Ui_TargetBlank == "true") {
+									window.open(decodeURIComponent(response.redirect_url), "_top");
+								} else {
+									window.location = decodeURIComponent(response.redirect_url);
+								}
+							}, 1000);
+						} else {
+							app.ui.showServerError(strings.nxReg_i18n_UnknownError);
+							app.ui.loader.hide();
+						}
+					} else {
+						if (response.error_code) {
+							switch (response.error_code) {
+								case 1: // INVALID_API_KEY
+								case 2: // DUPLICATE_LEAD
+								case 3: // INVALID_DATA
+								case 4: // INVALID_MESSAGE_FORMAT
+								case 5: // UNEXPECTED_INTERNAL_ERROR
+								case 6: // OTHER
+								case 8: // COUNTRY_NOT_ALLOWED
+								case 9: // INVALID_EMAIL
+								case 10: // TAC_NOT_APPROVED
+								case 11: // PRIVACY_NOTICE_NOT_APPROVED
+								case 12: // FUNNEL_NOT_FOUND
+								case 16: // CAPTCHA_VALIDATION_NOT_PASSED
+								case 17: // EMAIL_RESEND_ATTEMPS_THRESHOLD_WAS_REACHED
+									app.ui.showServerError(strings.nxReg_i18n_SignUp_ServerUnreachableError);
+									break;
+								case 7: // DUPLICATE_EID
+									var message = strings.nxReg_i18n_Activation_AccountActivated;
+									message = message.replace("%%SignInUrl%%", decodeURIComponent(response.redirect_url));
+									app.ui.showServerError(message);
+
+									setTimeout(function () {
+										if (settings.nxReg_Ui_TargetBlank == "true") {
+											window.open(decodeURIComponent(response.redirect_url), "_top");
+										} else {
+											window.location = decodeURIComponent(response.redirect_url);
+										}
+									}, 1000);
+									break;
+								case 13: // ACTIVATION_CODE_INVALID
+								case 14: // LEAD_EVENT_FOR_ACTIVATION_NOT_FOUND_OR_EXPIRED
+									var message = strings.nxReg_i18n_Activation_LinkExpiredError;
+									message = message.replace("%%SignUpUrl%%", settings.nxReg_SignUpUrl);
+									app.ui.showServerError(message);
+									break;
+								case 15: // PLATFORM_NOT_SUPPORTED
+								default: // UNKNOWN_ERROR
+									app.ui.showServerError(strings.nxReg_i18n_UnknownError);
+									break;
+							}
+							app.ui.loader.hide();
+						} else {
+							if (response.redirect_url) {
+								if (settings.nxReg_Ui_TargetBlank == "true") {
+									window.open(decodeURIComponent(response.redirect_url), "_top");
+								} else {
+									window.location = decodeURIComponent(response.redirect_url);
+								}
+							} else {
+								app.ui.showServerError(strings.nxReg_i18n_UnknownError);
+								app.ui.loader.hide();
+							}
+						}
+
+					}
+				});
+			}
+		};
+
+		// App UI
+		app.ui = {
+			loader: {
+				show: function () {
+					if ($(settings.nxReg_Ui_LoaderSelector).length <= 0) {
+						$("body").append($(app.utils.getTemplate('loader')));
+					}
+
+					// $("body").css({
+					// 	"width": "100%",
+					// 	"position": "fixed",
+					// 	"overflow-y": "scroll"
+					// });
+
+					$(settings.nxReg_Ui_LoaderSelector).show();
+					$(settings.nxReg_Ui_LoaderSelector).css('z-index', '99999');
+					$(settings.nxReg_Ui_LoaderSelector).stop().animate({
+						"opacity": "0.7"
+					}, 500);
+				},
+				hide: function () {
+					$(settings.nxReg_Ui_LoaderSelector).stop().animate({
+						"opacity": "0"
+					}, 500, function () {
+						$(settings.nxReg_Ui_LoaderSelector).hide();
+					});
+
+					// $("body").css({
+					// 	"width": "auto",
+					// 	"position": "relative",
+					// 	"overflow-y": "auto"
+					// });
+				}
+			},
+			signUp: {
+				show: function () {
+					$(settings.nxReg_Ui_WrapperSelector).html($(app.utils.getTemplate('sign-up')));
+					//check phone number for non-numeric chars
+					// $('.nxreg-sign-up-phone-number').on('keyup', function(){
+					// 	$(this).val($(this).val().replace (/\D/, ''));
+					// 	console.log('number 6');
+					// });
+
+					if (settings.nxReg_AutoPassword == "false") {
+
+						$('input[type="password"]').focusin(function () {
+							var $this = $(this);
+
+							var $password_validation = $this.parent().find('.password-validation');
+
+							if ($password_validation.length) {
+								if ($password_validation.children('[data-valid="false"]').length > 0) {
+									$password_validation.show();
+								}
+							}
+						});
+
+						$('input[type="password"]').focusout(function () {
+							var $this = $(this);
+
+							var $password_validation = $this.parent().find('.password-validation');
+
+							if ($password_validation.length) {
+								$password_validation.hide();
+							}
+						});
+
+						$('input[type="password"]').keyup(function () {
+							var $this = $(this);
+
+							if (!$this.parent().find('.password-validation').length) {
+								$this.parent().css('position', 'relative');
+								$this.parent().append($('<ul class="password-validation"></ul>'));
+							}
+							var $password_validation = $this.parent().find('.password-validation');
+
+							switch (settings.nxReg_Validation_password) {
+								case "loose":
+									var validations = [
+										{ regex: settings.nxReg_Validation_PasswordRegEx_loose, valid: true, message: strings.nxReg_i18n_SignUp_PasswordValidationRegEx_loose },
+									];
+									break;
+								case "strict":
+								default:
+									var validations = [
+										{ regex: settings.nxReg_Validation_PasswordRegEx1, valid: true, message: strings.nxReg_i18n_SignUp_PasswordValidationRegEx1 },
+										// Comment to allow Capital letters in password
+										// { regex: settings.nxReg_Validation_PasswordRegEx2, valid: true, message: strings.nxReg_i18n_SignUp_PasswordValidationRegEx2 },
+										{ regex: settings.nxReg_Validation_PasswordRegEx3, valid: true, message: strings.nxReg_i18n_SignUp_PasswordValidationRegEx3 },
+										{ regex: settings.nxReg_Validation_PasswordRegEx4, valid: true, message: strings.nxReg_i18n_SignUp_PasswordValidationRegEx4 },
+										{ regex: settings.nxReg_Validation_PasswordRegEx5, valid: true, message: strings.nxReg_i18n_SignUp_PasswordValidationRegEx5 },
+										{ regex: settings.nxReg_Validation_PasswordRegEx6, valid: true, message: strings.nxReg_i18n_SignUp_PasswordValidationRegEx6 },
+									];
+									break;
+							}
+
+							validations.forEach(function (validation, index) {
+								var regex = new RegExp(validation.regex);
+
+								var $validation = $password_validation.find('[data-validation="' + index + '"]');
+
+								if (!$validation.length) {
+									$password_validation.append($('<li data-validation="' + index + '" data-valid="false">' + validation.message + '</li>'));
+									$validation = $password_validation.find('[data-validation="' + index + '"]');
+								}
+
+								if (regex.test($this.val()) == validation.valid) {
+									$validation.attr('data-valid', 'true').fadeOut(800);
+								} else {
+									$validation.attr('data-valid', 'false').fadeIn(800);
+								}
+							});
+
+							if ($password_validation.children('[data-valid="false"]').length > 0) {
+								$password_validation.show();
+								$this[0].setCustomValidity('invalid');
+							} else {
+								$password_validation.fadeOut(800);
+								$this[0].setCustomValidity('');
+							}
+						});
+
+						$('.password-eye input, .password-eye__icon').mouseenter(function () {
+							$('.password-eye__icon').show();
+						});
+
+						$('.password-eye input').mouseleave(function () {
+							$('.password-eye__icon').hide();
+						});
+
+						$('.password-eye__icon').click(function (e) {
+							if ($('.password-eye input').attr('type') == "password") {
+								$('.password-eye input').attr('type', 'text');
+							} else {
+								$('.password-eye input').attr('type', 'password');
+							}
+						});
+
+					} // nxReg_AutoPassword
+
+					if (settings.nxReg_Country !== undefined && settings.nxReg_Country == "true") {
+						var list = $(settings.nxReg_Ui_CountrySelector);
+
+						var listOutput = "";
+
+						$.each(strings.nxReg_i18n_SignUp_CountryList, function (i, v) {
+							listOutput += "<option value=\"" + i.toUpperCase() + "\">" + v + "</option>";
+						});
+
+						$(settings.nxReg_Ui_CountrySelector).append($(listOutput));
+
+						list.html(list.find('option').sort(function (x, y) {
+							// to change to descending order switch "<" for ">"
+							return $(x).text() > $(y).text() ? 1 : -1;
+						})); // Fix duplicate of the country in the country list
+
+						//remove duplicate country fixed at 04.06.2021
+						var optionValues = [];
+						$('#country option').each(function () {
+							if ($.inArray(this.value, optionValues) > -1) {
+								$(this).remove();
+							} else {
+								optionValues.push(this.value);
+							}
+						});
+
+						$(settings.nxReg_Ui_CountrySelector).prepend($("<option value=\"\" disabled>" + strings.nxReg_i18n_SignUp_Country + "</option>"));
+
+						list.find('option[value=""]').prop("selected=\"selected\"", true);
+					}
+
+					//Check if we don't want the country flags to be present in the reg form
+					if (settings.nxReg_PhoneNumber !== undefined && settings.nxReg_PhoneNumber == "true" && settings.nxReg_RemoveFlags == "true") {
+						var $phoneNumberInput = $(settings.nxReg_Ui_PhoneNumberSelector);
+
+						$phoneNumberInput.intlTelInput({
+							// initialCountry: "auto",
+							// #ivm initial country should be empty
+							initialCountry: "",
+							customPlaceholder: function (selectedCountryPlaceholder, selectedCountryData) {
+								return "";
+							},
+
+							separateDialCode: true,
+							utilsScript: nxStaticUrl + "/nx-scripts" + nxEnvPath + "/external/intl-tel-input/js/utils.js",
+							preferredCountries: []
+						});
+
+						$phoneNumberInput.on("keyup", function () {
+							if ($(settings.nxReg_Ui_SignUp_FormSelector).hasClass("was-validated")) {
+								app.ui.signUp.validate.phoneNumber($(this));
+							}
+						});
+
+						if (settings.nxReg_Country !== undefined && settings.nxReg_Country == "true") {
+							$phoneNumberInput.on('countrychange', function () {
+								var selectedCountry = "";
+								if (!$.isEmptyObject($phoneNumberInput.intlTelInput('getSelectedCountryData'))) {
+									selectedCountry = $phoneNumberInput.intlTelInput('getSelectedCountryData').iso2.toUpperCase();
+								}
+								$(settings.nxReg_Ui_CountrySelector).find('option[value="' + selectedCountry + '"]').prop("selected", true);
+								if ($(settings.nxReg_Ui_SignUp_FormSelector).hasClass("was-validated")) {
+									app.ui.signUp.validate.phoneNumber();
+								}
+							});
+						}
+					}
+
+					//limit phone number to digits only 13-07-2021
+					$('.nxreg-sign-up-phone-number').on('input', function () {
+						$(this).val($(this).val().replace(/[^\d]/g, ''));
+					});
+					$('.nxreg-sign-up-phone-number').on("cut copy paste", function (e) {
+						e.preventDefault();
+					});
+					//limit phone number to digits only end
+
+					// check if we want the country flags in the reg form
+					if (settings.nxReg_PhoneNumber !== undefined && settings.nxReg_PhoneNumber == "true") {
+						var $phoneNumberInput = $(settings.nxReg_Ui_PhoneNumberSelector);
+
+						$phoneNumberInput.intlTelInput({
+
+							customPlaceholder: function (selectedCountryPlaceholder, selectedCountryData) {
+								return "";
+							},
+
+							utilsScript: nxStaticUrl + "/nx-scripts" + nxEnvPath + "/external/intl-tel-input/js/utils.js",
+							preferredCountries: []
+						});
+
+						$phoneNumberInput.on("keyup", function () {
+							if ($(settings.nxReg_Ui_SignUp_FormSelector).hasClass("was-validated")) {
+								app.ui.signUp.validate.phoneNumber($(this));
+							}
+						});
+
+						if (settings.nxReg_Country !== undefined && settings.nxReg_Country == "true") {
+							$phoneNumberInput.on('countrychange', function () {
+								var selectedCountry = "";
+								if (!$.isEmptyObject($phoneNumberInput.intlTelInput('getSelectedCountryData'))) {
+									selectedCountry = $phoneNumberInput.intlTelInput('getSelectedCountryData').iso2.toUpperCase();
+								}
+								$(settings.nxReg_Ui_CountrySelector).find('option[value="' + selectedCountry + '"]').prop("selected", true);
+								if ($(settings.nxReg_Ui_SignUp_FormSelector).hasClass("was-validated")) {
+									app.ui.signUp.validate.phoneNumber();
+								}
+							});
+						}
+					};
+
+					if (settings.nxReg_Country !== undefined && settings.nxReg_Country == "true") {
+						$(settings.nxReg_Ui_CountrySelector).on('change', function () {
+							var code = this.value;
+							$(settings.nxReg_Ui_PhoneNumberSelector).intlTelInput("setCountry", code.toLowerCase());
+							if ($(settings.nxReg_Ui_SignUp_FormSelector).hasClass("was-validated")) {
+								app.ui.signUp.validate.phoneNumber();
+							}
+						});
+					}
+
+					// Restrictions
+					if ((settings.nxReg_Country !== undefined && settings.nxReg_Country == "true") || (settings.nxReg_PhoneNumber !== undefined && settings.nxReg_PhoneNumber == "true")) {
+
+						var list = $(settings.nxReg_Ui_CountrySelector);
+						var list2 = $(settings.nxReg_Ui_PhoneNumberWrapperSelector);
+
+						if (typeof settings.nxReg_BrandLegalData != "undefined") {
+							if (typeof settings.nxReg_GeoValidation == "undefined" || settings.nxReg_GeoValidation != "true") {
+								var restrictions = new app.utils.restrictions(settings.nxReg_BrandLegalData, app.filePath.substring(0, app.filePath.lastIndexOf("/nx-scripts")));
+								restrictions.registration(function (countries) {
+									$.each(countries, function (index, country) {
+										list.find("option[value=\"" + country.toUpperCase() + "\"]").remove();
+										list2.find(".iti__flag-container .iti__country-list li[data-country-code=\"" + country.toLowerCase() + "\"]").remove();
+									});
+								});
+							}
+						}
+
+					}
+
+					// $(window).load(function () {
+
+					if (settings.nxReg_Country !== undefined && settings.nxReg_Country == "true") {
+						if (nxStaticUrl == "//serving.visionsage.com") {
+							window.chooseCountry = function (ss) {
+								var queryParams = PlexopAPI.getUrlVars();
+								if (typeof queryParams["country"] != "undefined") {
+									ss.country = queryParams["country"];
+								}
+
+								$phoneNumberInput.intlTelInput("setCountry", ss.country.toLowerCase());
+
+								$(settings.nxReg_Ui_CountrySelector).find('option[value="' + ss.country.toUpperCase() + '"]').prop("selected", true);
+
+							};
+
+
+							setTimeout(function () {
+								$('<script></script>').attr('src', 'https://apps.visionsage.com/gc.js').appendTo('body');
+							}, 300);
+
+							// });
+
+
+
+							PlexopAPIclass.prototype.chooseCountry = function (ss) {
+								var queryParams = PlexopAPI.getUrlVars();
+								if (typeof queryParams["country"] != "undefined") {
+									ss.country = queryParams["country"];
+								}
+
+								$phoneNumberInput.intlTelInput("setCountry", ss.country.toLowerCase());
+								$(settings.nxReg_Ui_CountrySelector).find('option[value="' + ss.country.toUpperCase() + '"]').prop("selected", true);
+							};
+
+						} else {
+							fetch(window.nxStaticUrl + "/_gc.json").then(response => response.json()).then(data => {
+								if (data.country) {
+									$phoneNumberInput.intlTelInput("setCountry", data.country.toLowerCase());
+								}
+							});
+						}
+					}
+					else if (settings.nxReg_Country) {
+						$phoneNumberInput.intlTelInput("setCountry", settings.nxReg_Country.toLowerCase());
+					}
+
+					if (settings.nxReg_VerificationCode == "true") {
+
+						$(settings.nxReg_Ui_VerificationCodeToggleSelector).click(function (e) {
+							// e.preventDefault();
+							// $(this).removeClass('d-block').addClass('d-none');
+
+							$(settings.nxReg_Ui_VerificationCodeWrapperSelector).toggleClass('d-none');
+
+							if ($(settings.nxReg_Ui_VerificationCodeWrapperSelector).hasClass('d-none')) {
+								$(settings.nxReg_Ui_VerificationCodeSelector).val("").prop('required', false);
+							} else {
+								$(settings.nxReg_Ui_VerificationCodeSelector).prop('required', true);
+							}
+						});
+
+						var event = jQuery.Event("verificationCodeEnabled");
+						$(document).trigger(event);
+
+					}
+
+					var _mobile = (typeof $.browser.mobile !== "undefined") ? $.browser.mobile : (($(window).width() <= 768) ? true : false);
+
+					// Facebook
+					if (settings.nxReg_Facebook == "true") {
+
+						if (_mobile) {
+
+							var redirect_uri = encodeURI(window.location.protocol + "//" + window.location.hostname + window.location.pathname); // encodeURI(window.location);
+							var state = JSON.stringify({
+								source: "facebook"
+							});
+
+							$(settings.nxReg_Ui_SignUp_SocialFacebookSelector).attr("href", "https://www.facebook.com/v7.0/dialog/oauth?client_id=" + settings.nxReg_FacebookAppId + "&redirect_uri=" + redirect_uri + "&response_type=token&scope=public_profile,email&state=" + state);
+
+						} else {
+
+							// var urlP = PlexopAPI.getUrlVars();
+							// console.log(storage.socialWrapped, typeof urlP["wrapped"] != undefined);
+							// if (storage.socialWrapped || typeof urlP["wrapped"] != undefined) {
+							// 	// redirect
+
+							// 	// window.location = "https://www.facebook.com/v7.0/dialog/oauth?client_id=" + settings.nxReg_FacebookAppId + "&redirect_uri=" + redirect + "&state=" + state;
+
+							// 		// decodeURIComponent(response.redirect_url);
+
+							// 	// $(settings.nxReg_Ui_SignUp_SocialFacebookSelector).click(function (e) {
+							// 		// e.preventDefault();
+							// 		// event.stopPropagation();
+
+							// 		// app.ui.loader.show();
+
+							// 		// alert('facebook login! ' + window.location + " | " + window.location.origin);
+
+							// 	var redirect_uri = encodeURI(window.location);
+							// 		var state = JSON.stringify({
+							// 			source: "facebook"
+							// 		});
+
+							// 	$(settings.nxReg_Ui_SignUp_SocialFacebookSelector).attr("href", "https://www.facebook.com/v7.0/dialog/oauth?client_id=" + settings.nxReg_FacebookAppId + "&redirect_uri=" + redirect_uri + "&response_type=token&scope=public_profile,email&state=" + state);
+
+							// 	// });
+
+							// } else {
+							window.fbAsyncInit = function () {
+								FB.init({
+									appId: settings.nxReg_FacebookAppId, // {your-app-id}
+									cookie: true,
+									xfbml: true,
+									version: 'v7.0' // {api-version}
+								});
+
+								FB.AppEvents.logPageView();
+
+							};
+
+							(function (d, s, id) {
+								var js, fjs = d.getElementsByTagName(s)[0];
+								if (d.getElementById(id)) { return; }
+								js = d.createElement(s); js.id = id;
+								js.src = "https://connect.facebook.net/en_US/sdk.js";
+								fjs.parentNode.insertBefore(js, fjs);
+							}(document, 'script', 'facebook-jssdk'));
+
+
+							$(settings.nxReg_Ui_SignUp_SocialFacebookSelector).click(function (e) {
+								e.preventDefault();
+								e.stopPropagation();
+
+								app.ui.loader.show();
+
+								FB.login(function (response) {
+									if (response.status === 'connected') {
+										app.utils.regenerateReCaptcha(function (reCaptchaToken) {
+											storage.socialSource = "facebook";
+											storage.socialResponse = response;
+											storage.socialToken = response.authResponse.accessToken;
+											// app.api.signUp("facebook");
+
+											app.ui.signUp.social.show();
+											app.ui.loader.hide();
+										});
+									} else {
+										app.utils.regenerateReCaptcha(function (reCaptchaToken) {
+											app.ui.showServerError(strings.nxReg_i18n_SignUp_Social_FacebookError);
+											app.ui.loader.hide();
+										});
+									}
+								}, { scope: 'public_profile,email' });
+							});
+						}
+					}
+
+					// Google
+					if (settings.nxReg_Google == "true") {
+
+						if (_mobile) {
+
+							var redirect_uri = encodeURI(window.location.protocol + "//" + window.location.hostname + window.location.pathname); // encodeURI(window.location);
+							var state = JSON.stringify({
+								source: "google"
+							});
+
+							$(settings.nxReg_Ui_SignUp_SocialGoogleSelector).attr("href", "https://accounts.google.com/o/oauth2/v2/auth?scope=" + encodeURI("https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email") + "&include_granted_scopes=true&state=" + state + "&redirect_uri=" + redirect_uri + "&response_type=token&client_id=" + settings.nxReg_GoogleClientId);
+
+						} else {
+							// Add hidden google btn
+							let hiddenGoogleBtn = document.createElement('div');
+							hiddenGoogleBtn.id = 'googleBtn';
+							hiddenGoogleBtn.style.opacity = 0.0001;
+							hiddenGoogleBtn.style.position = 'absolute';
+							hiddenGoogleBtn.style.width = '100%';
+							hiddenGoogleBtn.style.height = '100%';
+							hiddenGoogleBtn.style.top = '50%';
+							hiddenGoogleBtn.style.left = '50%';
+							hiddenGoogleBtn.style.transform = 'translate(-50%, -50%) scale(6.5)';
+							hiddenGoogleBtn.style.zIndex = "999";
+							let hiddenGoogleBtnWrapper = document.querySelector('.nxreg-sign-up-google');
+							hiddenGoogleBtnWrapper.style.overflow = 'hidden';
+
+							$(settings.nxReg_Ui_SignUp_SocialGoogleSelector).append(hiddenGoogleBtn);
+
+							function handleCredentialResponse(response) {
+								if (response.credential.length > 0) {
+									app.utils.regenerateReCaptcha(function (reCaptchaToken) {
+										storage.socialSource = "google";
+										storage.JWTToken = response.credential;
+										app.ui.signUp.social.show();
+										app.ui.loader.hide();
+									});
+								} else {
+									app.utils.regenerateReCaptcha(function (reCaptchaToken) {
+										app.ui.showServerError(strings.nxReg_i18n_SignUp_Social_GoogleError);
+										app.ui.loader.hide();
+									});
+								}
+							}
+
+							$.getScript("https://accounts.google.com/gsi/client").done(function () {
+								google.accounts.id.initialize({
+									client_id: settings.nxReg_GoogleClientId,
+									callback: handleCredentialResponse
+								});
+
+								google.accounts.id.renderButton(
+									document.getElementById("googleBtn"), {}
+								);
+							});
+
+							// if (storage.socialWrapped) {
+							// 	// redirect
+
+							// 	$(settings.nxReg_Ui_SignUp_SocialGoogleSelector).click(function (e) {
+							// 		e.preventDefault();
+							// 		event.stopPropagation();
+
+							// 		app.ui.loader.show();
+
+							// 		alert('google login! ' + window.location + " | " + window.location.origin);
+							// 	});
+
+
+							// } else {
+							// var GoogleAuth;
+							// window.GoogleAuth = {};
+							// var SCOPE = 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email';
+
+							// function setSigninStatus(isSignedIn) {
+							// 	var user = GoogleAuth.currentUser.get();
+							// 	var isAuthorized = user.hasGrantedScopes(SCOPE);
+							// 	if (isAuthorized) {
+							// 		app.utils.regenerateReCaptcha(function (reCaptchaToken) {
+							// 			storage.socialSource = "google";
+							// 			storage.socialResponse = user.getAuthResponse();
+							// 			storage.socialToken = user.getAuthResponse().access_token;
+							// 			// app.api.signUp("google");
+							// 			app.ui.signUp.social.show();
+							// 			app.ui.loader.hide();
+							// 		});
+							// 	} else {
+							// 		app.utils.regenerateReCaptcha(function (reCaptchaToken) {
+							// 			app.ui.showServerError(strings.nxReg_i18n_SignUp_Social_GoogleError);
+							// 			app.ui.loader.hide();
+							// 		});
+							// 	}
+							// }
+
+							// $.getScript("https://apis.google.com/js/api.js").done(function () {
+
+							// 	gapi.load('client:auth2', function () {
+							// 		gapi.client.init({
+							// 			'apiKey': settings.nxReg_GoogleApiKey,
+							// 			'clientId': settings.nxReg_GoogleClientId,
+							// 			'discoveryDocs': ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'],
+							// 			'scope': SCOPE
+							// 		}).then(function () {
+							// 			GoogleAuth = gapi.auth2.getAuthInstance();
+							// 			GoogleAuth.isSignedIn.listen(setSigninStatus);
+
+							// 			$(settings.nxReg_Ui_SignUp_SocialGoogleSelector).click(function (e) {
+							// 				e.preventDefault();
+
+							// 				app.ui.loader.show();
+
+							// 				if (GoogleAuth.isSignedIn.get()) {
+							// 					setSigninStatus();
+							// 					// GoogleAuth.disconnect();
+							// 				} else {
+							// 					GoogleAuth.signIn().then(function (user) {
+							// 						setSigninStatus();
+							// 					}, function (error) {
+							// 						app.utils.regenerateReCaptcha(function (reCaptchaToken) {
+							// 							app.ui.showServerError(strings.nxReg_i18n_SignUp_Social_GoogleError);
+							// 							app.ui.loader.hide();
+							// 						});
+							// 					});
+							// 				}
+							// 			});
+
+							// 		});
+							// 	});
+							// });
+							// }
+
+
+						}
+
+					}
+
+					app.ui.prepopulateFromUrl();
+
+					$(settings.nxReg_Ui_SignUp_FormSelector).on("submit", function (event) {
+						event.preventDefault();
+						event.stopPropagation();
+						var $form = $(this);
+
+						if (settings.nxReg_PhoneNumber == "true") {
+							app.ui.signUp.validate.phoneNumber($form.find(settings.nxReg_Ui_PhoneNumberSelector));
+						}
+						if ('undefined' !== typeof $($form).find(settings.nxReg_Ui_FullNameSelector).val()) {
+							$($form).find(settings.nxReg_Ui_FullNameSelector).val($($form).find(settings.nxReg_Ui_FullNameSelector).val().trim().replace(/\s\s+/g, ' '));
+						}
+
+						if ($form[0].checkValidity() === false) {
+							$form.addClass('was-validated');
+							// form is not valid; showing errors
+						} else {
+							app.utils.regenerateReCaptcha(function (reCaptchaToken) {
+								app.utils.buildStorage($form);
+								app.ui.hideServerError();
+								app.ui.loader.show();
+								app.api.signUp('manual');
+							});
+						}
+
+					});
+					//profit platfortm flow
+					$(document).on("click", "#pp-open-button", function (event) {
+						// event.preventDefault();
+						// event.stopPropagation();
+
+						if ($('#pp-checkbox').is(':checked')) {
+							profitStep2 = "true";
+							app.utils.regenerateReCaptcha(function (reCaptchaToken) {
+								app.ui.hideServerError();
+								app.ui.loader.show();
+								app.api.signUp('manual');
+							});
+						}
+
+					});
+				},
+				password: {
+					show: function (redirect) {
+						storage.redirect = redirect;
+						//Show User details on thank you message
+						// console.log(redirect, app.utils.getTemplate('sign-up-password'), $(app.utils.getTemplate('sign-up-password')));
+						$(settings.nxReg_Ui_WrapperSelector).html($(app.utils.getTemplate('sign-up-password')));
+						app.ui.loader.hide();
+
+						app.ui.prepopulateFromUrl();
+
+						var event = jQuery.Event("passwordScreenShown");
+						$(document).trigger(event);
+
+						// if (settings.nxReg_AutoPassword == "true") {
+						// 	app.ui.signUp.password.show('response.redirect_url');
+						// } else {
+
+						// }
+
+					}
+				},
+				thankYou: {
+					show: function () {
+
+						$(settings.nxReg_Ui_WrapperSelector).html($(app.utils.getTemplate('thankYou-wl')));
+						app.ui.loader.hide();
+						app.ui.prepopulateFromUrl();
+
+						var event = jQuery.Event("thankYouPageShown");
+						$(document).trigger(event);
+
+					}
+				},
+
+				activation: {
+					show: function () {
+						var SignUp_Activation_Message2 = strings.nxReg_i18n_SignUp_Activation_Message2;
+						SignUp_Activation_Message2 = SignUp_Activation_Message2.replace('%%Email%%', storage.email);
+
+						$(settings.nxReg_Ui_WrapperSelector).html($(app.utils.getTemplate('sign-up-activation', { "SignUp_Activation_Message2": SignUp_Activation_Message2 })));
+
+						$(settings.nxReg_Ui_SignUp_Activation_ResendButtonSelector).click(function (e) {
+							app.ui.hideServerError();
+							app.ui.loader.show();
+							app.utils.regenerateReCaptcha(function (reCaptchaToken) {
+								app.api.resendActivationEmail();
+							});
+						});
+					},
+					// showServerError: function (errorMessage) {
+					// 	$(settings.nxReg_Ui_SignUp_Activation_ServerErrorSelector).html($(errorMessage)).show();
+					// },
+					// hideServerError: function () {
+					// 	$(settings.nxReg_Ui_SignUp_Activation_ServerErrorSelector).hide().html();
+					// },
+				},
+				social: {
+					show: function () {
+						$(settings.nxReg_Ui_WrapperSelector).html($(app.utils.getTemplate('sign-up-social')));
+
+						app.ui.loader.hide();
+
+						var _mobile = (typeof $.browser.mobile !== "undefined") ? $.browser.mobile : (($(window).width() <= 768) ? true : false);
+
+						// Facebook
+						if (storage.socialSource == "facebook" && !_mobile) {
+							window.fbAsyncInit = function () {
+								FB.init({
+									appId: settings.nxReg_FacebookAppId, // {your-app-id}
+									cookie: true,
+									xfbml: true,
+									version: 'v7.0' // {api-version}
+								});
+
+								FB.AppEvents.logPageView();
+
+							};
+
+							(function (d, s, id) {
+								var js, fjs = d.getElementsByTagName(s)[0];
+								if (d.getElementById(id)) { return; }
+								js = d.createElement(s); js.id = id;
+								js.src = "https://connect.facebook.net/en_US/sdk.js";
+								fjs.parentNode.insertBefore(js, fjs);
+							}(document, 'script', 'facebook-jssdk'));
+						}
+
+						// Google
+						// if (settings.nxReg_Google == "true") {
+
+						// }
+
+						if (settings.nxReg_PhoneNumber == "true") {
+							var $phoneNumberInput = $(settings.nxReg_Ui_PhoneNumberSelector);
+							// var $phoneNumberWrapper = $(settings.nxReg_Ui_PhoneNumberWrapperSelector);
+							// var $phoneNumberError = $(settings.nxReg_Ui_PhoneNumberErrorSelector);
+
+							// social reg step 2 fix start 15.06.2021
+							if (settings.nxReg_Country !== undefined && settings.nxReg_Country == "true") {
+
+								window.chooseCountry = function (ss) {
+									var queryParams = PlexopAPI.getUrlVars();
+									if (typeof queryParams["country"] != "undefined") {
+										ss.country = queryParams["country"];
+									}
+
+									$phoneNumberInput.intlTelInput("setCountry", ss.country.toLowerCase());
+
+									$(settings.nxReg_Ui_CountrySelector).find('option[value="' + ss.country.toUpperCase() + '"]').prop("selected", true);
+
+									// #ivm visitorCountry
+									window.visitorCountry = ss.country;
+								};
+
+
+								setTimeout(function () {
+									$('<script></script>').attr('src', 'https://apps.visionsage.com/gc.js').appendTo('body');
+								}, 300);
+
+
+								PlexopAPIclass.prototype.chooseCountry = function (ss) {
+									var queryParams = PlexopAPI.getUrlVars();
+									if (typeof queryParams["country"] != "undefined") {
+										ss.country = queryParams["country"];
+									}
+
+									$phoneNumberInput.intlTelInput("setCountry", ss.country.toLowerCase());
+									$(settings.nxReg_Ui_CountrySelector).find('option[value="' + ss.country.toUpperCase() + '"]').prop("selected", true);
+								};
+							} // social reg step 2 fix end 15.06.2021
+
+							$phoneNumberInput.intlTelInput({
+								// initialCountry: "auto",
+								// #ivm initial country should be empty
+								initialCountry: "",
+								customPlaceholder: function (selectedCountryPlaceholder, selectedCountryData) {
+									return "";
+								},
+								// geoIpLookup: function (callback) {
+								// 	// window.chooseCountry = function (ss) {
+								// 	// 	callback(ss.country.toLowerCase());
+								// 	// }
+
+								// 	// var getGC = function () {
+								// 	// 	$.getScript("//apps.visionsage.com/gc.js", function (data, textStatus, jqxhr) {
+								// 	// 		console.log(data, textStatus, jqxhr);
+
+								// 	// 		if (typeof data == "undefined") {
+								// 	// 			getGC();
+								// 	// 		}
+								// 	// 		// window.chooseCountry = function (ss) {
+								// 	// 		// 	PlexopAPI.chooseCountry(ss);
+								// 	// 		// }
+								// 	// 	}).fail(function (jqxhr, settings, exception) {
+								// 	// 		console.log(jqxhr, settings, exception);
+								// 	// 		getGC();
+								// 	// 	});
+								// 	// }
+
+								// 	// getGC();
+								// },
+								separateDialCode: true,
+								utilsScript: nxStaticUrl + "/nx-scripts" + nxEnvPath + "/external/intl-tel-input/js/utils.js"
+							});
+
+							$phoneNumberInput.on("keyup", function () {
+								if ($(settings.nxReg_Ui_SignUp_FormSelector).hasClass("was-validated")) {
+									app.ui.signUp.validate.phoneNumber($(this));
+								}
+							});
+						}
+
+						if (settings.nxReg_VerificationCode == "true") {
+
+							$(settings.nxReg_Ui_VerificationCodeToggleSelector).click(function (e) {
+								// e.preventDefault();
+								// $(this).removeClass('d-block').addClass('d-none');
+
+								$(settings.nxReg_Ui_VerificationCodeWrapperSelector).toggleClass('d-none');
+
+								if ($(settings.nxReg_Ui_VerificationCodeWrapperSelector).hasClass('d-none')) {
+									$(settings.nxReg_Ui_VerificationCodeSelector).val("").prop('required', false);
+								} else {
+									$(settings.nxReg_Ui_VerificationCodeSelector).prop('required', true);
+								}
+							});
+
+							var event = jQuery.Event("verificationCodeEnabled");
+							$(document).trigger(event);
+
+						}
+
+						app.ui.prepopulateFromUrl();
+
+						$(settings.nxReg_Ui_SignUp_FormSelector).on("submit", function (event) {
+							event.preventDefault();
+							event.stopPropagation();
+
+							if (settings.nxReg_PhoneNumber == "true") {
+								app.ui.signUp.validate.phoneNumber();
+							}
+
+							var $form = $(this);
+							if ('undefined' !== typeof $($form).find(settings.nxReg_Ui_FullNameSelector).val()) {
+								$($form).find(settings.nxReg_Ui_FullNameSelector).val($($form).find(settings.nxReg_Ui_FullNameSelector).val().trim().replace(/\s\s+/g, ' '));
+							}
+							if ($form[0].checkValidity() === false) {
+								$form.addClass('was-validated');
+								// form is not valid; showing errors
+							} else {
+								app.ui.loader.show();
+
+								app.utils.regenerateReCaptcha(function (reCaptchaToken) {
+									storage.PrivacyNotice = (settings.nxReg_PrivacyNoticeCheckbox == 'false') ? 1 : document.getElementById('privacy-notice').checked ? 1 : 0;
+
+									if (storage.socialSource == "facebook") {
+										if (_mobile) {
+											app.api.signUp("facebook");
+										} else {
+											FB.login(function (response) {
+												if (response.status === 'connected') {
+													app.utils.regenerateReCaptcha(function (reCaptchaToken) {
+														storage.socialResponse = response;
+														storage.socialToken = response.authResponse.accessToken;
+														app.api.signUp("facebook");
+													});
+												} else {
+													app.utils.regenerateReCaptcha(function (reCaptchaToken) {
+														app.ui.showServerError(strings.nxReg_i18n_SignUp_Social_FacebookError);
+														app.ui.loader.hide();
+													});
+												}
+											}, { scope: 'public_profile,email' });
+										}
+									}
+
+									if (storage.socialSource == "google") {
+										if (_mobile) {
+											app.api.signUp("google");
+										} else {
+											if (typeof storage.JWTToken == "undefined" || storage.JWTToken == "") {
+												console.log('We dont have JWTToken!');
+											} else {
+												app.api.signUp("google");
+											}
+
+											// if (typeof storage.socialToken == "undefined" || storage.socialToken == "") {
+											// 	// var GoogleAuth;
+											// 	window.GoogleAuth = {};
+											// 	var SCOPE = 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email';
+
+											// 	function setSigninStatus(isSignedIn) {
+											// 		var user = GoogleAuth.currentUser.get();
+											// 		var isAuthorized = user.hasGrantedScopes(SCOPE);
+											// 		if (isAuthorized) {
+											// 			app.utils.regenerateReCaptcha(function (reCaptchaToken) {
+											// 				storage.socialResponse = user.getAuthResponse();
+											// 				storage.socialToken = user.getAuthResponse().access_token;
+											// 				app.api.signUp("google");
+											// 			});
+											// 		} else {
+											// 			app.utils.regenerateReCaptcha(function (reCaptchaToken) {
+											// 				app.ui.showServerError(strings.nxReg_i18n_SignUp_Social_GoogleError);
+											// 				app.ui.loader.hide();
+											// 			});
+											// 		}
+											// 	}
+
+											// 	$.getScript("https://apis.google.com/js/api.js").done(function () {
+
+											// 		gapi.load('client:auth2', function () {
+											// 			gapi.client.init({
+											// 				'apiKey': settings.nxReg_GoogleApiKey,
+											// 				'clientId': settings.nxReg_GoogleClientId,
+											// 				'discoveryDocs': ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'],
+											// 				'scope': SCOPE
+											// 			}).then(function () {
+											// 				GoogleAuth = gapi.auth2.getAuthInstance();
+											// 				GoogleAuth.isSignedIn.listen(setSigninStatus);
+
+											// 				// $(settings.nxReg_Ui_SignUp_SocialGoogleSelector).click(function (e) {
+											// 				// e.preventDefault();
+
+											// 				app.ui.loader.show();
+
+											// 				if (GoogleAuth.isSignedIn.get()) {
+											// 					setSigninStatus();
+											// 					// GoogleAuth.disconnect();
+											// 				} else {
+											// 					GoogleAuth.signIn().then(function (user) {
+											// 						setSigninStatus();
+											// 					}, function (error) {
+											// 						app.utils.regenerateReCaptcha(function (reCaptchaToken) {
+											// 							app.ui.showServerError(strings.nxReg_i18n_SignUp_Social_GoogleError);
+											// 							app.ui.loader.hide();
+											// 						});
+											// 					});
+											// 				}
+											// 				// });
+
+											// 			});
+											// 		});
+											// 	});
+
+											// } else {
+											// 	// storage.socialResponse = user.getAuthResponse();
+											// 	// storage.socialToken = user.getAuthResponse().access_token;
+											// 	app.api.signUp("google");
+											// }
+										}
+									}
+
+								});
+							}
+
+						});
+
+						var social = new CustomEvent('social', {
+							'detail': 'Social reg triggered!'
+						});
+						document.getElementsByTagName('body')[0].dispatchEvent(social);
+					}
+				},
+				validate: {
+
+					phoneNumber: function (phone) {
+						var $phoneNumberInput = $(settings.nxReg_Ui_PhoneNumberSelector);
+						var $phoneNumberWrapper = $(settings.nxReg_Ui_PhoneNumberWrapperSelector);
+						var $phoneNumberError = $(settings.nxReg_Ui_PhoneNumberErrorSelector);
+
+						// console.log($phoneNumberInput.val(), $phoneNumberInput.val().trim(), $phoneNumberInput.intlTelInput('isValidNumber'), $phoneNumberInput.intlTelInput('getNumber'));
+						if ($phoneNumberInput.val().trim() && $phoneNumberInput.intlTelInput('isValidNumber')) {
+							$phoneNumberInput.get(0).setCustomValidity("");
+							$phoneNumberWrapper.removeClass("is-invalid");
+							// validMsg.classList.remove("hide");
+							// reset();
+						} else {
+
+							// input.classList.add("error");
+							// $phoneNumberInput.addClass("is-invalid");
+							$phoneNumberWrapper.addClass("is-invalid");
+							$phoneNumberInput.get(0).setCustomValidity(strings.nxReg_i18n_SignUp_PhoneNumberErrors[$phoneNumberInput.intlTelInput('getValidationError')]);
+							$phoneNumberError.html(strings.nxReg_i18n_SignUp_PhoneNumberErrors[$phoneNumberInput.intlTelInput('getValidationError')]);
+
+						}
+					}
+				}
+			},
+			activation: {
+				show: function () {
+					$(settings.nxReg_Ui_WrapperSelector).html($(app.utils.getTemplate('activation')));
+
+					app.ui.loader.show();
+
+					var urlVars = PlexopAPI.getUrlVars();
+					var code;
+					var eid;
+
+					if (typeof urlVars['code'] !== 'undefined' && typeof urlVars['eid'] !== 'undefined') {
+						code = urlVars['code'];
+						eid = urlVars['eid'];
+
+						var data = {
+							"code": code,
+							"eid": eid
+						};
+
+						app.api.activate(data);
+					} else {
+						app.ui.showServerError(strings.nxReg_i18n_UnknownError);
+						app.ui.loader.hide();
+					}
+				}
+			},
+			showServerError: function (errorMessage) {
+				$(settings.nxReg_Ui_ServerErrorSelector).html(errorMessage).show();
+			},
+			hideServerError: function () {
+				$(settings.nxReg_Ui_ServerErrorSelector).hide().html();
+			},
+			prepopulateFromUrl: function () {
+				var queryParams = PlexopAPI.getUrlVars();
+				$.each(queryParams, function (index, value) {
+					if ($("[id=\"" + index + "\"]").length) {
+						$("[id=\"" + index + "\"]").val(decodeURIComponent(value));
+					} else if ($(".nxreg-sign-up-" + index).length) {
+						$(".nxreg-sign-up-" + index).val(decodeURIComponent(value));
+					} else {
+						if (index == "phone" || index == "mobile" || index == "mobilephone" || index == "mobile-phone") {
+							$(settings.nxReg_Ui_PhoneNumberSelector).intlTelInput("setNumber", decodeURIComponent(value));
+						}
+					}
+				});
+			}
+		};
+
+		// TODO
+		app.setSid = function (value) {
+			var getQueryParams = PlexopAPI.getUrlVars();
+			var sid = getQueryParams.sid;
+			if (sid) {
+				plexop.set_Cookie("sid", sid, 3 * 1000 * 60 * 60, '/', PlexopAPI.getBdomain(), false);
+				plexop.set_Cookie("sidsource", "utm", 3 * 1000 * 60 * 60, '/', PlexopAPI.getBdomain(), false);
+			} else {
+				var sidsource = plexop.get_Cookie("sidsource");
+				if (!sidsource || sidsource == "unknown") {
+					plexop.set_Cookie("sid", value, 3 * 1000 * 60 * 60, '/', PlexopAPI.getBdomain(), false);
+					plexop.set_Cookie("sidsource", "unknown", 3 * 1000 * 60 * 60, '/', PlexopAPI.getBdomain(), false);
+				}
+			}
+		};
+
+		// TODO
+		app.getSid = function () {
+			var sid = plexop.get_Cookie("sid");
+
+			if (sid) {
+				return sid;
+			} else {
+				var getQueryParams = PlexopAPI.getUrlVars();
+				sid = getQueryParams.sid;
+
+				if (sid) {
+					return sid;
+				}
+			}
+		};
+
+		app.initSignUp = function () {
+
+			var hash = window.location.hash.substr(1);
+
+			var result = hash.split('&').reduce(function (result, item) {
+				var parts = item.split('=');
+				result[parts[0]] = parts[1];
+				return result;
+			}, {});
+
+			var urlVars = PlexopAPI.getUrlVars();
+
+			// var _mobile = (typeof $.browser.mobile !== "undefined") ? $.browser.mobile : (($(window).width() <= 768) ? true : false);
+
+			// if (_mobile) {
+			// 	if (typeof result.access_token != "undefined" && typeof result.state != "undefined") {
+
+			// 	}
+			// } else {
+
+			// }
+
+			if (typeof urlVars["error_code"] !== "undefined" && typeof urlVars["source"] !== "undefined") {
+				if (urlVars["error_code"] == "21" && (urlVars["source"] == "facebook" || urlVars["source"] == "google")) { // USER_DOESNOT_HAVE_ACCOUNT_FOR_LOGIN
+					storage.socialSource = urlVars["source"];
+
+					if (typeof urlVars["token"] !== "undefined" && urlVars["token"].trim() != "") {
+						storage.socialResponse = {};
+						storage.socialToken = urlVars["token"];
+						storage.JWTToken = urlVars["token"];
+					}
+
+					app.ui.signUp.social.show();
+				} else if (urlVars["error_code"] == "19") { // EMAIL_NOT_INCLUDED_IN_SOCIAL_INFO
+					app.ui.signUp.show();
+
+					if (urlVars["source"] == "facebook") {
+						app.ui.showServerError(strings.nxReg_i18n_SignUp_Social_FacebookFailedError);
+					}
+
+					if (urlVars["source"] == "google") {
+						app.ui.showServerError(strings.nxReg_i18n_SignUp_Social_GoogleFailedError);
+					}
+				} else if (urlVars["error_code"] == "25") { // JWT_EXPIRED
+					app.ui.signUp.show();
+					app.ui.showServerError(strings.nxReg_i18n_SignUp_Social_GoogleJWTExpired);
+					let social = new CustomEvent('social', {
+						'detail': 'Social reg triggered!'
+					});
+					document.getElementsByTagName('body')[0].dispatchEvent(social);
+				}
+
+				// } else if (typeof urlVars["state"] !== "undefined") {
+				// 	var state = JSON.parse(decodeURIComponent(urlVars["state"]));
+
+				// 	if (typeof state.source !== "undefined") {
+				// 		if (state.source == "facebook" && typeof urlVars["token"] !== "undefined") {
+				// 			storage.socialSource = state.source;
+				// 			storage.socialResponse = urlVars;
+				// 			storage.socialToken = urlVars["token"];
+				// 			app.ui.signUp.social.show();
+
+				// 			alert('facebook?');
+				// 		}
+
+				// 		if (state.source == "google") {
+				// 			// google!
+				// 		}
+				// 	}
+			} else if (typeof result.access_token != "undefined" && typeof result.state != "undefined") {
+				var _state = JSON.parse(decodeURIComponent(result.state));
+
+				if (_state.source == "facebook") {
+					app.ui.loader.show();
+					settings.nxReg_ReCaptcha = "false";
+					app.utils.regenerateReCaptcha(function (reCaptchaToken) {
+						storage.socialSource = "facebook";
+						storage.socialResponse = result;
+						storage.socialToken = result.access_token;
+						// app.api.signUp("facebook");
+						app.ui.signUp.social.show();
+					});
+					;
+				}
+
+				if (_state.source == "google") {
+					app.ui.loader.show();
+					settings.nxReg_ReCaptcha = "false";
+					app.utils.regenerateReCaptcha(function (reCaptchaToken) {
+						storage.socialSource = "google";
+						storage.socialResponse = result;
+						storage.socialToken = result.access_token;
+						storage.JWTToken = result.access_token;
+						// app.api.signUp("google");
+						app.ui.signUp.social.show();
+					});
+					;
+				}
+			} else {
+				app.ui.signUp.show();
+			}
+
+			// Show Cookies
+			app.cookies.init();
+
+			var eventSU = jQuery.Event("initSignUp_finished");
+			$(document).trigger(eventSU);
+
+		};
+
+		app.initActivation = function () {
+			app.ui.activation.show();
+		};
+
+		app.addclickAction = function (selector, tagency, tadv, tfunnel) {
+			let cmt = "Edutrading%20AC";
+			let extradata = {
+				"account": urlVars['ac'],
+				target_agency_id: tagency,
+				target_adv_id: tadv,
+				target_funnel_id: tfunnel
+			};
+			let extraFields = encodeURIComponent(LZString.compressToBase64(JSON.stringify(extradata)));
+
+			let clickURL = plexop.event_collector_dns + '/ll.png?a=4&adv=1&e=22&cmt=' + cmt + '&ep=' + urlVars['ep'] + '&eid=' + plexop.generate_uuid() + '&ext=' + extraFields + '&r=' + encodeURIComponent(document.location.href.substr(0, 200));
+
+			$(selector).on('click',
+				function () {
+					console.log('click');
+					var image = document.createElement("IMG");
+					image.src = clickURL;
+					image.setAttribute("style", "display:none;");
+					$('body').append(image);
+					const event = new Event('showThankYouPopUp');
+					document.dispatchEvent(event);
+				});
+		};
+
+		app.cookies = {
+			defaultLang: 'en',
+			dir: 'ltr',
+			currentLang: settings.nxReg_LanguageCode,
+			bodyEl: document.body,
+			domain: window.location.hostname.split('.').slice(-2).join('.'),
+			isLP: function () {
+				let domainParts = window.location.hostname.split('.');
+				if (domainParts.includes('preg') || domainParts.includes('lp')) {
+					return true;
+				}
+				return false;
+			},
+			shouldDisplayCookieBanner: function () {
+				let currentBrandId = settings.nxReg_BrandId;
+				if (currentBrandId == 65 || currentBrandId == 41 || currentBrandId == 56 || this.domain == 'bnjmedia.com') {
+					return true;
+				}
+				return false;
+			},
+			messages: {
+				'en': 'Use of cookies is necessary for website functionality, provision of services and better user experience. To learn more <a href="%%cookies_link%%" target="_blank">click here</a>',
+				'it': "L'utilizzo di cookie è necessario per la funzionalità del sito web, la fornitura di servizi e una migliore esperienza utente. Per saperne di più, <a href=\"%%cookies_link%%\" target=\"_blank\">clicca qui</a>.",
+				'es': 'El uso de las cookies es necesario para la funcionalidad de la página web, el suministro de los servicios y una mejor experiencia de usuario. Para saber más, <a href="%%cookies_link%%" target="_blank">haga clic aquí</a>.',
+				'pl': 'Korzystanie z ciasteczek jest niezbędne do poprawnego funkcjonowania strony internetowej, świadczenia usług i sprawnego korzystania z serwisu po stronie klienta. <a href="%%cookies_link%%" target="_blank">Kliknij</a>, by dowiedzieć się więcej.',
+				'pt': 'O uso de cookies é necessário para a funcionalidade do site, prestação de serviços e melhor experiência do usuário. Para saber mais, <a href="%%cookies_link%%" target="_blank">clique aqui</a>.',
+				'sv': 'Användning av cookies är nödvändigt för webbplatsens funktionalitet, tillhandahållande av tjänster och bättre användarupplevelse. <a href="%%cookies_link%%" target="_blank">Klicka här</a> för att läsa mer.',
+				'ar': ' إن استخدام ملفات تعريف الارتباط مهم للتأدية الوظيفية للموقع الإلكتروني وتقديم الخدمات وتجربة مستخدم أفضل. لمعرفة المزيد <a href="%%cookies_link%%" target="_blank">أنقر هنا</a>.',
+				'de': 'Die Verwendung von Cookies ist für die Funktionalität der Website, die Bereitstellung von Diensten und eine bessere Benutzererfahrung notwendig. Um mehr zu erfahren, <a href="%%cookies_link%%" target="_blank">klicken Sie hier</a>.'
+			},
+			brandsLinks: {
+				'marketingvici.com': {
+					'en': 'https://www.marketingvici.com/files/ViciPrivacyPolicy.htm',
+					'it': 'https://www.marketingvici.com/files/ViciPrivacyPolicy_it.htm',
+					'es': 'https://www.marketingvici.com/files/ViciPrivacyPolicy_es.htm'
+				},
+				'vicimark.com': {
+					'en': 'https://vicimark.com/privacy-policy/'
+				},
+				'vici-move.com': {
+					'en': 'https://www.vici-move.com/privacy-policy/'
+				},
+				'vicimarketingltd.com': {
+					'en': 'https://www.vicimarketingltd.com/privacy-policy',
+					'es': 'https://es.vicimarketingltd.com/privacy-policy',
+					'ar': 'https://ar.vicimarketingltd.com/privacy-policy'
+				},
+				'conquer-media.com': {
+					'en': 'https://www.conquer-media.com/files/ConquerPrivacyPolicy.pdf',
+					'it': 'https://www.conquer-media.com/files/ConquerPrivacyPolicy_it.htm',
+					'es': 'https://www.conquer-media.com/files/ConquerPrivacyPolicy_es.htm'
+				},
+				'tradelg.net': {
+					'en': 'https://advercenter.com/privacy-policy/',
+					'it': 'https://advercenter.com/privacy-policy_it/',
+					'es': 'https://advercenter.com/privacy-policy_es/'
+				},
+				'dspearhead.com': {
+					'en': 'https://www.dspearhead.com/legal-privacy-policy'
+				},
+				'fndsgroup.com': {
+					'en': 'https://www.fndsgroup.com/en/privacy-policy',
+					'es': 'https://www.fndsgroup.com/privacy-policy'
+				},
+				'strong-trend.com': {
+					'en': 'https://www.strong-trend.com/en/privacy-policy',
+					'es': 'https://www.strong-trend.com/privacy-policy-es'
+				},
+				'profinancez.com': {
+					'en': 'https://www.profinancez.com/en/privacy-policy',
+					'es': 'https://www.profinancez.com/privacy-policy',
+					'sv': 'https://www.profinancez.com/sv/privacy-policy',
+					'pl': 'https://www.profinancez.com/pl/privacy-policy',
+					'ar': 'https://www.profinancez.com/ar/privacy-policy',
+				},
+				'digital-lg.com': {
+					'en': 'https://www.digital-lg.com/privacy-policy'
+				},
+				'mytradingexpert.com': {
+					'en': 'https://mytradingexpert.com/privacy-policy',
+					'es': 'https://es.mytradingexpert.com/privacy-policy',
+					'ar': 'https://ar.mytradingexpert.com/privacy-policy',
+				},
+				'starthandel.se': {
+					'en': 'https://www.conquer-media.com/files/ConquerPrivacyPolicy.htm',
+				},
+				'fortissio.com': {
+					'en': 'https://preg.fortissio.com/assets/FORTISSIO/en/Documents/privacy-policy-en.pdf',
+					'it': 'https://preg.fortissio.com/assets/FORTISSIO/it/Documents/privacy-policy-it.pdf',
+					'pl': 'http://preg.fortissio.com/assets/FORTISSIO/pl/Documents/Privacy_Policy_PL.pdf',
+					'ar': 'http://preg.fortissio.com/assets/FORTISSIO/ar/Documents/privacy-policy-ar.pdf',
+					'es': 'https://preg.fortissio.com/assets/FORTISSIO/es/Documents/privacy-policy.pdf',
+					'sv': 'https://preg.fortissio.com/assets/FORTISSIO/sv/Documents/Privacy-Policy-sv.pdf',
+					'de': 'https://preg.fortissio.com/assets/FORTISSIO/de/Documents/privacy-policy-de.pdf',
+				},
+				'a3t.live': {
+					'en': 'https://www.a3t.live/about/privacy-policy/',
+					'ar': 'https://ar.a3t.live/about/privacy-policy/',
+					'es': 'https://es.a3t.live/about/privacy-policy/',
+				},
+				'70trades.com': {
+					'en': 'https://www.70trades.com/about/privacy-policy',
+					'ar': 'https://ar.70trades.ae/about/privacy-policy/',
+					'es': 'https://es.70trades.com/about/privacy-policy/',
+				},
+				'ubanker.com': {
+					'en': 'https://ubanker.com/financial/privacy-policy/',
+					'ar': 'https://ar.ubankertrade.net/financial/privacy-policy',
+					'es': 'https://es.ubanker.com/financial/privacy-policy/',
+				},
+				'ontega.com': {
+					'en': 'https://www.ontega.com/privacy-policy/',
+					'ar': 'https://ar.ontega.com/privacy-policy/',
+					'es': 'https://es.ontega.com/privacy-policy/',
+					'pt': 'https://pt.ontega.com/privacy-policy/',
+				},
+				'co.za': {
+					'en': 'http://preg.fxgm.co.za/assets/FXGM_CO_ZA/en/Documents/Privacy_Policy.pdf'
+				},
+				'wbandsmith.com': {
+					'en': 'https://preg.wbandsmith.com/assets/WB_S/en/Documents/Privacy_policy_EN.pdf',
+					'es': 'https://preg.wbandsmith.com/assets/WB_S/es/Documents/Privacy_policy_ES.pdf',
+					'pt': 'https://preg.wbandsmith.com/assets/WB_S/pt/Documents/Privacy_policy_PT.pdf',
+				},
+				'finansero.com': {
+					'en': 'https://preg.finansero.com/assets/Finansero/en/Documents/Privacy_Policy_EN.pdf',
+					'it': 'https://preg.finansero.com/assets/Finansero/it/Documents/Privacy_Policy_IT.pdf',
+				},
+				'xlntrade.com': {
+					'en': 'https://xlntrade.com/about-us/privacy-policy/',
+					'ar': 'https://ar.xlntrade.com/about-us/privacy-policy/',
+					'es': 'https://es.xlntrade.com/about-us/privacy-policy/',
+					'pt': 'https://global.xlntrade.com/about-us/privacy-policy/',
+				},
+				'zenstox.com': {
+					'en': 'https://preg.zenstox.com/assets/Zenstox/en/Documents/Privacy_policy_EN.pdf',
+					'es': 'https://preg.zenstox.com/assets/Zenstox/es/Documents/Privacy_policy_SP.pdf',
+					'pt': 'https://preg.zenstox.com/assets/Zenstox/pt/Documents/Privacy_policy_PT.pdf',
+				},
+				'edutrading.com': {
+					'en': 'https://edutrading.com/privacy-policy/',
+					'es': 'https://edutrading.com/es/privacy-policy/',
+					'it': 'https://edutrading.com/it/privacy-policy/',
+					'pl': 'https://edutrading.com/pl/privacy-policy/',
+				},
+				'brainyacademy.org': {
+					'en': 'https://brainyacademy.org/privacy-policy-2/'
+				},
+				'bnjmedia.com': {
+					'en': 'https://www.benjo.services/cookies-policy'
+				}
+			},
+			init: function () {
+				// Early exit If domain not in the list or not LP or not need to display.
+				if (undefined === this.brandsLinks[this.domain] || !this.isLP() || !this.shouldDisplayCookieBanner()) {
+					return;
+				}
+				this.show();
+			},
+			setBodyPadding: function () {
+				let banner = document.querySelector('.cookies-baner');
+				if (null != banner) {
+					let height = banner.offsetHeight;
+					document.body.style.setProperty('padding-bottom', height + 'px', 'important');
+				}
+			},
+			show: function () {
+				this.bodyEl.prepend(this.create.banner());
+				this.setBodyPadding();
+				window.addEventListener('resize', this.setBodyPadding);
+			},
+			hide: function (bannerEl) {
+				bannerEl.remove();
+			},
+			acceptCookies: function (ev) {
+				ev.preventDefault();
+				app.cookies.hide(ev.target.closest('.cookies-baner'));
+				document.body.style.setProperty('padding-bottom', '0px', 'important');
+				window.removeEventListener('resize', this.setBodyPadding);
+			},
+			create: {
+				content: function () {
+					let cookies = app.cookies;
+					let cookiesContent = '';
+					let currentMessage = undefined !== cookies.messages[cookies.currentLang] ? cookies.messages[cookies.currentLang] : cookies.messages[cookies.defaultLang];
+					let currentLink = undefined !== cookies.brandsLinks[cookies.domain][cookies.currentLang] ? cookies.brandsLinks[cookies.domain][cookies.currentLang] : cookies.brandsLinks[cookies.domain][cookies.defaultLang];
+
+					cookiesContent = currentMessage.replace('%%cookies_link%%', currentLink);
+
+					return cookiesContent;
+				},
+				banner: function () {
+					let cookies = app.cookies;
+					app.cookies.dir = undefined !== cookies.messages[cookies.currentLang] ? cookies.currentLang === 'ar' ? 'rtl' : 'ltr' : 'ltr';
+
+					let banner = document.createElement('div');
+					banner.classList.add('cookies-baner');
+					banner.style = 'position:fixed;bottom:0;left:0;right:0;width:100%;background:#333;color:#fff;z-index:1027';
+
+					let style = document.createElement('style');
+					style.innerHTML = `.cookies-content a{font-family:"Poppins",sans-serif;font-weight:400;font-size:12px;line-height:24px;color:#fff;text-decoration:underline;} .cookies-container{gap:15px;text-align:left} .cookies-container[dir="rtl"]{text-align:right} .cookies-container .cookies-close>svg{max-width:18px} @media screen and (min-width: 576px) {.cookies-container{gap:60px;}}`;
+
+					let bannerCtr = document.createElement('div');
+					bannerCtr.classList.add('cookies-container');
+					bannerCtr.dir = app.cookies.dir;
+					bannerCtr.style = 'position:relative;display:flex;justify-content:space-between;align-items:center;padding:8px 20px;max-width:1200px;margin:0 auto;';
+
+					let closeBtn = document.createElement('button');
+					closeBtn.classList.add('cookies-close');
+					closeBtn.role = 'button';
+					closeBtn.style = 'padding:0;margin:0;line-heght:0;background:transparent;border:none;outline:none;cursor:pointer;';
+					closeBtn.innerHTML = `<svg width="31" height="31" viewBox="0 0 31 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M31 3.12214L27.8779 0L15.5 12.3779L3.12214 0L0 3.12214L12.3779 15.5L0 27.8779L3.12214 31L15.5 18.6221L27.8779 31L31 27.8779L18.6221 15.5L31 3.12214Z" fill="white"/>
+					</svg>`;
+					closeBtn.addEventListener('click', app.cookies.acceptCookies);
+
+					let bannerContent = document.createElement('div');
+					bannerContent.classList.add('cookies-content');
+					bannerContent.style = 'font-family:"Poppins",sans-serif;font-weight:400;font-size:12px;line-height:24px;color:#fff';
+					bannerContent.innerHTML = this.content();
+
+					bannerCtr.append(bannerContent, closeBtn);
+					banner.append(style, bannerCtr);
+
+					return banner;
+				}
+			}
+		};
+
+	};
+
+
+
+})(jQuery);

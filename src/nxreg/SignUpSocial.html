@@ -1,0 +1,91 @@
+<script id="nxreg-sign-up-social-template" type="text/x-handlebars-template">
+  <div class="nx-signup nxreg-form">
+
+    <div class="nx-signup-form nx-signup__form">
+      <!-- <h1 class="text-center nx-signup__form__heading">{{strings.nxReg_i18n_SignUp_SignUp}}</h1> -->
+
+      <h3 class="nx-signup__form__heading">{{strings.nxReg_i18n_SignUp_SignUp}}</h3>
+
+      <div class="login-wrapper mb-4">
+        <span class="d-block text-center">{{strings.nxReg_i18n_SignUp_SignInText}}</span>
+        <a class="d-block text-center" href="{{settings.nxReg_SignInUrl}}">{{strings.nxReg_i18n_SignUp_LogIn}}</a>
+      </div>
+
+      <form autocomplete="off" method="post" action="#" id="mainForm"
+        class="nxreg-sign-up-form needs-validation social-form" novalidate>
+
+        <input type="hidden" name="recaptcha-token" id="recaptcha-token" value="" />
+
+        <p>{{strings.nxReg_i18n_SignUp_Social_Text}}</p>
+
+        {{#ifEquals settings.nxReg_PhoneNumber "true"}}
+          <div class="form-group nxreg-sign-up-phone-number-wrapper">
+
+
+            <label class="field-label label-country_code">{{strings.nxReg_i18n_SignUp_CountryCode}}</label>
+            <input type="tel" class="form-control nxreg-sign-up-phone-number" id="phone-number" placeholder=" "
+              required>
+            <label for="phone-number" class="field-label label-phone">{{strings.nxReg_i18n_SignUp_PhoneNumber}}</label>
+            <div class="invalid-feedback nxreg-sign-up-phone-number-error">
+              {{strings.nxReg_i18n_SignUp_PhoneNumberErrors.[4]}}
+            </div>
+
+          </div>
+        {{/ifEquals}}
+
+        {{#ifEquals settings.nxReg_PrivacyNoticeCheckbox "true"}}
+          <div class="form-group">
+            <div class="custom-control custom-checkbox mt-4 mb-4">
+              <input type="checkbox" class="custom-control-input" id="privacy-notice"
+                name="RegistrationModel.PrivacyNotice" required>
+              <label class="custom-control-label"
+                for="privacy-notice">{{{settings.nxReg_PrivacyNoticeText_NEW}}}</label>
+              <div class="invalid-feedback">
+                {{strings.nxReg_i18n_SignUp_PrivacyNoticeNotAcceptedError}}
+              </div>
+            </div>
+          </div>
+          {{else}}
+        {{/ifEquals}}
+
+        {{#ifEquals settings.nxReg_VerificationCode "true"}}
+          <div class="form-group-verification row mb-3">
+            <div class="custom-control custom-checkbox col-1">
+              <input type="checkbox" class="custom-control-input" id="verification-code-toggle">
+              <label class="custom-control-label nxreg-sign-up-verification-code-toggle"
+                for="verification-code-toggle"></label>
+            </div>
+            <div class="form-group nxreg-sign-up-verification-code-wrapper col-11">
+              <div class="input-group">
+                <input disabled type="text" class="form-control nxreg-sign-up-verification-code" id="verification-code"
+                  pattern="{{settings.nxReg_Validation_VerificationCode}}">
+                <label for="verification-code" class="field-label-code">
+                  {{strings.nxReg_i18n_SignUp_VerificationCodeToggle}}
+                </label>
+                <div class="invalid-feedback nxreg-sign-up-verification-code-error">
+                  {{strings.nxReg_i18n_SignUp_VerificationCodeError}}
+                </div>
+              </div>
+            </div>
+          </div>
+        {{/ifEquals}}
+
+        <a class="d-block text-center small" href="{{settings.nxReg_SignInUrl}}">{{strings.nxReg_i18n_SignUp_SignIn}}</a>
+
+        <div id="msgContainer" class="nxreg-server-error-wrapper"></div>
+
+        <button type="submit"
+          class="btn btn-primary btn-lg btn-block">{{strings.nxReg_i18n_SignUp_CreateAccountButton}}</button>
+
+        <div class="form-group">
+          <div class="mt-4 mb-4 text-center privacy-notice">
+            {{{settings.nxReg_PrivacyNoticeText_NEW}}}
+          </div>
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+</script>

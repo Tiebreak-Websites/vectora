@@ -1,0 +1,165 @@
+<script id="nxreg-sign-up-template"
+        type="text/x-handlebars-template">
+  <div class="nx-signup nxreg-form w-full">
+
+    <div class="nx-signup-form nx-signup__form">
+
+      <!-- 
+      <h3 class="nx-signup__form__heading text-center">
+        {{strings.nxReg_i18n_SignUp_SignUp}}
+      </h3>
+
+      <div class="login-wrapper text-center">
+        <span class="d-block text-center">{{strings.nxReg_i18n_SignUp_SignInText}}</span>
+        <a class="d-block text-center" href="{{settings.nxReg_SignInUrl}}">{{strings.nxReg_i18n_SignUp_LogIn}}</a>
+      </div>
+    -->
+
+      {{#if storage.social}}
+        <div class="nx-registration-social-login">
+          <ul class="nx-registration-social-login__list">
+            {{#ifEquals settings.nxReg_Google "true"}}
+              <li class="nx-registration-social-login__list__item nx-registration-social-login__list__item--google"><a
+                  href="#google" class="nxreg-sign-up-google"><span>
+                    {{strings.nxReg_i18n_SignUp_Social_Google}}</span></a></li>
+            {{/ifEquals}}
+            {{#ifEquals settings.nxReg_Facebook "true"}}
+              <li class="nx-registration-social-login__list__item nx-registration-social-login__list__item--facebook"><a
+                  href="#facebook" class="nxreg-sign-up-facebook"><span>
+                    {{strings.nxReg_i18n_SignUp_Social_Facebook}}</span></a></li>
+            {{/ifEquals}}
+          </ul>
+          <!-- <div class="nx-registration-social-login__text nx-registration-social-login__text--bottom mb-4">{{strings.nxReg_i18n_SignUp_Social_BoxMessage2}}</div>  -->
+        </div>
+      {{/if}}
+
+      <form autocomplete="off" method="post" action="#" id="mainForm" class="nxreg-sign-up-form needs-validation"
+        novalidate>
+
+        <input type="hidden" name="recaptcha-token" id="recaptcha-token" value="" />
+
+        {{#ifEquals settings.nxReg_FullName "true"}}
+          <div class="form-group nx-form-group">
+            <label for="fullname" class="field-label label-fullname">{{strings.nxReg_i18n_SignUp_FullName}}</label>
+            <input autocomplete="false" type="text" class="form-control nxreg-sign-up-full-name" id="fullname"
+              name="RegistrationModel.FullName" placeholder=" " pattern="{{settings.nxReg_Validation_FullNameRegEx}}"
+              required>
+            <div class="invalid-feedback">
+              {{strings.nxReg_i18n_SignUp_FullNameError}}
+            </div>
+          </div>
+        {{/ifEquals}}
+
+        <div class="form-group nx-form-group">
+          <label for="email" class="field-label label-email">{{strings.nxReg_i18n_SignUp_Email}}</label>
+          <input autocomplete="false" type="email" placeholder=" " class="form-control" id="email"
+            name="RegistrationModel.Email" pattern="{{settings.nxReg_Validation_EmailRegEx}}" required>
+          <div class="invalid-feedback">
+            {{strings.nxReg_i18n_SignUp_EmailWrongFormatError}}
+          </div>
+        </div>
+
+        {{#ifEquals settings.nxReg_PhoneNumber "true"}}
+          <div class="form-group nxreg-sign-up-phone-number-wrapper">
+            <label class="field-label label-country_code">{{strings.nxReg_i18n_SignUp_CountryCode}}</label>
+            <label for="phone-number" class="field-label label-phone">{{strings.nxReg_i18n_SignUp_PhoneNumber}}</label>
+            <input type="tel" class="form-control nxreg-sign-up-phone-number" id="phone-number" placeholder=" "
+              required>
+            <div class="invalid-feedback nxreg-sign-up-phone-number-error">
+              {{strings.nxReg_i18n_SignUp_PhoneNumberErrors.[4]}}
+            </div>
+          </div>
+        {{/ifEquals}}
+
+        {{#ifEquals settings.nxReg_Country "true"}}
+          <div class="form-group nx-form-group" style="display: none;">
+            <label for="country" class="field-label label-country">{{strings.nxReg_i18n_SignUp_Country}}</label>
+            <select class="form-control country nxreg-sign-up-country" id="country" required></select>
+            <div class="invalid-feedback">
+              {{strings.nxReg_i18n_SignUp_CountryError}}
+            </div>
+          </div>
+        {{/ifEquals}}
+
+        {{#ifEquals settings.nxReg_AutoPassword "false"}}
+          <div class="form-group nx-form-group password-eye">
+            <label for="password" class="field-label label-password">
+              {{strings.nxReg_i18n_SignUp_Password}}
+            </label>
+            <span class="password-eye__icon"></span>
+            <input autocomplete="disabled" placeholder=" " type="password" class="form-control" id="password" required>
+            <div class="invalid-feedback">
+              {{strings.nxReg_i18n_SignUp_PasswordWrongError}}
+            </div>
+          </div>
+        {{/ifEquals}}
+
+
+        {{#ifEquals settings.nxReg_Country "true"}}
+          <div class="form-group nx-form-group nx-form-group_country" style="display:none;">
+            <label for="email" class="">{{strings.nxReg_i18n_SignUp_Country}}</label>
+
+            <select class="form-control nxreg-sign-up-country" required></select>
+
+            <div class="invalid-feedback">
+              {{strings.nxReg_i18n_SignUp_CountryError}}
+            </div>
+          </div>
+        {{/ifEquals}}
+
+        {{#ifEquals settings.nxReg_VerificationCode "true"}}
+          <div class="form-groud form-group-verification">
+            <div class="custom-control custom-checkbox col-1">
+              <input type="checkbox" class="custom-control-input" id="verification-code-toggle">
+              <label class="custom-control-label nxreg-sign-up-verification-code-toggle"
+                for="verification-code-toggle"></label>
+            </div>
+            <div class="form-group nxreg-sign-up-verification-code-wrapper col-11">
+              <div class="input-group">
+                <input disabled type="text" class="form-control nxreg-sign-up-verification-code" id="verification-code"
+                  pattern="{{settings.nxReg_Validation_VerificationCode}}">
+                <label for="verification-code" class="field-label-code">
+                  {{strings.nxReg_i18n_SignUp_VerificationCodeToggle}}
+                </label>
+                <div class="invalid-feedback nxreg-sign-up-verification-code-error">
+                  {{strings.nxReg_i18n_SignUp_VerificationCodeError}}
+                </div>
+              </div>
+            </div>
+          </div>
+        {{/ifEquals}}
+
+
+        {{#ifEquals settings.nxReg_PrivacyNoticeCheckbox "true"}}
+          <div class="form-group">
+            <div class="custom-control custom-checkbox custom-checkbox-privacy-notice">
+              <input type="checkbox" class="custom-control-input" id="privacy-notice"
+                name="RegistrationModel.PrivacyNotice" required>
+              <label class="custom-control-label custom-control-label_privacyNotice" for="privacy-notice">
+                {{{settings.nxReg_PrivacyNoticeText_NEW}}}
+              </label>
+              <div class="invalid-feedback">
+                {{strings.nxReg_i18n_SignUp_PrivacyNoticeNotAcceptedError}}
+              </div>
+            </div>
+          </div>
+          {{else}}
+            <div class="form-group">
+              <div class="mt-4 mb-4 text-center privacy-notice">
+                {{{settings.nxReg_PrivacyNoticeText_NEW}}}
+              </div>
+            </div>
+        {{/ifEquals}}
+
+
+        <button type="submit" data-string="nxReg_i18n_SignUp_CreateAccountButton">
+          {{strings.nxReg_i18n_SignUp_CreateAccountButton}}
+        </button>
+        <div id="msgContainer" class="nxreg-server-error-wrapper"></div>
+
+      </form>
+
+    </div>
+
+  </div>
+</script>

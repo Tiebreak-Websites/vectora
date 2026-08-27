@@ -270,5 +270,6 @@ const bots = [
     });
   };
 
-  document.addEventListener('astro:page-load', initStrategyModals);
+  initStrategyModals();
+  document.addEventListener('astro:after-swap', initStrategyModals);
 </script>

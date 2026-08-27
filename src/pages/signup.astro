@@ -1,8 +1,26 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import AuthForm from '../components/AuthForm.astro';
+import Layout from "../layouts/Layout.astro";
+import AuthForm from "../components/signup/AuthForm.astro";
+
+import Loader from "../nxreg/Loader.html";
+import SignUp from "../nxreg/SignUp.html";
+import SignUpActivation from "../nxreg/SignUpActivation.html";
+import SignUpPassword from "../nxreg/SignUpPassword.html";
+import SignUpSocial from "../nxreg/SignUpSocial.html";
+import ThankYou from "../nxreg/ThankYou.html";
 ---
 
-<Layout title="Vectora — Sign up" description="Create your Vectora account — every package comes with a 90-day refund guarantee.">
+<Layout
+  title="Vectora — Sign up"
+  description="Create your Vectora account — every package comes with a 90-day refund guarantee."
+  isRegister={true}
+>
   <AuthForm mode="signup" />
+
+  <Loader />
+  <SignUp />
+  <SignUpActivation />
+  <SignUpPassword />
+  <SignUpSocial />
+  <ThankYou />
 </Layout>
