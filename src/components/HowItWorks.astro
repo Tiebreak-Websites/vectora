@@ -216,5 +216,6 @@ const stepIcons = [
     document.addEventListener('astro:before-swap', () => clearInterval(timer), { once: true });
   };
 
-  document.addEventListener('astro:page-load', initTerminal);
+  initTerminal();
+  document.addEventListener('astro:after-swap', initTerminal);
 </script>

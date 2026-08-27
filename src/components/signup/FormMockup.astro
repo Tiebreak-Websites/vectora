@@ -1,0 +1,73 @@
+---
+const { mode = "login" } = Astro.props;
+const isLogin = mode === "login";
+---
+
+<form id="auth-form" class="auth-form" novalidate data-mode={mode}>
+  {
+    !isLogin && (
+      <div class="field">
+        <label for="name">Full name</label>
+        <input
+          id="name"
+          name="name"
+          type="text"
+          autocomplete="name"
+          placeholder="Alex Trader"
+          required
+        />
+        <span class="err" data-for="name" />
+      </div>
+    )
+  }
+
+  <div class="field">
+    <label for="email">Email</label>
+    <input
+      id="email"
+      name="email"
+      type="email"
+      autocomplete="email"
+      placeholder="you@example.com"
+      required
+    />
+    <span class="err" data-for="email"></span>
+  </div>
+
+  <div class="field">
+    <label for="password">Password</label>
+    <input
+      id="password"
+      name="password"
+      type="password"
+      autocomplete={isLogin ? "current-password" : "new-password"}
+      placeholder="••••••••"
+      required
+    />
+    <span class="err" data-for="password"></span>
+  </div>
+
+  {
+    isLogin ? (
+      <div class="row-between">
+        <label class="check">
+          <input type="checkbox" name="remember" /> Remember me
+        </label>
+        <a href="#" class="link-sm">
+          Forgot password?
+        </a>
+      </div>
+    ) : (
+      <label class="check terms">
+        <input type="checkbox" name="terms" />{" "}
+        <span>I agree to the Terms &amp; Risk Disclosure</span>
+      </label>
+    )
+  }
+
+  <button type="submit" class="btn btn-primary btn-lg auth-submit"
+    >{isLogin ? "Log in" : "Create account"}
+    <span class="arrow" aria-hidden="true">→</span></button
+  >
+  <p class="form-status" id="auth-status" role="status" aria-live="polite"></p>
+</form>

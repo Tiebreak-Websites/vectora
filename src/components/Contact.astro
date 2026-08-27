@@ -230,5 +230,6 @@ const options = [
     });
   };
 
-  document.addEventListener('astro:page-load', initContactForm);
+  initContactForm();
+  document.addEventListener('astro:after-swap', initContactForm);
 </script>

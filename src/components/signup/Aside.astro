@@ -1,0 +1,49 @@
+---
+import Logo from "../Logo.astro";
+
+const perks = [
+  "Three specialist algos — gold, Bitcoin, Nasdaq",
+  "Every trade visible in your own account",
+  "90-day refund guarantee",
+  "1 year of algo access with every package",
+];
+---
+
+<aside class="auth-side" aria-hidden="true">
+  <a href="/" class="side-logo" aria-label="Vectora home"
+    ><Logo height={30} /></a
+  >
+  <h2>
+    Trading discipline,<br /><span class="grad-text">automated.</span>
+  </h2>
+  <ul class="side-perks">
+    {
+      perks.map((p) => (
+        <li>
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M20 6L9 17l-5-5" />
+          </svg>
+          {p}
+        </li>
+      ))
+    }
+  </ul>
+  <div class="side-stats">
+    <div>
+      <span class="ss-v">92%</span><span class="ss-k">Win rate</span>
+    </div>
+    <div>
+      <span class="ss-v">1–2%</span><span class="ss-k">Drawdown</span>
+    </div>
+    <div>
+      <span class="ss-v">24/7</span><span class="ss-k">Execution</span>
+    </div>
+  </div>
+</aside>

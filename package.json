@@ -12,6 +12,7 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@tiebreak-websites/astro-wp": "^0.0.2",
     "astro": "^7.0.4"
   }
 }

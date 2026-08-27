@@ -1,0 +1,531 @@
+:root {
+  --nxreg-primary-color: var(--green-bright);
+  --nxreg-dark-bg: var(--bg-3);
+
+  --nxreg-success-color: var(--green-bright);
+  --nxreg-danger-color: #F08D84;
+  --nxreg-invalid-border: #E4685F;
+
+  --nxreg-font-size: 1rem;
+
+  --nxreg-input-height: auto;
+  --nxreg-input-height-mobile: auto;
+  --nxreg-input-space: 0;
+  --nxreg-input-space-mobile: 0;
+  --nxreg-input-border-radius: var(--radius-sm);
+  --nxreg-input-border-color: var(--line-strong);
+  --nxreg-input-bg: rgba(0, 0, 0, 0.25);
+  --nxreg-input-padding: 0.8rem 0.9rem;
+  --nxreg-input-padding-mobile: 0.8rem 0.9rem;
+
+  --nxreg-placeholder-font-size: 1rem;
+  --nxreg-placeholder-font-size-mobile: 1rem;
+  --nxreg-placeholder-color: var(--text-4);
+
+  --nxreg-checkbox-size: 16px;
+
+  --nxreg-label-display: block;
+  --nxreg-label-font-size: 0.85rem;
+  --nxreg-label-color: var(--text);
+  --nxreg-label-color-focus: var(--green-bright);
+
+  --nxreg-button-height: auto;
+  --nxreg-button-height-mobile: auto;
+  --nxreg-button-font-size: 1rem;
+  --nxreg-button-font-size-mobile: 1rem;
+  --nxreg-button-border-radius: var(--radius-sm);
+  --nxreg-button-border-radius-mobile: var(--radius-sm);
+  --nxreg-button-bg: var(--grad-green);
+  --nxreg-button-bg-hover: var(--grad-green);
+  --nxreg-button-color: #04281A;
+  --nxreg-button-shadow: 0 10px 30px -10px rgba(9, 161, 101, 0.55);
+}
+
+/* ------------------------------------------------------
+  General
+------------------------------------------------------ */
+.nxreg-form {
+  color: var(--text-2);
+  font-family: var(--font-body);
+
+  a {
+    color: var(--green-bright);
+    font-weight: 600;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  .form-control {
+    margin: 0;
+  }
+
+  form {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .form-group {
+    margin: 0;
+    position: relative;
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  @media (max-width: 767px) {
+    .form-group {
+      margin: 0;
+    }
+  }
+}
+
+.nx-signup__form__heading {
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  line-height: 1.06;
+}
+
+.login-wrapper {
+  color: var(--text-3);
+  font-size: 0.9rem;
+  margin: 0.45rem 0 1.6rem;
+
+  a {
+    font-weight: 600;
+    color: var(--green-bright);
+  }
+}
+
+/* ------------------------------------------------------
+  Inputs
+------------------------------------------------------ */
+.nxreg-form {
+  input[type="checkbox"] {
+    accent-color: var(--green);
+    width: var(--nxreg-checkbox-size);
+    height: var(--nxreg-checkbox-size);
+    flex: none;
+  }
+
+  input:not([type="checkbox"]),
+  select {
+    display: block;
+    width: 100%;
+    height: var(--nxreg-input-height);
+    font-size: var(--nxreg-font-size);
+    font-weight: 400;
+    padding: var(--nxreg-input-padding);
+    line-height: 1.2;
+    color: var(--text);
+    background: var(--nxreg-input-bg);
+    border: 1px solid var(--nxreg-input-border-color);
+    border-radius: var(--nxreg-input-border-radius);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:focus {
+      outline: none;
+      border-color: var(--green-bright);
+      box-shadow: 0 0 0 3px rgba(23, 212, 139, 0.15);
+    }
+
+    &:disabled {
+      background: var(--nxreg-input-bg);
+      opacity: 0.6;
+    }
+
+    &::placeholder {
+      font-size: var(--nxreg-placeholder-font-size);
+      color: var(--nxreg-placeholder-color);
+      font-weight: 400;
+    }
+
+    @media (max-width: 767px) {
+      height: var(--nxreg-input-height-mobile);
+      font-size: var(--nxreg-placeholder-font-size-mobile);
+      padding: var(--nxreg-input-padding-mobile);
+
+      &::placeholder {
+        font-size: var(--nxreg-placeholder-font-size-mobile);
+      }
+    }
+  }
+
+  select:focus,
+  input:not([type="checkbox"]):focus {
+    outline: none;
+    border-color: var(--green-bright);
+    box-shadow: 0 0 0 3px rgba(23, 212, 139, 0.15);
+  }
+
+  .form-control.is-invalid,
+  .was-validated .form-control:invalid,
+  .is-invalid input:not([type="checkbox"]) {
+    border-color: var(--nxreg-invalid-border);
+  }
+}
+
+/* ------------------------------------------------------
+  Label
+------------------------------------------------------ */
+
+.nxreg-form {
+  label {
+    font-family: var(--font-display);
+    font-size: var(--nxreg-label-font-size);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 0;
+    transition: color 0.2s ease;
+    position: relative;
+    z-index: 0;
+    color: var(--nxreg-label-color);
+
+    &:not(.custom-control-label) {
+      display: var(--nxreg-label-display) !important;
+    }
+  }
+
+  .form-group:focus-within > label:not(.custom-control-label) {
+    color: var(--nxreg-label-color-focus);
+  }
+}
+
+/* ------------------------------------------------------
+  Password
+------------------------------------------------------ */
+
+.nxreg-form .password-eye {
+  position: relative;
+}
+
+.nxreg-form .password-eye input {
+  padding-right: 2.6rem;
+}
+
+.nxreg-form .password-eye__icon {
+  position: absolute;
+  right: 0.85rem;
+  top: calc(var(--nxreg-label-font-size) * 1.3 + 0.4rem + 0.8rem);
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  z-index: 2;
+  opacity: 0.55;
+  background: currentColor;
+  color: var(--text-3);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E") center / contain no-repeat;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.nxreg-form .password-eye__icon:hover {
+  opacity: 1;
+  color: var(--text);
+}
+
+.nxreg-form .password-validation {
+  font-size: 0.78rem;
+
+  li[data-valid="true"] {
+    color: var(--nxreg-success-color);
+  }
+
+  li[data-valid="false"] {
+    color: var(--nxreg-danger-color);
+  }
+}
+
+/* ------------------------------------------------------
+  Invalid Input
+------------------------------------------------------ */
+
+.nxreg-form .invalid-feedback {
+  display: none;
+  font-size: 0.78rem;
+  color: var(--nxreg-danger-color);
+  text-align: left;
+  margin-top: 0;
+  min-height: 1em;
+}
+
+.custom-control-input.is-invalid ~ .invalid-feedback,
+.custom-control-input.is-invalid ~ .invalid-tooltip,
+.was-validated .custom-control-input:invalid ~ .invalid-feedback,
+.was-validated .custom-control-input:invalid ~ .invalid-tooltip,
+.nxreg-form .was-validated .form-control:invalid ~ .invalid-feedback,
+.nxreg-form .is-invalid .invalid-feedback {
+  display: block;
+}
+
+.nxreg-form .nxreg-server-error-wrapper {
+  font-size: 0.88rem;
+  text-align: center;
+  min-height: 1.2em;
+  color: var(--nxreg-danger-color);
+}
+
+/* -----------------------------------------------------
+  Phone Input
+  Labels sit over the two halves of the same field:
+  [ Country code | Phone number ]
+----------------------------------------------------- */
+
+.nxreg-form .nxreg-sign-up-phone-number-wrapper {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr;
+  column-gap: 0;
+  row-gap: 0.4rem;
+}
+
+.nxreg-form .nxreg-sign-up-phone-number-wrapper .label-country_code {
+  display: block !important;
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.nxreg-form .nxreg-sign-up-phone-number-wrapper .label-phone {
+  display: block !important;
+  grid-column: 2;
+  grid-row: 1;
+  padding-left: 0.85rem;
+}
+
+.nxreg-form .nxreg-sign-up-phone-number-wrapper > .iti,
+.nxreg-form .nxreg-sign-up-phone-number-wrapper > input[type="tel"] {
+  grid-column: 1 / -1;
+  grid-row: 2;
+}
+
+.nxreg-form .nxreg-sign-up-phone-number-wrapper .invalid-feedback {
+  grid-column: 1 / -1;
+  grid-row: 3;
+}
+
+.nxreg-form {
+  input[type="tel"] {
+    padding-left: 7.5rem !important;
+  }
+
+  .iti__flag-container {
+    left: 0 !important;
+    width: 7.5rem;
+    padding: 0 0.65rem 0 0.75rem;
+    color: var(--text-4);
+  }
+
+  .iti__selected-flag {
+    padding: 0;
+    width: 100%;
+  }
+
+  .iti--separate-dial-code .iti__selected-flag {
+    background: none !important;
+    border-right: 1px solid var(--line-strong);
+    padding-right: 0.65rem;
+  }
+
+  .iti__selected-dial-code {
+    color: var(--text-2);
+    font-size: 0.95rem;
+  }
+
+  #country-listbox.iti__country-list {
+    margin-top: 5px;
+    border-radius: var(--radius-sm);
+    left: 0 !important;
+    background: var(--bg-3);
+    color: var(--text);
+    border: 1px solid var(--line-strong) !important;
+    font-size: 0.9rem;
+    box-shadow: var(--shadow);
+  }
+}
+
+/* -----------------------------------------------------
+  Privacy Notice
+----------------------------------------------------- */
+
+.custom-checkbox-privacy-notice {
+  margin: 0.3rem 0 0 !important;
+}
+
+.nxreg-form .custom-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.nxreg-form .custom-checkbox input {
+  position: relative;
+  margin-top: 0.15rem;
+}
+
+.nxreg-form .custom-checkbox label {
+  padding-left: 0;
+  position: relative;
+  top: 0;
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 0.85rem;
+  color: var(--text-3);
+  cursor: pointer;
+}
+
+.nxreg-form .custom-checkbox-privacy-notice .custom-control-input {
+  width: var(--nxreg-checkbox-size);
+  height: var(--nxreg-checkbox-size);
+  margin: 0.15rem 0 0;
+}
+
+.nxreg-form .custom-control-label_privacyNotice .invalid-feedback {
+  min-width: 100%;
+}
+
+.nxreg-form .privacy-notice {
+  color: var(--text-3);
+  font-size: 0.85rem;
+}
+
+@media (max-width: 767px) {
+  .custom-checkbox-privacy-notice {
+    margin: 0 !important;
+  }
+}
+
+/* -----------------------------------------------------
+  Verification Code
+----------------------------------------------------- */
+
+.nxreg-form .form-group-verification {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.nxreg-form .form-group-verification .form-group {
+  margin: 0;
+  width: 100%;
+}
+
+/* -----------------------------------------------------
+ Submit Button
+----------------------------------------------------- */
+.nxreg-form button[type="submit"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: var(--nxreg-button-height);
+  margin-top: 0.3rem;
+  padding: 1.05rem 1.7rem;
+  font-family: var(--font-display);
+  font-size: var(--nxreg-button-font-size);
+  font-weight: 600;
+  line-height: 1;
+  background: var(--nxreg-button-bg) !important;
+  color: var(--nxreg-button-color);
+  border: none;
+  border-radius: var(--nxreg-button-border-radius);
+  cursor: pointer;
+  transition: transform 0.16s ease, box-shadow 0.25s ease, background 0.25s ease;
+  box-shadow: var(--nxreg-button-shadow);
+
+  @media (max-width: 767px) {
+    height: var(--nxreg-button-height-mobile);
+    font-size: var(--nxreg-button-font-size-mobile);
+    border-radius: var(--nxreg-button-border-radius-mobile);
+  }
+}
+
+.nxreg-form button[type="submit"]:hover {
+  background: var(--nxreg-button-bg-hover) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 16px 44px -10px rgba(9, 161, 101, 0.75);
+}
+
+.nxreg-form button[type="submit"]:active {
+  transform: translateY(0);
+}
+
+.nxreg-form button:disabled:hover,
+.nxreg-form button:disabled {
+  cursor: not-allowed;
+  transform: none;
+  opacity: 0.65;
+}
+
+/* -----------------------------------------------------
+ Social Login
+----------------------------------------------------- */
+
+.nx-registration-social-login {
+  margin-bottom: 0.25rem;
+}
+
+.nx-registration-social-login__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.nx-registration-social-login__list a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.9rem;
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  text-align: center;
+  color: var(--text);
+  text-transform: none;
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: 0;
+  background: rgba(255, 255, 255, 0.03);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    z-index: -1;
+  }
+
+  &:hover {
+    text-decoration: none;
+    border-color: var(--green-line);
+    box-shadow: 0 0 24px -8px var(--green-glow);
+  }
+}
+
+.nx-registration-social-login__list .nx-registration-social-login__list__item--google {
+  background-image: url(/_assets/images/google-logo.png);
+  background-repeat: no-repeat;
+  background-position: 0.85rem center;
+  background-size: 18px;
+}
+
+.nx-registration-social-login__list .nx-registration-social-login__list__item--facebook {
+  background-image: url(/_assets/images/facebook-logo.png);
+  background-repeat: no-repeat;
+  background-position: 0.85rem center;
+  background-size: 18px;
+}
+
+.nx-registration-social-login__list li + li {
+  margin-top: 0;
+}
