@@ -4,15 +4,15 @@ import ClosingCta from '../components/ClosingCta.astro';
 
 // Official copy — bots page.
 const badges = [
-  { label: '90-day refund', icon: '<path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v4h4"/><path d="M9.5 12.2l1.8 1.8 3.7-3.7"/>' },
+  { label: '60-day refund', icon: '<path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v4h4"/><path d="M9.5 12.2l1.8 1.8 3.7-3.7"/>' },
   { label: 'Risk-first design', icon: '<path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/><path d="M9.5 12l1.8 1.8L15 10"/>' },
   { label: 'Private client use', icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M21 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>' },
 ];
 
 const heroStats = [
-  { v: '25–32%', k: 'Yearly ROI range' },
-  { v: '92%', k: 'Overall win rate' },
-  { v: '1–2%', k: 'Overall drawdown' },
+  { v: 'up to 32%*', k: 'Approx. yearly ROI' },
+  { v: '92%*', k: 'Overall win rate' },
+  { v: '1–2%*', k: 'Overall drawdown' },
   { v: '548 days', k: 'Live + backtested operation' },
 ];
 
@@ -23,12 +23,12 @@ const bots = [
     rows: [
       { k: 'Status', v: 'Ready', status: true },
       { k: 'Instrument', v: 'Gold (XAU)' },
-      { k: 'Monthly Average ROI', v: '3–5%', accent: true },
+      { k: 'Approx. monthly ROI', v: 'up to 5%*', accent: true },
       { k: 'Availability', v: 'All packages' },
       { k: 'Role', v: 'Guardian risk reader' },
     ],
     strategy: 'Gold-focused market monitoring and setup-context checks.',
-    guardian: 'Helps you pause, check volatility, and avoid entering without a plan.',
+    guardian: 'Pauses when volatility spikes and never enters a setup without a plan.',
     cta: 'Choose Mira in a package',
   },
   {
@@ -37,12 +37,12 @@ const bots = [
     rows: [
       { k: 'Status', v: 'Ready', status: true },
       { k: 'Instrument', v: 'Bitcoin (BTC)' },
-      { k: 'Monthly Average ROI', v: '5–7%', accent: true },
+      { k: 'Approx. monthly ROI', v: 'up to 7%*', accent: true },
       { k: 'Availability', v: 'All packages' },
       { k: 'Role', v: 'Momentum and risk monitor' },
     ],
     strategy: 'BTC movement, volatility, and momentum-context monitoring.',
-    guardian: 'Helps you avoid reacting to fast crypto moves without clear structure.',
+    guardian: 'Avoids reacting to fast crypto moves that lack clear structure.',
     cta: 'Choose Axon in a package',
   },
   {
@@ -51,12 +51,12 @@ const bots = [
     rows: [
       { k: 'Status', v: 'Ready', status: true },
       { k: 'Instrument', v: 'Nasdaq (NDX)' },
-      { k: 'Monthly Average ROI', v: '4–6%', accent: true },
+      { k: 'Approx. monthly ROI', v: 'up to 6%*', accent: true },
       { k: 'Availability', v: 'All packages' },
       { k: 'Role', v: 'Timing monitor' },
     ],
     strategy: 'Nasdaq index movement, trend pressure, and timing-context monitoring.',
-    guardian: 'Helps you check whether the moment still fits the plan.',
+    guardian: 'Confirms the moment still fits the plan before entering.',
     cta: 'Choose Kairo in a package',
   },
 ];
@@ -65,13 +65,14 @@ const bots = [
 // hero strip, so this section features only the remaining metric.
 ---
 
-<Layout title="Vectora — Algos" description="Vectora Algos: three AI algo profiles designed for private clients who want clearer risk context and more disciplined timing across concrete instruments.">
+<Layout title="Vectora — Algos" description="Vectora Algos: three automated algo profiles designed for private clients who want clearer risk context and more disciplined timing across concrete instruments.">
   <section class="section page-hero">
     <div class="container">
       <h1 class="reveal">Vectora <span class="grad-text">Algos</span></h1>
       <p class="lede reveal" style="--reveal-delay:140ms">
-        Three AI algo profiles designed for private clients who want clearer
-        risk context and more disciplined timing across concrete instruments.
+        Three automated algo profiles designed for private clients who want
+        clearer risk context and more disciplined timing across concrete
+        instruments.
       </p>
 
       <div class="badges reveal" style="--reveal-delay:200ms">
@@ -135,19 +136,19 @@ const bots = [
         <p>
           Vectora is built to sit between the client and the market as a
           guardian layer. It monitors selected conditions, checks risk
-          context, and helps keep decisions structured.
+          context, and keeps execution structured.
         </p>
       </div>
       <div class="d-figure">
-        <span class="df-v">4–5%</span>
-        <span class="df-k figure-label">Monthly average ROI</span>
+        <span class="df-v">up to 5%*</span>
+        <span class="df-k figure-label">Approx. monthly ROI</span>
       </div>
     </div>
   </section>
 
   <ClosingCta
-    title='Deploy an algo with guidance'
-    body="Choose your instrument, speak with our team, and prepare your account through one of our supported brokers. Packages are coming soon."
+    title='Deploy an algo with technical setup assistance'
+    body="Choose your instrument and prepare your account with a technically compatible broker platform — our team assists with the technical setup. Foundation is available now; Advanced and Elite are coming soon."
     primary={{ label: 'View packages →', href: '/packages' }}
     secondary={{ label: 'Talk to our team', href: '/support' }}
   />

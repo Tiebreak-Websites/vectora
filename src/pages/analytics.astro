@@ -1,12 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-// Official copy — analytics page. The 4,000+ private clients figure lives
+// Official copy — analytics page. The 1,000+ active clients figure lives
 // in the milestone block below, so the hero pairs monthly ROI with the
 // overall win rate to avoid showing the same number twice.
 const topStats = [
-  { v: '+4–5%', k: 'Monthly Average ROI' },
-  { v: '92%', k: 'Overall Win Rate', count: 92, suffix: '%' },
+  { v: 'up to 5%*', k: 'Approx. Monthly ROI' },
+  { v: '92%*', k: 'Overall Win Rate', count: 92, suffix: '%*' },
 ];
 
 const bots = [
@@ -14,21 +14,21 @@ const bots = [
     name: 'Mira', asset: 'Gold',
     strategy: 'Gold-focused market monitoring and setup context.',
     full: 'Mira Gold is built for traders who value precision over frequency. Every trade is taken only after multiple market conditions align, with three to four confirmations used to validate the setup. By combining trend analysis, momentum, and price action, Mira focuses on high quality opportunities while filtering out unnecessary market noise.',
-    roi: '3–5%',
+    roi: 'up to 5%*',
     spark: 'M2 31 L9 29.5 L16 30.5 L23 28 L30 26.5 L37 28.5 L44 30 L51 29 L58 26 L65 27 L72 24.5 L79 25.5 L86 22.5 L93 23.5 L100 21 L107 22.5 L114 18 L121 19.5 L128 15.5',
   },
   {
     name: 'Axon', asset: 'BTC',
     strategy: 'Bitcoin volatility and momentum context across selected broker conditions.',
     full: 'Axon BTC is designed to take advantage of Bitcoin’s fast moving price action with a disciplined approach. Instead of reacting to every market move, it patiently waits for three to four confirmations before entering a position. This selective process helps identify stronger setups and keeps the focus on consistency rather than excessive trading.',
-    roi: '5–7%',
+    roi: 'up to 7%*',
     spark: 'M2 32 L8 28 L13 30 L19 23 L25 26 L30 18.5 L36 22 L42 27 L48 25 L53 26.5 L59 17 L64 20.5 L70 12 L76 15.5 L82 8 L88 13 L94 11 L100 5.5 L106 9 L113 7 L120 10.5 L128 3',
   },
   {
     name: 'Kairo', asset: 'Nasdaq',
     strategy: 'Nasdaq index timing, movement pressure, and risk-context monitoring.',
     full: 'Kairo Nasdaq Scalper is developed for one of the world’s most active equity indices, using a structured approach to every trade. Each position is opened only after three to four key confirmations support the setup. By analyzing market direction, momentum, and price behavior, Kairo aims to capture high probability opportunities while maintaining disciplined trade execution.',
-    roi: '4–6%',
+    roi: 'up to 6%*',
     spark: 'M2 29 L8 26 L14 30.5 L20 31.5 L26 27.5 L32 29.5 L38 24 L44 26.5 L50 21.5 L56 25 L62 23.5 L68 18.5 L74 21.5 L80 20 L86 15.5 L92 18.5 L98 17 L104 13 L110 15.5 L116 14 L122 10.5 L128 8',
   },
 ];
@@ -75,9 +75,8 @@ const bots = [
             </div>
 
             <dl class="r-metrics">
-              <div><dt>Monthly Average ROI</dt><dd class="accent">{b.roi}</dd></div>
+              <div><dt>Approx. Monthly ROI</dt><dd class="accent">{b.roi}</dd></div>
               <div><dt>Algo Use</dt><dd>Private clients</dd></div>
-              <div><dt>Today's P&amp;L</dt><dd>Dynamic</dd></div>
               <div><dt>Risk Profile</dt><dd>Guardian risk check</dd></div>
             </dl>
 
@@ -100,7 +99,7 @@ const bots = [
             </div>
             <p class="sm-body">{b.full}</p>
             <div class="sm-foot">
-              <span class="sm-k">Monthly Average ROI</span>
+              <span class="sm-k">Approx. Monthly ROI</span>
               <span class="sm-v">{b.roi}</span>
             </div>
           </div>
@@ -120,13 +119,14 @@ const bots = [
 
   <section class="section milestone-sec">
     <div class="container milestone grad-border spot reveal">
-      <h2><span class="big" data-count="4000" data-suffix="+">4,000+</span> Private Clients</h2>
+      <h2><span class="big" data-count="1000" data-suffix="+">1,000+</span> Active Clients</h2>
       <p class="m-body">
-        Vectora supports private clients who want a clearer, calmer way to use
-        algo-assisted trading. The system is built for risk context, structured
-        decisions, and guided onboarding through supported brokers.
+        Vectora supports active clients who want a clearer, calmer way to use
+        automated trading. The system is built for risk context, structured
+        execution, and technical setup assistance through technically
+        compatible broker platforms.
       </p>
-      <a href="/support" class="btn btn-primary btn-lg">Join the network <span class="arrow" aria-hidden="true">→</span></a>
+      <a href="/support" class="btn btn-primary btn-lg">Get started <span class="arrow" aria-hidden="true">→</span></a>
     </div>
   </section>
 </Layout>
@@ -236,7 +236,7 @@ const bots = [
 
   @media (max-width: 1020px) {
     .row { grid-template-columns: 1fr 1fr; }
-    .r-metrics { grid-column: 1 / -1; grid-template-columns: repeat(4, 1fr); }
+    .r-metrics { grid-column: 1 / -1; grid-template-columns: repeat(3, 1fr); }
     .r-link { justify-self: start; }
   }
   @media (max-width: 700px) {

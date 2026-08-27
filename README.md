@@ -40,35 +40,41 @@ functions/_middleware.js  Cloudflare Pages Basic Auth gate
 
 ## Branches
 
-The site and the launch placeholder are split across two branches with **no
+The site and the launch placeholder are split across separate branches with **no
 shared files** — they are not meant to be merged into each other.
 
-| Branch    | Purpose                                                          |
-| --------- | ---------------------------------------------------------------- |
-| `website` | **This branch.** The real marketing site. Build it here.          |
-| `live`    | Coming Soon placeholder only. Deploy branch — what the public gets |
-| `dev`     | Active development (predates the split)                           |
-| `preview` | Staging (reserved)                                               |
-| `prod`    | Production (reserved)                                            |
+| Branch        | Purpose                                                        |
+| ------------- | -------------------------------------------------------------- |
+| `website`     | **This branch.** The real marketing site. Build it here.        |
+| `live`        | Deploy branch — what the public gets. Mirrors `website`.        |
+| `coming-soon` | Coming Soon placeholder only. Parked, not deployed.             |
+| `dev`         | Active development (predates the split)                         |
+| `preview`     | Staging (reserved)                                              |
+| `prod`        | Production (reserved)                                           |
 
-`live` contains a single page and none of the site's pages or components, so
-`git merge website` into it would drag the whole site back in. To publish the
-real site, deploy from `website` instead — or reset `live` to it when you are
-ready to launch:
+`live` is a mirror of this branch, so publishing is a fast-forward:
 
 ```bash
-git switch live && git reset --hard website && git push --force-with-lease
+git switch live && git merge --ff-only website && git push
+```
+
+`coming-soon` shares no files with the site — it is a single page and none of
+the site's pages or components. Merging it in either direction would drag one
+into the other. To put the placeholder back up, reset `live` onto it instead:
+
+```bash
+git switch live && git reset --hard coming-soon && git push --force-with-lease
 ```
 
 ## Deployment (Cloudflare Pages)
 
-**Live site:** https://vectora-7tw.pages.dev — currently serving the Coming Soon
-placeholder from the `live` branch, not this one.
+**Live site:** https://vectora-7tw.pages.dev — serving the marketing site from
+the `live` branch, which mirrors this one.
 
 [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) builds and
 deploys to Cloudflare Pages (project `vectora`). It is **manual-dispatch only**
-(Actions tab → "Run workflow") and pushes `--branch=live`, so deploying this
-branch means either running it from here or resetting `live` to it first.
+(Actions tab → "Run workflow") and pushes `--branch=live`, so pushing to `live`
+does not deploy on its own — run the workflow after every push.
 
 This branch is gated behind HTTP Basic Auth via
 [`functions/_middleware.js`](functions/_middleware.js). Credentials default to
