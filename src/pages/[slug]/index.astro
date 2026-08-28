@@ -1,0 +1,37 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+import { getStaticPathsRoot } from "@tiebreak/api/wp/static-paths";
+import { getPage } from "@tiebreak/api/wp/pages";
+
+// Get astro params
+const { slug } = Astro.params;
+
+const page = await getPage(slug, Astro);
+
+// The getStaticPaths() is required for static Astro sites.
+// If using SSR, you will not need this function.
+export async function getStaticPaths() {
+  let pages = await getStaticPathsRoot();
+  return pages
+    .filter((page: any) => page.slug !== "home")
+    .map((page: any) => ({
+      params: { slug: page.slug },
+    }));
+}
+---
+
+<Layout
+  title={page.acf.seo.title || page.title.rendered}
+  description={page.acf.seo.description || ""}
+>
+  <main id="main">
+    <div class="container"><Fragment set:html={page.content.rendered} /></div>
+  </main>
+</Layout>
+
+<style>
+  #main {
+    margin: 50px 0;
+  }
+</style>
