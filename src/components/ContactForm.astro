@@ -1,0 +1,215 @@
+---
+const { title, text, emailTo } = Astro.props;
+
+const FORM_ENDPOINT =
+  "https://wordpress.plexop.dev/wp-json/tiebreak/v1/contact-form";
+const num1 = Math.floor(Math.random() * 9) + 1;
+const num2 = Math.floor(Math.random() * 9) + 1;
+---
+
+<form
+  class="contact-form card grad-border spot reveal"
+  id="contact-form"
+  novalidate
+  data-endpoint={FORM_ENDPOINT}
+  style="--reveal-delay:140ms"
+>
+  <h2>{title}</h2>
+  <p class="form-sub">
+    {text}
+  </p>
+
+  <input type="hidden" name="to" value={emailTo} />
+  <input type="hidden" name="website" value="https://vectoralogic.ai" />
+  <input type="hidden" name="num1" id="num1" value={num1} />
+  <input type="hidden" name="num2" id="num2" value={num2} />
+  <input
+    type="hidden"
+    name="success_message"
+    value="Thanks! We'll be in touch with you shortly."
+  />
+
+  <div class="row-2">
+    <div class="field">
+      <label for="name">Name</label>
+      <input
+        id="name"
+        name="name"
+        type="text"
+        autocomplete="name"
+        required
+        placeholder="Alex Trader"
+      />
+      <span class="err" data-for="name"></span>
+    </div>
+    <div class="field">
+      <label for="email">Email</label>
+      <input
+        id="email"
+        name="email"
+        type="email"
+        autocomplete="email"
+        required
+        placeholder="you@example.com"
+      />
+      <span class="err" data-for="email"></span>
+    </div>
+  </div>
+  <div class="field">
+    <label for="message">How can we help?</label>
+    <textarea
+      id="message"
+      name="message"
+      rows="4"
+      required
+      placeholder="e.g. I'd like to start with the gold algo on the Foundation package…"
+    ></textarea>
+    <span class="err" data-for="message"></span>
+  </div>
+  <div class="field">
+    <label for="numb_captcha">What is {num1} + {num2}?</label>
+    <input
+      id="numb_captcha"
+      name="numb_captcha"
+      type="number"
+      inputmode="numeric"
+      required
+      autocomplete="off"
+      placeholder="Your answer"
+    />
+    <span class="err" data-for="numb_captcha"></span>
+  </div>
+  <button type="submit" class="btn btn-primary btn-lg form-submit"
+    >Request a call <span class="arrow" aria-hidden="true">→</span></button
+  >
+  <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+  <p class="form-fine">
+    60-day refund period on every package · No obligation · <a href="#"
+      >Terms of Service</a
+    > apply.
+  </p>
+</form>
+
+<script>
+  const initContactForm = () => {
+    const form = document.getElementById(
+      "contact-form",
+    ) as HTMLFormElement | null;
+    const statusEl = document.getElementById("form-status");
+    if (!form || !statusEl || form.dataset.init) return;
+    form.dataset.init = "true";
+
+    const setError = (name: string, msg: string) => {
+      const field = form.querySelector(`[name="${name}"]`)?.closest(".field");
+      const err = form.querySelector(`.err[data-for="${name}"]`);
+      field?.classList.toggle("invalid", Boolean(msg));
+      if (err) err.textContent = msg;
+    };
+
+    const captchaLabel = form.querySelector<HTMLLabelElement>(
+      'label[for="numb_captcha"]',
+    );
+    const num1El = form.querySelector<HTMLInputElement>('[name="num1"]');
+    const num2El = form.querySelector<HTMLInputElement>('[name="num2"]');
+
+    const refreshCaptcha = () => {
+      if (!num1El || !num2El || !captchaLabel) return;
+      const a = Math.floor(Math.random() * 9) + 1;
+      const b = Math.floor(Math.random() * 9) + 1;
+      num1El.value = String(a);
+      num2El.value = String(b);
+      captchaLabel.textContent = `What is ${a} + ${b}?`;
+    };
+
+    const validate = () => {
+      let ok = true;
+      const data = new FormData(form);
+      const name = (data.get("name") as string)?.trim();
+      const email = (data.get("email") as string)?.trim();
+      const message = (data.get("message") as string)?.trim();
+      const n1 = Number(data.get("num1"));
+      const n2 = Number(data.get("num2"));
+      const answer = (data.get("numb_captcha") as string)?.trim();
+
+      setError("name", name ? "" : "Please enter your name.");
+      if (!name) ok = false;
+      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email || "");
+      setError("email", emailOk ? "" : "Please enter a valid email.");
+      if (!emailOk) ok = false;
+      setError("message", message ? "" : "Please tell us how we can help.");
+      if (!message) ok = false;
+      const captchaOk =
+        answer !== "" && Number(answer) === n1 + n2 && Number.isFinite(n1 + n2);
+      setError(
+        "numb_captcha",
+        captchaOk ? "" : "Please solve the sum to continue.",
+      );
+      if (!captchaOk) ok = false;
+      return ok;
+    };
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      statusEl.textContent = "";
+      statusEl.className = "form-status";
+      if (!validate()) return;
+
+      const btn = form.querySelector<HTMLButtonElement>(".form-submit");
+      const endpoint = form.dataset.endpoint;
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = "Sending…";
+      }
+
+      try {
+        if (!endpoint) throw new Error("Missing form endpoint");
+
+        const res = await fetch(endpoint, {
+          method: "POST",
+          headers: { Accept: "application/json" },
+          body: new FormData(form),
+        });
+        const data = await res.json().catch(() => null);
+        const ok =
+          data &&
+          Number(data.code) === 200 &&
+          data.status === "success";
+        if (!ok) {
+          throw new Error(
+            typeof data?.message === "string" && data.message
+              ? data.message
+              : "Request failed",
+          );
+        }
+
+        form.reset();
+        refreshCaptcha();
+        statusEl.textContent =
+          data.message || "Thanks! We'll be in touch within one business day.";
+        statusEl.classList.add("ok");
+      } catch (err) {
+        statusEl.textContent =
+          err instanceof Error && err.message && err.message !== "Request failed"
+            ? err.message
+            : "Something went wrong. Please email hello@vectora.io.";
+        statusEl.classList.add("bad");
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = "Request a call";
+        }
+      }
+    });
+
+    form.querySelectorAll("input, textarea").forEach((el) => {
+      el.addEventListener("input", () => {
+        const name = (el as HTMLInputElement).name;
+        const field = el.closest(".field");
+        if (field?.classList.contains("invalid")) setError(name, "");
+      });
+    });
+  };
+
+  initContactForm();
+  document.addEventListener("astro:after-swap", initContactForm);
+</script>

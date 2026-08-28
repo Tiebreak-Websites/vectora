@@ -1,59 +1,118 @@
 ---
+const { section } = Astro.props;
 // Official copy: supported instruments / compatibility section.
 const cards = [
-  { name: 'Gold (XAU)', bot: 'MIRA algo', status: 'Live', live: true },
-  { name: 'Bitcoin (BTC)', bot: 'AXON algo', status: 'Live', live: true },
-  { name: 'Nasdaq (NDX)', bot: 'KAIRO algo', status: 'Live', live: true },
-  { name: 'More instruments', bot: '', status: 'Coming soon', live: false },
+  { name: "Gold (XAU)", bot: "MIRA algo", status: "Live", live: true },
+  { name: "Bitcoin (BTC)", bot: "AXON algo", status: "Live", live: true },
+  { name: "Nasdaq (NDX)", bot: "KAIRO algo", status: "Live", live: true },
+  { name: "More instruments", bot: "", status: "Coming soon", live: false },
 ];
 ---
 
 <section class="section instruments">
   <div class="container">
     <div class="section-head reveal">
-      <h2>Multi-asset compatibility for selected instruments</h2>
-      <p>
-        Vectora currently offers concrete algo packages for Gold, Bitcoin,
-        and the Nasdaq index through technically compatible broker platforms.
-      </p>
+      <h2>{section.headline}</h2>
+      <p set:html={section.text} />
     </div>
 
     <div class="inst-grid">
-      {cards.map((c, i) => (
-        <article class={`card hoverable spot inst reveal ${c.live ? '' : 'soon'}`} style={`--reveal-delay:${i * 80}ms`}>
-          <div class="inst-main">
-            <span class="inst-name">{c.name}</span>
-            {c.bot && <span class="inst-bot">{c.bot}</span>}
-          </div>
-          <span class={`inst-status ${c.live ? 'live' : ''}`}>{c.status}</span>
-        </article>
-      ))}
+      {
+        section.bots.map((c, i) => (
+          <article
+            class={`card hoverable spot inst reveal ${c.live ? "" : "soon"}`}
+            style={`--reveal-delay:${i * 80}ms`}
+          >
+            <div class="inst-main">
+              <span class="inst-name">{c.name}</span>
+              {c.bot && <span class="inst-bot">{c.bot}</span>}
+            </div>
+            <span class={`inst-status ${c.live ? "live" : ""}`}>
+              {c.status}
+            </span>
+          </article>
+        ))
+      }
     </div>
   </div>
 </section>
 
 <style>
-  .inst-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; }
+  .inst-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.1rem;
+  }
   .inst {
-    display: flex; flex-direction: column; justify-content: space-between; gap: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1.25rem;
     padding: 1.4rem 1.5rem;
     min-height: 128px;
   }
-  .inst.soon { grid-column: 1 / -1; flex-direction: row; align-items: center; min-height: 0; opacity: 0.75; }
-  .inst-name { display: block; font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; color: var(--text); }
-  .inst-bot { display: block; font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3); margin-top: 0.3rem; }
-  .inst-status {
-    font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500;
-    letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-4);
+  .inst.soon {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    align-items: center;
+    min-height: 0;
+    opacity: 0.75;
   }
-  .inst-status.live { color: var(--green-bright); display: inline-flex; align-items: center; gap: 0.4rem; }
+  .inst-name {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.15rem;
+    color: var(--text);
+  }
+  .inst-bot {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-top: 0.3rem;
+  }
+  .inst-status {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-4);
+  }
+  .inst-status.live {
+    color: var(--green-bright);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
   .inst-status.live::before {
-    content: '';
-    width: 7px; height: 7px; border-radius: 50%;
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
     background: var(--green-bright);
     animation: ipulse 1.8s infinite;
   }
-  @keyframes ipulse { 0% { box-shadow: 0 0 0 0 rgba(23, 212, 139, 0.5); } 100% { box-shadow: 0 0 0 7px rgba(23, 212, 139, 0); } }
+  @keyframes ipulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(23, 212, 139, 0.5);
+    }
+    100% {
+      box-shadow: 0 0 0 7px rgba(23, 212, 139, 0);
+    }
+  }
 
-  @media (max-width: 860px) { .inst-grid { grid-template-columns: 1fr; } .inst { min-height: 0; flex-direction: row; align-items: center; } }
+  @media (max-width: 860px) {
+    .inst-grid {
+      grid-template-columns: 1fr;
+    }
+    .inst {
+      min-height: 0;
+      flex-direction: row;
+      align-items: center;
+    }
+  }
 </style>

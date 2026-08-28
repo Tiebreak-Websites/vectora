@@ -1,30 +1,47 @@
 ---
+const { section } = Astro.props;
+
+let headline = section?.headline;
+// replace anything between {with <span class="grad-text"> and } with </span>
+headline = headline
+  .replace("{", "<span class='grad-text'>")
+  .replace("}", "</span>") as string;
+
 // Bot facts from the official copy: instruments, approximate monthly ROI
 // ("up to" figures per compliance review), Live status.
 // Sparklines are hand-drawn equity-style curves ranked by performance:
 // AXON strongest climb, KAIRO second, MIRA modest and steady.
 const bots = [
   {
-    name: 'MIRA', instrument: 'Gold (XAU)', roi: 'up to 5%*',
-    spark: 'M2 31 L9 29.5 L16 30.5 L23 28 L30 26.5 L37 28.5 L44 30 L51 29 L58 26 L65 27 L72 24.5 L79 25.5 L86 22.5 L93 23.5 L100 21 L107 22.5 L114 18 L121 19.5 L128 15.5',
+    name: "MIRA",
+    instrument: "Gold (XAU)",
+    roi: "up to 5%*",
+    spark:
+      "M2 31 L9 29.5 L16 30.5 L23 28 L30 26.5 L37 28.5 L44 30 L51 29 L58 26 L65 27 L72 24.5 L79 25.5 L86 22.5 L93 23.5 L100 21 L107 22.5 L114 18 L121 19.5 L128 15.5",
   },
   {
-    name: 'AXON', instrument: 'Bitcoin (BTC)', roi: 'up to 7%*',
-    spark: 'M2 32 L8 28 L13 30 L19 23 L25 26 L30 18.5 L36 22 L42 27 L48 25 L53 26.5 L59 17 L64 20.5 L70 12 L76 15.5 L82 8 L88 13 L94 11 L100 5.5 L106 9 L113 7 L120 10.5 L128 3',
+    name: "AXON",
+    instrument: "Bitcoin (BTC)",
+    roi: "up to 7%*",
+    spark:
+      "M2 32 L8 28 L13 30 L19 23 L25 26 L30 18.5 L36 22 L42 27 L48 25 L53 26.5 L59 17 L64 20.5 L70 12 L76 15.5 L82 8 L88 13 L94 11 L100 5.5 L106 9 L113 7 L120 10.5 L128 3",
   },
   {
-    name: 'KAIRO', instrument: 'Nasdaq (NDX)', roi: 'up to 6%*',
-    spark: 'M2 29 L8 26 L14 30.5 L20 31.5 L26 27.5 L32 29.5 L38 24 L44 26.5 L50 21.5 L56 25 L62 23.5 L68 18.5 L74 21.5 L80 20 L86 15.5 L92 18.5 L98 17 L104 13 L110 15.5 L116 14 L122 10.5 L128 8',
+    name: "KAIRO",
+    instrument: "Nasdaq (NDX)",
+    roi: "up to 6%*",
+    spark:
+      "M2 29 L8 26 L14 30.5 L20 31.5 L26 27.5 L32 29.5 L38 24 L44 26.5 L50 21.5 L56 25 L62 23.5 L68 18.5 L74 21.5 L80 20 L86 15.5 L92 18.5 L98 17 L104 13 L110 15.5 L116 14 L122 10.5 L128 8",
   },
 ];
 
 const ticker = [
-  { a: 'MIRA', b: 'GOLD (XAU)', c: 'up to 5% / mo*' },
-  { a: 'AXON', b: 'BITCOIN (BTC)', c: 'up to 7% / mo*' },
-  { a: 'KAIRO', b: 'NASDAQ (NDX)', c: 'up to 6% / mo*' },
-  { a: 'ALL ALGOS', b: 'OVERALL WIN RATE', c: '92%*' },
-  { a: 'ALL ALGOS', b: 'OVERALL DRAWDOWN', c: '1–2%*' },
-  { a: 'ENGINE', b: 'STATUS', c: '24/7' },
+  { a: "MIRA", b: "GOLD (XAU)", c: "up to 5% / mo*" },
+  { a: "AXON", b: "BITCOIN (BTC)", c: "up to 7% / mo*" },
+  { a: "KAIRO", b: "NASDAQ (NDX)", c: "up to 6% / mo*" },
+  { a: "ALL ALGOS", b: "OVERALL WIN RATE", c: "92%*" },
+  { a: "ALL ALGOS", b: "OVERALL DRAWDOWN", c: "1–2%*" },
+  { a: "ENGINE", b: "STATUS", c: "24/7" },
 ];
 ---
 
@@ -33,50 +50,72 @@ const ticker = [
   <div class="hero-fade" aria-hidden="true"></div>
 
   <div class="container hero-copy">
-    <h1 id="hero-title" class="reveal">
-      Your guardian layer for<br /><span class="grad-text">disciplined algo trading.</span>
-    </h1>
+    <h1 id="hero-title" class="reveal" set:html={headline} />
 
-    <p class="lede reveal" style="--reveal-delay:160ms">
-      Vectora watches selected market conditions, checks risk around each
-      setup, and executes its strategy automatically. You choose the broker
-      setup and the package — once activated, the algo operates
-      independently within its rules.
-    </p>
+    <p
+      class="lede reveal"
+      style="--reveal-delay:160ms"
+      set:html={section.text}
+    />
 
     <div class="hero-cta reveal" style="--reveal-delay:240ms">
-      <a href="/packages" class="btn btn-primary btn-lg">View packages <span class="arrow" aria-hidden="true">→</span></a>
-      <a href="/support" class="btn btn-outline btn-lg">Request a call</a>
+      <a href={section.primary_button.url} class="btn btn-primary btn-lg">
+        {section.primary_button.title}
+        <span class="arrow" aria-hidden="true">→</span>
+      </a>
+      <a href={section.secondary_button.url} class="btn btn-outline btn-lg">
+        {section.secondary_button.title}
+      </a>
     </div>
   </div>
 
   <div class="container">
     <div class="hero-bots" aria-label="The three Vectora algos">
-      {bots.map((b, i) => (
-        <a href="/algos" class="hb card hoverable spot reveal" style={`--reveal-delay:${320 + i * 90}ms`}>
-          <div class="hb-top">
-            <span class="hb-name">{b.name}</span>
-            <span class="hb-market">{b.instrument}</span>
-          </div>
-          <svg class="spark" viewBox="0 0 130 36" aria-hidden="true" preserveAspectRatio="none">
-            <path d={b.spark} fill="none" stroke="url(#herospark)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-          <div class="hb-foot">
-            <div class="hb-roi-row">
-              <span class="hb-roi">{b.roi}</span>
-              <span class="hb-roi-k figure-label">Approx. monthly ROI</span>
+      {
+        bots.map((b, i) => (
+          <a
+            href="/algos"
+            class="hb card hoverable spot reveal"
+            style={`--reveal-delay:${320 + i * 90}ms`}
+          >
+            <div class="hb-top">
+              <span class="hb-name">{b.name}</span>
+              <span class="hb-market">{b.instrument}</span>
             </div>
-            <span class="hb-arrow" aria-hidden="true">→</span>
-          </div>
-        </a>
-      ))}
+            <svg
+              class="spark"
+              viewBox="0 0 130 36"
+              aria-hidden="true"
+              preserveAspectRatio="none"
+            >
+              <path
+                d={b.spark}
+                fill="none"
+                stroke="url(#herospark)"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <div class="hb-foot">
+              <div class="hb-roi-row">
+                <span class="hb-roi">{b.roi}</span>
+                <span class="hb-roi-k figure-label">Approx. monthly ROI</span>
+              </div>
+              <span class="hb-arrow" aria-hidden="true">
+                →
+              </span>
+            </div>
+          </a>
+        ))
+      }
     </div>
 
     <svg width="0" height="0" aria-hidden="true">
       <defs>
         <linearGradient id="herospark" x1="0" y1="1" x2="1" y2="0">
-          <stop offset="0" stop-color="#09A165" />
-          <stop offset="1" stop-color="#17D48B" />
+          <stop offset="0" stop-color="#09A165"></stop>
+          <stop offset="1" stop-color="#17D48B"></stop>
         </linearGradient>
       </defs>
     </svg>
@@ -85,32 +124,53 @@ const ticker = [
 
 <div class="marquee" aria-hidden="true">
   <div class="marquee-track">
-    {[0, 1, 2, 3].map(() => (
-      ticker.map((t) => (
-        <span class="tick">
-          <span class="t-a">{t.a}</span>
-          <span class="t-b">{t.b}</span>
-          <span class="t-c">{t.c}</span>
-        </span>
-      ))
-    ))}
+    {
+      [0, 1, 2, 3].map(() =>
+        ticker.map((t) => (
+          <span class="tick">
+            <span class="t-a">{t.a}</span>
+            <span class="t-b">{t.b}</span>
+            <span class="t-c">{t.c}</span>
+          </span>
+        )),
+      )
+    }
   </div>
 </div>
 
 <style>
-  .hero { padding-block: clamp(4.75rem, 10vw, 7.5rem); position: relative; overflow: hidden; }
+  .hero {
+    padding-block: clamp(4.75rem, 10vw, 7.5rem);
+    position: relative;
+    overflow: hidden;
+  }
   .hero-canvas {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     opacity: 0.5;
     pointer-events: none;
   }
   .hero-fade {
-    position: absolute; inset: 0;
+    position: absolute;
+    inset: 0;
     pointer-events: none;
     background:
-      linear-gradient(90deg, var(--bg) 0%, transparent 22%, transparent 78%, var(--bg) 100%),
-      linear-gradient(180deg, rgba(14, 21, 18, 0.5), transparent 30%, transparent 62%, var(--bg));
+      linear-gradient(
+        90deg,
+        var(--bg) 0%,
+        transparent 22%,
+        transparent 78%,
+        var(--bg) 100%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(14, 21, 18, 0.5),
+        transparent 30%,
+        transparent 62%,
+        var(--bg)
+      );
   }
   .hero-copy {
     position: relative;
@@ -129,7 +189,13 @@ const ticker = [
     max-width: 62ch;
     margin-top: 1.4rem;
   }
-  .hero-cta { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.85rem; margin-top: 2.3rem; }
+  .hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.85rem;
+    margin-top: 2.3rem;
+  }
 
   /* Bots — three interactive mini-cards under the CTAs */
   .hero-bots {
@@ -140,62 +206,138 @@ const ticker = [
     margin-top: clamp(2.75rem, 6vw, 4.25rem);
   }
   .hb {
-    display: flex; flex-direction: column;
+    display: flex;
+    flex-direction: column;
     padding: 1.35rem 1.45rem 1.25rem;
     background: rgba(18, 26, 22, 0.85);
     backdrop-filter: blur(8px);
     text-align: left;
   }
-  .hb-top { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
-  .hb-name { font-family: var(--font-display); font-weight: 600; font-size: 1.25rem; color: var(--text); }
-  .hb-market { font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-3); letter-spacing: 0.04em; }
-  .hb .spark { width: 100%; height: 52px; margin-top: 1.1rem; opacity: 0.9; }
+  .hb-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .hb-name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: var(--text);
+  }
+  .hb-market {
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: var(--text-3);
+    letter-spacing: 0.04em;
+  }
+  .hb .spark {
+    width: 100%;
+    height: 52px;
+    margin-top: 1.1rem;
+    opacity: 0.9;
+  }
   .hb-foot {
-    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-    margin-top: 1rem; padding-top: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1rem;
+    padding-top: 0.9rem;
     border-top: 1px solid var(--line);
   }
-  .hb-roi-row { display: inline-flex; align-items: baseline; gap: 0.6rem; }
-  .hb-roi { font-family: var(--font-display); font-weight: 600; font-size: 1.45rem; letter-spacing: -0.02em; color: var(--green-bright); font-variant-numeric: tabular-nums; }
-  .hb-arrow { color: var(--text-4); font-size: 1.1rem; transition: transform 0.2s ease, color 0.2s ease; }
-  .hb:hover .hb-arrow { transform: translateX(3px); color: var(--green-bright); }
+  .hb-roi-row {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+  .hb-roi {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.45rem;
+    letter-spacing: -0.02em;
+    color: var(--green-bright);
+    font-variant-numeric: tabular-nums;
+  }
+  .hb-arrow {
+    color: var(--text-4);
+    font-size: 1.1rem;
+    transition:
+      transform 0.2s ease,
+      color 0.2s ease;
+  }
+  .hb:hover .hb-arrow {
+    transform: translateX(3px);
+    color: var(--green-bright);
+  }
 
   @media (max-width: 860px) {
-    .hero-bots { grid-template-columns: 1fr; max-width: 420px; margin-inline: auto; margin-top: 2.5rem; }
+    .hero-bots {
+      grid-template-columns: 1fr;
+      max-width: 420px;
+      margin-inline: auto;
+      margin-top: 2.5rem;
+    }
   }
 
   /* Ticker */
-  .marquee { border-block: 1px solid var(--line); background: var(--bg-2); }
-  .tick { display: inline-flex; align-items: baseline; gap: 0.7rem; margin-right: 3rem; font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.06em; white-space: nowrap; }
-  .t-a { color: var(--text); font-weight: 500; }
-  .t-b { color: var(--text-4); }
-  .t-c { color: var(--green-bright); }
+  .marquee {
+    border-block: 1px solid var(--line);
+    background: var(--bg-2);
+  }
+  .tick {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.7rem;
+    margin-right: 3rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+  .t-a {
+    color: var(--text);
+    font-weight: 500;
+  }
+  .t-b {
+    color: var(--text-4);
+  }
+  .t-c {
+    color: var(--green-bright);
+  }
 </style>
 
 <script>
   // Animated market-line canvas — decorative, deterministic, pauses for
   // reduced-motion. Re-inits on client-side navigation.
   const initHeroCanvas = () => {
-    const canvas = document.getElementById('hero-canvas') as HTMLCanvasElement | null;
+    const canvas = document.getElementById(
+      "hero-canvas",
+    ) as HTMLCanvasElement | null;
     if (!canvas || canvas.dataset.init) return;
-    canvas.dataset.init = 'true';
-    const ctx = canvas.getContext('2d');
+    canvas.dataset.init = "true";
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let w = 0, h = 0, dpr = 1;
+    const reduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    let w = 0,
+      h = 0,
+      dpr = 1;
     let raf = 0;
 
     const resize = () => {
       const rect = canvas.getBoundingClientRect();
       dpr = Math.min(window.devicePixelRatio || 1, 2);
-      w = rect.width; h = rect.height;
+      w = rect.width;
+      h = rect.height;
       canvas.width = Math.round(w * dpr);
       canvas.height = Math.round(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
     resize();
-    window.addEventListener('resize', resize, { passive: true });
+    window.addEventListener("resize", resize, { passive: true });
 
     // Deterministic pseudo-random walk
     let seed = 7;
@@ -217,14 +359,20 @@ const ticker = [
       ctx.clearRect(0, 0, w, h);
 
       // Faint grid
-      ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+      ctx.strokeStyle = "rgba(255,255,255,0.05)";
       ctx.lineWidth = 1;
       const gs = 56;
       for (let x = (t * -18) % gs; x < w; x += gs) {
-        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, h);
+        ctx.stroke();
       }
       for (let y = 0; y < h; y += gs) {
-        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(w, y);
+        ctx.stroke();
       }
 
       // Market line
@@ -237,14 +385,17 @@ const ticker = [
       for (let i = 0; i < N; i++) {
         const x = i * step - off;
         const y = yFor(i + shift);
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       }
       // Fill below line
       const grad = ctx.createLinearGradient(0, 0, 0, h);
-      grad.addColorStop(0, 'rgba(9, 161, 101, 0.16)');
-      grad.addColorStop(1, 'rgba(9, 161, 101, 0)');
+      grad.addColorStop(0, "rgba(9, 161, 101, 0.16)");
+      grad.addColorStop(1, "rgba(9, 161, 101, 0)");
       ctx.save();
-      ctx.lineTo(w + 20, h + 20); ctx.lineTo(-20, h + 20); ctx.closePath();
+      ctx.lineTo(w + 20, h + 20);
+      ctx.lineTo(-20, h + 20);
+      ctx.closePath();
       ctx.fillStyle = grad;
       ctx.fill();
       ctx.restore();
@@ -254,11 +405,12 @@ const ticker = [
       for (let i = 0; i < N; i++) {
         const x = i * step - off;
         const y = yFor(i + shift);
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       }
-      ctx.strokeStyle = 'rgba(23, 212, 139, 0.5)';
+      ctx.strokeStyle = "rgba(23, 212, 139, 0.5)";
       ctx.lineWidth = 1.6;
-      ctx.shadowColor = 'rgba(23, 212, 139, 0.45)';
+      ctx.shadowColor = "rgba(23, 212, 139, 0.45)";
       ctx.shadowBlur = 10;
       ctx.stroke();
       ctx.shadowBlur = 0;
@@ -271,9 +423,13 @@ const ticker = [
     draw();
 
     // Stop the loop when this canvas is removed by a page swap.
-    document.addEventListener('astro:before-swap', () => cancelAnimationFrame(raf), { once: true });
+    document.addEventListener(
+      "astro:before-swap",
+      () => cancelAnimationFrame(raf),
+      { once: true },
+    );
   };
 
   initHeroCanvas();
-  document.addEventListener('astro:after-swap', initHeroCanvas);
+  document.addEventListener("astro:after-swap", initHeroCanvas);
 </script>

@@ -1,8 +1,14 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Contact from '../components/Contact.astro';
+import Layout from "../layouts/Layout.astro";
+import Contact from "../components/Contact.astro";
+import { getPage } from "@tiebreak/api/wp/pages";
+
+const page = await getPage("support");
 ---
 
-<Layout title="Vectora — Support" description="Talk to the Vectora team — get started with a package or arrange a call about a custom setup.">
-  <Contact />
+<Layout
+  title="Vectora — Support"
+  description="Talk to the Vectora team — get started with a package or arrange a call about a custom setup."
+>
+  <Contact supportPage={page} />
 </Layout>

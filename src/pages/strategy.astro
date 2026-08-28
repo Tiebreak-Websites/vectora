@@ -1,116 +1,179 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import HowItWorks from '../components/HowItWorks.astro';
-import ClosingCta from '../components/ClosingCta.astro';
+import Layout from "../layouts/Layout.astro";
+import HowItWorks from "../components/HowItWorks.astro";
+import ClosingCta from "../components/ClosingCta.astro";
+import { getPage } from "@tiebreak/api/wp/pages";
+import { gradText } from "../helpers";
+
+const page = await getPage("strategy");
+const home = await getPage("home");
 
 // Official copy — strategy page.
 const howBody =
-  'From broker setup to algo activation in three clear steps. The process is designed to keep the client informed before, during, and after each setup.';
+  "From broker setup to algo activation in three clear steps. The process is designed to keep the client informed before, during, and after each setup.";
 
 const howSteps = [
   {
-    n: '01',
-    title: 'Join',
-    body: 'Open an account with a technically compatible broker platform, with technical setup assistance from the Vectora team.',
+    n: "01",
+    title: "Join",
+    body: "Open an account with a technically compatible broker platform, with technical setup assistance from the Vectora team.",
   },
   {
-    n: '02',
-    title: 'Choose',
-    body: 'Select your algo package: MIRA for Gold, AXON for BTC, or KAIRO for Nasdaq.',
+    n: "02",
+    title: "Choose",
+    body: "Select your algo package: MIRA for Gold, AXON for BTC, or KAIRO for Nasdaq.",
   },
   {
-    n: '03',
-    title: 'Review',
-    body: 'See the setup context, risk pressure, and signal logic behind the algo’s automated activity.',
+    n: "03",
+    title: "Review",
+    body: "See the setup context, risk pressure, and signal logic behind the algo’s automated activity.",
   },
 ];
 
 const principles = [
   {
-    title: 'Rules-Based Setup Support',
-    body: 'Every setup follows structured logic, replacing emotional or impulsive trading with rules-based execution.',
-    icon: 'rules',
+    title: "Rules-Based Setup Support",
+    body: "Every setup follows structured logic, replacing emotional or impulsive trading with rules-based execution.",
+    icon: "rules",
   },
   {
-    title: 'Risk Context First',
-    body: 'Before action, Vectora checks movement, volatility, and exposure pressure.',
-    icon: 'shield',
+    title: "Risk Context First",
+    body: "Before action, Vectora checks movement, volatility, and exposure pressure.",
+    icon: "shield",
   },
   {
-    title: 'Live + Backtested Logic',
-    body: 'Algo logic is supported by real-time tracking and 548 days of live/backtested operation.',
-    icon: 'chart',
+    title: "Live + Backtested Logic",
+    body: "Algo logic is supported by real-time tracking and 548 days of live/backtested operation.",
+    icon: "chart",
   },
   {
-    title: 'Transparent Workflow',
-    body: 'Clients can see the setup logic, instrument focus, and risk context behind the algo activity.',
-    icon: 'eye',
+    title: "Transparent Workflow",
+    body: "Clients can see the setup logic, instrument focus, and risk context behind the algo activity.",
+    icon: "eye",
   },
 ];
 
 const icons: Record<string, string> = {
-  rules: '<path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 5.5l1 1 2-2M4 11.5l1 1 2-2M4 17.5l1 1 2-2"/>',
-  shield: '<path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/><path d="M9.5 12l1.8 1.8L15 10"/>',
+  rules:
+    '<path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 5.5l1 1 2-2M4 11.5l1 1 2-2M4 17.5l1 1 2-2"/>',
+  shield:
+    '<path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/><path d="M9.5 12l1.8 1.8L15 10"/>',
   chart: '<path d="M4 19V5M4 19h16M8 16v-5M12 16V8M16 16v-3"/>',
   eye: '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>',
 };
 ---
 
-<Layout title="Vectora — Strategy" description="No black-box promises. Vectora turns automated trading into a clearer workflow: setup context, risk check, signal logic, and full visibility in one place.">
+<Layout
+  title="Vectora — Strategy"
+  description="No black-box promises. Vectora turns automated trading into a clearer workflow: setup context, risk check, signal logic, and full visibility in one place."
+>
   <section class="section page-hero">
     <div class="container">
-      <h1 class="reveal">Execution you can <span class="grad-text">see.</span></h1>
-      <p class="lede reveal" style="--reveal-delay:140ms">
-        No black-box promises. Vectora turns automated trading into a
-        clearer workflow: setup context, risk check, signal logic, and full
-        visibility in one place.
-      </p>
+      <h1 class="reveal" set:html={gradText(page.acf.hero.headline)} />
+      <p
+        class="lede reveal"
+        style="--reveal-delay:140ms"
+        set:html={gradText(page.acf.hero.text)}
+      />
     </div>
   </section>
 
-  <HowItWorks body={howBody} steps={howSteps} />
+  <HowItWorks
+    body={howBody}
+    steps={howSteps}
+    items={home?.acf.how_it_works.items}
+  />
 
   <section class="section principles">
     <div class="container">
       <div class="section-head reveal">
-        <h2>Built on discipline</h2>
+        <h2>{page.acf.principles.title}</h2>
       </div>
 
       <div class="pr-grid">
-        {principles.map((p, i) => (
-          <article class="card hoverable spot pr reveal" style={`--reveal-delay:${i * 70}ms`}>
-            <span class="pr-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" set:html={icons[p.icon]} />
-            </span>
-            <h3>{p.title}</h3>
-            <p>{p.body}</p>
-          </article>
-        ))}
+        {
+          page.acf.principles.items.map((p, i) => (
+            <article
+              class="card hoverable spot pr reveal"
+              style={`--reveal-delay:${i * 70}ms`}
+            >
+              <span class="pr-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  set:html={icons[p.icon]}
+                />
+              </span>
+              <h3>{p.title}</h3>
+              <p>{p.body}</p>
+            </article>
+          ))
+        }
       </div>
     </div>
   </section>
 
   <ClosingCta
-    title='Put your strategy under a guardian layer.'
-    body="Pick an algo package, complete the technical setup with our team, and set the risk preferences for your account."
-    primary={{ label: 'View packages →', href: '/packages' }}
-    secondary={{ label: 'Talk to our team', href: '/support' }}
+    title={page.acf.cta.title}
+    body={page.acf.cta.text}
+    primary={{
+      label: page.acf.cta.button_primary.title,
+      href: page.acf.cta.button_primary.url,
+    }}
+    secondary={{
+      label: page.acf.cta.button_secondary.title,
+      href: page.acf.cta.button_secondary.url,
+    }}
   />
 </Layout>
 
 <style>
-  .pr-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
-  .pr { display: flex; flex-direction: column; }
-  .pr-icon {
-    display: inline-flex; width: 44px; height: 44px;
-    align-items: center; justify-content: center; border-radius: var(--radius-sm);
-    margin-bottom: 1.1rem; color: var(--text-2);
-    background: rgba(255, 255, 255, 0.04); border: 1px solid var(--line-strong);
+  .pr-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
   }
-  .pr-icon svg { width: 22px; height: 22px; }
-  .pr h3 { font-size: 1.12rem; margin-bottom: 0.5rem; }
-  .pr p { color: var(--text-3); font-size: 0.93rem; }
+  .pr {
+    display: flex;
+    flex-direction: column;
+  }
+  .pr-icon {
+    display: inline-flex;
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    margin-bottom: 1.1rem;
+    color: var(--text-2);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--line-strong);
+  }
+  .pr-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+  .pr h3 {
+    font-size: 1.12rem;
+    margin-bottom: 0.5rem;
+  }
+  .pr p {
+    color: var(--text-3);
+    font-size: 0.93rem;
+  }
 
-  @media (max-width: 900px) { .pr-grid { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 520px) { .pr-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 900px) {
+    .pr-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 520px) {
+    .pr-grid {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>

@@ -1,24 +1,26 @@
 ---
+const { items } = Astro.props;
+
 // Official copy. Home uses the defaults; the Strategy page passes its own
 // body and steps via props. Rendered as a fast left-to-right flow:
 // numbered nodes joined by animated connectors, terminal below.
 const {
-  body = 'From sign-up to self-service algo setup in three clear steps. No hype, no black box, and no need to watch every tick alone.',
+  body = "From sign-up to self-service algo setup in three clear steps. No hype, no black box, and no need to watch every tick alone.",
   steps = [
     {
-      n: '01',
-      title: 'Connect',
-      body: 'Open an account with a technically compatible broker platform and choose the instrument package that fits your trading goals.',
+      n: "01",
+      title: "Connect",
+      body: "Open an account with a technically compatible broker platform and choose the instrument package that fits your trading goals.",
     },
     {
-      n: '02',
-      title: 'Configure',
-      body: 'Set your package, algo selection, and risk preferences — with technical setup assistance from our team.',
+      n: "02",
+      title: "Configure",
+      body: "Set your package, algo selection, and risk preferences — with technical setup assistance from our team.",
     },
     {
-      n: '03',
-      title: 'Activate',
-      body: 'The algo starts monitoring selected conditions and executes its strategy automatically, within the rules of your setup.',
+      n: "03",
+      title: "Activate",
+      body: "The algo starts monitoring selected conditions and executes its strategy automatically, within the rules of your setup.",
     },
   ],
 } = Astro.props;
@@ -39,19 +41,31 @@ const stepIcons = [
     </div>
 
     <ol class="flow">
-      {steps.map((s, i) => (
-        <li class="fstep reveal" style={`--reveal-delay:${i * 140}ms`}>
-          <div class="f-row">
-            <span class="f-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={stepIcons[i]} />
-            </span>
-            <span class="f-num">{s.n}</span>
-            {i < steps.length - 1 && <span class="f-line" aria-hidden="true"></span>}
-          </div>
-          <h3>{s.title}</h3>
-          <p>{s.body}</p>
-        </li>
-      ))}
+      {
+        items.map((s, i) => (
+          <li class="fstep reveal" style={`--reveal-delay:${i * 140}ms`}>
+            <div class="f-row">
+              <span class="f-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  set:html={stepIcons[i]}
+                />
+              </span>
+              <span class="f-num">{s.n}</span>
+              {i < steps.length - 1 && (
+                <span class="f-line" aria-hidden="true" />
+              )}
+            </div>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </li>
+        ))
+      }
     </ol>
 
     <div class="term-wrap reveal" style="--reveal-delay:300ms">
@@ -68,7 +82,10 @@ const stepIcons = [
 </section>
 
 <style>
-  .how { background: var(--bg-2); border-block: 1px solid var(--line); }
+  .how {
+    background: var(--bg-2);
+    border-block: 1px solid var(--line);
+  }
 
   /* Flow — three centered nodes joined by animated connectors */
   .flow {
@@ -92,15 +109,25 @@ const stepIcons = [
   }
   .f-icon {
     flex: none;
-    display: inline-flex; width: 52px; height: 52px;
-    align-items: center; justify-content: center;
+    display: inline-flex;
+    width: 52px;
+    height: 52px;
+    align-items: center;
+    justify-content: center;
     border-radius: var(--radius-sm);
     color: var(--text-2);
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid var(--line-strong);
   }
-  .f-icon svg { width: 24px; height: 24px; }
-  .f-num { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-4); }
+  .f-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+  .f-num {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-4);
+  }
   /* Connector runs from this node's edge, across the grid gap, to the next node's edge */
   .f-line {
     position: absolute;
@@ -109,70 +136,181 @@ const stepIcons = [
     width: calc(100% + 2rem - 116px);
     height: 2px;
     transform: translateY(-50%);
-    background: repeating-linear-gradient(90deg, var(--line-strong) 0 8px, transparent 8px 16px);
+    background: repeating-linear-gradient(
+      90deg,
+      var(--line-strong) 0 8px,
+      transparent 8px 16px
+    );
     background-size: 16px 2px;
     animation: flowdash 1s linear infinite;
   }
   .f-line::after {
-    content: '';
+    content: "";
     position: absolute;
-    right: -2px; top: 50%;
-    width: 8px; height: 8px;
+    right: -2px;
+    top: 50%;
+    width: 8px;
+    height: 8px;
     border-top: 2px solid var(--line-strong);
     border-right: 2px solid var(--line-strong);
     transform: translateY(-50%) rotate(45deg);
   }
-  @keyframes flowdash { to { background-position: 16px 0; } }
+  @keyframes flowdash {
+    to {
+      background-position: 16px 0;
+    }
+  }
 
-  .fstep h3 { font-size: 1.3rem; margin-top: 1.15rem; }
-  .fstep p { color: var(--text-3); font-size: 0.94rem; margin-top: 0.45rem; max-width: 36ch; margin-inline: auto; }
+  .fstep h3 {
+    font-size: 1.3rem;
+    margin-top: 1.15rem;
+  }
+  .fstep p {
+    color: var(--text-3);
+    font-size: 0.94rem;
+    margin-top: 0.45rem;
+    max-width: 36ch;
+    margin-inline: auto;
+  }
 
   /* Terminal below the flow */
-  .term-wrap { max-width: 820px; margin: clamp(2.5rem, 6vw, 4rem) auto 0; }
-  .term { padding: 0; overflow: hidden; background: rgba(8, 13, 11, 0.9); }
+  .term-wrap {
+    max-width: 820px;
+    margin: clamp(2.5rem, 6vw, 4rem) auto 0;
+  }
+  .term {
+    padding: 0;
+    overflow: hidden;
+    background: rgba(8, 13, 11, 0.9);
+  }
   .term-top {
-    display: flex; align-items: center; gap: 0.75rem;
-    padding: 0.8rem 1.1rem; border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.8rem 1.1rem;
+    border-bottom: 1px solid var(--line);
     background: rgba(255, 255, 255, 0.025);
   }
-  .dots { display: inline-flex; gap: 6px; }
-  .dots i { width: 10px; height: 10px; border-radius: 50%; background: var(--line-strong); }
-  .dots i:first-child { background: #E4685F; }
-  .dots i:nth-child(2) { background: #E0B450; }
-  .dots i:last-child { background: var(--green-bright); }
-  .term-title { font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-3); }
-  .term-live { margin-left: auto; display: inline-flex; align-items: center; gap: 0.4rem; font-family: var(--font-mono); font-size: 0.72rem; color: var(--green-bright); }
-  .lp { width: 7px; height: 7px; border-radius: 50%; background: var(--green-bright); animation: tpulse 1.6s infinite; }
-  @keyframes tpulse { 0% { box-shadow: 0 0 0 0 rgba(23, 212, 139, 0.5); } 100% { box-shadow: 0 0 0 9px rgba(23, 212, 139, 0); } }
+  .dots {
+    display: inline-flex;
+    gap: 6px;
+  }
+  .dots i {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--line-strong);
+  }
+  .dots i:first-child {
+    background: #e4685f;
+  }
+  .dots i:nth-child(2) {
+    background: #e0b450;
+  }
+  .dots i:last-child {
+    background: var(--green-bright);
+  }
+  .term-title {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-3);
+  }
+  .term-live {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--green-bright);
+  }
+  .lp {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--green-bright);
+    animation: tpulse 1.6s infinite;
+  }
+  @keyframes tpulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(23, 212, 139, 0.5);
+    }
+    100% {
+      box-shadow: 0 0 0 9px rgba(23, 212, 139, 0);
+    }
+  }
 
   .term-body {
     padding: 1.1rem 1.2rem 1.3rem;
-    font-family: var(--font-mono); font-size: 0.8rem;
-    display: flex; flex-direction: column; justify-content: flex-end;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
     gap: 0.6rem;
     height: 228px;
     overflow: hidden;
   }
   .term-body :global(.logline) {
-    display: flex; gap: 0.7rem; align-items: center; white-space: nowrap;
+    display: flex;
+    gap: 0.7rem;
+    align-items: center;
+    white-space: nowrap;
     animation: login 0.45s ease;
   }
-  @keyframes login { from { opacity: 0; transform: translateY(8px); } }
-  .term-body :global(.lt) { color: var(--text-4); }
-  .term-body :global(.ls) { font-weight: 500; padding: 0.1rem 0.45rem; border-radius: 4px; font-size: 0.7rem; }
-  .term-body :global(.ls.buy) { color: #04281A; background: var(--green-bright); }
-  .term-body :global(.ls.sell) { color: #fff; background: rgba(228, 104, 95, 0.85); }
-  .term-body :global(.ls.risk) { color: var(--green-bright); background: var(--green-tint); }
-  .term-body :global(.ls.scan) { color: var(--text-3); background: rgba(255, 255, 255, 0.07); }
-  .term-body :global(.ld) { color: var(--text-2); overflow: hidden; text-overflow: ellipsis; }
+  @keyframes login {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+  .term-body :global(.lt) {
+    color: var(--text-4);
+  }
+  .term-body :global(.ls) {
+    font-weight: 500;
+    padding: 0.1rem 0.45rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+  }
+  .term-body :global(.ls.buy) {
+    color: #04281a;
+    background: var(--green-bright);
+  }
+  .term-body :global(.ls.sell) {
+    color: #fff;
+    background: rgba(228, 104, 95, 0.85);
+  }
+  .term-body :global(.ls.risk) {
+    color: var(--green-bright);
+    background: var(--green-tint);
+  }
+  .term-body :global(.ls.scan) {
+    color: var(--text-3);
+    background: rgba(255, 255, 255, 0.07);
+  }
+  .term-body :global(.ld) {
+    color: var(--text-2);
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
   @media (prefers-reduced-motion: reduce) {
-    .f-line { animation: none; }
+    .f-line {
+      animation: none;
+    }
   }
   @media (max-width: 820px) {
-    .flow { grid-template-columns: 1fr; gap: 1.75rem; }
-    .f-line { display: none; }
-    .fstep h3 { margin-top: 0.8rem; }
+    .flow {
+      grid-template-columns: 1fr;
+      gap: 1.75rem;
+    }
+    .f-line {
+      display: none;
+    }
+    .fstep h3 {
+      margin-top: 0.8rem;
+    }
   }
 </style>
 
@@ -180,17 +318,32 @@ const stepIcons = [
   // Guardian-engine log — official copy lines, cycled. Decorative
   // (aria-hidden). Pauses on reduced-motion.
   const POOL = [
-    { t: '09:31:02', s: 'BUY', d: 'BTC setup detected · risk context ready', cls: 'buy' },
-    { t: '09:31:09', s: 'RISK', d: 'volatility rising · position size reduced', cls: 'risk' },
-    { t: '10:14:48', s: 'SELL', d: 'Gold signal locked · exposure managed', cls: 'sell' },
-    { t: '11:02:17', s: 'BUY', d: 'Nasdaq movement confirmed', cls: 'buy' },
-    { t: '11:46:30', s: 'SCAN', d: 'no setup · holding', cls: 'scan' },
+    {
+      t: "09:31:02",
+      s: "BUY",
+      d: "BTC setup detected · risk context ready",
+      cls: "buy",
+    },
+    {
+      t: "09:31:09",
+      s: "RISK",
+      d: "volatility rising · position size reduced",
+      cls: "risk",
+    },
+    {
+      t: "10:14:48",
+      s: "SELL",
+      d: "Gold signal locked · exposure managed",
+      cls: "sell",
+    },
+    { t: "11:02:17", s: "BUY", d: "Nasdaq movement confirmed", cls: "buy" },
+    { t: "11:46:30", s: "SCAN", d: "no setup · holding", cls: "scan" },
   ];
 
   const initTerminal = () => {
-    const body = document.getElementById('term-body');
+    const body = document.getElementById("term-body");
     if (!body || body.dataset.init) return;
-    body.dataset.init = 'true';
+    body.dataset.init = "true";
 
     let idx = 0;
 
@@ -198,8 +351,8 @@ const stepIcons = [
       const item = POOL[idx % POOL.length];
       idx++;
 
-      const line = document.createElement('div');
-      line.className = 'logline';
+      const line = document.createElement("div");
+      line.className = "logline";
       line.innerHTML =
         `<span class="lt">${item.t}</span>` +
         `<span class="ls ${item.cls}">${item.s}</span>` +
@@ -211,11 +364,13 @@ const stepIcons = [
     // Seed the full official sequence immediately.
     for (let i = 0; i < POOL.length; i++) addLine();
 
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const timer = setInterval(addLine, 2600);
-    document.addEventListener('astro:before-swap', () => clearInterval(timer), { once: true });
+    document.addEventListener("astro:before-swap", () => clearInterval(timer), {
+      once: true,
+    });
   };
 
   initTerminal();
-  document.addEventListener('astro:after-swap', initTerminal);
+  document.addEventListener("astro:after-swap", initTerminal);
 </script>

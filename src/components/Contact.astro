@@ -1,44 +1,47 @@
 ---
-// To deliver email, set FORM_ENDPOINT to a form backend URL (Formspree,
-// Basin, your own API). Left blank, the form validates and shows success
-// for demo purposes without sending.
-const FORM_ENDPOINT = '';
+import ContactForm from "./ContactForm.astro";
+import { gradText } from "../helpers";
+
+const { supportPage } = Astro.props;
+
+const contactOptions = supportPage.acf.options;
 
 const options = [
   {
-    title: 'Get started',
-    body: 'Pick your package and get set up. Every package comes with a 60-day refund period.',
-    terms: true,
-    cta: 'Create your account',
-    href: '/signup',
-    icon: '<path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v4h4"/><path d="M9.5 12.2l1.8 1.8 3.7-3.7"/>',
+    title: contactOptions[0].title,
+    body: contactOptions[0].body,
+    terms: contactOptions[0].terms,
+    cta: contactOptions[0].cta,
+    href: contactOptions[0].href,
+    icon: contactOptions[0].icon,
   },
   {
-    title: 'Request a call',
-    body: 'Our team will walk you through the technical setup and how the algos operate.',
-    terms: false,
-    cta: 'Fill the form',
-    href: '#contact-form',
-    icon: '<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.13.96.36 1.9.7 2.8a2 2 0 0 1-.45 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.45c.9.34 1.84.57 2.8.7A2 2 0 0 1 22 16.9z"/>',
+    title: contactOptions[1].title,
+    body: contactOptions[1].body,
+    terms: contactOptions[1].terms,
+    cta: contactOptions[1].cta,
+    href: contactOptions[1].href,
+    icon: contactOptions[1].icon,
   },
   {
-    title: 'Email us',
-    body: 'Prefer writing? Send us a message and we’ll reply within one business day.',
-    terms: false,
-    cta: 'hello@vectora.io',
-    href: 'mailto:hello@vectora.io',
-    icon: '<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>',
+    title: contactOptions[2].title,
+    body: contactOptions[2].body,
+    terms: contactOptions[2].terms,
+    cta: contactOptions[2].cta,
+    href: contactOptions[2].href,
+    icon: contactOptions[2].icon,
   },
 ];
 ---
 
 <section class="section page-hero">
   <div class="container">
-    <h1 class="reveal">Talk to <span class="grad-text">a human.</span></h1>
-    <p class="lede reveal" style="--reveal-delay:120ms">
-      Create your account, or request a call for technical setup
-      assistance. Real people, one business day, no runaround.
-    </p>
+    <h1 class="reveal" set:html={gradText(supportPage.acf.headline)} />
+    <p
+      class="lede reveal"
+      style="--reveal-delay:120ms"
+      set:html={supportPage.acf.text}
+    />
   </div>
 </section>
 
@@ -46,50 +49,65 @@ const options = [
   <div class="container">
     <div class="support-grid">
       <aside class="opt-col">
-        {options.map((o, i) => (
-          <div class:list={['opt card hoverable spot reveal', { 'opt-split': o.terms }]} style={`--reveal-delay:${i * 90}ms`}>
-            <span class="opt-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={o.icon} />
-            </span>
-            <span class="opt-main">
-              <h3>{o.title}</h3>
-              <p>{o.body}{o.terms && <> <a href="#" class="opt-terms">Terms of Service</a> apply.</>}</p>
-              <a href={o.href} class="opt-cta">{o.cta} <span class="arrow" aria-hidden="true">→</span></a>
-            </span>
-          </div>
-        ))}
+        {
+          options.map((o, i) => (
+            <div
+              class:list={[
+                "opt card hoverable spot reveal",
+                { "opt-split": o.terms },
+              ]}
+              style={`--reveal-delay:${i * 90}ms`}
+            >
+              <span class="opt-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  set:html={o.icon}
+                />
+              </span>
+              <span class="opt-main">
+                <h3>{o.title}</h3>
+                <p>
+                  {o.body}
+                  {o.terms && (
+                    <>
+                      {" "}
+                      <a href="#" class="opt-terms">
+                        Terms of Service
+                      </a>{" "}
+                      apply.
+                    </>
+                  )}
+                </p>
+                <a href={o.href} class="opt-cta">
+                  {o.cta}{" "}
+                  <span class="arrow" aria-hidden="true">
+                    →
+                  </span>
+                </a>
+              </span>
+            </div>
+          ))
+        }
       </aside>
 
-      <form class="contact-form card grad-border spot reveal" id="contact-form" novalidate data-endpoint={FORM_ENDPOINT} style="--reveal-delay:140ms">
-        <h2>Request a call</h2>
-        <p class="form-sub">Leave your details and one of our team will call you back within one business day.</p>
-        <div class="row-2">
-          <div class="field">
-            <label for="name">Name</label>
-            <input id="name" name="name" type="text" autocomplete="name" required placeholder="Alex Trader" />
-            <span class="err" data-for="name"></span>
-          </div>
-          <div class="field">
-            <label for="email">Email</label>
-            <input id="email" name="email" type="email" autocomplete="email" required placeholder="you@example.com" />
-            <span class="err" data-for="email"></span>
-          </div>
-        </div>
-        <div class="field">
-          <label for="message">How can we help?</label>
-          <textarea id="message" name="message" rows="4" required placeholder="e.g. I'd like to start with the gold algo on the Foundation package…"></textarea>
-          <span class="err" data-for="message"></span>
-        </div>
-        <button type="submit" class="btn btn-primary btn-lg form-submit">Request a call <span class="arrow" aria-hidden="true">→</span></button>
-        <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
-        <p class="form-fine">60-day refund period on every package · No obligation · <a href="#">Terms of Service</a> apply.</p>
-      </form>
+      <ContactForm
+        title={supportPage.acf.form.title}
+        text={supportPage.acf.form.text}
+        emailTo={supportPage.acf.form.email_to}
+      />
     </div>
   </div>
 </section>
 
-<style>
-  .support-sec { padding-top: clamp(1rem, 3vw, 2rem); }
+<style is:global>
+  .support-sec {
+    padding-top: clamp(1rem, 3vw, 2rem);
+  }
   .support-grid {
     display: grid;
     grid-template-columns: 0.9fr 1.1fr;
@@ -98,139 +116,185 @@ const options = [
   }
 
   /* Vertical option tiles */
-  .opt-col { display: grid; gap: 1.1rem; }
-  .opt { display: flex; align-items: flex-start; gap: 1.1rem; padding: 1.5rem; }
+  .opt-col {
+    display: grid;
+    gap: 1.1rem;
+  }
+  .opt {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.1rem;
+    padding: 1.5rem;
+  }
   .opt-icon {
     flex: none;
-    display: inline-flex; width: 46px; height: 46px;
-    align-items: center; justify-content: center; border-radius: var(--radius-sm);
+    display: inline-flex;
+    width: 46px;
+    height: 46px;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
     color: var(--text-2);
-    background: rgba(255, 255, 255, 0.04); border: 1px solid var(--line-strong);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--line-strong);
   }
-  .opt-icon svg { width: 22px; height: 22px; }
-  .opt-main { display: flex; flex-direction: column; }
-  .opt h3 { font-size: 1.12rem; }
-  .opt p { color: var(--text-3); font-size: 0.92rem; margin-top: 0.4rem; }
-  .opt-terms { color: var(--text-3); text-decoration: underline; text-underline-offset: 2px; }
-  .opt-terms:hover { color: var(--green-bright); }
+  .opt-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+  .opt-main {
+    display: flex;
+    flex-direction: column;
+  }
+  .opt h3 {
+    font-size: 1.12rem;
+  }
+  .opt p {
+    color: var(--text-3);
+    font-size: 0.92rem;
+    margin-top: 0.4rem;
+  }
+  .opt-terms {
+    color: var(--text-3);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .opt-terms:hover {
+    color: var(--green-bright);
+  }
   .opt-cta {
     margin-top: 0.8rem;
-    font-family: var(--font-display); font-weight: 600; font-size: 0.9rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.9rem;
     color: var(--green-bright);
   }
   /* Stretched link — the CTA anchor covers the whole tile, except on a card
      whose body carries its own link, where the two would compete for clicks. */
-  .opt-cta::after { content: ''; position: absolute; inset: 0; border-radius: var(--radius); }
-  .opt-split .opt-cta::after { content: none; }
-  .opt-cta .arrow { display: inline-block; transition: transform 0.2s ease; }
-  .opt:hover .opt-cta .arrow { transform: translateX(3px); }
+  .opt-cta::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius);
+  }
+  .opt-split .opt-cta::after {
+    content: none;
+  }
+  .opt-cta .arrow {
+    display: inline-block;
+    transition: transform 0.2s ease;
+  }
+  .opt:hover .opt-cta .arrow {
+    transform: translateX(3px);
+  }
 
   /* Form */
   .contact-form {
-    display: grid; gap: 1.1rem;
+    display: grid;
+    gap: 1.1rem;
     padding: clamp(1.75rem, 4vw, 2.5rem);
     border-radius: var(--radius-lg);
     box-shadow: 0 0 70px -30px var(--green-glow);
   }
-  .contact-form h2 { font-size: clamp(1.6rem, 3vw, 2.1rem); }
-  .form-sub { color: var(--text-3); font-size: 0.95rem; margin-top: -0.4rem; }
-  .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
-  .field { display: grid; gap: 0.4rem; }
-  label { font-family: var(--font-display); font-size: 0.88rem; font-weight: 500; color: var(--text); }
-  input, textarea {
-    width: 100%; background: rgba(0, 0, 0, 0.25);
-    border: 1px solid var(--line-strong); border-radius: var(--radius-sm);
-    padding: 0.8rem 0.9rem; color: var(--text);
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  .contact-form h2 {
+    font-size: clamp(1.6rem, 3vw, 2.1rem);
   }
-  input::placeholder, textarea::placeholder { color: var(--text-4); }
-  input:focus, textarea:focus { outline: none; border-color: var(--green-bright); box-shadow: 0 0 0 3px rgba(23, 212, 139, 0.15); }
-  textarea { resize: vertical; }
-  .field.invalid input, .field.invalid textarea { border-color: #E4685F; }
-  .err { color: #F08D84; font-size: 0.8rem; min-height: 1em; }
-  .form-submit { width: 100%; margin-top: 0.25rem; }
-  .form-status { font-size: 0.9rem; text-align: center; min-height: 1.2em; }
-  .form-status.ok { color: var(--green-bright); }
-  .form-status.bad { color: #F08D84; }
-  .form-fine { text-align: center; font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.06em; color: var(--text-4); }
-  .form-fine a { color: var(--text-3); text-decoration: underline; text-underline-offset: 2px; }
-  .form-fine a:hover { color: var(--green-bright); }
+  .form-sub {
+    color: var(--text-3);
+    font-size: 0.95rem;
+    margin-top: -0.4rem;
+  }
+  .row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.1rem;
+  }
+  .field {
+    display: grid;
+    gap: 0.4rem;
+  }
+  label {
+    font-family: var(--font-display);
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--text);
+  }
+  input,
+  textarea {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-sm);
+    padding: 0.8rem 0.9rem;
+    color: var(--text);
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--text-4);
+  }
+  input:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--green-bright);
+    box-shadow: 0 0 0 3px rgba(23, 212, 139, 0.15);
+  }
+  textarea {
+    resize: vertical;
+  }
+  .field.invalid input,
+  .field.invalid textarea {
+    border-color: #e4685f;
+  }
+  .err {
+    color: #f08d84;
+    font-size: 0.8rem;
+    min-height: 1em;
+  }
+  .form-submit {
+    width: 100%;
+    margin-top: 0.25rem;
+  }
+  .form-status {
+    font-size: 0.9rem;
+    text-align: center;
+    min-height: 1.2em;
+  }
+  .form-status.ok {
+    color: var(--green-bright);
+  }
+  .form-status.bad {
+    color: #f08d84;
+  }
+  .form-fine {
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    color: var(--text-4);
+  }
+  .form-fine a {
+    color: var(--text-3);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .form-fine a:hover {
+    color: var(--green-bright);
+  }
 
   @media (max-width: 900px) {
-    .support-grid { grid-template-columns: 1fr; }
-    .opt-col { max-width: 560px; }
+    .support-grid {
+      grid-template-columns: 1fr;
+    }
+    .opt-col {
+      max-width: 560px;
+    }
   }
-  @media (max-width: 560px) { .row-2 { grid-template-columns: 1fr; } }
+  @media (max-width: 560px) {
+    .row-2 {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>
-
-<script>
-  const initContactForm = () => {
-    const form = document.getElementById('contact-form') as HTMLFormElement | null;
-    const statusEl = document.getElementById('form-status');
-    if (!form || !statusEl || form.dataset.init) return;
-    form.dataset.init = 'true';
-
-    const setError = (name: string, msg: string) => {
-      const field = form.querySelector(`[name="${name}"]`)?.closest('.field');
-      const err = form.querySelector(`.err[data-for="${name}"]`);
-      field?.classList.toggle('invalid', Boolean(msg));
-      if (err) err.textContent = msg;
-    };
-
-    const validate = () => {
-      let ok = true;
-      const data = new FormData(form);
-      const name = (data.get('name') as string)?.trim();
-      const email = (data.get('email') as string)?.trim();
-      const message = (data.get('message') as string)?.trim();
-
-      setError('name', name ? '' : 'Please enter your name.');
-      if (!name) ok = false;
-      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email || '');
-      setError('email', emailOk ? '' : 'Please enter a valid email.');
-      if (!emailOk) ok = false;
-      setError('message', message ? '' : 'Please tell us how we can help.');
-      if (!message) ok = false;
-      return ok;
-    };
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      statusEl.textContent = '';
-      statusEl.className = 'form-status';
-      if (!validate()) return;
-
-      const btn = form.querySelector<HTMLButtonElement>('.form-submit');
-      const endpoint = form.dataset.endpoint;
-      if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
-
-      try {
-        if (endpoint) {
-          const res = await fetch(endpoint, { method: 'POST', headers: { Accept: 'application/json' }, body: new FormData(form) });
-          if (!res.ok) throw new Error('Request failed');
-        } else {
-          await new Promise((r) => setTimeout(r, 700));
-        }
-        form.reset();
-        statusEl.textContent = "Thanks! We'll be in touch within one business day.";
-        statusEl.classList.add('ok');
-      } catch {
-        statusEl.textContent = 'Something went wrong. Please email hello@vectora.io.';
-        statusEl.classList.add('bad');
-      } finally {
-        if (btn) { btn.disabled = false; btn.textContent = 'Request a call'; }
-      }
-    });
-
-    form.querySelectorAll('input, textarea').forEach((el) => {
-      el.addEventListener('input', () => {
-        const name = (el as HTMLInputElement).name;
-        const field = el.closest('.field');
-        if (field?.classList.contains('invalid')) setError(name, '');
-      });
-    });
-  };
-
-  initContactForm();
-  document.addEventListener('astro:after-swap', initContactForm);
-</script>

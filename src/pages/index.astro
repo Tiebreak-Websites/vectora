@@ -1,22 +1,25 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Hero from '../components/Hero.astro';
-import Pillars from '../components/Pillars.astro';
-import HowItWorks from '../components/HowItWorks.astro';
-import WhyVectora from '../components/WhyVectora.astro';
-import MetricsBand from '../components/MetricsBand.astro';
-import Testimonials from '../components/Testimonials.astro';
-import Instruments from '../components/Instruments.astro';
-import Faq from '../components/Faq.astro';
+import Layout from "../layouts/Layout.astro";
+import Hero from "../components/Hero.astro";
+import Pillars from "../components/Pillars.astro";
+import HowItWorks from "../components/HowItWorks.astro";
+import WhyVectora from "../components/WhyVectora.astro";
+import MetricsBand from "../components/MetricsBand.astro";
+import Testimonials from "../components/Testimonials.astro";
+import Instruments from "../components/Instruments.astro";
+import Faq from "../components/Faq.astro";
+
+import { getPage } from "@tiebreak/api/wp/pages";
+const page = await getPage("home", Astro);
 ---
 
 <Layout>
-  <Hero />
-  <Pillars />
-  <HowItWorks />
-  <WhyVectora />
-  <MetricsBand />
-  <Testimonials />
-  <Instruments />
-  <Faq />
+  <Hero section={page?.acf.hero} />
+  <Pillars section={page?.acf.pillars} />
+  <HowItWorks items={page?.acf.how_it_works.items} />
+  <WhyVectora section={page?.acf.why} />
+  <MetricsBand section={page?.acf.metrics} />
+  <Testimonials section={page?.acf.testimonials} />
+  <Instruments section={page?.acf.instruments} />
+  <Faq section={page?.acf.faq} />
 </Layout>

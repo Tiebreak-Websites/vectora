@@ -1,60 +1,80 @@
 ---
+const { section } = Astro.props;
 // Official copy: three cards under the home hero — rendered as full-width
 // editorial rows (distinct from the bot-card grid above).
 const pillars = [
   {
-    n: '01',
-    title: 'Proven Reliability',
-    body: 'Built around 548 days of live and backtested operation, Vectora is designed to keep execution disciplined in fast-moving markets.',
-    tag: 'Tracked algo operation',
-    icon: 'shield',
+    n: "01",
+    title: "Proven Reliability",
+    body: "Built around 548 days of live and backtested operation, Vectora is designed to keep execution disciplined in fast-moving markets.",
+    tag: "Tracked algo operation",
+    icon: "shield",
   },
   {
-    n: '02',
-    title: 'Private Client Use',
-    body: 'Used by more than 1,000 active clients who want market assistance, clearer risk context, and a more structured way to trade.',
-    tag: 'Active clients',
-    icon: 'users',
+    n: "02",
+    title: "Private Client Use",
+    body: "Used by more than 1,000 active clients who want market assistance, clearer risk context, and a more structured way to trade.",
+    tag: "Active clients",
+    icon: "users",
   },
   {
-    n: '03',
-    title: 'Risk-First Precision',
-    body: 'Reads market movement, instrument context, and risk pressure before each setup, so no position is opened without context.',
-    tag: 'Guardian risk check',
-    icon: 'target',
+    n: "03",
+    title: "Risk-First Precision",
+    body: "Reads market movement, instrument context, and risk pressure before each setup, so no position is opened without context.",
+    tag: "Guardian risk check",
+    icon: "target",
   },
 ];
 
 const icons: Record<string, string> = {
-  shield: '<path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/><path d="M9.5 12l1.8 1.8L15 10"/>',
-  users: '<path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M21 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
-  target: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>',
+  shield:
+    '<path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/><path d="M9.5 12l1.8 1.8L15 10"/>',
+  users:
+    '<path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M21 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  target:
+    '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>',
 };
 ---
 
 <section class="section pillars">
   <div class="container">
     <div class="pillar-rows">
-      {pillars.map((p, i) => (
-        <article class="pillar reveal" style={`--reveal-delay:${i * 90}ms`}>
-          <span class="pnum" aria-hidden="true">{p.n}</span>
-          <div class="p-title">
-            <span class="picon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" set:html={icons[p.icon]} />
+      {
+        section.items.map((p, i) => (
+          <article class="pillar reveal" style={`--reveal-delay:${i * 90}ms`}>
+            <span class="pnum" aria-hidden="true">
+              {i + 1}
             </span>
-            <h3>{p.title}</h3>
-          </div>
-          <p class="p-body">{p.body}</p>
-          <span class="ptag">{p.tag}</span>
-        </article>
-      ))}
+            <div class="p-title">
+              <span class="picon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  set:html={icons[p.icon]}
+                />
+              </span>
+              <h3>{p.title}</h3>
+            </div>
+            <p class="p-body">{p.text}</p>
+            <span class="ptag">{p.tag}</span>
+          </article>
+        ))
+      }
     </div>
   </div>
 </section>
 
 <style>
-  .pillars { padding-block: clamp(2.5rem, 6vw, 4rem) clamp(3rem, 6vw, 4.5rem); }
-  .pillar-rows { border-top: 1px solid var(--line); }
+  .pillars {
+    padding-block: clamp(2.5rem, 6vw, 4rem) clamp(3rem, 6vw, 4.5rem);
+  }
+  .pillar-rows {
+    border-top: 1px solid var(--line);
+  }
   .pillar {
     position: relative;
     display: grid;
@@ -65,14 +85,18 @@ const icons: Record<string, string> = {
     border-bottom: 1px solid var(--line);
   }
   .pillar::before {
-    content: '';
+    content: "";
     position: absolute;
-    top: -1px; left: 0;
-    width: 0; height: 1px;
+    top: -1px;
+    left: 0;
+    width: 0;
+    height: 1px;
     background: var(--line-strong);
     transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .pillar:hover::before { width: 100%; }
+  .pillar:hover::before {
+    width: 100%;
+  }
 
   .pnum {
     font-family: var(--font-display);
@@ -84,35 +108,78 @@ const icons: Record<string, string> = {
     line-height: 1;
     transition: -webkit-text-stroke-color 0.3s ease;
   }
-  .pillar:hover .pnum { -webkit-text-stroke-color: var(--text-2); }
+  .pillar:hover .pnum {
+    -webkit-text-stroke-color: var(--text-2);
+  }
 
-  .p-title { display: flex; align-items: center; gap: 0.9rem; }
+  .p-title {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+  }
   .picon {
     flex: none;
-    display: inline-flex; width: 42px; height: 42px;
-    align-items: center; justify-content: center;
-    border-radius: var(--radius-sm); color: var(--text-2);
-    background: rgba(255, 255, 255, 0.04); border: 1px solid var(--line-strong);
+    display: inline-flex;
+    width: 42px;
+    height: 42px;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    color: var(--text-2);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--line-strong);
   }
-  .picon svg { width: 21px; height: 21px; }
-  .pillar h3 { font-size: 1.25rem; }
-  .p-body { color: var(--text-3); font-size: 0.96rem; max-width: 56ch; }
+  .picon svg {
+    width: 21px;
+    height: 21px;
+  }
+  .pillar h3 {
+    font-size: 1.25rem;
+  }
+  .p-body {
+    color: var(--text-3);
+    font-size: 0.96rem;
+    max-width: 56ch;
+  }
   .ptag {
     justify-self: end;
-    font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500;
-    letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-4);
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-4);
     white-space: nowrap;
   }
 
   @media (max-width: 960px) {
-    .pillar { grid-template-columns: auto 1fr; grid-template-rows: auto auto; row-gap: 0.7rem; }
-    .p-body { grid-column: 2; }
-    .ptag { grid-column: 2; justify-self: start; }
-    .pnum { grid-row: 1 / span 3; align-self: start; }
+    .pillar {
+      grid-template-columns: auto 1fr;
+      grid-template-rows: auto auto;
+      row-gap: 0.7rem;
+    }
+    .p-body {
+      grid-column: 2;
+    }
+    .ptag {
+      grid-column: 2;
+      justify-self: start;
+    }
+    .pnum {
+      grid-row: 1 / span 3;
+      align-self: start;
+    }
   }
   @media (max-width: 520px) {
-    .pillar { grid-template-columns: 1fr; }
-    .pnum { grid-row: auto; }
-    .p-body, .ptag { grid-column: 1; }
+    .pillar {
+      grid-template-columns: 1fr;
+    }
+    .pnum {
+      grid-row: auto;
+    }
+    .p-body,
+    .ptag {
+      grid-column: 1;
+    }
   }
 </style>

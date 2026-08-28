@@ -1,63 +1,83 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import ClosingCta from '../components/ClosingCta.astro';
+import Layout from "../layouts/Layout.astro";
+import ClosingCta from "../components/ClosingCta.astro";
+import { getPage } from "@tiebreak/api/wp/pages";
+import { gradText } from "../helpers";
+import { getCptItems } from "@tiebreak/api/wp/custom-post-types";
+
+const page = await getPage("algos");
+const wpBots = await getCptItems("bot");
 
 // Official copy — bots page.
 const badges = [
-  { label: '60-day refund', icon: '<path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v4h4"/><path d="M9.5 12.2l1.8 1.8 3.7-3.7"/>' },
-  { label: 'Risk-first design', icon: '<path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/><path d="M9.5 12l1.8 1.8L15 10"/>' },
-  { label: 'Private client use', icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M21 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>' },
+  {
+    // label: "60-day refund",
+    label: page.acf.hero.badges[0].text,
+    icon: '<path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v4h4"/><path d="M9.5 12.2l1.8 1.8 3.7-3.7"/>',
+  },
+  {
+    // label: "Risk-first design",
+    label: page.acf.hero.badges[1].text,
+    icon: '<path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/><path d="M9.5 12l1.8 1.8L15 10"/>',
+  },
+  {
+    //label: "Private client use",
+    label: page.acf.hero.badges[2].text,
+    icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M21 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  },
 ];
 
 const heroStats = [
-  { v: 'up to 32%*', k: 'Approx. yearly ROI' },
-  { v: '92%*', k: 'Overall win rate' },
-  { v: '1–2%*', k: 'Overall drawdown' },
-  { v: '548 days', k: 'Live + backtested operation' },
+  { v: "up to 32%*", k: "Approx. yearly ROI" },
+  { v: "92%*", k: "Overall win rate" },
+  { v: "1–2%*", k: "Overall drawdown" },
+  { v: "548 days", k: "Live + backtested operation" },
 ];
 
 const bots = [
   {
-    name: 'MIRA',
-    sub: 'Gold Algo',
+    name: "MIRA",
+    sub: "Gold Algo",
     rows: [
-      { k: 'Status', v: 'Ready', status: true },
-      { k: 'Instrument', v: 'Gold (XAU)' },
-      { k: 'Approx. monthly ROI', v: 'up to 5%*', accent: true },
-      { k: 'Availability', v: 'All packages' },
-      { k: 'Role', v: 'Guardian risk reader' },
+      { k: "Status", v: "Ready", status: true },
+      { k: "Instrument", v: "Gold (XAU)" },
+      { k: "Approx. monthly ROI", v: "up to 5%*", accent: true },
+      { k: "Availability", v: "s" },
+      { k: "Role", v: "Guardian risk readerAll package" },
     ],
-    strategy: 'Gold-focused market monitoring and setup-context checks.',
-    guardian: 'Pauses when volatility spikes and never enters a setup without a plan.',
-    cta: 'Choose Mira in a package',
+    strategy: "Gold-focused market monitoring and setup-context checks.",
+    guardian:
+      "Pauses when volatility spikes and never enters a setup without a plan.",
+    cta: "Choose Mira in a package",
   },
   {
-    name: 'AXON',
-    sub: 'BTC Algo',
+    name: "AXON",
+    sub: "BTC Algo",
     rows: [
-      { k: 'Status', v: 'Ready', status: true },
-      { k: 'Instrument', v: 'Bitcoin (BTC)' },
-      { k: 'Approx. monthly ROI', v: 'up to 7%*', accent: true },
-      { k: 'Availability', v: 'All packages' },
-      { k: 'Role', v: 'Momentum and risk monitor' },
+      { k: "Status", v: "Ready", status: true },
+      { k: "Instrument", v: "Bitcoin (BTC)" },
+      { k: "Approx. monthly ROI", v: "up to 7%*", accent: true },
+      { k: "Availability", v: "All packages" },
+      { k: "Role", v: "Momentum and risk monitor" },
     ],
-    strategy: 'BTC movement, volatility, and momentum-context monitoring.',
-    guardian: 'Avoids reacting to fast crypto moves that lack clear structure.',
-    cta: 'Choose Axon in a package',
+    strategy: "BTC movement, volatility, and momentum-context monitoring.",
+    guardian: "Avoids reacting to fast crypto moves that lack clear structure.",
+    cta: "Choose Axon in a package",
   },
   {
-    name: 'KAIRO',
-    sub: 'Nasdaq Algo',
+    name: "KAIRO",
+    sub: "Nasdaq Algo",
     rows: [
-      { k: 'Status', v: 'Ready', status: true },
-      { k: 'Instrument', v: 'Nasdaq (NDX)' },
-      { k: 'Approx. monthly ROI', v: 'up to 6%*', accent: true },
-      { k: 'Availability', v: 'All packages' },
-      { k: 'Role', v: 'Timing monitor' },
+      { k: "Status", v: "Ready", status: true },
+      { k: "Instrument", v: "Nasdaq (NDX)" },
+      { k: "Approx. monthly ROI", v: "up to 6%*", accent: true },
+      { k: "Availability", v: "All packages" },
+      { k: "Role", v: "Timing monitor" },
     ],
-    strategy: 'Nasdaq index movement, trend pressure, and timing-context monitoring.',
-    guardian: 'Confirms the moment still fits the plan before entering.',
-    cta: 'Choose Kairo in a package',
+    strategy:
+      "Nasdaq index movement, trend pressure, and timing-context monitoring.",
+    guardian: "Confirms the moment still fits the plan before entering.",
+    cta: "Choose Kairo in a package",
   },
 ];
 
@@ -65,29 +85,50 @@ const bots = [
 // hero strip, so this section features only the remaining metric.
 ---
 
-<Layout title="Vectora — Algos" description="Vectora Algos: three automated algo profiles designed for private clients who want clearer risk context and more disciplined timing across concrete instruments.">
+<Layout
+  title="Vectora — Algos"
+  description="Vectora Algos: three automated algo profiles designed for private clients who want clearer risk context and more disciplined timing across concrete instruments."
+>
   <section class="section page-hero">
     <div class="container">
-      <h1 class="reveal">Vectora <span class="grad-text">Algos</span></h1>
-      <p class="lede reveal" style="--reveal-delay:140ms">
-        Three automated algo profiles designed for private clients who want
-        clearer risk context and more disciplined timing across concrete
-        instruments.
-      </p>
+      <h1 class="reveal" set:html={gradText(page.acf.hero.headline)} />
+      <p
+        class="lede reveal"
+        style="--reveal-delay:140ms"
+        set:html={page.acf.hero.text}
+      />
 
       <div class="badges reveal" style="--reveal-delay:200ms">
-        {badges.map((b) => (
-          <span class="badge">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={b.icon} />
-            {b.label}
-          </span>
-        ))}
+        {
+          badges.map((b) => (
+            <span class="badge">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                set:html={b.icon}
+              />
+              {b.label}
+            </span>
+          ))
+        }
       </div>
 
       <ul class="hero-stats reveal" style="--reveal-delay:260ms">
-        {heroStats.map((s) => (
-          <li><span class="num figure">{s.v}</span><span class="k figure-label">{s.k}</span></li>
-        ))}
+        {
+          page.acf.stats.map((s) => (
+            <li>
+              <>
+                <span class="num figure">{s.v}</span>
+                <span class="k figure-label">{s.k}</span>
+              </>
+            </li>
+          ))
+        }
       </ul>
     </div>
   </section>
@@ -95,36 +136,47 @@ const bots = [
   <section class="section bots-sec">
     <div class="container">
       <div class="bot-grid">
-        {bots.map((b, i) => (
-          <article class="bot card hoverable spot reveal" style={`--reveal-delay:${i * 90}ms`}>
-            <div class="b-head">
-              <h2>{b.name}</h2>
-              <span class="b-sub">{b.sub}</span>
-            </div>
+        {
+          wpBots.map((b, i) => (
+            <article
+              class="bot card hoverable spot reveal"
+              style={`--reveal-delay:${i * 90}ms`}
+            >
+              <div class="b-head">
+                <h2>{b.acf.name}</h2>
+                <span class="b-sub">{b.acf.sub}</span>
+              </div>
 
-            <dl class="b-rows">
-              {b.rows.map((r) => (
-                <div>
-                  <dt>{r.k}</dt>
-                  <dd class={r.accent ? 'accent' : ''}>
-                    {r.status && <span class="s-dot" aria-hidden="true"></span>}{r.v}
-                  </dd>
-                </div>
-              ))}
-            </dl>
+              <dl class="b-rows">
+                {b.acf.rows.map((r) => (
+                  <div>
+                    <dt>{r.k}</dt>
+                    <dd class={r.accent ? "accent" : ""}>
+                      {r.status && <span class="s-dot" aria-hidden="true" />}
+                      {r.v}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
 
-            <div class="b-block">
-              <span class="b-label">Strategy</span>
-              <p>{b.strategy}</p>
-            </div>
-            <div class="b-block">
-              <span class="b-label">Guardian role</span>
-              <p>{b.guardian}</p>
-            </div>
+              <div class="b-block">
+                <span class="b-label">Strategy</span>
+                <p>{b.acf.strategy}</p>
+              </div>
+              <div class="b-block">
+                <span class="b-label">Guardian role</span>
+                <p>{b.acf.guardian}</p>
+              </div>
 
-            <a href="/packages" class="btn btn-outline b-cta">{b.cta} <span class="arrow" aria-hidden="true">→</span></a>
-          </article>
-        ))}
+              <a href="/packages" class="btn btn-outline b-cta">
+                {b.acf.cta}{" "}
+                <span class="arrow" aria-hidden="true">
+                  →
+                </span>
+              </a>
+            </article>
+          ))
+        }
       </div>
     </div>
   </section>
@@ -132,77 +184,186 @@ const bots = [
   <section class="section testing">
     <div class="container discipline card spot reveal">
       <div class="d-copy">
-        <h2>Capital discipline, before anything else</h2>
-        <p>
-          Vectora is built to sit between the client and the market as a
-          guardian layer. It monitors selected conditions, checks risk
-          context, and keeps execution structured.
-        </p>
+        <h2>{page.acf.info_box.title}</h2>
+        <p set:html={page.acf.info_box.text} />
       </div>
       <div class="d-figure">
-        <span class="df-v">up to 5%*</span>
-        <span class="df-k figure-label">Approx. monthly ROI</span>
+        <span class="df-v">{page.acf.info_box.val}</span>
+        <span class="df-k figure-label">{page.acf.info_box.label}</span>
       </div>
     </div>
   </section>
 
   <ClosingCta
-    title='Deploy an algo with technical setup assistance'
-    body="Choose your instrument and prepare your account with a technically compatible broker platform — our team assists with the technical setup. Foundation is available now; Advanced and Elite are coming soon."
-    primary={{ label: 'View packages →', href: '/packages' }}
-    secondary={{ label: 'Talk to our team', href: '/support' }}
+    title={page.acf.cta.title}
+    body={page.acf.cta.text}
+    primary={{
+      label: page.acf.cta.primary_button.title,
+      href: page.acf.cta.primary_button.url,
+    }}
+    secondary={{
+      label: page.acf.cta.secondary_button.title,
+      href: page.acf.cta.secondary_button.url,
+    }}
   />
 </Layout>
 
 <style>
   /* Feature strip — inline items with hairline separators, no chip boxes */
   .badges {
-    display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
     margin-top: 1.9rem;
   }
   .badge {
-    display: inline-flex; align-items: center; gap: 0.55rem;
-    font-family: var(--font-display); font-size: 0.94rem; font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-family: var(--font-display);
+    font-size: 0.94rem;
+    font-weight: 500;
     color: var(--text-2);
     padding-inline: 1.4rem;
   }
-  .badge svg { width: 17px; height: 17px; color: var(--text-3); flex: none; }
-  .badge + .badge { border-left: 1px solid var(--line-strong); }
+  .badge svg {
+    width: 17px;
+    height: 17px;
+    color: var(--text-3);
+    flex: none;
+  }
+  .badge + .badge {
+    border-left: 1px solid var(--line-strong);
+  }
 
   @media (max-width: 620px) {
-    .badges { flex-direction: column; gap: 0.8rem; }
-    .badge + .badge { border-left: 0; }
+    .badges {
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+    .badge + .badge {
+      border-left: 0;
+    }
   }
 
   .hero-stats {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;
-    margin-top: 2.5rem; padding-top: 1.75rem; border-top: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-top: 2.5rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--line);
     text-align: center;
   }
-  .hero-stats .num { display: block; font-size: clamp(1.5rem, 3vw, 2.1rem); color: var(--green-bright); }
-  .hero-stats .k { display: block; margin-top: 0.3rem; }
+  .hero-stats .num {
+    display: block;
+    font-size: clamp(1.5rem, 3vw, 2.1rem);
+    color: var(--green-bright);
+  }
+  .hero-stats .k {
+    display: block;
+    margin-top: 0.3rem;
+  }
 
-  .bots-sec { padding-top: clamp(1rem, 3vw, 2rem); }
-  .bot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
-  .bot { display: flex; flex-direction: column; }
-  .b-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
-  .bot h2 { font-size: 1.6rem; }
-  .b-sub { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-3); letter-spacing: 0.06em; text-transform: uppercase; }
+  .bots-sec {
+    padding-top: clamp(1rem, 3vw, 2rem);
+  }
+  .bot-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+  .bot {
+    display: flex;
+    flex-direction: column;
+  }
+  .b-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .bot h2 {
+    font-size: 1.6rem;
+  }
+  .b-sub {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-3);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
 
-  .b-rows { display: grid; margin-top: 1.1rem; border-top: 1px solid var(--line); }
-  .b-rows > div { display: flex; justify-content: space-between; gap: 1rem; padding: 0.6rem 0; border-bottom: 1px solid var(--line); }
-  .b-rows dt { color: var(--text-3); font-size: 0.84rem; }
-  .b-rows dd { font-family: var(--font-display); font-weight: 600; font-size: 0.88rem; color: var(--text); text-align: right; display: inline-flex; align-items: center; gap: 0.4rem; }
-  .b-rows dd.accent { color: var(--green-bright); }
-  .s-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green-bright); animation: bpulse 1.8s infinite; }
-  @keyframes bpulse { 0% { box-shadow: 0 0 0 0 rgba(23, 212, 139, 0.5); } 100% { box-shadow: 0 0 0 7px rgba(23, 212, 139, 0); } }
+  .b-rows {
+    display: grid;
+    margin-top: 1.1rem;
+    border-top: 1px solid var(--line);
+  }
+  .b-rows > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .b-rows dt {
+    color: var(--text-3);
+    font-size: 0.84rem;
+  }
+  .b-rows dd {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: var(--text);
+    text-align: right;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .b-rows dd.accent {
+    color: var(--green-bright);
+  }
+  .s-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--green-bright);
+    animation: bpulse 1.8s infinite;
+  }
+  @keyframes bpulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(23, 212, 139, 0.5);
+    }
+    100% {
+      box-shadow: 0 0 0 7px rgba(23, 212, 139, 0);
+    }
+  }
 
-  .b-block { margin-top: 1rem; }
-  .b-label { font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-4); }
-  .b-block p { color: var(--text-3); font-size: 0.9rem; margin-top: 0.35rem; }
-  .b-block:last-of-type { flex: 1; }
+  .b-block {
+    margin-top: 1rem;
+  }
+  .b-label {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-4);
+  }
+  .b-block p {
+    color: var(--text-3);
+    font-size: 0.9rem;
+    margin-top: 0.35rem;
+  }
+  .b-block:last-of-type {
+    flex: 1;
+  }
 
-  .b-cta { width: 100%; margin-top: 1.4rem; }
+  .b-cta {
+    width: 100%;
+    margin-top: 1.4rem;
+  }
 
   .discipline {
     display: grid;
@@ -212,12 +373,24 @@ const bots = [
     padding: clamp(2rem, 5vw, 3.25rem);
     border-radius: var(--radius-lg);
   }
-  .d-copy h2 { font-size: clamp(1.7rem, 3.6vw, 2.4rem); }
-  .d-copy p { color: var(--text-3); margin-top: 1rem; max-width: 56ch; }
-  .d-figure { text-align: center; border-left: 1px solid var(--line); padding-left: clamp(1.5rem, 4vw, 3rem); }
+  .d-copy h2 {
+    font-size: clamp(1.7rem, 3.6vw, 2.4rem);
+  }
+  .d-copy p {
+    color: var(--text-3);
+    margin-top: 1rem;
+    max-width: 56ch;
+  }
+  .d-figure {
+    text-align: center;
+    border-left: 1px solid var(--line);
+    padding-left: clamp(1.5rem, 4vw, 3rem);
+  }
   .df-v {
     display: block;
-    font-family: var(--font-display); font-weight: 600; letter-spacing: -0.02em;
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.02em;
     font-variant-numeric: tabular-nums;
     font-size: clamp(2.6rem, 6vw, 4rem);
     background: var(--grad-text);
@@ -225,16 +398,33 @@ const bots = [
     background-clip: text;
     color: transparent;
   }
-  .df-k { display: block; margin-top: 0.5rem; }
+  .df-k {
+    display: block;
+    margin-top: 0.5rem;
+  }
 
   @media (max-width: 900px) {
-    .bot-grid { grid-template-columns: 1fr; max-width: 460px; margin-inline: auto; }
+    .bot-grid {
+      grid-template-columns: 1fr;
+      max-width: 460px;
+      margin-inline: auto;
+    }
   }
   @media (max-width: 760px) {
-    .discipline { grid-template-columns: 1fr; }
-    .d-figure { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); padding-top: 1.5rem; }
+    .discipline {
+      grid-template-columns: 1fr;
+    }
+    .d-figure {
+      border-left: 0;
+      padding-left: 0;
+      border-top: 1px solid var(--line);
+      padding-top: 1.5rem;
+    }
   }
   @media (max-width: 640px) {
-    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 1.5rem 1rem; }
+    .hero-stats {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem 1rem;
+    }
   }
 </style>
