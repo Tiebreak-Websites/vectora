@@ -1,5 +1,15 @@
 ---
 import Logo from "./Logo.astro";
+import { getMenu } from "@tiebreak/api/wp/menus";
+
+const mainMenu = await getMenu("main-menu");
+
+const mainMenuLinks = mainMenu.map((item: any) => {
+  return {
+    href: item.href,
+    label: item.title,
+  };
+});
 
 const links = [
   { href: "/", label: "Home" },
@@ -28,7 +38,7 @@ const isActive = (href: string) =>
 
     <nav class="nav-desktop" aria-label="Primary">
       {
-        links.map((l) => (
+        mainMenuLinks.map((l) => (
           <a
             href={l.href}
             class={isActive(l.href) ? "active" : ""}
