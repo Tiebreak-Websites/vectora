@@ -9,9 +9,12 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "start": "HOST=0.0.0.0 PORT=4321 node ./dist/server/entry.mjs --host",
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/node": "^11.1.4",
+    "@astrojs/sitemap": "^3.7.3",
     "@tiebreak-websites/astro-wp": "^0.0.2",
     "astro": "^7.0.4"
   }
