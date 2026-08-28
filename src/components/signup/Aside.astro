@@ -1,5 +1,8 @@
 ---
 import Logo from "../Logo.astro";
+import { gradText } from "../../helpers";
+
+const { page } = Astro.props;
 
 const perks = [
   "Three specialist algos — gold, Bitcoin, Nasdaq",
@@ -13,12 +16,10 @@ const perks = [
   <a href="/" class="side-logo" aria-label="Vectora home"
     ><Logo height={30} /></a
   >
-  <h2>
-    Trading discipline,<br /><span class="grad-text">automated.</span>
-  </h2>
+  <h2 set:html={gradText(page.acf.title)} />
   <ul class="side-perks">
     {
-      perks.map((p) => (
+      page.acf.list.map((p: any) => (
         <li>
           <svg
             viewBox="0 0 24 24"
@@ -30,20 +31,21 @@ const perks = [
           >
             <path d="M20 6L9 17l-5-5" />
           </svg>
-          {p}
+          {p.text}
         </li>
       ))
     }
   </ul>
   <div class="side-stats">
-    <div>
-      <span class="ss-v">92%</span><span class="ss-k">Win rate</span>
-    </div>
-    <div>
-      <span class="ss-v">1–2%</span><span class="ss-k">Drawdown</span>
-    </div>
-    <div>
-      <span class="ss-v">24/7</span><span class="ss-k">Execution</span>
-    </div>
+    {
+      page.acf.stats.map((s: any) => (
+        <div>
+          <>
+            <span class="ss-v">{s.v}</span>
+            <span class="ss-k">{s.k}</span>
+          </>
+        </div>
+      ))
+    }
   </div>
 </aside>

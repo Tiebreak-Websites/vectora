@@ -2,6 +2,8 @@
 import Logo from "../Logo.astro";
 import Aside from "./Aside.astro";
 
+const { page } = Astro.props;
+
 const { mode = "login" } = Astro.props;
 const isLogin = mode === "login";
 const loginUrl = import.meta.env.LOGIN_URL || "/login";
@@ -10,7 +12,7 @@ const loginUrl = import.meta.env.LOGIN_URL || "/login";
 <section class="auth">
   <div class="container auth-wrap">
     <div class="auth-shell grad-border reveal">
-      <Aside />
+      <Aside page={page} />
 
       <div class="auth-main">
         <nav class="tabs" aria-label="Authentication">
@@ -26,13 +28,9 @@ const loginUrl = import.meta.env.LOGIN_URL || "/login";
           >
         </nav>
 
-        <h1>{isLogin ? "Welcome back" : "Create your account"}</h1>
+        <h1>{page.acf.form.title}</h1>
         <p class="sub">
-          {
-            isLogin
-              ? "Log in to your Vectora dashboard."
-              : "Sign up in minutes — every package comes with a 60-day refund period."
-          }
+          {page.acf.form.text}
         </p>
 
         <div class="nxreg"></div>
