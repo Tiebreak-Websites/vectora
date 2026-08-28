@@ -1,6 +1,9 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import AuthForm from "../components/signup/AuthForm.astro";
+import { getPage } from "@tiebreak/api/wp/pages";
+
+const page = await getPage("signup", Astro);
 
 import Loader from "../nxreg/Loader.html";
 import SignUp from "../nxreg/SignUp.html";
@@ -15,7 +18,7 @@ import ThankYou from "../nxreg/ThankYou.html";
   description="Create your Vectora account — every package comes with a 90-day refund guarantee."
   isRegister={true}
 >
-  <AuthForm mode="signup" />
+  <AuthForm mode="signup" page={page} />
 
   <Loader />
   <SignUp />
