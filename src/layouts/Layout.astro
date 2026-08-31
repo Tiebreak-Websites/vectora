@@ -7,6 +7,7 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import LegalData from "@tiebreak/components/base/LegalData.astro";
 import Scripts from "../components/Scripts.astro";
+import GeoRestrictions from "../components/GeoRestrictions.astro";
 
 const {
   title = "Vectora — AI Trading Algos",
@@ -47,6 +48,7 @@ const {
       rel="stylesheet"
     />
 
+    <GeoRestrictions />
     <LegalData />
     <Scripts isRegister={isRegister} />
   </head>

@@ -1,0 +1,33 @@
+---
+const RESOURCE_URL = import.meta.env.RESOURCE_URL;
+const BRAND = import.meta.env.BRAND;
+const BRAND_LOW = BRAND.toLowerCase();
+
+const scriptUrl = `https://${import.meta.env.RESOURCE_URL}/scripts/geo-restrictions.js`;
+const blockedPageUrl = `https://${RESOURCE_URL}/blocked/${BRAND_LOW}`;
+
+const geoRestrictionsData = {
+  env: "PROD",
+  brand: BRAND,
+  pregUrl: RESOURCE_URL,
+  blockedUrl: blockedPageUrl,
+  folder: "Restrictions",
+  popupText:
+    "Our apologies, but we cannot serve clients from this country at this time.",
+};
+---
+
+<script is:inline src={scriptUrl}></script>
+
+<script is:inline define:vars={{ geoRestrictionsData }}>
+  window.addEventListener("DOMContentLoaded", function () {
+    new GeoRestrictions({
+      env: geoRestrictionsData.env,
+      brand: geoRestrictionsData.brand,
+      pregUrl: geoRestrictionsData.pregUrl,
+      blockedUrl: geoRestrictionsData.blockedUrl,
+      folder: geoRestrictionsData.folder,
+      popupText: geoRestrictionsData.popupText,
+    });
+  });
+</script>
